@@ -1,0 +1,1161 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Parts-Based Quote System - Complete Workflow Guide &mdash; Carfinity 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.2.0/dist/mermaid-layout-elk.esm.min.mjs"></script>
+      <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.2.0/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+      <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+      <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+const defaultStyle = document.createElement('style');
+defaultStyle.textContent = `pre.mermaid {
+    /* Same as .mermaid-container > pre */
+    display: block;
+    width: 100%;
+}
+
+pre.mermaid > svg {
+    /* Same as .mermaid-container > pre > svg */
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}
+`;
+document.head.appendChild(defaultStyle);
+
+const fullscreenStyle = document.createElement('style');
+fullscreenStyle.textContent = `.mermaid-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.mermaid-container > pre {
+    display: block;
+    width: 100%;
+}
+
+.mermaid-container > pre > svg {
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}
+
+.mermaid-fullscreen-btn {
+    width: 28px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    line-height: 1;
+    padding: 0;
+    color: #333;
+}
+
+.mermaid-fullscreen-btn:hover {
+    opacity: 100% !important;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-btn.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-btn.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 3px 10px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal {
+    display: none;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 95vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.98);
+    z-index: 9999;
+    padding: 20px;
+    overflow: auto;
+}
+
+.mermaid-fullscreen-modal.dark-theme {
+    background: rgba(0, 0, 0, 0.98);
+}
+
+.mermaid-fullscreen-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen {
+    position: relative;
+    width: 95vw;
+    height: 90vh;
+    max-width: 95vw;
+    max-height: 90vh;
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    overflow: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen.dark-theme {
+    background: #1a1a1a;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+}
+
+.mermaid-container-fullscreen pre.mermaid {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen .mermaid svg {
+    height: 100% !important;
+    width: 100% !important;
+    cursor: grab;
+}
+
+.mermaid-fullscreen-close {
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s;
+    font-size: 24px;
+    line-height: 1;
+    color: #333;
+}
+
+.mermaid-fullscreen-close:hover {
+    background: white;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-close.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-close.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal .mermaid-fullscreen-btn {
+    display: none !important;
+}`;
+document.head.appendChild(fullscreenStyle);
+
+// Detect if page has dark background
+const isDarkTheme = () => {
+    const bgColor = window.getComputedStyle(document.body).backgroundColor;
+    const match = bgColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)/);
+    if (match) {
+        const r = parseInt(match[1]);
+        const g = parseInt(match[2]);
+        const b = parseInt(match[3]);
+        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        return brightness < 128;
+    }
+    return false;
+};
+
+const load = async () => {
+    await mermaid.run();
+
+    const all_mermaids = document.querySelectorAll(".mermaid");
+    const mermaids_processed = document.querySelectorAll(".mermaid[data-processed='true']");
+
+    if ("False" === "True") {
+        const mermaids_to_add_zoom = -1 === -1 ? all_mermaids.length : -1;
+        if(mermaids_to_add_zoom > 0) {
+            var svgs = d3.selectAll("");
+            if(all_mermaids.length !== mermaids_processed.length) {
+                setTimeout(load, 200);
+                return;
+            } else if(svgs.size() !== mermaids_to_add_zoom) {
+                setTimeout(load, 200);
+                return;
+            } else {
+                svgs.each(function() {
+                    var svg = d3.select(this);
+                    svg.html("<g class='wrapper'>" + svg.html() + "</g>");
+                    var inner = svg.select("g");
+                    var zoom = d3.zoom().on("zoom", function(event) {
+                        inner.attr("transform", event.transform);
+                    });
+                    svg.call(zoom);
+                });
+            }
+        }
+    } else if(all_mermaids.length !== mermaids_processed.length) {
+        // Wait for mermaid to process all diagrams
+        setTimeout(load, 200);
+        return;
+    }
+
+    const darkTheme = isDarkTheme();
+
+    // Stop here if not adding fullscreen capability
+    if ("True" !== "True") return;
+
+    const modal = document.createElement('div');
+    modal.className = 'mermaid-fullscreen-modal' + (darkTheme ? ' dark-theme' : '');
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Fullscreen diagram viewer');
+    modal.innerHTML = `
+        <button class="mermaid-fullscreen-close${darkTheme ? ' dark-theme' : ''}" aria-label="Close fullscreen">✕</button>
+        <div class="mermaid-container-fullscreen${darkTheme ? ' dark-theme' : ''}"></div>
+    `;
+    document.body.appendChild(modal);
+
+    const modalContent = modal.querySelector('.mermaid-container-fullscreen');
+    const closeBtn = modal.querySelector('.mermaid-fullscreen-close');
+
+    let previousScrollOffset = [window.scrollX, window.scrollY];
+
+    const closeModal = () => {
+        modal.classList.remove('active');
+        modalContent.innerHTML = '';
+        document.body.style.overflow = ''
+        window.scrollTo({left: previousScrollOffset[0], top: previousScrollOffset[1], behavior: 'instant'});
+    };
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal();
+        }
+    });
+
+    const allButtons = [];
+
+    document.querySelectorAll('.mermaid').forEach((mermaidDiv) => {
+        if (mermaidDiv.parentNode.classList.contains('mermaid-container') ||
+            mermaidDiv.closest('.mermaid-fullscreen-modal')) {
+            return;
+        }
+
+        const container = document.createElement('div');
+        container.className = 'mermaid-container';
+        mermaidDiv.parentNode.insertBefore(container, mermaidDiv);
+        container.appendChild(mermaidDiv);
+
+        const fullscreenBtn = document.createElement('button');
+        fullscreenBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+        fullscreenBtn.setAttribute('aria-label', 'View diagram in fullscreen');
+        fullscreenBtn.textContent = '⛶';
+        fullscreenBtn.style.opacity = '50%';
+
+        // Calculate dynamic position based on diagram's margin and padding
+        const diagramStyle = window.getComputedStyle(mermaidDiv);
+        const marginTop = parseFloat(diagramStyle.marginTop) || 0;
+        const marginRight = parseFloat(diagramStyle.marginRight) || 0;
+        const paddingTop = parseFloat(diagramStyle.paddingTop) || 0;
+        const paddingRight = parseFloat(diagramStyle.paddingRight) || 0;
+        fullscreenBtn.style.top = `${marginTop + paddingTop + 4}px`;
+        fullscreenBtn.style.right = `${marginRight + paddingRight + 4}px`;
+
+        fullscreenBtn.addEventListener('click', () => {
+            previousScrollOffset = [window.scroll, window.scrollY];
+            const clone = mermaidDiv.cloneNode(true);
+            modalContent.innerHTML = '';
+            modalContent.appendChild(clone);
+
+            const svg = clone.querySelector('svg');
+            if (svg) {
+                svg.removeAttribute('width');
+                svg.removeAttribute('height');
+                svg.style.width = '100%';
+                svg.style.height = 'auto';
+                svg.style.maxWidth = '100%';
+                svg.style.sdisplay = 'block';
+
+                if ("False" === "True") {
+                    setTimeout(() => {
+                        const g = svg.querySelector('g');
+                        if (g) {
+                            var svgD3 = d3.select(svg);
+                            svgD3.html("<g class='wrapper'>" + svgD3.html() + "</g>");
+                            var inner = svgD3.select("g");
+                            var zoom = d3.zoom().on("zoom", function(event) {
+                                inner.attr("transform", event.transform);
+                            });
+                            svgD3.call(zoom);
+                        }
+                    }, 100);
+                }
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+
+        container.appendChild(fullscreenBtn);
+        allButtons.push(fullscreenBtn);
+    });
+
+    // Update theme classes when theme changes
+    const updateTheme = () => {
+        const dark = isDarkTheme();
+        allButtons.forEach(btn => {
+            if (dark) {
+                btn.classList.add('dark-theme');
+            } else {
+                btn.classList.remove('dark-theme');
+            }
+        });
+        if (dark) {
+            modal.classList.add('dark-theme');
+            modalContent.classList.add('dark-theme');
+            closeBtn.classList.add('dark-theme');
+        } else {
+            modal.classList.remove('dark-theme');
+            modalContent.classList.remove('dark-theme');
+            closeBtn.classList.remove('dark-theme');
+        }
+    };
+
+    // Watch for theme changes
+    const observer = new MutationObserver(updateTheme);
+    observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+    observer.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class', 'style']
+    });
+};
+
+window.addEventListener("load", load);
+</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Parts-Based Repair Quotation System" href="parts_based_quote_system.html" />
+    <link rel="prev" title="Insurance Risk Assessment Platform - Implementation Guide" href="Insurance-risk-assessment-implementation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Carfinity
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Start Here</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../administration.html">Administration and Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vehicle-care.html">Vehicle Care and Maintenance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../inspections.html">Inspections and Assessments</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../insurance-and-quotes.html">Insurance and Repair Quotes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="insurance_claims_dashboard.html">Insurance Claims Agent Dashboard Specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="new_assessment_dashboard.html">Insurance Claims Assessment Dashboard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Insurance-risk-assessment-implementation.html">Insurance Risk Assessment Platform - Implementation Guide</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Parts-Based Quote System - Complete Workflow Guide</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#table-of-contents">Table of Contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#workflow-overview">Workflow Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#phase-1-assessment-creation-completion">Phase 1: Assessment Creation &amp; Completion</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#assessment-initialization">1.1 Assessment Initialization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#assessment-section-completion">1.2 Assessment Section Completion</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#phase-2-automated-parts-identification">Phase 2: Automated Parts Identification</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#parts-identification-engine-activation">2.1 Parts Identification Engine Activation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#part-extraction-logic">2.2 Part Extraction Logic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#part-consolidation">2.3 Part Consolidation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#phase-3-parts-review-editing">Phase 3: Parts Review &amp; Editing</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#parts-review-interface">3.1 Parts Review Interface</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#manual-part-management">3.2 Manual Part Management</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#phase-4-quote-request-dispatch">Phase 4: Quote Request Dispatch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#provider-selection-interface">4.1 Provider Selection Interface</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#quote-request-creation">4.2 Quote Request Creation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dispatch-process">4.3 Dispatch Process</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#phase-5-quote-collection-validation">Phase 5: Quote Collection &amp; Validation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#quote-reception">5.1 Quote Reception</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#quote-validation">5.2 Quote Validation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#phase-6-market-analysis">Phase 6: Market Analysis</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#market-average-calculation">6.1 Market Average Calculation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#statistical-analysis">6.2 Statistical Analysis</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#phase-7-recommendation-generation">Phase 7: Recommendation Generation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#recommendation-engine-activation">7.1 Recommendation Engine Activation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scoring-algorithm">7.2 Scoring Algorithm</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#phase-8-quote-summary-selection">Phase 8: Quote Summary &amp; Selection</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#quote-summary-interface">8.1 Quote Summary Interface</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#final-selection-process">8.2 Final Selection Process</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#key-benefits-of-this-workflow">Key Benefits of This Workflow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="parts_based_quote_system.html">Parts-Based Repair Quotation System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Parts-Based-Quote-System-Build-Guide.html">Parts-Based Quote System - Build Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="repair-cost-calculation-system.html">Insurance Assessment Repair Cost Calculation System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="repair-quotes-comparison-system.html">Repair Quotes Comparison System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="settlement-calculator-system.html">Settlement Calculator System</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../technical-reference.html">Technical Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project-history.html">Project History and Implementation Notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Carfinity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../insurance-and-quotes.html">Insurance and Repair Quotes</a></li>
+      <li class="breadcrumb-item active">Parts-Based Quote System - Complete Workflow Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/Parts-Based-Quote-System-Workflow-Guide.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="parts-based-quote-system-complete-workflow-guide">
+<h1>Parts-Based Quote System - Complete Workflow Guide<a class="headerlink" href="#parts-based-quote-system-complete-workflow-guide" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>This guide explains the complete workflow of the Parts-Based Quote System from the initial vehicle assessment through to final quote recommendations and provider selection. The system transforms traditional hardcoded cost estimates into a dynamic, data-driven quote collection process.</p>
+</section>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#workflow-overview">Workflow Overview</a></p></li>
+<li><p><a class="reference internal" href="#phase-1-assessment-creation-completion">Phase 1: Assessment Creation &amp; Completion</a></p></li>
+<li><p><a class="reference internal" href="#phase-2-automated-parts-identification">Phase 2: Automated Parts Identification</a></p></li>
+<li><p><a class="reference internal" href="#phase-3-parts-review-editing">Phase 3: Parts Review &amp; Editing</a></p></li>
+<li><p><a class="reference internal" href="#phase-4-quote-request-dispatch">Phase 4: Quote Request Dispatch</a></p></li>
+<li><p><a class="reference internal" href="#phase-5-quote-collection-validation">Phase 5: Quote Collection &amp; Validation</a></p></li>
+<li><p><a class="reference internal" href="#phase-6-market-analysis">Phase 6: Market Analysis</a></p></li>
+<li><p><a class="reference internal" href="#phase-7-recommendation-generation">Phase 7: Recommendation Generation</a></p></li>
+<li><p><a class="reference internal" href="#phase-8-quote-summary-selection">Phase 8: Quote Summary &amp; Selection</a></p></li>
+</ol>
+</section>
+<section id="workflow-overview">
+<h2>Workflow Overview<a class="headerlink" href="#workflow-overview" title="Link to this heading"></a></h2>
+<pre  class="mermaid">
+        graph TD
+    A[Start Assessment] --&gt; B[Complete Assessment Sections]
+    B --&gt; C{Assessment Complete?}
+    C --&gt;|No| B
+    C --&gt;|Yes| D[Trigger Parts Identification]
+    D --&gt; E[Automated Parts Detection]
+    E --&gt; F[Create DamagedPart Records]
+    F --&gt; G[Display Parts Review Interface]
+    G --&gt; H[Assessor Reviews/Edits Parts]
+    H --&gt; I[Select Quote Providers]
+    I --&gt; J[Create Quote Requests]
+    J --&gt; K[Dispatch to Providers]
+    K --&gt; L[Collect Provider Quotes]
+    L --&gt; M[Validate Quote Data]
+    M --&gt; N[Calculate Market Averages]
+    N --&gt; O[Generate Recommendations]
+    O --&gt; P[Display Quote Summary]
+    P --&gt; Q[Assessor Selects Final Quotes]
+    Q --&gt; R[Update Assessment Costs]
+    R --&gt; S[Complete Quote Process]
+    </pre></section>
+<section id="phase-1-assessment-creation-completion">
+<h2>Phase 1: Assessment Creation &amp; Completion<a class="headerlink" href="#phase-1-assessment-creation-completion" title="Link to this heading"></a></h2>
+<section id="assessment-initialization">
+<h3>1.1 Assessment Initialization<a class="headerlink" href="#assessment-initialization" title="Link to this heading"></a></h3>
+<p><strong>Trigger</strong>: Assessor creates new vehicle assessment</p>
+<p><strong>Process</strong>:</p>
+<ol class="arabic">
+<li><p><strong>Assessment Creation</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># System automatically sets quote system flags</span>
+<span class="n">assessment</span> <span class="o">=</span> <span class="n">VehicleAssessment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">vehicle</span><span class="o">=</span><span class="n">vehicle</span><span class="p">,</span>
+    <span class="n">assessor</span><span class="o">=</span><span class="n">user</span><span class="p">,</span>
+    <span class="n">uses_parts_based_quotes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># Default for new assessments</span>
+    <span class="n">parts_identification_complete</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">quote_collection_status</span><span class="o">=</span><span class="s1">'not_started'</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>System Configuration Check</strong>:</p>
+<ul class="simple">
+<li><p>Verifies quote system is enabled</p></li>
+<li><p>Checks provider configurations</p></li>
+<li><p>Validates system settings</p></li>
+</ul>
+</li>
+</ol>
+<p><strong>User Interface</strong>:</p>
+<ul class="simple">
+<li><p>Standard assessment creation form</p></li>
+<li><p>Quote system status indicator</p></li>
+<li><p>Option to use hardcoded costs (legacy mode)</p></li>
+</ul>
+</section>
+<section id="assessment-section-completion">
+<h3>1.2 Assessment Section Completion<a class="headerlink" href="#assessment-section-completion" title="Link to this heading"></a></h3>
+<p><strong>Process</strong>:</p>
+<ol class="arabic simple">
+<li><p><strong>Section-by-Section Assessment</strong>:</p>
+<ul class="simple">
+<li><p>Exterior damage assessment</p></li>
+<li><p>Mechanical component evaluation</p></li>
+<li><p>Interior condition review</p></li>
+<li><p>Electrical system check</p></li>
+<li><p>Wheel and tire inspection</p></li>
+<li><p>Safety system evaluation</p></li>
+<li><p>Structural integrity assessment</p></li>
+<li><p>Fluid level checks</p></li>
+</ul>
+</li>
+<li><p><strong>Damage Documentation</strong>:</p>
+<ul class="simple">
+<li><p>Detailed damage descriptions</p></li>
+<li><p>Severity ratings (minor, moderate, severe, replace)</p></li>
+<li><p>Photo documentation with damage markers</p></li>
+<li><p>Labor hour estimates where applicable</p></li>
+</ul>
+</li>
+</ol>
+<p><strong>Data Capture</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example damage entry</span>
+<span class="p">{</span>
+    <span class="s2">"section"</span><span class="p">:</span> <span class="s2">"exterior"</span><span class="p">,</span>
+    <span class="s2">"component"</span><span class="p">:</span> <span class="s2">"front_bumper"</span><span class="p">,</span>
+    <span class="s2">"damage_type"</span><span class="p">:</span> <span class="s2">"impact_damage"</span><span class="p">,</span>
+    <span class="s2">"severity"</span><span class="p">:</span> <span class="s2">"moderate"</span><span class="p">,</span>
+    <span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Cracked front bumper with paint damage"</span><span class="p">,</span>
+    <span class="s2">"photos"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"damage_photo_1.jpg"</span><span class="p">,</span> <span class="s2">"damage_photo_2.jpg"</span><span class="p">],</span>
+    <span class="s2">"estimated_labor_hours"</span><span class="p">:</span> <span class="mf">3.5</span>
+<span class="p">}</span>
+<span class="err">```</span><span class="c1">### 1.3 A</span>
+<span class="n">ssessment</span> <span class="n">Completion</span> <span class="n">Trigger</span>
+
+<span class="o">**</span><span class="n">Trigger</span><span class="o">**</span><span class="p">:</span> <span class="n">Assessor</span> <span class="n">marks</span> <span class="n">assessment</span> <span class="k">as</span> <span class="n">complete</span>
+
+<span class="o">**</span><span class="n">System</span> <span class="n">Actions</span><span class="o">**</span><span class="p">:</span>
+<span class="mf">1.</span> <span class="o">**</span><span class="n">Validation</span> <span class="n">Check</span><span class="o">**</span><span class="p">:</span>
+   <span class="o">-</span> <span class="n">Ensures</span> <span class="nb">all</span> <span class="n">required</span> <span class="n">sections</span> <span class="n">completed</span>
+   <span class="o">-</span> <span class="n">Validates</span> <span class="n">damage</span> <span class="n">documentation</span>
+   <span class="o">-</span> <span class="n">Confirms</span> <span class="n">photo</span> <span class="n">uploads</span>
+
+<span class="mf">2.</span> <span class="o">**</span><span class="n">Quote</span> <span class="n">System</span> <span class="n">Activation</span><span class="o">**</span><span class="p">:</span>
+   <span class="err">```</span><span class="n">python</span>
+   <span class="k">if</span> <span class="n">assessment</span><span class="o">.</span><span class="n">uses_parts_based_quotes</span><span class="p">:</span>
+       <span class="c1"># Trigger parts identification</span>
+       <span class="n">trigger_parts_identification</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+   <span class="k">else</span><span class="p">:</span>
+       <span class="c1"># Use legacy hardcoded calculations</span>
+       <span class="n">calculate_hardcoded_costs</span><span class="p">(</span><span class="n">assessment</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="phase-2-automated-parts-identification">
+<h2>Phase 2: Automated Parts Identification<a class="headerlink" href="#phase-2-automated-parts-identification" title="Link to this heading"></a></h2>
+<section id="parts-identification-engine-activation">
+<h3>2.1 Parts Identification Engine Activation<a class="headerlink" href="#parts-identification-engine-activation" title="Link to this heading"></a></h3>
+<p><strong>Trigger</strong>: Assessment completion (automatic)</p>
+<p><strong>Process</strong>:</p>
+<ol class="arabic">
+<li><p><strong>Engine Initialization</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">insurance_app.parts_identification</span><span class="w"> </span><span class="kn">import</span> <span class="n">PartsIdentificationEngine</span>
+
+<span class="n">engine</span> <span class="o">=</span> <span class="n">PartsIdentificationEngine</span><span class="p">()</span>
+<span class="n">damaged_parts</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">identify_damaged_parts</span><span class="p">(</span><span class="n">assessment</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Section Scanning</strong>:</p>
+<ul class="simple">
+<li><p>Scans each completed assessment section</p></li>
+<li><p>Extracts component damage information</p></li>
+<li><p>Maps damage to specific parts catalog</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="part-extraction-logic">
+<h3>2.2 Part Extraction Logic<a class="headerlink" href="#part-extraction-logic" title="Link to this heading"></a></h3>
+<p><strong>Per Section Processing</strong>:</p>
+<ol class="arabic">
+<li><p><strong>Exterior Section</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example extraction</span>
+<span class="n">parts_found</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">"part_name"</span><span class="p">:</span> <span class="s2">"Front Bumper"</span><span class="p">,</span>
+        <span class="s2">"part_category"</span><span class="p">:</span> <span class="s2">"body"</span><span class="p">,</span>
+        <span class="s2">"damage_severity"</span><span class="p">:</span> <span class="s2">"moderate"</span><span class="p">,</span>
+        <span class="s2">"requires_replacement"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">"estimated_labor_hours"</span><span class="p">:</span> <span class="mf">3.5</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">"part_name"</span><span class="p">:</span> <span class="s2">"Hood"</span><span class="p">,</span>
+        <span class="s2">"part_category"</span><span class="p">:</span> <span class="s2">"body"</span><span class="p">,</span> 
+        <span class="s2">"damage_severity"</span><span class="p">:</span> <span class="s2">"minor"</span><span class="p">,</span>
+        <span class="s2">"requires_replacement"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">"estimated_labor_hours"</span><span class="p">:</span> <span class="mf">2.0</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Mechanical Section</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">parts_found</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">"part_name"</span><span class="p">:</span> <span class="s2">"Brake Pads (Front)"</span><span class="p">,</span>
+        <span class="s2">"part_category"</span><span class="p">:</span> <span class="s2">"mechanical"</span><span class="p">,</span>
+        <span class="s2">"damage_severity"</span><span class="p">:</span> <span class="s2">"replace"</span><span class="p">,</span>
+        <span class="s2">"requires_replacement"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s2">"estimated_labor_hours"</span><span class="p">:</span> <span class="mf">1.5</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="part-consolidation">
+<h3>2.3 Part Consolidation<a class="headerlink" href="#part-consolidation" title="Link to this heading"></a></h3>
+<p><strong>Duplicate Handling</strong>:</p>
+<ol class="arabic">
+<li><p><strong>Cross-Section Consolidation</strong>:</p>
+<ul class="simple">
+<li><p>Identifies same parts mentioned in multiple sections</p></li>
+<li><p>Merges duplicate entries</p></li>
+<li><p>Combines damage descriptions</p></li>
+<li><p>Uses highest severity rating</p></li>
+</ul>
+</li>
+<li><p><strong>Part Record Creation</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">part_data</span> <span class="ow">in</span> <span class="n">consolidated_parts</span><span class="p">:</span>
+    <span class="n">DamagedPart</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+        <span class="n">assessment</span><span class="o">=</span><span class="n">assessment</span><span class="p">,</span>
+        <span class="n">section_type</span><span class="o">=</span><span class="n">part_data</span><span class="p">[</span><span class="s1">'section'</span><span class="p">],</span>
+        <span class="n">part_name</span><span class="o">=</span><span class="n">part_data</span><span class="p">[</span><span class="s1">'part_name'</span><span class="p">],</span>
+        <span class="n">part_category</span><span class="o">=</span><span class="n">part_data</span><span class="p">[</span><span class="s1">'part_category'</span><span class="p">],</span>
+        <span class="n">damage_severity</span><span class="o">=</span><span class="n">part_data</span><span class="p">[</span><span class="s1">'damage_severity'</span><span class="p">],</span>
+        <span class="n">damage_description</span><span class="o">=</span><span class="n">part_data</span><span class="p">[</span><span class="s1">'description'</span><span class="p">],</span>
+        <span class="n">requires_replacement</span><span class="o">=</span><span class="n">part_data</span><span class="p">[</span><span class="s1">'requires_replacement'</span><span class="p">],</span>
+        <span class="n">estimated_labor_hours</span><span class="o">=</span><span class="n">part_data</span><span class="p">[</span><span class="s1">'estimated_labor_hours'</span><span class="p">]</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+<section id="phase-3-parts-review-editing">
+<h2>Phase 3: Parts Review &amp; Editing<a class="headerlink" href="#phase-3-parts-review-editing" title="Link to this heading"></a></h2>
+<section id="parts-review-interface">
+<h3>3.1 Parts Review Interface<a class="headerlink" href="#parts-review-interface" title="Link to this heading"></a></h3>
+<p><strong>Trigger</strong>: Parts identification completion</p>
+<p><strong>User Interface Elements</strong>:</p>
+<ol class="arabic simple">
+<li><p><strong>Parts List Display</strong>:</p>
+<ul class="simple">
+<li><p>Tabular view of all identified parts</p></li>
+<li><p>Part category grouping</p></li>
+<li><p>Damage severity indicators</p></li>
+<li><p>Estimated labor hours</p></li>
+<li><p>Associated photos</p></li>
+</ul>
+</li>
+<li><p><strong>Edit Capabilities</strong>:</p>
+<ul class="simple">
+<li><p>Inline editing of part details</p></li>
+<li><p>Add/remove parts manually</p></li>
+<li><p>Adjust labor hour estimates</p></li>
+<li><p>Modify damage descriptions</p></li>
+</ul>
+</li>
+</ol>
+<p><strong>Interface Code</strong>:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">// Parts review interface</span>
+<span class="kd">function</span><span class="w"> </span><span class="nx">loadPartsReview</span><span class="p">(</span><span class="nx">assessmentId</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">fetch</span><span class="p">(</span><span class="sb">`/api/assessments/</span><span class="si">${</span><span class="nx">assessmentId</span><span class="si">}</span><span class="sb">/damaged-parts/`</span><span class="p">)</span>
+<span class="w">        </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">response</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">())</span>
+<span class="w">        </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">parts</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nx">renderPartsTable</span><span class="p">(</span><span class="nx">parts</span><span class="p">);</span>
+<span class="w">            </span><span class="nx">enableInlineEditing</span><span class="p">();</span>
+<span class="w">        </span><span class="p">});</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="manual-part-management">
+<h3>3.2 Manual Part Management<a class="headerlink" href="#manual-part-management" title="Link to this heading"></a></h3>
+<p><strong>Add New Part</strong>:</p>
+<ol class="arabic">
+<li><p><strong>Part Addition Form</strong>:</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">form</span> <span class="na">id</span><span class="o">=</span><span class="s">"add-part-form"</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">select</span> <span class="na">name</span><span class="o">=</span><span class="s">"part_category"</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">option</span> <span class="na">value</span><span class="o">=</span><span class="s">"body"</span><span class="p">&gt;</span>Body Panel<span class="p">&lt;/</span><span class="nt">option</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">option</span> <span class="na">value</span><span class="o">=</span><span class="s">"mechanical"</span><span class="p">&gt;</span>Mechanical<span class="p">&lt;/</span><span class="nt">option</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">option</span> <span class="na">value</span><span class="o">=</span><span class="s">"electrical"</span><span class="p">&gt;</span>Electrical<span class="p">&lt;/</span><span class="nt">option</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">select</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">input</span> <span class="na">name</span><span class="o">=</span><span class="s">"part_name"</span> <span class="na">placeholder</span><span class="o">=</span><span class="s">"Part Name"</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">select</span> <span class="na">name</span><span class="o">=</span><span class="s">"damage_severity"</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">option</span> <span class="na">value</span><span class="o">=</span><span class="s">"minor"</span><span class="p">&gt;</span>Minor<span class="p">&lt;/</span><span class="nt">option</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">option</span> <span class="na">value</span><span class="o">=</span><span class="s">"moderate"</span><span class="p">&gt;</span>Moderate<span class="p">&lt;/</span><span class="nt">option</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">option</span> <span class="na">value</span><span class="o">=</span><span class="s">"severe"</span><span class="p">&gt;</span>Severe<span class="p">&lt;/</span><span class="nt">option</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">option</span> <span class="na">value</span><span class="o">=</span><span class="s">"replace"</span><span class="p">&gt;</span>Replace<span class="p">&lt;/</span><span class="nt">option</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">select</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">input</span> <span class="na">name</span><span class="o">=</span><span class="s">"estimated_labor_hours"</span> <span class="na">type</span><span class="o">=</span><span class="s">"number"</span> <span class="na">step</span><span class="o">=</span><span class="s">"0.5"</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p><strong>Edit Existing Part</strong>:</p>
+<ol class="arabic simple">
+<li><p><strong>Inline Editing</strong>:</p>
+<ul class="simple">
+<li><p>Click-to-edit functionality</p></li>
+<li><p>Real-time validation</p></li>
+<li><p>Auto-save capabilities</p></li>
+<li><p>Undo/redo support</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+<section id="phase-4-quote-request-dispatch">
+<h2>Phase 4: Quote Request Dispatch<a class="headerlink" href="#phase-4-quote-request-dispatch" title="Link to this heading"></a></h2>
+<section id="provider-selection-interface">
+<h3>4.1 Provider Selection Interface<a class="headerlink" href="#provider-selection-interface" title="Link to this heading"></a></h3>
+<p><strong>User Interface</strong>:</p>
+<ol class="arabic">
+<li><p><strong>Provider Options Display</strong>:</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"provider-selection"</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">label</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">"checkbox"</span> <span class="na">name</span><span class="o">=</span><span class="s">"providers"</span> <span class="na">value</span><span class="o">=</span><span class="s">"assessor"</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">"provider-info"</span><span class="p">&gt;</span>
+            Assessor Estimate
+            <span class="p">&lt;</span><span class="nt">small</span><span class="p">&gt;</span>Internal estimate - Immediate<span class="p">&lt;/</span><span class="nt">small</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">"reliability"</span><span class="p">&gt;</span>85% reliability<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+    
+    <span class="p">&lt;</span><span class="nt">label</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">"checkbox"</span> <span class="na">name</span><span class="o">=</span><span class="s">"providers"</span> <span class="na">value</span><span class="o">=</span><span class="s">"dealer"</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">"provider-info"</span><span class="p">&gt;</span>
+            Authorized Dealer
+            <span class="p">&lt;</span><span class="nt">small</span><span class="p">&gt;</span>OEM parts - 24h response<span class="p">&lt;/</span><span class="nt">small</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">"reliability"</span><span class="p">&gt;</span>75% reliability<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Bulk vs Individual Selection</strong>:</p>
+<ul class="simple">
+<li><p>Select providers for all parts</p></li>
+<li><p>Individual part provider selection</p></li>
+<li><p>Smart recommendations based on part type</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="quote-request-creation">
+<h3>4.2 Quote Request Creation<a class="headerlink" href="#quote-request-creation" title="Link to this heading"></a></h3>
+<p><strong>Process</strong>:</p>
+<ol class="arabic">
+<li><p><strong>Request Generation</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">insurance_app.quote_managers</span><span class="w"> </span><span class="kn">import</span> <span class="n">PartQuoteRequestManager</span>
+
+<span class="n">manager</span> <span class="o">=</span> <span class="n">PartQuoteRequestManager</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">damaged_part</span> <span class="ow">in</span> <span class="n">assessment</span><span class="o">.</span><span class="n">damaged_parts</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">user_selected_providers</span><span class="p">:</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">create_quote_requests</span><span class="p">(</span>
+            <span class="n">damaged_part</span><span class="o">=</span><span class="n">damaged_part</span><span class="p">,</span>
+            <span class="n">providers</span><span class="o">=</span><span class="n">selected_providers</span><span class="p">,</span>
+            <span class="n">dispatched_by</span><span class="o">=</span><span class="n">user</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Request Data Structure</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">quote_request_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'request_id'</span><span class="p">:</span> <span class="n">generate_unique_id</span><span class="p">(),</span>
+    <span class="s1">'damaged_part'</span><span class="p">:</span> <span class="n">damaged_part</span><span class="p">,</span>
+    <span class="s1">'assessment'</span><span class="p">:</span> <span class="n">assessment</span><span class="p">,</span>
+    <span class="s1">'vehicle_make'</span><span class="p">:</span> <span class="n">assessment</span><span class="o">.</span><span class="n">vehicle</span><span class="o">.</span><span class="n">make</span><span class="p">,</span>
+    <span class="s1">'vehicle_model'</span><span class="p">:</span> <span class="n">assessment</span><span class="o">.</span><span class="n">vehicle</span><span class="o">.</span><span class="n">model</span><span class="p">,</span>
+    <span class="s1">'vehicle_year'</span><span class="p">:</span> <span class="n">assessment</span><span class="o">.</span><span class="n">vehicle</span><span class="o">.</span><span class="n">year</span><span class="p">,</span>
+    <span class="s1">'include_assessor'</span><span class="p">:</span> <span class="s1">'assessor'</span> <span class="ow">in</span> <span class="n">providers</span><span class="p">,</span>
+    <span class="s1">'include_dealer'</span><span class="p">:</span> <span class="s1">'dealer'</span> <span class="ow">in</span> <span class="n">providers</span><span class="p">,</span>
+    <span class="s1">'include_independent'</span><span class="p">:</span> <span class="s1">'independent'</span> <span class="ow">in</span> <span class="n">providers</span><span class="p">,</span>
+    <span class="s1">'include_network'</span><span class="p">:</span> <span class="s1">'network'</span> <span class="ow">in</span> <span class="n">providers</span><span class="p">,</span>
+    <span class="s1">'expiry_date'</span><span class="p">:</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="dispatch-process">
+<h3>4.3 Dispatch Process<a class="headerlink" href="#dispatch-process" title="Link to this heading"></a></h3>
+<p><strong>Provider-Specific Dispatch</strong>:</p>
+<ol class="arabic">
+<li><p><strong>Assessor Estimates</strong> (Immediate):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">insurance_app.quote_generators</span><span class="w"> </span><span class="kn">import</span> <span class="n">AssessorEstimateGenerator</span>
+
+<span class="n">generator</span> <span class="o">=</span> <span class="n">AssessorEstimateGenerator</span><span class="p">()</span>
+<span class="n">quote</span> <span class="o">=</span> <span class="n">generator</span><span class="o">.</span><span class="n">generate_assessor_estimate</span><span class="p">(</span>
+    <span class="n">damaged_part</span><span class="o">=</span><span class="n">damaged_part</span><span class="p">,</span>
+    <span class="n">quote_request</span><span class="o">=</span><span class="n">quote_request</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>External Providers</strong> (API/Email):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">insurance_app.provider_integrations</span><span class="w"> </span><span class="kn">import</span> <span class="n">DealerIntegration</span>
+
+<span class="n">integration</span> <span class="o">=</span> <span class="n">DealerIntegration</span><span class="p">()</span>
+<span class="n">success</span> <span class="o">=</span> <span class="n">integration</span><span class="o">.</span><span class="n">dispatch_quote_request</span><span class="p">(</span>
+    <span class="n">quote_request</span><span class="o">=</span><span class="n">quote_request</span><span class="p">,</span>
+    <span class="n">part_details</span><span class="o">=</span><span class="n">damaged_part</span><span class="o">.</span><span class="n">get_part_specifications</span><span class="p">()</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+<section id="phase-5-quote-collection-validation">
+<h2>Phase 5: Quote Collection &amp; Validation<a class="headerlink" href="#phase-5-quote-collection-validation" title="Link to this heading"></a></h2>
+<section id="quote-reception">
+<h3>5.1 Quote Reception<a class="headerlink" href="#quote-reception" title="Link to this heading"></a></h3>
+<p><strong>Provider Quote Submission</strong>:</p>
+<ol class="arabic">
+<li><p><strong>API Endpoint Reception</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@api_view</span><span class="p">([</span><span class="s1">'POST'</span><span class="p">])</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">receive_provider_quote</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">request_id</span><span class="p">):</span>
+    <span class="n">quote_request</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">PartQuoteRequest</span><span class="p">,</span> <span class="n">request_id</span><span class="o">=</span><span class="n">request_id</span><span class="p">)</span>
+    
+    <span class="n">quote_data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">data</span>
+    
+    <span class="c1"># Validate quote data</span>
+    <span class="k">if</span> <span class="n">validate_quote_data</span><span class="p">(</span><span class="n">quote_data</span><span class="p">):</span>
+        <span class="n">quote</span> <span class="o">=</span> <span class="n">create_part_quote</span><span class="p">(</span><span class="n">quote_request</span><span class="p">,</span> <span class="n">quote_data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s1">'status'</span><span class="p">:</span> <span class="s1">'accepted'</span><span class="p">})</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s1">'status'</span><span class="p">:</span> <span class="s1">'rejected'</span><span class="p">,</span> <span class="s1">'errors'</span><span class="p">:</span> <span class="n">validation_errors</span><span class="p">})</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="quote-validation">
+<h3>5.2 Quote Validation<a class="headerlink" href="#quote-validation" title="Link to this heading"></a></h3>
+<p><strong>Validation Rules</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">validate_quote_data</span><span class="p">(</span><span class="n">quote_data</span><span class="p">):</span>
+    <span class="n">validation_errors</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="c1"># Required fields check</span>
+    <span class="n">required_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'part_cost'</span><span class="p">,</span> <span class="s1">'labor_cost'</span><span class="p">,</span> <span class="s1">'total_cost'</span><span class="p">,</span> <span class="s1">'provider_name'</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">required_fields</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">quote_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field</span><span class="p">):</span>
+            <span class="n">validation_errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Missing required field: </span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+    
+    <span class="c1"># Cost validation</span>
+    <span class="n">calculated_total</span> <span class="o">=</span> <span class="n">quote_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'part_cost'</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">quote_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'labor_cost'</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">calculated_total</span> <span class="o">-</span> <span class="n">quote_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'total_cost'</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mf">0.01</span><span class="p">:</span>
+        <span class="n">validation_errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">'Total cost does not match sum of components'</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">validation_errors</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">validation_errors</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="phase-6-market-analysis">
+<h2>Phase 6: Market Analysis<a class="headerlink" href="#phase-6-market-analysis" title="Link to this heading"></a></h2>
+<section id="market-average-calculation">
+<h3>6.1 Market Average Calculation<a class="headerlink" href="#market-average-calculation" title="Link to this heading"></a></h3>
+<p><strong>Trigger</strong>: Multiple quotes received for same part</p>
+<p><strong>Calculation Process</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">insurance_app.market_analysis</span><span class="w"> </span><span class="kn">import</span> <span class="n">MarketAverageCalculator</span>
+
+<span class="n">calculator</span> <span class="o">=</span> <span class="n">MarketAverageCalculator</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_market_statistics</span><span class="p">(</span><span class="n">damaged_part</span><span class="p">):</span>
+    <span class="n">quotes</span> <span class="o">=</span> <span class="n">PartQuote</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+        <span class="n">damaged_part</span><span class="o">=</span><span class="n">damaged_part</span><span class="p">,</span>
+        <span class="n">quote_date__gte</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+    <span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">quotes</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># Minimum quotes for analysis</span>
+        <span class="n">market_average</span> <span class="o">=</span> <span class="n">calculator</span><span class="o">.</span><span class="n">calculate_market_average</span><span class="p">(</span><span class="n">damaged_part</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">market_average</span>
+    
+    <span class="k">return</span> <span class="kc">None</span>
+</pre></div>
+</div>
+</section>
+<section id="statistical-analysis">
+<h3>6.2 Statistical Analysis<a class="headerlink" href="#statistical-analysis" title="Link to this heading"></a></h3>
+<p><strong>Metrics Calculated</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">calculate_comprehensive_statistics</span><span class="p">(</span><span class="n">quotes</span><span class="p">):</span>
+    <span class="n">costs</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">total_cost</span><span class="p">)</span> <span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">quotes</span><span class="p">]</span>
+    
+    <span class="n">statistics</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">'average_total_cost'</span><span class="p">:</span> <span class="n">statistics</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">costs</span><span class="p">),</span>
+        <span class="s1">'minimum_cost'</span><span class="p">:</span> <span class="nb">min</span><span class="p">(</span><span class="n">costs</span><span class="p">),</span>
+        <span class="s1">'maximum_cost'</span><span class="p">:</span> <span class="nb">max</span><span class="p">(</span><span class="n">costs</span><span class="p">),</span>
+        <span class="s1">'standard_deviation'</span><span class="p">:</span> <span class="n">statistics</span><span class="o">.</span><span class="n">stdev</span><span class="p">(</span><span class="n">costs</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">costs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s1">'variance_percentage'</span><span class="p">:</span> <span class="p">(</span><span class="n">statistics</span><span class="o">.</span><span class="n">stdev</span><span class="p">(</span><span class="n">costs</span><span class="p">)</span> <span class="o">/</span> <span class="n">statistics</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">costs</span><span class="p">))</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span>
+        <span class="s1">'quote_count'</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">costs</span><span class="p">),</span>
+        <span class="s1">'confidence_level'</span><span class="p">:</span> <span class="n">calculate_confidence_level</span><span class="p">(</span><span class="n">costs</span><span class="p">)</span>
+    <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="n">statistics</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="phase-7-recommendation-generation">
+<h2>Phase 7: Recommendation Generation<a class="headerlink" href="#phase-7-recommendation-generation" title="Link to this heading"></a></h2>
+<section id="recommendation-engine-activation">
+<h3>7.1 Recommendation Engine Activation<a class="headerlink" href="#recommendation-engine-activation" title="Link to this heading"></a></h3>
+<p><strong>Trigger</strong>: Sufficient quotes collected + market analysis complete</p>
+<p><strong>Engine Initialization</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">insurance_app.recommendation_engine</span><span class="w"> </span><span class="kn">import</span> <span class="n">QuoteRecommendationEngine</span>
+
+<span class="n">engine</span> <span class="o">=</span> <span class="n">QuoteRecommendationEngine</span><span class="p">()</span>
+<span class="n">recommendations</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">generate_assessment_recommendations</span><span class="p">(</span><span class="n">assessment</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="scoring-algorithm">
+<h3>7.2 Scoring Algorithm<a class="headerlink" href="#scoring-algorithm" title="Link to this heading"></a></h3>
+<p><strong>Multi-Criteria Scoring</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">calculate_provider_scores</span><span class="p">(</span><span class="n">quotes</span><span class="p">,</span> <span class="n">market_average</span><span class="p">):</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">QuoteSystemConfiguration</span><span class="o">.</span><span class="n">get_config</span><span class="p">()</span>
+    
+    <span class="n">scored_quotes</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">for</span> <span class="n">quote</span> <span class="ow">in</span> <span class="n">quotes</span><span class="p">:</span>
+        <span class="n">scores</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">'price_score'</span><span class="p">:</span> <span class="n">calculate_price_score</span><span class="p">(</span><span class="n">quote</span><span class="p">,</span> <span class="n">market_average</span><span class="p">),</span>
+            <span class="s1">'quality_score'</span><span class="p">:</span> <span class="n">calculate_quality_score</span><span class="p">(</span><span class="n">quote</span><span class="p">),</span>
+            <span class="s1">'timeline_score'</span><span class="p">:</span> <span class="n">calculate_timeline_score</span><span class="p">(</span><span class="n">quote</span><span class="p">),</span>
+            <span class="s1">'warranty_score'</span><span class="p">:</span> <span class="n">calculate_warranty_score</span><span class="p">(</span><span class="n">quote</span><span class="p">),</span>
+            <span class="s1">'reliability_score'</span><span class="p">:</span> <span class="n">get_provider_reliability</span><span class="p">(</span><span class="n">quote</span><span class="o">.</span><span class="n">provider_type</span><span class="p">)</span>
+        <span class="p">}</span>
+        
+        <span class="c1"># Weighted total score</span>
+        <span class="n">total_score</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">scores</span><span class="p">[</span><span class="s1">'price_score'</span><span class="p">]</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">price_weight</span><span class="p">)</span> <span class="o">+</span>
+            <span class="n">scores</span><span class="p">[</span><span class="s1">'quality_score'</span><span class="p">]</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">quality_weight</span><span class="p">)</span> <span class="o">+</span>
+            <span class="n">scores</span><span class="p">[</span><span class="s1">'timeline_score'</span><span class="p">]</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">timeline_weight</span><span class="p">)</span> <span class="o">+</span>
+            <span class="n">scores</span><span class="p">[</span><span class="s1">'warranty_score'</span><span class="p">]</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">warranty_weight</span><span class="p">)</span> <span class="o">+</span>
+            <span class="n">scores</span><span class="p">[</span><span class="s1">'reliability_score'</span><span class="p">]</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">reliability_weight</span><span class="p">)</span>
+        <span class="p">)</span>
+        
+        <span class="n">scored_quotes</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+            <span class="s1">'quote'</span><span class="p">:</span> <span class="n">quote</span><span class="p">,</span>
+            <span class="s1">'scores'</span><span class="p">:</span> <span class="n">scores</span><span class="p">,</span>
+            <span class="s1">'total_score'</span><span class="p">:</span> <span class="n">total_score</span>
+        <span class="p">})</span>
+    
+    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">scored_quotes</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">'total_score'</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="phase-8-quote-summary-selection">
+<h2>Phase 8: Quote Summary &amp; Selection<a class="headerlink" href="#phase-8-quote-summary-selection" title="Link to this heading"></a></h2>
+<section id="quote-summary-interface">
+<h3>8.1 Quote Summary Interface<a class="headerlink" href="#quote-summary-interface" title="Link to this heading"></a></h3>
+<p><strong>Summary Display Components</strong>:</p>
+<ol class="arabic">
+<li><p><strong>Assessment Overview</strong>:</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"assessment-summary"</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h3</span><span class="p">&gt;</span>Assessment #{{ assessment.id }}<span class="p">&lt;/</span><span class="nt">h3</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"vehicle-info"</span><span class="p">&gt;</span>
+        {{ assessment.vehicle.year }} {{ assessment.vehicle.make }} {{ assessment.vehicle.model }}
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"parts-summary"</span><span class="p">&gt;</span>
+        {{ total_parts }} parts identified, {{ parts_with_quotes }} with quotes
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Provider Comparison Table</strong>:</p>
+<ul class="simple">
+<li><p>Side-by-side cost comparison</p></li>
+<li><p>Timeline and quality indicators</p></li>
+<li><p>Recommended provider highlighting</p></li>
+<li><p>Interactive selection interface</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="final-selection-process">
+<h3>8.2 Final Selection Process<a class="headerlink" href="#final-selection-process" title="Link to this heading"></a></h3>
+<p><strong>Selection Workflow</strong>:</p>
+<ol class="arabic simple">
+<li><p><strong>Review Recommendations</strong>: Assessor reviews AI-generated recommendations</p></li>
+<li><p><strong>Compare Options</strong>: Side-by-side provider comparison</p></li>
+<li><p><strong>Make Selections</strong>: Choose preferred quote for each part</p></li>
+<li><p><strong>Confirm Totals</strong>: Review total cost impact</p></li>
+<li><p><strong>Finalize</strong>: Complete quote selection process</p></li>
+</ol>
+<p><strong>System Updates</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">finalize_quote_selection</span><span class="p">(</span><span class="n">assessment</span><span class="p">,</span> <span class="n">selected_quotes</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+    <span class="c1"># Update assessment with selected quotes</span>
+    <span class="n">total_cost</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="k">for</span> <span class="n">part_id</span><span class="p">,</span> <span class="n">quote</span> <span class="ow">in</span> <span class="n">selected_quotes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">part</span> <span class="o">=</span> <span class="n">DamagedPart</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">part_id</span><span class="p">)</span>
+        <span class="n">part</span><span class="o">.</span><span class="n">selected_quote</span> <span class="o">=</span> <span class="n">quote</span>
+        <span class="n">part</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        
+        <span class="n">total_cost</span> <span class="o">+=</span> <span class="nb">float</span><span class="p">(</span><span class="n">quote</span><span class="o">.</span><span class="n">total_cost</span><span class="p">)</span>
+    
+    <span class="c1"># Update assessment totals</span>
+    <span class="n">assessment</span><span class="o">.</span><span class="n">total_repair_cost</span> <span class="o">=</span> <span class="n">total_cost</span>
+    <span class="n">assessment</span><span class="o">.</span><span class="n">quote_collection_status</span> <span class="o">=</span> <span class="s1">'completed'</span>
+    <span class="n">assessment</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="key-benefits-of-this-workflow">
+<h2>Key Benefits of This Workflow<a class="headerlink" href="#key-benefits-of-this-workflow" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><strong>Accuracy</strong>: Real market data replaces static estimates</p></li>
+<li><p><strong>Transparency</strong>: Clear provider comparison and selection process</p></li>
+<li><p><strong>Efficiency</strong>: Automated parts identification saves time</p></li>
+<li><p><strong>Intelligence</strong>: AI-powered recommendations optimize selections</p></li>
+<li><p><strong>Auditability</strong>: Complete trail of all decisions and data</p></li>
+<li><p><strong>Flexibility</strong>: Support for multiple provider types and integration methods</p></li>
+</ol>
+<p>This workflow transforms the traditional assessment process into a modern, data-driven system that provides better accuracy, transparency, and decision-making capabilities for insurance assessors.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Insurance-risk-assessment-implementation.html" class="btn btn-neutral float-left" title="Insurance Risk Assessment Platform - Implementation Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="parts_based_quote_system.html" class="btn btn-neutral float-right" title="Parts-Based Repair Quotation System" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Menzi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

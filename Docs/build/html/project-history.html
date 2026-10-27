@@ -1,0 +1,154 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project History and Implementation Notes &mdash; Carfinity 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=2709fde1"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Carfinity 2.0 - Recent Updates &amp; Redesigns" href="guides/README_REDESIGN.html" />
+    <link rel="prev" title="Backend Requirements for Insurance Dashboard" href="guides/backend-requirements.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Carfinity
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Start Here</a></li>
+<li class="toctree-l1"><a class="reference internal" href="administration.html">Administration and Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vehicle-care.html">Vehicle Care and Maintenance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inspections.html">Inspections and Assessments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="insurance-and-quotes.html">Insurance and Repair Quotes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="technical-reference.html">Technical Reference</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Project History and Implementation Notes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="guides/README_REDESIGN.html">Carfinity 2.0 - Recent Updates &amp; Redesigns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/Accident-History-Integration-Summary.html">Insurance App - Vehicle History Integration Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/DYNAMIC_DASHBOARD_ROUTING_IMPLEMENTATION.html">Dynamic Dashboard Routing Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/IMPLEMENTATION_SUMMARY.html">Authentication Service Implementation Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/INSPECTIONS_IMPLEMENTATION_SUMMARY.html">Inspections Card Implementation Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/INSPECTION_WORKFLOW_CONNECTED.html">🔧 Connected Inspection Workflow - Implementation Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/INSPECTION_WORKFLOW_SUMMARY.html">Inspection Workflow Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/Insurance-Admin-Configuration-Summary.html">Insurance App Django Admin Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/Insurance-URL-Configuration-Summary.html">Insurance App URL Configuration Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/INSURANCE_APP_SEPARATION_ANALYSIS.html">Insurance App Separation Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/LOGOUT_SESSION_MANAGEMENT_SUMMARY.html">Logout and Session Management Enhancement - Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/HEALTH_MONITORING_IMPLEMENTATION_SUMMARY.html">System Health Monitoring Implementation Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/NAVIGATION_OPTIMIZATION_SUMMARY.html">Bottom Navigation Bar Lag Fix - Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/VEHICLE_SELECTION_SEPARATION_SUMMARY.html">Vehicle Selection Flow Separation - Implementation Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/backend-implementation-plan.html">Backend Implementation Plan for Insurance Assessment System</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Carfinity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Project History and Implementation Notes</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/project-history.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="project-history-and-implementation-notes">
+<h1>Project History and Implementation Notes<a class="headerlink" href="#project-history-and-implementation-notes" title="Link to this heading"></a></h1>
+<p>This section collects implementation summaries, redesign records, and
+architecture analyses. These pages document work as it was described at the
+time and are not necessarily a statement of the current product.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="guides/README_REDESIGN.html">Carfinity 2.0 - Recent Updates &amp; Redesigns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides/Accident-History-Integration-Summary.html">Insurance App - Vehicle History Integration Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides/DYNAMIC_DASHBOARD_ROUTING_IMPLEMENTATION.html">Dynamic Dashboard Routing Implementation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides/IMPLEMENTATION_SUMMARY.html">Authentication Service Implementation Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides/INSPECTIONS_IMPLEMENTATION_SUMMARY.html">Inspections Card Implementation Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides/INSPECTION_WORKFLOW_CONNECTED.html">🔧 Connected Inspection Workflow - Implementation Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides/INSPECTION_WORKFLOW_SUMMARY.html">Inspection Workflow Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides/Insurance-Admin-Configuration-Summary.html">Insurance App Django Admin Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides/Insurance-URL-Configuration-Summary.html">Insurance App URL Configuration Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides/INSURANCE_APP_SEPARATION_ANALYSIS.html">Insurance App Separation Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides/LOGOUT_SESSION_MANAGEMENT_SUMMARY.html">Logout and Session Management Enhancement - Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides/HEALTH_MONITORING_IMPLEMENTATION_SUMMARY.html">System Health Monitoring Implementation Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides/NAVIGATION_OPTIMIZATION_SUMMARY.html">Bottom Navigation Bar Lag Fix - Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides/VEHICLE_SELECTION_SEPARATION_SUMMARY.html">Vehicle Selection Flow Separation - Implementation Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides/backend-implementation-plan.html">Backend Implementation Plan for Insurance Assessment System</a></li>
+</ul>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="guides/backend-requirements.html" class="btn btn-neutral float-left" title="Backend Requirements for Insurance Dashboard" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="guides/README_REDESIGN.html" class="btn btn-neutral float-right" title="Carfinity 2.0 - Recent Updates &amp; Redesigns" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Menzi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

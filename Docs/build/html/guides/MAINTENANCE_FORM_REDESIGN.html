@@ -1,0 +1,951 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Maintenance Record Form - Redesign Documentation &mdash; Carfinity 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Maintenance Form User Flow Guide" href="FORM_FLOW_GUIDE.html" />
+    <link rel="prev" title="Vehicle Dashboard Features" href="dashboard-features.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Carfinity
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Start Here</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../administration.html">Administration and Authentication</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../vehicle-care.html">Vehicle Care and Maintenance</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="autocare_guide.html">Django Auto Care Platform - Calendar Scheduling Integration Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Autocare_Dashboard_Features.html">Digital AutoCare Dashboard — Primary Screen Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dashboard-features.html">Vehicle Dashboard Features</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Maintenance Record Form - Redesign Documentation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#key-design-changes">Key Design Changes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#multi-step-form-architecture-new">1. Multi-Step Form Architecture (NEW)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#visual-design-system">2. Visual Design System</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#form-header-new">3. Form Header (NEW)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#progress-indicator-new">4. Progress Indicator (NEW)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-based-organization">5. Section-Based Organization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enhanced-form-fields">6. Enhanced Form Fields</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#smart-scheduled-maintenance-filtering-improved">7. Smart Scheduled Maintenance Filtering (IMPROVED)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enhanced-image-upload-new-design">8. Enhanced Image Upload (NEW DESIGN)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#alert-system-improved">9. Alert System (IMPROVED)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#navigation-buttons">10. Navigation Buttons</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#javascript-functionality">11. JavaScript Functionality</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mobile-responsiveness">12. Mobile Responsiveness</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#ux-best-practices-implemented">UX Best Practices Implemented</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#progressive-disclosure">1. Progressive Disclosure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#clear-validation">2. Clear Validation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#helpful-context">3. Helpful Context</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#visual-feedback">4. Visual Feedback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mobile-first-design">5. Mobile-First Design</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#accessibility">6. Accessibility</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#form-sections-breakdown">Form Sections Breakdown</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#step-1-vehicle-selection-5-minutes">Step 1: Vehicle Selection (5 minutes)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-2-work-details-10-15-minutes">Step 2: Work Details (10-15 minutes)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-3-documentation-optional">Step 3: Documentation (Optional)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-4-review-save">Step 4: Review &amp; Save</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#animations-transitions">Animations &amp; Transitions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#smooth-transitions">Smooth Transitions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-changes">Section Changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#error-messages">Error Messages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Image Preview</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#browser-compatibility">Browser Compatibility</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#performance-optimizations">Performance Optimizations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#accessibility-features">Accessibility Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#future-enhancements">Future Enhancements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#migration-guide">Migration Guide</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#issue-form-steps-not-navigating">Issue: Form steps not navigating</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#issue-images-not-uploading">Issue: Images not uploading</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#issue-scheduled-maintenance-not-filtering">Issue: Scheduled maintenance not filtering</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#issue-form-looks-broken-on-mobile">Issue: Form looks broken on mobile</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#summary-of-improvements">Summary of Improvements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#contact-support">Contact &amp; Support</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="FORM_FLOW_GUIDE.html">Maintenance Form User Flow Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="FORM_ACCESS_SECURITY_REPORT.html">Maintenance Form - Access Security Report</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MAINTENANCE_HISTORY_ENHANCEMENT.html">Maintenance History Enhancement Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vehicle_database_admin_guide.html">Vehicle Database Admin Interface Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="common_vehicles.html">Common Vehicles Database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="popup.html">Popup Dialog Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../inspections.html">Inspections and Assessments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../insurance-and-quotes.html">Insurance and Repair Quotes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../technical-reference.html">Technical Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project-history.html">Project History and Implementation Notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Carfinity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../vehicle-care.html">Vehicle Care and Maintenance</a></li>
+      <li class="breadcrumb-item active">Maintenance Record Form - Redesign Documentation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/MAINTENANCE_FORM_REDESIGN.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="maintenance-record-form-redesign-documentation">
+<h1>Maintenance Record Form - Redesign Documentation<a class="headerlink" href="#maintenance-record-form-redesign-documentation" title="Link to this heading"></a></h1>
+<p><strong>File:</strong> <code class="docutils literal notranslate"><span class="pre">templates/maintenance/create_record.html</span></code><br />
+<strong>Date Updated:</strong> July 2, 2026<br />
+<strong>Designer’s Focus:</strong> Modern UX/UI, Progressive Disclosure, Mobile-First</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The maintenance record creation form has been completely redesigned with a focus on:</p>
+<ul class="simple">
+<li><p><strong>Intuitive User Experience</strong>: Multi-step form with clear progress tracking</p></li>
+<li><p><strong>Modern Aesthetics</strong>: Clean, professional design with smooth animations</p></li>
+<li><p><strong>Accessibility</strong>: Better visual hierarchy and helper text</p></li>
+<li><p><strong>Mobile Responsiveness</strong>: Optimized for all device sizes</p></li>
+<li><p><strong>Usability</strong>: Progressive disclosure reduces cognitive load</p></li>
+</ul>
+</section>
+<section id="key-design-changes">
+<h2>Key Design Changes<a class="headerlink" href="#key-design-changes" title="Link to this heading"></a></h2>
+<section id="multi-step-form-architecture-new">
+<h3>1. Multi-Step Form Architecture (NEW)<a class="headerlink" href="#multi-step-form-architecture-new" title="Link to this heading"></a></h3>
+<p><strong>Before:</strong> All fields on one long page - overwhelming for users<br />
+<strong>After:</strong> 4-step wizard with clear progress indicator</p>
+<p><strong>Steps:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Vehicle Selection</strong> - Choose which vehicle</p></li>
+<li><p><strong>Work Details</strong> - Describe the maintenance performed</p></li>
+<li><p><strong>Documentation</strong> - Optional photo upload</p></li>
+<li><p><strong>Review &amp; Save</strong> - Final submission</p></li>
+</ol>
+<p><strong>Benefits:</strong></p>
+<ul class="simple">
+<li><p>Reduces form abandonment</p></li>
+<li><p>Users focus on one section at a time</p></li>
+<li><p>Progress indicator shows completion status</p></li>
+<li><p>Easy to navigate between steps</p></li>
+</ul>
+</section>
+<section id="visual-design-system">
+<h3>2. Visual Design System<a class="headerlink" href="#visual-design-system" title="Link to this heading"></a></h3>
+<section id="color-scheme-css-variables">
+<h4>Color Scheme (CSS Variables)<a class="headerlink" href="#color-scheme-css-variables" title="Link to this heading"></a></h4>
+<div class="highlight-css notranslate"><div class="highlight"><pre><span></span><span class="nt">--primary</span><span class="o">:</span><span class="w"> </span><span class="p">#</span><span class="nn">3b82f6</span><span class="w">           </span><span class="c">/* Blue - Primary action */</span>
+<span class="nt">--primary-dark</span><span class="o">:</span><span class="w"> </span><span class="p">#</span><span class="nn">1e40af</span><span class="w">      </span><span class="c">/* Darker blue - Hover states */</span>
+<span class="nt">--primary-light</span><span class="o">:</span><span class="w"> </span><span class="p">#</span><span class="nn">dbeafe</span><span class="w">     </span><span class="c">/* Light blue - Backgrounds */</span>
+<span class="nt">--success</span><span class="o">:</span><span class="w"> </span><span class="p">#</span><span class="nn">10b981</span><span class="w">           </span><span class="c">/* Green - Success states */</span>
+<span class="nt">--error</span><span class="o">:</span><span class="w"> </span><span class="p">#</span><span class="nn">ef4444</span><span class="w">             </span><span class="c">/* Red - Errors */</span>
+<span class="nt">--warning</span><span class="o">:</span><span class="w"> </span><span class="p">#</span><span class="nn">f59e0b</span><span class="w">           </span><span class="c">/* Amber - Warnings */</span>
+</pre></div>
+</div>
+</section>
+<section id="typography">
+<h4>Typography<a class="headerlink" href="#typography" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Font:</strong> Poppins (modern, clean, professional)</p></li>
+<li><p><strong>Headlines:</strong> Bold (600-700 weight) for clear hierarchy</p></li>
+<li><p><strong>Body:</strong> Regular (400-500) for readability</p></li>
+<li><p><strong>Sizes:</strong> Properly scaled for visual hierarchy</p></li>
+</ul>
+</section>
+<section id="spacing">
+<h4>Spacing<a class="headerlink" href="#spacing" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Consistent 8px grid system</p></li>
+<li><p>Clear breathing room between sections</p></li>
+<li><p>32px margins for major sections</p></li>
+<li><p>24px for form groups</p></li>
+</ul>
+</section>
+</section>
+<section id="form-header-new">
+<h3>3. Form Header (NEW)<a class="headerlink" href="#form-header-new" title="Link to this heading"></a></h3>
+<p><strong>Design:</strong></p>
+<ul class="simple">
+<li><p>Gradient blue background (eye-catching, professional)</p></li>
+<li><p>Clear title: “Log Maintenance Work”</p></li>
+<li><p>Descriptive subtitle explaining purpose</p></li>
+<li><p>Provides context before user starts</p></li>
+</ul>
+</section>
+<section id="progress-indicator-new">
+<h3>4. Progress Indicator (NEW)<a class="headerlink" href="#progress-indicator-new" title="Link to this heading"></a></h3>
+<p><strong>Visual Design:</strong></p>
+<ul class="simple">
+<li><p>4 step circles numbered 1-4</p></li>
+<li><p>Connecting lines between steps</p></li>
+<li><p>Color-coded states:</p>
+<ul>
+<li><p><strong>Inactive</strong> (gray): Not yet reached</p></li>
+<li><p><strong>Active</strong> (blue): Current step</p></li>
+<li><p><strong>Completed</strong> (green): Already finished</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>Benefits:</strong></p>
+<ul class="simple">
+<li><p>Users always know where they are</p></li>
+<li><p>See how many steps remain</p></li>
+<li><p>Creates sense of progress/accomplishment</p></li>
+</ul>
+</section>
+<section id="section-based-organization">
+<h3>5. Section-Based Organization<a class="headerlink" href="#section-based-organization" title="Link to this heading"></a></h3>
+<p><strong>Each section includes:</strong></p>
+<ul class="simple">
+<li><p>Section icon (emoji for quick visual identification)</p></li>
+<li><p>Clear section title</p></li>
+<li><p>Form fields with helpful context</p></li>
+<li><p>Contextual tips/alerts</p></li>
+</ul>
+<p><strong>Icons Used:</strong></p>
+<ul class="simple">
+<li><p>🚗 Vehicle Selection</p></li>
+<li><p>🔧 Work Details</p></li>
+<li><p>📸 Documentation</p></li>
+<li><p>✅ Review &amp; Save</p></li>
+</ul>
+</section>
+<section id="enhanced-form-fields">
+<h3>6. Enhanced Form Fields<a class="headerlink" href="#enhanced-form-fields" title="Link to this heading"></a></h3>
+<section id="form-labels">
+<h4>Form Labels<a class="headerlink" href="#form-labels" title="Link to this heading"></a></h4>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">label</span> <span class="na">class</span><span class="o">=</span><span class="s">"form-label"</span><span class="p">&gt;</span>
+  Field Name
+  <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">"required"</span><span class="p">&gt;</span>*<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>  <span class="cm">&lt;!-- Red asterisk for required --&gt;</span>
+  <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">"hint"</span><span class="p">&gt;</span>Helper text explaining the field<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p><strong>Benefits:</strong></p>
+<ul class="simple">
+<li><p>Clear indication of required vs optional fields</p></li>
+<li><p>Inline hints reduce need for separate help text</p></li>
+<li><p>Improved scannability</p></li>
+</ul>
+</section>
+<section id="input-styling">
+<h4>Input Styling<a class="headerlink" href="#input-styling" title="Link to this heading"></a></h4>
+<div class="highlight-css notranslate"><div class="highlight"><pre><span></span><span class="c">/* Default state */</span>
+<span class="nt">border</span><span class="o">:</span><span class="w"> </span><span class="nt">2px</span><span class="w"> </span><span class="nt">solid</span><span class="w"> </span><span class="nt">var</span><span class="o">(</span><span class="nt">--border</span><span class="o">)</span>
+<span class="nt">border-radius</span><span class="o">:</span><span class="w"> </span><span class="nt">10px</span>
+<span class="nt">transition</span><span class="o">:</span><span class="w"> </span><span class="nt">all</span><span class="w"> </span><span class="nt">0</span><span class="p">.</span><span class="nc">3s</span><span class="w"> </span><span class="nt">ease</span>
+
+<span class="c">/* Focus state */</span>
+<span class="nt">border-color</span><span class="o">:</span><span class="w"> </span><span class="nt">var</span><span class="o">(</span><span class="nt">--primary</span><span class="o">)</span>
+<span class="nt">box-shadow</span><span class="o">:</span><span class="w"> </span><span class="nt">0</span><span class="w"> </span><span class="nt">0</span><span class="w"> </span><span class="nt">0</span><span class="w"> </span><span class="nt">4px</span><span class="w"> </span><span class="nt">rgba</span><span class="o">(</span><span class="nt">59</span><span class="o">,</span><span class="w"> </span><span class="nt">130</span><span class="o">,</span><span class="w"> </span><span class="nt">246</span><span class="o">,</span><span class="w"> </span><span class="nt">0</span><span class="p">.</span><span class="nc">1</span><span class="o">)</span>
+<span class="nt">background</span><span class="o">:</span><span class="w"> </span><span class="p">#</span><span class="nn">f0f7ff</span>
+
+<span class="c">/* Error state */</span>
+<span class="nt">border-color</span><span class="o">:</span><span class="w"> </span><span class="nt">var</span><span class="o">(</span><span class="nt">--error</span><span class="o">)</span>
+<span class="nt">background</span><span class="o">:</span><span class="w"> </span><span class="p">#</span><span class="nn">fef2f2</span>
+</pre></div>
+</div>
+<p><strong>Features:</strong></p>
+<ul class="simple">
+<li><p>Smooth transitions for all states</p></li>
+<li><p>Clear focus indicators for accessibility</p></li>
+<li><p>Color-coded feedback (blue focus, red errors, green success)</p></li>
+</ul>
+</section>
+</section>
+<section id="smart-scheduled-maintenance-filtering-improved">
+<h3>7. Smart Scheduled Maintenance Filtering (IMPROVED)<a class="headerlink" href="#smart-scheduled-maintenance-filtering-improved" title="Link to this heading"></a></h3>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">// Dynamic filtering when vehicle changes</span>
+<span class="nx">vehicleSelect</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">'change'</span><span class="p">,</span><span class="w"> </span><span class="kd">function</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">vehicleId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">vehicleId</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">fetch</span><span class="p">(</span><span class="sb">`/api/scheduled-maintenance/?vehicle=</span><span class="si">${</span><span class="nx">vehicleId</span><span class="si">}</span><span class="sb">`</span><span class="p">)</span>
+<span class="w">      </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">response</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">())</span>
+<span class="w">      </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">data</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Populate scheduled maintenance options</span>
+<span class="w">        </span><span class="c1">// Only show tasks for selected vehicle</span>
+<span class="w">      </span><span class="p">});</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p><strong>UX Improvement:</strong></p>
+<ul class="simple">
+<li><p>Scheduled maintenance list updates automatically</p></li>
+<li><p>Only relevant tasks shown</p></li>
+<li><p>“Select a vehicle first” message if none selected</p></li>
+</ul>
+</section>
+<section id="enhanced-image-upload-new-design">
+<h3>8. Enhanced Image Upload (NEW DESIGN)<a class="headerlink" href="#enhanced-image-upload-new-design" title="Link to this heading"></a></h3>
+<section id="upload-area-design">
+<h4>Upload Area Design<a class="headerlink" href="#upload-area-design" title="Link to this heading"></a></h4>
+<div class="highlight-css notranslate"><div class="highlight"><pre><span></span><span class="p">.</span><span class="nc">upload-area</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">border</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="kt">px</span><span class="w"> </span><span class="kc">dashed</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="nv">--border</span><span class="p">)</span>
+<span class="w">  </span><span class="k">border-radius</span><span class="o">:</span><span class="w"> </span><span class="mi">12</span><span class="kt">px</span>
+<span class="w">  </span><span class="k">padding</span><span class="o">:</span><span class="w"> </span><span class="mi">32</span><span class="kt">px</span>
+<span class="w">  </span><span class="k">background</span><span class="o">:</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="nv">--bg-light</span><span class="p">)</span>
+<span class="w">  </span><span class="k">cursor</span><span class="o">:</span><span class="w"> </span><span class="kc">pointer</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="c">/* Hover effect */</span>
+<span class="w">  </span><span class="o">&amp;:</span><span class="n">hover</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">border-color</span><span class="o">:</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="nv">--primary</span><span class="p">)</span>
+<span class="w">    </span><span class="k">background</span><span class="o">:</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="nv">--primary-light</span><span class="p">)</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="c">/* Drag over state */</span>
+<span class="w">  </span><span class="o">&amp;</span><span class="p">.</span><span class="nc">dragover</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">border-color</span><span class="p">:</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="nv">--primary</span><span class="p">)</span>
+<span class="w">    </span><span class="k">box-shadow</span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">4</span><span class="kt">px</span><span class="w"> </span><span class="nb">rgba</span><span class="p">(</span><span class="mi">59</span><span class="p">,</span><span class="w"> </span><span class="mi">130</span><span class="p">,</span><span class="w"> </span><span class="mi">246</span><span class="p">,</span><span class="w"> </span><span class="mf">0.1</span><span class="p">)</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="c">/* After file selected */</span>
+<span class="w">  </span><span class="o">&amp;</span><span class="p">.</span><span class="nc">has-file</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">border</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="kt">px</span><span class="w"> </span><span class="kc">solid</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="nv">--success</span><span class="p">)</span>
+<span class="w">    </span><span class="k">background</span><span class="o">:</span><span class="w"> </span><span class="mh">#f0fdf4</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="err">}</span>
+</pre></div>
+</div>
+<p><strong>Features:</strong></p>
+<ul class="simple">
+<li><p>Clear visual feedback on hover</p></li>
+<li><p>Drag-and-drop support</p></li>
+<li><p>Visual confirmation when file selected</p></li>
+<li><p>Large, easy-to-click target area</p></li>
+</ul>
+</section>
+<section id="image-preview">
+<h4>Image Preview<a class="headerlink" href="#image-preview" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Inline preview with image thumbnail</p></li>
+<li><p>One-click removal button (red X)</p></li>
+<li><p>File size display</p></li>
+<li><p>Smooth fade-in animation</p></li>
+</ul>
+</section>
+<section id="photo-categorization">
+<h4>Photo Categorization<a class="headerlink" href="#photo-categorization" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Required categorization of photos:</p>
+<ul>
+<li><p>Before Service</p></li>
+<li><p>During Service</p></li>
+<li><p>After Service</p></li>
+<li><p>Parts/Components</p></li>
+<li><p>Damage/Issue Found</p></li>
+</ul>
+</li>
+<li><p>Photo description field with examples</p></li>
+</ul>
+</section>
+</section>
+<section id="alert-system-improved">
+<h3>9. Alert System (IMPROVED)<a class="headerlink" href="#alert-system-improved" title="Link to this heading"></a></h3>
+<p>Four types of alerts with consistent styling:</p>
+<section id="error-alerts">
+<h4>Error Alerts<a class="headerlink" href="#error-alerts" title="Link to this heading"></a></h4>
+<div class="highlight-css notranslate"><div class="highlight"><pre><span></span><span class="nt">background</span><span class="o">:</span><span class="w"> </span><span class="p">#</span><span class="nn">fef2f2</span>
+<span class="nt">border</span><span class="o">:</span><span class="w"> </span><span class="nt">1px</span><span class="w"> </span><span class="nt">solid</span><span class="w"> </span><span class="p">#</span><span class="nn">fecaca</span>
+<span class="nt">color</span><span class="o">:</span><span class="w"> </span><span class="p">#</span><span class="nn">991b1b</span>
+</pre></div>
+</div>
+</section>
+<section id="success-alerts">
+<h4>Success Alerts<a class="headerlink" href="#success-alerts" title="Link to this heading"></a></h4>
+<div class="highlight-css notranslate"><div class="highlight"><pre><span></span><span class="nt">background</span><span class="o">:</span><span class="w"> </span><span class="p">#</span><span class="nn">f0fdf4</span>
+<span class="nt">border</span><span class="o">:</span><span class="w"> </span><span class="nt">1px</span><span class="w"> </span><span class="nt">solid</span><span class="w"> </span><span class="p">#</span><span class="nn">bbf7d0</span>
+<span class="nt">color</span><span class="o">:</span><span class="w"> </span><span class="p">#</span><span class="nn">166534</span>
+</pre></div>
+</div>
+</section>
+<section id="info-alerts">
+<h4>Info Alerts<a class="headerlink" href="#info-alerts" title="Link to this heading"></a></h4>
+<div class="highlight-css notranslate"><div class="highlight"><pre><span></span><span class="nt">background</span><span class="o">:</span><span class="w"> </span><span class="nt">var</span><span class="o">(</span><span class="nt">--primary-light</span><span class="o">)</span>
+<span class="nt">border</span><span class="o">:</span><span class="w"> </span><span class="nt">1px</span><span class="w"> </span><span class="nt">solid</span><span class="w"> </span><span class="p">#</span><span class="nn">93c5fd</span>
+<span class="nt">color</span><span class="o">:</span><span class="w"> </span><span class="p">#</span><span class="nn">1e3a8a</span>
+</pre></div>
+</div>
+</section>
+<section id="warning-alerts">
+<h4>Warning Alerts<a class="headerlink" href="#warning-alerts" title="Link to this heading"></a></h4>
+<div class="highlight-css notranslate"><div class="highlight"><pre><span></span><span class="nt">background</span><span class="o">:</span><span class="w"> </span><span class="p">#</span><span class="nn">fffbeb</span>
+<span class="nt">border</span><span class="o">:</span><span class="w"> </span><span class="nt">1px</span><span class="w"> </span><span class="nt">solid</span><span class="w"> </span><span class="p">#</span><span class="nn">fde68a</span>
+<span class="nt">color</span><span class="o">:</span><span class="w"> </span><span class="p">#</span><span class="nn">92400e</span>
+</pre></div>
+</div>
+<p><strong>Features:</strong></p>
+<ul class="simple">
+<li><p>Icons for quick visual identification</p></li>
+<li><p>Title + content structure</p></li>
+<li><p>Lists for multiple items</p></li>
+<li><p>Subtle animations on appearance</p></li>
+</ul>
+</section>
+</section>
+<section id="navigation-buttons">
+<h3>10. Navigation Buttons<a class="headerlink" href="#navigation-buttons" title="Link to this heading"></a></h3>
+<section id="button-states">
+<h4>Button States<a class="headerlink" href="#button-states" title="Link to this heading"></a></h4>
+<div class="highlight-css notranslate"><div class="highlight"><pre><span></span><span class="p">.</span><span class="nc">btn-primary</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">background</span><span class="p">:</span><span class="w"> </span><span class="nb">linear-gradient</span><span class="p">(</span><span class="mi">135</span><span class="kt">deg</span><span class="p">,</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="nv">--primary</span><span class="p">)</span><span class="w"> </span><span class="mi">0</span><span class="kt">%</span><span class="p">,</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="nv">--primary-dark</span><span class="p">)</span><span class="w"> </span><span class="mi">100</span><span class="kt">%</span><span class="p">)</span>
+<span class="w">  </span><span class="kc">color</span><span class="o">:</span><span class="w"> </span><span class="kc">white</span>
+<span class="w">  </span><span class="k">box-shadow</span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">4</span><span class="kt">px</span><span class="w"> </span><span class="mi">15</span><span class="kt">px</span><span class="w"> </span><span class="nb">rgba</span><span class="p">(</span><span class="mi">59</span><span class="p">,</span><span class="w"> </span><span class="mi">130</span><span class="p">,</span><span class="w"> </span><span class="mi">246</span><span class="p">,</span><span class="w"> </span><span class="mf">0.3</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="p">.</span><span class="nc">btn-primary</span><span class="p">:</span><span class="nd">hover</span><span class="p">:</span><span class="nd">not</span><span class="o">(</span><span class="p">:</span><span class="nd">disabled</span><span class="o">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">transform</span><span class="p">:</span><span class="w"> </span><span class="nb">translateY</span><span class="p">(</span><span class="mi">-2</span><span class="kt">px</span><span class="p">)</span>
+<span class="w">  </span><span class="k">box-shadow</span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">6</span><span class="kt">px</span><span class="w"> </span><span class="mi">20</span><span class="kt">px</span><span class="w"> </span><span class="nb">rgba</span><span class="p">(</span><span class="mi">59</span><span class="p">,</span><span class="w"> </span><span class="mi">130</span><span class="p">,</span><span class="w"> </span><span class="mi">246</span><span class="p">,</span><span class="w"> </span><span class="mf">0.4</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="p">.</span><span class="nc">btn-primary</span><span class="p">:</span><span class="nd">disabled</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">opacity</span><span class="p">:</span><span class="w"> </span><span class="mf">0.7</span>
+<span class="w">  </span><span class="k">cursor</span><span class="o">:</span><span class="w"> </span><span class="kc">not-allowed</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="button-group">
+<h4>Button Group<a class="headerlink" href="#button-group" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Previous button (when not on step 1)</p></li>
+<li><p>Next button (when not on step 4)</p></li>
+<li><p>Save button (only on step 4)</p></li>
+<li><p>Smooth transitions between states</p></li>
+</ul>
+<p><strong>Mobile:</strong> Buttons stack vertically on small screens</p>
+</section>
+</section>
+<section id="javascript-functionality">
+<h3>11. JavaScript Functionality<a class="headerlink" href="#javascript-functionality" title="Link to this heading"></a></h3>
+<section id="step-navigation">
+<h4>Step Navigation<a class="headerlink" href="#step-navigation" title="Link to this heading"></a></h4>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span><span class="w"> </span><span class="nx">showStep</span><span class="p">(</span><span class="nx">step</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// Hide current section, show next section</span>
+<span class="w">  </span><span class="c1">// Update progress indicator</span>
+<span class="w">  </span><span class="c1">// Show/hide appropriate buttons</span>
+<span class="w">  </span><span class="c1">// Smooth scroll to top</span>
+<span class="w">  </span><span class="nb">window</span><span class="p">.</span><span class="nx">scrollTo</span><span class="p">({</span><span class="w"> </span><span class="nx">top</span><span class="o">:</span><span class="w"> </span><span class="mf">0</span><span class="p">,</span><span class="w"> </span><span class="nx">behavior</span><span class="o">:</span><span class="w"> </span><span class="s1">'smooth'</span><span class="w"> </span><span class="p">});</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="step-validation">
+<h4>Step Validation<a class="headerlink" href="#step-validation" title="Link to this heading"></a></h4>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span><span class="w"> </span><span class="nx">validateStep</span><span class="p">(</span><span class="nx">step</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">errors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[];</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">step</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="mf">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">vehicleSelect</span><span class="p">.</span><span class="nx">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">errors</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s1">'Please select a vehicle'</span><span class="p">);</span>
+<span class="w">      </span><span class="nx">vehicleSelect</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'error'</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">step</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="mf">2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Validate work_done, mileage</span>
+<span class="w">    </span><span class="c1">// Show errors if validation fails</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">errors</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="file-handling">
+<h4>File Handling<a class="headerlink" href="#file-handling" title="Link to this heading"></a></h4>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span><span class="w"> </span><span class="nx">handleFileSelect</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">fileInput</span><span class="p">.</span><span class="nx">files</span><span class="p">[</span><span class="mf">0</span><span class="p">];</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="c1">// Validate file size (10MB max)</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">file</span><span class="p">.</span><span class="nx">size</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">10</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1024</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1024</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">showFieldError</span><span class="p">(</span><span class="nx">fileInput</span><span class="p">,</span><span class="w"> </span><span class="s1">'Image too large'</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="c1">// Validate file type</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">allowedTypes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s1">'image/jpeg'</span><span class="p">,</span><span class="w"> </span><span class="s1">'image/png'</span><span class="p">,</span><span class="w"> </span><span class="s1">'image/gif'</span><span class="p">,</span><span class="w"> </span><span class="s1">'image/webp'</span><span class="p">];</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">allowedTypes</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="nx">file</span><span class="p">.</span><span class="nx">type</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">showFieldError</span><span class="p">(</span><span class="nx">fileInput</span><span class="p">,</span><span class="w"> </span><span class="s1">'Invalid image format'</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="c1">// Show preview</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">reader</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">FileReader</span><span class="p">();</span>
+<span class="w">  </span><span class="nx">reader</span><span class="p">.</span><span class="nx">onload</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nx">e</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">previewContainer</span><span class="p">.</span><span class="nx">innerHTML</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sb">`&lt;img src="</span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">result</span><span class="si">}</span><span class="sb">"&gt;`</span><span class="p">;</span>
+<span class="w">  </span><span class="p">};</span>
+<span class="w">  </span><span class="nx">reader</span><span class="p">.</span><span class="nx">readAsDataURL</span><span class="p">(</span><span class="nx">file</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="mobile-responsiveness">
+<h3>12. Mobile Responsiveness<a class="headerlink" href="#mobile-responsiveness" title="Link to this heading"></a></h3>
+<section id="breakpoints">
+<h4>Breakpoints<a class="headerlink" href="#breakpoints" title="Link to this heading"></a></h4>
+<div class="highlight-css notranslate"><div class="highlight"><pre><span></span><span class="p">@</span><span class="k">media</span><span class="w"> </span><span class="o">(</span><span class="nt">max-width</span><span class="o">:</span><span class="w"> </span><span class="nt">768px</span><span class="o">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c">/* Reduce padding */</span>
+<span class="w">  </span><span class="p">.</span><span class="nc">form-body</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">padding</span><span class="p">:</span><span class="w"> </span><span class="mi">24</span><span class="kt">px</span><span class="w"> </span><span class="mi">16</span><span class="kt">px</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="c">/* Smaller header */</span>
+<span class="w">  </span><span class="p">.</span><span class="nc">form-header</span><span class="w"> </span><span class="nt">h1</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">font-size</span><span class="p">:</span><span class="w"> </span><span class="mf">1.5</span><span class="kt">rem</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="c">/* Progress steps wrap */</span>
+<span class="w">  </span><span class="p">.</span><span class="nc">progress-section</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">flex-wrap</span><span class="p">:</span><span class="w"> </span><span class="kc">wrap</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="c">/* Hide progress lines on mobile */</span>
+<span class="w">  </span><span class="p">.</span><span class="nc">progress-step</span><span class="p">:</span><span class="nd">not</span><span class="o">(</span><span class="p">:</span><span class="nd">last-child</span><span class="o">)</span><span class="p">::</span><span class="nd">after</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">display</span><span class="p">:</span><span class="w"> </span><span class="kc">none</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span>
+<span class="w">  </span><span class="c">/* Stack buttons vertically */</span>
+<span class="w">  </span><span class="p">.</span><span class="nc">button-group</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">flex-direction</span><span class="p">:</span><span class="w"> </span><span class="kc">column</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="p">.</span><span class="nc">btn</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">width</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="kt">%</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="mobile-considerations">
+<h4>Mobile Considerations<a class="headerlink" href="#mobile-considerations" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Single column layout</p></li>
+<li><p>Larger touch targets (minimum 44px)</p></li>
+<li><p>Visible keyboard on input focus</p></li>
+<li><p>Full-width buttons</p></li>
+<li><p>Readable font sizes</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="ux-best-practices-implemented">
+<h2>UX Best Practices Implemented<a class="headerlink" href="#ux-best-practices-implemented" title="Link to this heading"></a></h2>
+<section id="progressive-disclosure">
+<h3>1. Progressive Disclosure<a class="headerlink" href="#progressive-disclosure" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Users only see relevant fields per step</p></li>
+<li><p>Reduces cognitive load</p></li>
+<li><p>Clearer focus on task at hand</p></li>
+</ul>
+</section>
+<section id="clear-validation">
+<h3>2. Clear Validation<a class="headerlink" href="#clear-validation" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Real-time field validation feedback</p></li>
+<li><p>Specific error messages</p></li>
+<li><p>Visual indicators (colors, icons)</p></li>
+<li><p>Before form submission</p></li>
+</ul>
+</section>
+<section id="helpful-context">
+<h3>3. Helpful Context<a class="headerlink" href="#helpful-context" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Inline hints on every field</p></li>
+<li><p>Examples provided for complex fields</p></li>
+<li><p>Tips and explanations in alerts</p></li>
+<li><p>Emoji icons for quick scanning</p></li>
+</ul>
+</section>
+<section id="visual-feedback">
+<h3>4. Visual Feedback<a class="headerlink" href="#visual-feedback" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Hover states on interactive elements</p></li>
+<li><p>Focus states for accessibility</p></li>
+<li><p>Smooth animations for state changes</p></li>
+<li><p>Color coding for status</p></li>
+</ul>
+</section>
+<section id="mobile-first-design">
+<h3>5. Mobile-First Design<a class="headerlink" href="#mobile-first-design" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Responsive grid system</p></li>
+<li><p>Touch-friendly buttons and inputs</p></li>
+<li><p>Simplified layouts on small screens</p></li>
+<li><p>Readable text on all devices</p></li>
+</ul>
+</section>
+<section id="accessibility">
+<h3>6. Accessibility<a class="headerlink" href="#accessibility" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Semantic HTML structure</p></li>
+<li><p>ARIA labels and descriptions</p></li>
+<li><p>Sufficient color contrast</p></li>
+<li><p>Keyboard navigation support</p></li>
+<li><p>Clear focus indicators</p></li>
+</ul>
+</section>
+</section>
+<section id="form-sections-breakdown">
+<h2>Form Sections Breakdown<a class="headerlink" href="#form-sections-breakdown" title="Link to this heading"></a></h2>
+<section id="step-1-vehicle-selection-5-minutes">
+<h3>Step 1: Vehicle Selection (5 minutes)<a class="headerlink" href="#step-1-vehicle-selection-5-minutes" title="Link to this heading"></a></h3>
+<p><strong>Goal:</strong> Choose which vehicle needs maintenance logged</p>
+<p><strong>Fields:</strong></p>
+<ul class="simple">
+<li><p>Vehicle dropdown (required)</p>
+<ul>
+<li><p>Populated from user’s vehicles</p></li>
+<li><p>Clear labeling with hints</p></li>
+<li><p>Informational tip about accuracy</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>Validation:</strong></p>
+<ul class="simple">
+<li><p>Ensures vehicle is selected</p></li>
+</ul>
+<p><strong>User Action:</strong> Click Next</p>
+</section>
+<section id="step-2-work-details-10-15-minutes">
+<h3>Step 2: Work Details (10-15 minutes)<a class="headerlink" href="#step-2-work-details-10-15-minutes" title="Link to this heading"></a></h3>
+<p><strong>Goal:</strong> Document exactly what maintenance was performed</p>
+<p><strong>Fields:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Scheduled Maintenance Task</strong> (optional)</p>
+<ul class="simple">
+<li><p>Dynamically filtered by vehicle</p></li>
+<li><p>Helps categorize the work</p></li>
+<li><p>No selection = manual work entry</p></li>
+</ul>
+</li>
+<li><p><strong>Work Performed</strong> (required)</p>
+<ul class="simple">
+<li><p>Textarea for detailed description</p></li>
+<li><p>Example provided</p></li>
+<li><p>Minimum validation for completeness</p></li>
+<li><p>Encourages specific, detailed entries</p></li>
+</ul>
+</li>
+<li><p><strong>Odometer Reading</strong> (required)</p>
+<ul class="simple">
+<li><p>Numeric input</p></li>
+<li><p>Validated as positive number</p></li>
+<li><p>Important for warranty/intervals</p></li>
+<li><p>Clear explanation of importance</p></li>
+</ul>
+</li>
+<li><p><strong>Additional Notes</strong> (optional)</p>
+<ul class="simple">
+<li><p>Extra observations/findings</p></li>
+<li><p>Flexible field for context</p></li>
+</ul>
+</li>
+</ol>
+<p><strong>Validation:</strong></p>
+<ul class="simple">
+<li><p>Work performed: not empty</p></li>
+<li><p>Mileage: positive number only</p></li>
+<li><p>Shows errors if invalid</p></li>
+</ul>
+<p><strong>User Action:</strong> Click Next (if valid)</p>
+</section>
+<section id="step-3-documentation-optional">
+<h3>Step 3: Documentation (Optional)<a class="headerlink" href="#step-3-documentation-optional" title="Link to this heading"></a></h3>
+<p><strong>Goal:</strong> Add photo evidence of work completed</p>
+<p><strong>Fields:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Service Photo</strong> (optional)</p>
+<ul class="simple">
+<li><p>Drag-and-drop upload area</p></li>
+<li><p>File type validation (JPEG, PNG, GIF, WebP)</p></li>
+<li><p>Size validation (10MB max)</p></li>
+<li><p>Inline preview with thumbnail</p></li>
+</ul>
+</li>
+<li><p><strong>Photo Category</strong> (optional if photo provided)</p>
+<ul class="simple">
+<li><p>Dropdown with 5 options</p></li>
+<li><p>Helps organize documentation</p></li>
+</ul>
+</li>
+<li><p><strong>Photo Description</strong> (optional if photo provided)</p>
+<ul class="simple">
+<li><p>Brief text field</p></li>
+<li><p>Example provided</p></li>
+<li><p>Additional context</p></li>
+</ul>
+</li>
+</ol>
+<p><strong>Features:</strong></p>
+<ul class="simple">
+<li><p>Helpful info box about documentation</p></li>
+<li><p>Visual feedback during upload</p></li>
+<li><p>Preview with removal button</p></li>
+<li><p>Professional presentation</p></li>
+</ul>
+<p><strong>User Action:</strong> Click Next</p>
+</section>
+<section id="step-4-review-save">
+<h3>Step 4: Review &amp; Save<a class="headerlink" href="#step-4-review-save" title="Link to this heading"></a></h3>
+<p><strong>Goal:</strong> Final review and submission</p>
+<p><strong>Elements:</strong></p>
+<ul class="simple">
+<li><p>Success alert showing form is ready</p></li>
+<li><p>Explanation of what happens after save</p></li>
+<li><p>Save Record button with loading spinner</p></li>
+</ul>
+<p><strong>User Action:</strong> Click Save Record</p>
+</section>
+</section>
+<section id="animations-transitions">
+<h2>Animations &amp; Transitions<a class="headerlink" href="#animations-transitions" title="Link to this heading"></a></h2>
+<section id="smooth-transitions">
+<h3>Smooth Transitions<a class="headerlink" href="#smooth-transitions" title="Link to this heading"></a></h3>
+<div class="highlight-css notranslate"><div class="highlight"><pre><span></span><span class="nt">transition</span><span class="o">:</span><span class="w"> </span><span class="nt">all</span><span class="w"> </span><span class="nt">0</span><span class="p">.</span><span class="nc">3s</span><span class="w"> </span><span class="nt">ease</span><span class="o">;</span>
+</pre></div>
+</div>
+</section>
+<section id="section-changes">
+<h3>Section Changes<a class="headerlink" href="#section-changes" title="Link to this heading"></a></h3>
+<div class="highlight-css notranslate"><div class="highlight"><pre><span></span><span class="p">@</span><span class="k">keyframes</span><span class="w"> </span><span class="nt">fadeInUp</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nt">from</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">opacity</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="k">transform</span><span class="p">:</span><span class="w"> </span><span class="nb">translateY</span><span class="p">(</span><span class="mi">20</span><span class="kt">px</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="nt">to</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">opacity</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="k">transform</span><span class="p">:</span><span class="w"> </span><span class="nb">translateY</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">form-section</span><span class="p">.</span><span class="nc">active</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">animation</span><span class="p">:</span><span class="w"> </span><span class="n">fadeInUp</span><span class="w"> </span><span class="mf">0.4</span><span class="kt">s</span><span class="w"> </span><span class="kc">ease-out</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="error-messages">
+<h3>Error Messages<a class="headerlink" href="#error-messages" title="Link to this heading"></a></h3>
+<div class="highlight-css notranslate"><div class="highlight"><pre><span></span><span class="p">@</span><span class="k">keyframes</span><span class="w"> </span><span class="nt">slideInError</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nt">from</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">opacity</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="k">transform</span><span class="p">:</span><span class="w"> </span><span class="nb">translateY</span><span class="p">(</span><span class="mi">-5</span><span class="kt">px</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="nt">to</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">opacity</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="k">transform</span><span class="p">:</span><span class="w"> </span><span class="nb">translateY</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">field-error-message</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">animation</span><span class="p">:</span><span class="w"> </span><span class="n">slideInError</span><span class="w"> </span><span class="mf">0.3</span><span class="kt">s</span><span class="w"> </span><span class="kc">ease-out</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id1">
+<h3>Image Preview<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<div class="highlight-css notranslate"><div class="highlight"><pre><span></span><span class="p">@</span><span class="k">keyframes</span><span class="w"> </span><span class="nt">fadeInScale</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nt">from</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">opacity</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="k">transform</span><span class="p">:</span><span class="w"> </span><span class="nb">scale</span><span class="p">(</span><span class="mf">0.95</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="nt">to</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">opacity</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="k">transform</span><span class="p">:</span><span class="w"> </span><span class="nb">scale</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">image-preview</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">animation</span><span class="p">:</span><span class="w"> </span><span class="n">fadeInScale</span><span class="w"> </span><span class="mf">0.3</span><span class="kt">s</span><span class="w"> </span><span class="kc">ease-out</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="browser-compatibility">
+<h2>Browser Compatibility<a class="headerlink" href="#browser-compatibility" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Chrome/Edge: Full support</p></li>
+<li><p>Firefox: Full support</p></li>
+<li><p>Safari: Full support</p></li>
+<li><p>Mobile browsers: Full support</p></li>
+<li><p>IE11: Limited support (no CSS Grid features)</p></li>
+</ul>
+</section>
+<section id="performance-optimizations">
+<h2>Performance Optimizations<a class="headerlink" href="#performance-optimizations" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><strong>CSS Variables</strong> - Easy theme switching</p></li>
+<li><p><strong>Hardware Acceleration</strong> - Smooth animations</p></li>
+<li><p><strong>Lazy Loading</strong> - Images loaded on demand</p></li>
+<li><p><strong>Debounced Events</strong> - Reduces unnecessary function calls</p></li>
+<li><p><strong>Minimal DOM Manipulation</strong> - Efficient JavaScript</p></li>
+</ol>
+</section>
+<section id="accessibility-features">
+<h2>Accessibility Features<a class="headerlink" href="#accessibility-features" title="Link to this heading"></a></h2>
+<p>✅ <strong>WCAG 2.1 Level AA Compliant</strong></p>
+<ul class="simple">
+<li><p>Semantic HTML structure</p></li>
+<li><p>Proper label associations</p></li>
+<li><p>Color contrast ratios (4.5:1 minimum)</p></li>
+<li><p>Focus indicators</p></li>
+<li><p>Error announcements</p></li>
+<li><p>Instructions and hints</p></li>
+<li><p>Keyboard navigation</p></li>
+</ul>
+</section>
+<section id="future-enhancements">
+<h2>Future Enhancements<a class="headerlink" href="#future-enhancements" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><strong>Auto-save drafts</strong> - Preserve user progress</p></li>
+<li><p><strong>Form history</strong> - Quick access to previous entries</p></li>
+<li><p><strong>Part number recognition</strong> - Auto-fill from image</p></li>
+<li><p><strong>Maintenance scheduling</strong> - Smart suggestions</p></li>
+<li><p><strong>Analytics</strong> - Track common maintenance tasks</p></li>
+<li><p><strong>Integration</strong> - Connect to warranty database</p></li>
+</ol>
+</section>
+<section id="migration-guide">
+<h2>Migration Guide<a class="headerlink" href="#migration-guide" title="Link to this heading"></a></h2>
+<p>If you have existing code using the old form:</p>
+<ol class="arabic simple">
+<li><p><strong>Backup old template</strong> - Keep for reference</p></li>
+<li><p><strong>Test new form</strong> - With all device sizes</p></li>
+<li><p><strong>Update CSS links</strong> - Ensure Tailwind CSS loaded</p></li>
+<li><p><strong>Test file upload</strong> - Verify image handling works</p></li>
+<li><p><strong>Check permissions</strong> - User can access scheduled maintenance API</p></li>
+<li><p><strong>Monitor errors</strong> - Watch for JavaScript console errors</p></li>
+</ol>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h2>
+<section id="issue-form-steps-not-navigating">
+<h3>Issue: Form steps not navigating<a class="headerlink" href="#issue-form-steps-not-navigating" title="Link to this heading"></a></h3>
+<p><strong>Solution:</strong> Check browser console for JavaScript errors. Ensure Alpine.js or vanilla JS is enabled.</p>
+</section>
+<section id="issue-images-not-uploading">
+<h3>Issue: Images not uploading<a class="headerlink" href="#issue-images-not-uploading" title="Link to this heading"></a></h3>
+<p><strong>Solution:</strong> Verify file size &lt; 10MB and format is JPEG/PNG/GIF/WebP</p>
+</section>
+<section id="issue-scheduled-maintenance-not-filtering">
+<h3>Issue: Scheduled maintenance not filtering<a class="headerlink" href="#issue-scheduled-maintenance-not-filtering" title="Link to this heading"></a></h3>
+<p><strong>Solution:</strong> Check that <code class="docutils literal notranslate"><span class="pre">/api/scheduled-maintenance/</span></code> endpoint is working and returns proper JSON</p>
+</section>
+<section id="issue-form-looks-broken-on-mobile">
+<h3>Issue: Form looks broken on mobile<a class="headerlink" href="#issue-form-looks-broken-on-mobile" title="Link to this heading"></a></h3>
+<p><strong>Solution:</strong> Verify viewport meta tag is present and CSS media queries load correctly</p>
+</section>
+</section>
+<section id="summary-of-improvements">
+<h2>Summary of Improvements<a class="headerlink" href="#summary-of-improvements" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Aspect</p></th>
+<th class="head"><p>Before</p></th>
+<th class="head"><p>After</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Layout</p></td>
+<td><p>One long page</p></td>
+<td><p>4-step wizard</p></td>
+</tr>
+<tr class="row-odd"><td><p>User Guidance</p></td>
+<td><p>Minimal hints</p></td>
+<td><p>Detailed at every step</p></td>
+</tr>
+<tr class="row-even"><td><p>Progress Tracking</p></td>
+<td><p>None</p></td>
+<td><p>Visual progress indicator</p></td>
+</tr>
+<tr class="row-odd"><td><p>Mobile Experience</p></td>
+<td><p>Basic</p></td>
+<td><p>Optimized &amp; responsive</p></td>
+</tr>
+<tr class="row-even"><td><p>Error Handling</p></td>
+<td><p>Generic messages</p></td>
+<td><p>Specific, contextual</p></td>
+</tr>
+<tr class="row-odd"><td><p>Image Upload</p></td>
+<td><p>Basic file input</p></td>
+<td><p>Drag-drop with preview</p></td>
+</tr>
+<tr class="row-even"><td><p>Accessibility</p></td>
+<td><p>Limited</p></td>
+<td><p>WCAG 2.1 AA compliant</p></td>
+</tr>
+<tr class="row-odd"><td><p>Visual Design</p></td>
+<td><p>Dated</p></td>
+<td><p>Modern, professional</p></td>
+</tr>
+<tr class="row-even"><td><p>User Engagement</p></td>
+<td><p>Low</p></td>
+<td><p>High (step completion)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Load Time</p></td>
+<td><p>Slow (all fields)</p></td>
+<td><p>Fast (step-by-step)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="contact-support">
+<h2>Contact &amp; Support<a class="headerlink" href="#contact-support" title="Link to this heading"></a></h2>
+<p>For issues or questions about the new maintenance form redesign, please refer to the form validation scripts and styling documentation within the HTML file.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="dashboard-features.html" class="btn btn-neutral float-left" title="Vehicle Dashboard Features" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="FORM_FLOW_GUIDE.html" class="btn btn-neutral float-right" title="Maintenance Form User Flow Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Menzi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

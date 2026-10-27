@@ -1,0 +1,1046 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Backend Implementation Plan for Insurance Assessment System &mdash; Carfinity 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Vehicle Selection Flow Separation - Implementation Summary" href="VEHICLE_SELECTION_SEPARATION_SUMMARY.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Carfinity
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Start Here</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../administration.html">Administration and Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vehicle-care.html">Vehicle Care and Maintenance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../inspections.html">Inspections and Assessments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../insurance-and-quotes.html">Insurance and Repair Quotes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../technical-reference.html">Technical Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../project-history.html">Project History and Implementation Notes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="README_REDESIGN.html">Carfinity 2.0 - Recent Updates &amp; Redesigns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Accident-History-Integration-Summary.html">Insurance App - Vehicle History Integration Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DYNAMIC_DASHBOARD_ROUTING_IMPLEMENTATION.html">Dynamic Dashboard Routing Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="IMPLEMENTATION_SUMMARY.html">Authentication Service Implementation Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="INSPECTIONS_IMPLEMENTATION_SUMMARY.html">Inspections Card Implementation Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="INSPECTION_WORKFLOW_CONNECTED.html">🔧 Connected Inspection Workflow - Implementation Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="INSPECTION_WORKFLOW_SUMMARY.html">Inspection Workflow Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Insurance-Admin-Configuration-Summary.html">Insurance App Django Admin Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Insurance-URL-Configuration-Summary.html">Insurance App URL Configuration Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="INSURANCE_APP_SEPARATION_ANALYSIS.html">Insurance App Separation Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="LOGOUT_SESSION_MANAGEMENT_SUMMARY.html">Logout and Session Management Enhancement - Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="HEALTH_MONITORING_IMPLEMENTATION_SUMMARY.html">System Health Monitoring Implementation Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NAVIGATION_OPTIMIZATION_SUMMARY.html">Bottom Navigation Bar Lag Fix - Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="VEHICLE_SELECTION_SEPARATION_SUMMARY.html">Vehicle Selection Flow Separation - Implementation Summary</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Backend Implementation Plan for Insurance Assessment System</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#table-of-contents">Table of Contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#url-routing-structure">URL Routing Structure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#main-assessment-urls">Main Assessment URLs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#core-view-implementation">Core View Implementation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#assessment-dashboard-view">1. Assessment Dashboard View</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#assessment-detail-view">2. Assessment Detail View</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-detail-view">3. Section Detail View</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#data-processing-functions">Data Processing Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#assessment-progress-calculation">1. Assessment Progress Calculation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#assessment-data-serialization">2. Assessment Data Serialization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#section-data-processing">3. Section Data Processing</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#api-endpoints">API Endpoints</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#assessment-sections-api">1. Assessment Sections API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#component-detail-api">2. Component Detail API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#status-update-api">3. Status Update API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#database-optimization">Database Optimization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#custom-queryset-manager">1. Custom QuerySet Manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#database-indexes">2. Database Indexes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#form-handling">Form Handling</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#assessment-update-form">1. Assessment Update Form</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#form-views">2. Form Views</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#testing-strategy">Testing Strategy</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#unit-tests">1. Unit Tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#integration-tests">2. Integration Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#implementation-phases">Implementation Phases</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#phase-1-core-functionality-week-1-2">Phase 1: Core Functionality (Week 1-2)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#phase-2-enhanced-features-week-3-4">Phase 2: Enhanced Features (Week 3-4)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#phase-3-testing-optimization-week-5-6">Phase 3: Testing &amp; Optimization (Week 5-6)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#file-structure">File Structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#security-considerations">Security Considerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#performance-considerations">Performance Considerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#monitoring-and-logging">Monitoring and Logging</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Carfinity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../project-history.html">Project History and Implementation Notes</a></li>
+      <li class="breadcrumb-item active">Backend Implementation Plan for Insurance Assessment System</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/backend-implementation-plan.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="backend-implementation-plan-for-insurance-assessment-system">
+<h1>Backend Implementation Plan for Insurance Assessment System<a class="headerlink" href="#backend-implementation-plan-for-insurance-assessment-system" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>This document outlines the complete backend implementation plan to make the insurance assessment frontend templates functional. The implementation covers Django views, URL routing, data serialization, and API endpoints to support the assessment dashboard and detail pages.</p>
+</section>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#url-routing-structure">URL Routing Structure</a></p></li>
+<li><p><a class="reference internal" href="#core-view-implementation">Core View Implementation</a></p></li>
+<li><p><a class="reference internal" href="#data-processing-functions">Data Processing Functions</a></p></li>
+<li><p><a class="reference internal" href="#api-endpoints">API Endpoints</a></p></li>
+<li><p><a class="reference internal" href="#database-optimization">Database Optimization</a></p></li>
+<li><p><a class="reference internal" href="#form-handling">Form Handling</a></p></li>
+<li><p><a class="reference internal" href="#testing-strategy">Testing Strategy</a></p></li>
+<li><p><a class="reference internal" href="#implementation-phases">Implementation Phases</a></p></li>
+</ol>
+</section>
+<section id="url-routing-structure">
+<h2>URL Routing Structure<a class="headerlink" href="#url-routing-structure" title="Link to this heading"></a></h2>
+<section id="main-assessment-urls">
+<h3>Main Assessment URLs<a class="headerlink" href="#main-assessment-urls" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># assessments/urls.py</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.urls</span><span class="w"> </span><span class="kn">import</span> <span class="n">path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">views</span>
+
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># Dashboard and main views</span>
+    <span class="n">path</span><span class="p">(</span><span class="s1">'dashboard/'</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">assessment_dashboard</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">'assessment_dashboard'</span><span class="p">),</span>
+    <span class="n">path</span><span class="p">(</span><span class="s1">'&lt;str:claim_id&gt;/'</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">assessment_detail</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">'assessment_detail'</span><span class="p">),</span>
+    <span class="n">path</span><span class="p">(</span><span class="s1">'&lt;str:claim_id&gt;/section/&lt;str:section_id&gt;/'</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">assessment_section_detail</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">'assessment_section_detail'</span><span class="p">),</span>
+    
+    <span class="c1"># API endpoints</span>
+    <span class="n">path</span><span class="p">(</span><span class="s1">'api/sections/&lt;str:claim_id&gt;/'</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">api_assessment_sections</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">'api_assessment_sections'</span><span class="p">),</span>
+    <span class="n">path</span><span class="p">(</span><span class="s1">'api/component/&lt;int:component_id&gt;/'</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">api_component_detail</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">'api_component_detail'</span><span class="p">),</span>
+    <span class="n">path</span><span class="p">(</span><span class="s1">'api/update-status/'</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">api_update_assessment_status</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">'api_update_status'</span><span class="p">),</span>
+    
+    <span class="c1"># Form handling</span>
+    <span class="n">path</span><span class="p">(</span><span class="s1">'&lt;str:claim_id&gt;/update/'</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">update_assessment</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">'update_assessment'</span><span class="p">),</span>
+    <span class="n">path</span><span class="p">(</span><span class="s1">'&lt;str:claim_id&gt;/section/&lt;str:section_id&gt;/update/'</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">update_section</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">'update_section'</span><span class="p">),</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="core-view-implementation">
+<h2>Core View Implementation<a class="headerlink" href="#core-view-implementation" title="Link to this heading"></a></h2>
+<section id="assessment-dashboard-view">
+<h3>1. Assessment Dashboard View<a class="headerlink" href="#assessment-dashboard-view" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># assessments/views.py</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.shortcuts</span><span class="w"> </span><span class="kn">import</span> <span class="n">render</span><span class="p">,</span> <span class="n">get_object_or_404</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.contrib.auth.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">login_required</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.db.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Count</span><span class="p">,</span> <span class="n">Q</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">VehicleAssessment</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">calculate_dashboard_stats</span>
+
+<span class="nd">@login_required</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">assessment_dashboard</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Main assessment dashboard with statistics and recent assessments"""</span>
+    
+    <span class="c1"># Get assessments with related data</span>
+    <span class="n">assessments</span> <span class="o">=</span> <span class="n">VehicleAssessment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">select_related</span><span class="p">(</span>
+        <span class="s1">'user'</span><span class="p">,</span> <span class="s1">'vehicle'</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">prefetch_related</span><span class="p">(</span><span class="s1">'photos'</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">'-assessment_date'</span><span class="p">)</span>
+    
+    <span class="c1"># Calculate dashboard statistics</span>
+    <span class="n">stats</span> <span class="o">=</span> <span class="n">calculate_dashboard_stats</span><span class="p">()</span>
+    
+    <span class="c1"># Recent assessments (last 10)</span>
+    <span class="n">recent_assessments</span> <span class="o">=</span> <span class="n">assessments</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+    
+    <span class="c1"># Filter options</span>
+    <span class="n">status_filter</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'status'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">status_filter</span><span class="p">:</span>
+        <span class="n">assessments</span> <span class="o">=</span> <span class="n">assessments</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="n">status_filter</span><span class="p">)</span>
+    
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">'assessments'</span><span class="p">:</span> <span class="n">recent_assessments</span><span class="p">,</span>
+        <span class="s1">'stats'</span><span class="p">:</span> <span class="n">stats</span><span class="p">,</span>
+        <span class="s1">'status_filter'</span><span class="p">:</span> <span class="n">status_filter</span><span class="p">,</span>
+        <span class="s1">'total_assessments'</span><span class="p">:</span> <span class="n">assessments</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
+    <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">'dashboard/insurance_assessment_dashboard.html'</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="assessment-detail-view">
+<h3>2. Assessment Detail View<a class="headerlink" href="#assessment-detail-view" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@login_required</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">assessment_detail</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">claim_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Detailed assessment view with all sections"""</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">assessment</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span>
+            <span class="n">VehicleAssessment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">select_related</span><span class="p">(</span>
+                <span class="s1">'user'</span><span class="p">,</span> <span class="s1">'vehicle'</span><span class="p">,</span> <span class="s1">'exterior_damage'</span><span class="p">,</span> <span class="s1">'wheels_tires'</span><span class="p">,</span>
+                <span class="s1">'interior_damage'</span><span class="p">,</span> <span class="s1">'mechanical_systems'</span><span class="p">,</span> <span class="s1">'electrical_systems'</span><span class="p">,</span>
+                <span class="s1">'safety_systems'</span><span class="p">,</span> <span class="s1">'frame_structural'</span><span class="p">,</span> <span class="s1">'fluid_systems'</span><span class="p">,</span> <span class="s1">'documentation'</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">prefetch_related</span><span class="p">(</span><span class="s1">'photos'</span><span class="p">,</span> <span class="s1">'comments'</span><span class="p">,</span> <span class="s1">'reports'</span><span class="p">),</span>
+            <span class="n">assessment_id</span><span class="o">=</span><span class="n">claim_id</span>
+        <span class="p">)</span>
+        
+        <span class="c1"># Calculate assessment progress</span>
+        <span class="n">progress</span> <span class="o">=</span> <span class="n">calculate_assessment_progress</span><span class="p">(</span><span class="n">assessment</span><span class="p">)</span>
+        
+        <span class="c1"># Prepare assessment data for template</span>
+        <span class="n">assessment_data</span> <span class="o">=</span> <span class="n">serialize_assessment_data</span><span class="p">(</span><span class="n">assessment</span><span class="p">)</span>
+        <span class="n">assessment_data</span><span class="p">[</span><span class="s1">'sections'</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_assessment_sections</span><span class="p">(</span><span class="n">assessment</span><span class="p">)</span>
+        
+        <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">'assessment_data'</span><span class="p">:</span> <span class="n">assessment_data</span><span class="p">,</span>
+            <span class="s1">'claim_id'</span><span class="p">:</span> <span class="n">claim_id</span><span class="p">,</span>
+            <span class="s1">'assessment'</span><span class="p">:</span> <span class="n">assessment</span><span class="p">,</span>
+        <span class="p">}</span>
+        
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">'dashboard/insurance_assessment_detail.html'</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+        
+    <span class="k">except</span> <span class="n">VehicleAssessment</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">'dashboard/assessment_not_found.html'</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s1">'claim_id'</span><span class="p">:</span> <span class="n">claim_id</span>
+        <span class="p">})</span>
+</pre></div>
+</div>
+</section>
+<section id="section-detail-view">
+<h3>3. Section Detail View<a class="headerlink" href="#section-detail-view" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@login_required</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">assessment_section_detail</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">claim_id</span><span class="p">,</span> <span class="n">section_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Detailed view for specific assessment section"""</span>
+    
+    <span class="n">assessment</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">VehicleAssessment</span><span class="p">,</span> <span class="n">assessment_id</span><span class="o">=</span><span class="n">claim_id</span><span class="p">)</span>
+    
+    <span class="c1"># Get section data based on section_id</span>
+    <span class="n">section_data</span> <span class="o">=</span> <span class="n">get_section_data</span><span class="p">(</span><span class="n">assessment</span><span class="p">,</span> <span class="n">section_id</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">section_data</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">'dashboard/section_not_found.html'</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s1">'claim_id'</span><span class="p">:</span> <span class="n">claim_id</span><span class="p">,</span>
+            <span class="s1">'section_id'</span><span class="p">:</span> <span class="n">section_id</span>
+        <span class="p">})</span>
+    
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">'section_data'</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">section_data</span><span class="p">),</span>
+        <span class="s1">'claim_id'</span><span class="p">:</span> <span class="n">claim_id</span><span class="p">,</span>
+        <span class="s1">'section_id'</span><span class="p">:</span> <span class="n">section_id</span><span class="p">,</span>
+        <span class="s1">'assessment'</span><span class="p">:</span> <span class="n">assessment</span><span class="p">,</span>
+    <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">'dashboard/insurance_assessment_section_detail.html'</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="data-processing-functions">
+<h2>Data Processing Functions<a class="headerlink" href="#data-processing-functions" title="Link to this heading"></a></h2>
+<section id="assessment-progress-calculation">
+<h3>1. Assessment Progress Calculation<a class="headerlink" href="#assessment-progress-calculation" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># assessments/utils.py</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_assessment_progress</span><span class="p">(</span><span class="n">assessment</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Calculate overall assessment completion percentage"""</span>
+    <span class="n">total_points</span> <span class="o">=</span> <span class="mi">120</span>  <span class="c1"># Total assessment points</span>
+    <span class="n">completed_points</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="c1"># Check each section for completion</span>
+    <span class="n">sections</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">assessment</span><span class="o">.</span><span class="n">exterior_damage</span><span class="p">,</span>
+        <span class="n">assessment</span><span class="o">.</span><span class="n">wheels_tires</span><span class="p">,</span>
+        <span class="n">assessment</span><span class="o">.</span><span class="n">interior_damage</span><span class="p">,</span>
+        <span class="n">assessment</span><span class="o">.</span><span class="n">mechanical_systems</span><span class="p">,</span>
+        <span class="n">assessment</span><span class="o">.</span><span class="n">electrical_systems</span><span class="p">,</span>
+        <span class="n">assessment</span><span class="o">.</span><span class="n">safety_systems</span><span class="p">,</span>
+        <span class="n">assessment</span><span class="o">.</span><span class="n">frame_structural</span><span class="p">,</span>
+        <span class="n">assessment</span><span class="o">.</span><span class="n">fluid_systems</span><span class="p">,</span>
+        <span class="n">assessment</span><span class="o">.</span><span class="n">documentation</span>
+    <span class="p">]</span>
+    
+    <span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="n">sections</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">section</span><span class="p">:</span>
+            <span class="n">completed_points</span> <span class="o">+=</span> <span class="n">get_section_completion_points</span><span class="p">(</span><span class="n">section</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="nb">int</span><span class="p">((</span><span class="n">completed_points</span> <span class="o">/</span> <span class="n">total_points</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_section_completion_points</span><span class="p">(</span><span class="n">section</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Calculate completion points for a specific section"""</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">section</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    
+    <span class="n">completed</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="c1"># Get all fields for the section</span>
+    <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="n">field</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">section</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">fields</span> 
+              <span class="k">if</span> <span class="ow">not</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">'_notes'</span><span class="p">)</span> <span class="ow">and</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="s1">'id'</span> <span class="ow">and</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="s1">'assessment'</span><span class="p">]</span>
+    
+    <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">:</span>
+        <span class="n">total</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">section</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">and</span> <span class="n">value</span> <span class="o">!=</span> <span class="s1">'none'</span> <span class="ow">and</span> <span class="n">value</span> <span class="o">!=</span> <span class="s1">'not_tested'</span><span class="p">:</span>
+            <span class="n">completed</span> <span class="o">+=</span> <span class="mi">1</span>
+    
+    <span class="k">return</span> <span class="n">completed</span>
+</pre></div>
+</div>
+</section>
+<section id="assessment-data-serialization">
+<h3>2. Assessment Data Serialization<a class="headerlink" href="#assessment-data-serialization" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">serialize_assessment_data</span><span class="p">(</span><span class="n">assessment</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Convert assessment model to template-friendly format"""</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">'claim_id'</span><span class="p">:</span> <span class="n">assessment</span><span class="o">.</span><span class="n">assessment_id</span><span class="p">,</span>
+        <span class="s1">'vehicle'</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">assessment</span><span class="o">.</span><span class="n">vehicle</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">assessment</span><span class="o">.</span><span class="n">vehicle</span><span class="o">.</span><span class="n">make</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">assessment</span><span class="o">.</span><span class="n">vehicle</span><span class="o">.</span><span class="n">model</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+        <span class="s1">'vin'</span><span class="p">:</span> <span class="n">assessment</span><span class="o">.</span><span class="n">vehicle</span><span class="o">.</span><span class="n">vin</span><span class="p">,</span>
+        <span class="s1">'customer_name'</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">assessment</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">first_name</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">assessment</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+        <span class="s1">'location'</span><span class="p">:</span> <span class="n">assessment</span><span class="o">.</span><span class="n">incident_location</span> <span class="ow">or</span> <span class="s1">'Not specified'</span><span class="p">,</span>
+        <span class="s1">'incident_date'</span><span class="p">:</span> <span class="n">assessment</span><span class="o">.</span><span class="n">incident_date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%B </span><span class="si">%d</span><span class="s1">, %Y'</span><span class="p">)</span> <span class="k">if</span> <span class="n">assessment</span><span class="o">.</span><span class="n">incident_date</span> <span class="k">else</span> <span class="s1">'Not specified'</span><span class="p">,</span>
+        <span class="s1">'assessor'</span><span class="p">:</span> <span class="n">assessment</span><span class="o">.</span><span class="n">assessor_name</span><span class="p">,</span>
+        <span class="s1">'assessment_progress'</span><span class="p">:</span> <span class="n">calculate_assessment_progress</span><span class="p">(</span><span class="n">assessment</span><span class="p">),</span>
+        <span class="s1">'damage_type'</span><span class="p">:</span> <span class="n">assessment</span><span class="o">.</span><span class="n">overall_severity</span><span class="p">,</span>
+        <span class="s1">'estimated_repair_cost'</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"£</span><span class="si">{</span><span class="n">assessment</span><span class="o">.</span><span class="n">estimated_repair_cost</span><span class="si">:</span><span class="s2">,.2f</span><span class="si">}</span><span class="s2">"</span> <span class="k">if</span> <span class="n">assessment</span><span class="o">.</span><span class="n">estimated_repair_cost</span> <span class="k">else</span> <span class="s1">'TBD'</span><span class="p">,</span>
+        <span class="s1">'claim_value'</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"£</span><span class="si">{</span><span class="n">assessment</span><span class="o">.</span><span class="n">vehicle_market_value</span><span class="si">:</span><span class="s2">,.2f</span><span class="si">}</span><span class="s2">"</span> <span class="k">if</span> <span class="n">assessment</span><span class="o">.</span><span class="n">vehicle_market_value</span> <span class="k">else</span> <span class="s1">'TBD'</span><span class="p">,</span>
+    <span class="p">}</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_assessment_sections</span><span class="p">(</span><span class="n">assessment</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Generate section data for the assessment detail template"""</span>
+    <span class="n">sections</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s1">'id'</span><span class="p">:</span> <span class="s1">'exterior'</span><span class="p">,</span>
+            <span class="s1">'name'</span><span class="p">:</span> <span class="s1">'EXTERIOR DAMAGE'</span><span class="p">,</span>
+            <span class="s1">'icon'</span><span class="p">:</span> <span class="s1">'🚗'</span><span class="p">,</span>
+            <span class="s1">'status'</span><span class="p">:</span> <span class="n">get_section_status</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">exterior_damage</span><span class="p">),</span>
+            <span class="s1">'damageLevel'</span><span class="p">:</span> <span class="n">get_damage_level</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">exterior_damage</span><span class="p">),</span>
+            <span class="s1">'estimatedCost'</span><span class="p">:</span> <span class="n">calculate_section_cost</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">exterior_damage</span><span class="p">),</span>
+            <span class="s1">'componentCount'</span><span class="p">:</span> <span class="mi">38</span><span class="p">,</span>
+            <span class="s1">'points'</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">get_section_completion_points</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">exterior_damage</span><span class="p">)</span><span class="si">}</span><span class="s2">/38"</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s1">'id'</span><span class="p">:</span> <span class="s1">'wheels'</span><span class="p">,</span>
+            <span class="s1">'name'</span><span class="p">:</span> <span class="s1">'WHEELS &amp; TIRES'</span><span class="p">,</span>
+            <span class="s1">'icon'</span><span class="p">:</span> <span class="s1">'🛞'</span><span class="p">,</span>
+            <span class="s1">'status'</span><span class="p">:</span> <span class="n">get_section_status</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">wheels_tires</span><span class="p">),</span>
+            <span class="s1">'damageLevel'</span><span class="p">:</span> <span class="n">get_damage_level</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">wheels_tires</span><span class="p">),</span>
+            <span class="s1">'estimatedCost'</span><span class="p">:</span> <span class="n">calculate_section_cost</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">wheels_tires</span><span class="p">),</span>
+            <span class="s1">'componentCount'</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+            <span class="s1">'points'</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">get_section_completion_points</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">wheels_tires</span><span class="p">)</span><span class="si">}</span><span class="s2">/12"</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s1">'id'</span><span class="p">:</span> <span class="s1">'interior'</span><span class="p">,</span>
+            <span class="s1">'name'</span><span class="p">:</span> <span class="s1">'INTERIOR DAMAGE'</span><span class="p">,</span>
+            <span class="s1">'icon'</span><span class="p">:</span> <span class="s1">'🪑'</span><span class="p">,</span>
+            <span class="s1">'status'</span><span class="p">:</span> <span class="n">get_section_status</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">interior_damage</span><span class="p">),</span>
+            <span class="s1">'damageLevel'</span><span class="p">:</span> <span class="n">get_damage_level</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">interior_damage</span><span class="p">),</span>
+            <span class="s1">'estimatedCost'</span><span class="p">:</span> <span class="n">calculate_section_cost</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">interior_damage</span><span class="p">),</span>
+            <span class="s1">'componentCount'</span><span class="p">:</span> <span class="mi">19</span><span class="p">,</span>
+            <span class="s1">'points'</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">get_section_completion_points</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">interior_damage</span><span class="p">)</span><span class="si">}</span><span class="s2">/19"</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s1">'id'</span><span class="p">:</span> <span class="s1">'mechanical'</span><span class="p">,</span>
+            <span class="s1">'name'</span><span class="p">:</span> <span class="s1">'MECHANICAL SYSTEMS'</span><span class="p">,</span>
+            <span class="s1">'icon'</span><span class="p">:</span> <span class="s1">'⚙️'</span><span class="p">,</span>
+            <span class="s1">'status'</span><span class="p">:</span> <span class="n">get_section_status</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">mechanical_systems</span><span class="p">),</span>
+            <span class="s1">'damageLevel'</span><span class="p">:</span> <span class="n">get_damage_level</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">mechanical_systems</span><span class="p">),</span>
+            <span class="s1">'estimatedCost'</span><span class="p">:</span> <span class="n">calculate_section_cost</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">mechanical_systems</span><span class="p">),</span>
+            <span class="s1">'componentCount'</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+            <span class="s1">'points'</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">get_section_completion_points</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">mechanical_systems</span><span class="p">)</span><span class="si">}</span><span class="s2">/20"</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s1">'id'</span><span class="p">:</span> <span class="s1">'electrical'</span><span class="p">,</span>
+            <span class="s1">'name'</span><span class="p">:</span> <span class="s1">'ELECTRICAL SYSTEMS'</span><span class="p">,</span>
+            <span class="s1">'icon'</span><span class="p">:</span> <span class="s1">'🔌'</span><span class="p">,</span>
+            <span class="s1">'status'</span><span class="p">:</span> <span class="n">get_section_status</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">electrical_systems</span><span class="p">),</span>
+            <span class="s1">'damageLevel'</span><span class="p">:</span> <span class="n">get_damage_level</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">electrical_systems</span><span class="p">),</span>
+            <span class="s1">'estimatedCost'</span><span class="p">:</span> <span class="n">calculate_section_cost</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">electrical_systems</span><span class="p">),</span>
+            <span class="s1">'componentCount'</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span>
+            <span class="s1">'points'</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">get_section_completion_points</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">electrical_systems</span><span class="p">)</span><span class="si">}</span><span class="s2">/9"</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s1">'id'</span><span class="p">:</span> <span class="s1">'safety'</span><span class="p">,</span>
+            <span class="s1">'name'</span><span class="p">:</span> <span class="s1">'SAFETY SYSTEMS'</span><span class="p">,</span>
+            <span class="s1">'icon'</span><span class="p">:</span> <span class="s1">'🛡️'</span><span class="p">,</span>
+            <span class="s1">'status'</span><span class="p">:</span> <span class="n">get_section_status</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">safety_systems</span><span class="p">),</span>
+            <span class="s1">'damageLevel'</span><span class="p">:</span> <span class="n">get_damage_level</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">safety_systems</span><span class="p">),</span>
+            <span class="s1">'estimatedCost'</span><span class="p">:</span> <span class="n">calculate_section_cost</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">safety_systems</span><span class="p">),</span>
+            <span class="s1">'componentCount'</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+            <span class="s1">'points'</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">get_section_completion_points</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">safety_systems</span><span class="p">)</span><span class="si">}</span><span class="s2">/6"</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s1">'id'</span><span class="p">:</span> <span class="s1">'structural'</span><span class="p">,</span>
+            <span class="s1">'name'</span><span class="p">:</span> <span class="s1">'FRAME &amp; STRUCTURAL'</span><span class="p">,</span>
+            <span class="s1">'icon'</span><span class="p">:</span> <span class="s1">'🏗️'</span><span class="p">,</span>
+            <span class="s1">'status'</span><span class="p">:</span> <span class="n">get_section_status</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">frame_structural</span><span class="p">),</span>
+            <span class="s1">'damageLevel'</span><span class="p">:</span> <span class="n">get_damage_level</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">frame_structural</span><span class="p">),</span>
+            <span class="s1">'estimatedCost'</span><span class="p">:</span> <span class="n">calculate_section_cost</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">frame_structural</span><span class="p">),</span>
+            <span class="s1">'componentCount'</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+            <span class="s1">'points'</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">get_section_completion_points</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">frame_structural</span><span class="p">)</span><span class="si">}</span><span class="s2">/6"</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s1">'id'</span><span class="p">:</span> <span class="s1">'fluids'</span><span class="p">,</span>
+            <span class="s1">'name'</span><span class="p">:</span> <span class="s1">'FLUID SYSTEMS'</span><span class="p">,</span>
+            <span class="s1">'icon'</span><span class="p">:</span> <span class="s1">'💧'</span><span class="p">,</span>
+            <span class="s1">'status'</span><span class="p">:</span> <span class="n">get_section_status</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">fluid_systems</span><span class="p">),</span>
+            <span class="s1">'damageLevel'</span><span class="p">:</span> <span class="n">get_damage_level</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">fluid_systems</span><span class="p">),</span>
+            <span class="s1">'estimatedCost'</span><span class="p">:</span> <span class="n">calculate_section_cost</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">fluid_systems</span><span class="p">),</span>
+            <span class="s1">'componentCount'</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+            <span class="s1">'points'</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">get_section_completion_points</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">fluid_systems</span><span class="p">)</span><span class="si">}</span><span class="s2">/6"</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+    <span class="k">return</span> <span class="n">sections</span>
+</pre></div>
+</div>
+</section>
+<section id="section-data-processing">
+<h3>3. Section Data Processing<a class="headerlink" href="#section-data-processing" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_section_data</span><span class="p">(</span><span class="n">assessment</span><span class="p">,</span> <span class="n">section_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Get detailed data for a specific section"""</span>
+    <span class="n">section_mapping</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">'exterior'</span><span class="p">:</span> <span class="n">assessment</span><span class="o">.</span><span class="n">exterior_damage</span><span class="p">,</span>
+        <span class="s1">'wheels'</span><span class="p">:</span> <span class="n">assessment</span><span class="o">.</span><span class="n">wheels_tires</span><span class="p">,</span>
+        <span class="s1">'interior'</span><span class="p">:</span> <span class="n">assessment</span><span class="o">.</span><span class="n">interior_damage</span><span class="p">,</span>
+        <span class="s1">'mechanical'</span><span class="p">:</span> <span class="n">assessment</span><span class="o">.</span><span class="n">mechanical_systems</span><span class="p">,</span>
+        <span class="s1">'electrical'</span><span class="p">:</span> <span class="n">assessment</span><span class="o">.</span><span class="n">electrical_systems</span><span class="p">,</span>
+        <span class="s1">'safety'</span><span class="p">:</span> <span class="n">assessment</span><span class="o">.</span><span class="n">safety_systems</span><span class="p">,</span>
+        <span class="s1">'structural'</span><span class="p">:</span> <span class="n">assessment</span><span class="o">.</span><span class="n">frame_structural</span><span class="p">,</span>
+        <span class="s1">'fluids'</span><span class="p">:</span> <span class="n">assessment</span><span class="o">.</span><span class="n">fluid_systems</span><span class="p">,</span>
+        <span class="s1">'documentation'</span><span class="p">:</span> <span class="n">assessment</span><span class="o">.</span><span class="n">documentation</span>
+    <span class="p">}</span>
+    
+    <span class="n">section_obj</span> <span class="o">=</span> <span class="n">section_mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">section_id</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">section_obj</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">'name'</span><span class="p">:</span> <span class="n">get_section_name</span><span class="p">(</span><span class="n">section_id</span><span class="p">),</span>
+        <span class="s1">'icon'</span><span class="p">:</span> <span class="n">get_section_icon</span><span class="p">(</span><span class="n">section_id</span><span class="p">),</span>
+        <span class="s1">'status'</span><span class="p">:</span> <span class="n">get_section_status</span><span class="p">(</span><span class="n">section_obj</span><span class="p">),</span>
+        <span class="s1">'damage_level'</span><span class="p">:</span> <span class="n">get_damage_level</span><span class="p">(</span><span class="n">section_obj</span><span class="p">),</span>
+        <span class="s1">'estimated_cost'</span><span class="p">:</span> <span class="n">calculate_section_cost</span><span class="p">(</span><span class="n">section_obj</span><span class="p">),</span>
+        <span class="s1">'component_count'</span><span class="p">:</span> <span class="n">get_component_count</span><span class="p">(</span><span class="n">section_obj</span><span class="p">),</span>
+        <span class="s1">'completion_percentage'</span><span class="p">:</span> <span class="n">get_section_completion_percentage</span><span class="p">(</span><span class="n">section_obj</span><span class="p">),</span>
+        <span class="s1">'components'</span><span class="p">:</span> <span class="n">get_section_components</span><span class="p">(</span><span class="n">section_obj</span><span class="p">,</span> <span class="n">section_id</span><span class="p">)</span>
+    <span class="p">}</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_section_components</span><span class="p">(</span><span class="n">section_obj</span><span class="p">,</span> <span class="n">section_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Extract component data from section model"""</span>
+    <span class="n">components</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="c1"># Map section fields to component data</span>
+    <span class="n">field_mapping</span> <span class="o">=</span> <span class="n">get_section_field_mapping</span><span class="p">(</span><span class="n">section_id</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">field_name</span><span class="p">,</span> <span class="n">display_name</span> <span class="ow">in</span> <span class="n">field_mapping</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">section_obj</span><span class="p">,</span> <span class="n">field_name</span><span class="p">):</span>
+            <span class="n">field_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">section_obj</span><span class="p">,</span> <span class="n">field_name</span><span class="p">)</span>
+            <span class="n">notes_field</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">field_name</span><span class="si">}</span><span class="s2">_notes"</span>
+            <span class="n">notes</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">section_obj</span><span class="p">,</span> <span class="n">notes_field</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">section_obj</span><span class="p">,</span> <span class="n">notes_field</span><span class="p">)</span> <span class="k">else</span> <span class="s1">''</span>
+            
+            <span class="n">components</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                <span class="s1">'name'</span><span class="p">:</span> <span class="n">display_name</span><span class="p">,</span>
+                <span class="s1">'severity'</span><span class="p">:</span> <span class="n">get_severity_display</span><span class="p">(</span><span class="n">field_value</span><span class="p">),</span>
+                <span class="s1">'status'</span><span class="p">:</span> <span class="n">get_status_display</span><span class="p">(</span><span class="n">field_value</span><span class="p">),</span>
+                <span class="s1">'cost'</span><span class="p">:</span> <span class="n">calculate_component_cost</span><span class="p">(</span><span class="n">field_value</span><span class="p">),</span>
+                <span class="s1">'notes'</span><span class="p">:</span> <span class="n">notes</span>
+            <span class="p">})</span>
+    
+    <span class="k">return</span> <span class="n">components</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="api-endpoints">
+<h2>API Endpoints<a class="headerlink" href="#api-endpoints" title="Link to this heading"></a></h2>
+<section id="assessment-sections-api">
+<h3>1. Assessment Sections API<a class="headerlink" href="#assessment-sections-api" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># assessments/api_views.py</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.http</span><span class="w"> </span><span class="kn">import</span> <span class="n">JsonResponse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.views.decorators.csrf</span><span class="w"> </span><span class="kn">import</span> <span class="n">csrf_exempt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.views.decorators.http</span><span class="w"> </span><span class="kn">import</span> <span class="n">require_http_methods</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+<span class="nd">@csrf_exempt</span>
+<span class="nd">@require_http_methods</span><span class="p">([</span><span class="s2">"GET"</span><span class="p">])</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">api_assessment_sections</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">claim_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""API endpoint for assessment sections data"""</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">assessment</span> <span class="o">=</span> <span class="n">VehicleAssessment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">select_related</span><span class="p">(</span>
+            <span class="s1">'exterior_damage'</span><span class="p">,</span> <span class="s1">'wheels_tires'</span><span class="p">,</span> <span class="s1">'interior_damage'</span><span class="p">,</span>
+            <span class="s1">'mechanical_systems'</span><span class="p">,</span> <span class="s1">'electrical_systems'</span><span class="p">,</span> <span class="s1">'safety_systems'</span><span class="p">,</span>
+            <span class="s1">'frame_structural'</span><span class="p">,</span> <span class="s1">'fluid_systems'</span><span class="p">,</span> <span class="s1">'documentation'</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">assessment_id</span><span class="o">=</span><span class="n">claim_id</span><span class="p">)</span>
+        
+        <span class="n">sections</span> <span class="o">=</span> <span class="n">get_assessment_sections</span><span class="p">(</span><span class="n">assessment</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">({</span>
+            <span class="s1">'success'</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="s1">'sections'</span><span class="p">:</span> <span class="n">sections</span><span class="p">,</span>
+            <span class="s1">'total_progress'</span><span class="p">:</span> <span class="n">calculate_assessment_progress</span><span class="p">(</span><span class="n">assessment</span><span class="p">)</span>
+        <span class="p">})</span>
+        
+    <span class="k">except</span> <span class="n">VehicleAssessment</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">({</span>
+            <span class="s1">'success'</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s1">'error'</span><span class="p">:</span> <span class="s1">'Assessment not found'</span>
+        <span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="mi">404</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">({</span>
+            <span class="s1">'success'</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s1">'error'</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="component-detail-api">
+<h3>2. Component Detail API<a class="headerlink" href="#component-detail-api" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@csrf_exempt</span>
+<span class="nd">@require_http_methods</span><span class="p">([</span><span class="s2">"GET"</span><span class="p">,</span> <span class="s2">"POST"</span><span class="p">])</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">api_component_detail</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">component_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""API endpoint for individual component details"""</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">'GET'</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Get component details</span>
+            <span class="n">component_data</span> <span class="o">=</span> <span class="n">get_component_data</span><span class="p">(</span><span class="n">component_id</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">({</span>
+                <span class="s1">'success'</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                <span class="s1">'component'</span><span class="p">:</span> <span class="n">component_data</span>
+            <span class="p">})</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">({</span>
+                <span class="s1">'success'</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                <span class="s1">'error'</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+    
+    <span class="k">elif</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">'POST'</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">body</span><span class="p">)</span>
+            <span class="c1"># Update component status</span>
+            <span class="n">update_component_status</span><span class="p">(</span><span class="n">component_id</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">({</span>
+                <span class="s1">'success'</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                <span class="s1">'message'</span><span class="p">:</span> <span class="s1">'Component updated successfully'</span>
+            <span class="p">})</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">({</span>
+                <span class="s1">'success'</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                <span class="s1">'error'</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="status-update-api">
+<h3>3. Status Update API<a class="headerlink" href="#status-update-api" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@csrf_exempt</span>
+<span class="nd">@require_http_methods</span><span class="p">([</span><span class="s2">"POST"</span><span class="p">])</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">api_update_assessment_status</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""API endpoint for updating assessment status"""</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">body</span><span class="p">)</span>
+        <span class="n">claim_id</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'claim_id'</span><span class="p">)</span>
+        <span class="n">new_status</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'status'</span><span class="p">)</span>
+        
+        <span class="n">assessment</span> <span class="o">=</span> <span class="n">VehicleAssessment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">assessment_id</span><span class="o">=</span><span class="n">claim_id</span><span class="p">)</span>
+        <span class="n">assessment</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">new_status</span>
+        <span class="n">assessment</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        
+        <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">({</span>
+            <span class="s1">'success'</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="s1">'message'</span><span class="p">:</span> <span class="sa">f</span><span class="s1">'Assessment status updated to </span><span class="si">{</span><span class="n">new_status</span><span class="si">}</span><span class="s1">'</span>
+        <span class="p">})</span>
+        
+    <span class="k">except</span> <span class="n">VehicleAssessment</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">({</span>
+            <span class="s1">'success'</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s1">'error'</span><span class="p">:</span> <span class="s1">'Assessment not found'</span>
+        <span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="mi">404</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">({</span>
+            <span class="s1">'success'</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s1">'error'</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="p">},</span> <span class="n">status</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="database-optimization">
+<h2>Database Optimization<a class="headerlink" href="#database-optimization" title="Link to this heading"></a></h2>
+<section id="custom-queryset-manager">
+<h3>1. Custom QuerySet Manager<a class="headerlink" href="#custom-queryset-manager" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># assessments/managers.py</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.db</span><span class="w"> </span><span class="kn">import</span> <span class="n">models</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">AssessmentQuerySet</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">QuerySet</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">with_related_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Optimize queries by selecting related objects"""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">select_related</span><span class="p">(</span>
+            <span class="s1">'user'</span><span class="p">,</span> <span class="s1">'vehicle'</span><span class="p">,</span> <span class="s1">'exterior_damage'</span><span class="p">,</span> <span class="s1">'wheels_tires'</span><span class="p">,</span>
+            <span class="s1">'interior_damage'</span><span class="p">,</span> <span class="s1">'mechanical_systems'</span><span class="p">,</span> <span class="s1">'electrical_systems'</span><span class="p">,</span>
+            <span class="s1">'safety_systems'</span><span class="p">,</span> <span class="s1">'frame_structural'</span><span class="p">,</span> <span class="s1">'fluid_systems'</span><span class="p">,</span> <span class="s1">'documentation'</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">prefetch_related</span><span class="p">(</span><span class="s1">'photos'</span><span class="p">,</span> <span class="s1">'comments'</span><span class="p">,</span> <span class="s1">'reports'</span><span class="p">,</span> <span class="s1">'workflow_steps'</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">by_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">status</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Filter by assessment status"""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">recent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">days</span><span class="o">=</span><span class="mi">30</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Get recent assessments"""</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">django.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">timezone</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">timedelta</span>
+        <span class="n">cutoff</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">days</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">assessment_date__gte</span><span class="o">=</span><span class="n">cutoff</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">total_loss_candidates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Get assessments that are total loss candidates"""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+            <span class="n">models</span><span class="o">.</span><span class="n">Q</span><span class="p">(</span><span class="n">overall_severity</span><span class="o">=</span><span class="s1">'total_loss'</span><span class="p">)</span> <span class="o">|</span>
+            <span class="n">models</span><span class="o">.</span><span class="n">Q</span><span class="p">(</span><span class="n">uk_write_off_category__in</span><span class="o">=</span><span class="p">[</span><span class="s1">'cat_a'</span><span class="p">,</span> <span class="s1">'cat_b'</span><span class="p">])</span> <span class="o">|</span>
+            <span class="n">models</span><span class="o">.</span><span class="n">Q</span><span class="p">(</span><span class="n">south_africa_70_percent_rule</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="p">)</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">AssessmentManager</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Manager</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">AssessmentQuerySet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">using</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">with_related_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_queryset</span><span class="p">()</span><span class="o">.</span><span class="n">with_related_data</span><span class="p">()</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">by_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">status</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_queryset</span><span class="p">()</span><span class="o">.</span><span class="n">by_status</span><span class="p">(</span><span class="n">status</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">recent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">days</span><span class="o">=</span><span class="mi">30</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_queryset</span><span class="p">()</span><span class="o">.</span><span class="n">recent</span><span class="p">(</span><span class="n">days</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">total_loss_candidates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_queryset</span><span class="p">()</span><span class="o">.</span><span class="n">total_loss_candidates</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="database-indexes">
+<h3>2. Database Indexes<a class="headerlink" href="#database-indexes" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add to models.py Meta classes</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Meta</span><span class="p">:</span>
+    <span class="n">ordering</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'-assessment_date'</span><span class="p">]</span>
+    <span class="n">indexes</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">models</span><span class="o">.</span><span class="n">Index</span><span class="p">(</span><span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s1">'assessment_id'</span><span class="p">]),</span>
+        <span class="n">models</span><span class="o">.</span><span class="n">Index</span><span class="p">(</span><span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s1">'status'</span><span class="p">,</span> <span class="s1">'assessment_date'</span><span class="p">]),</span>
+        <span class="n">models</span><span class="o">.</span><span class="n">Index</span><span class="p">(</span><span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s1">'vehicle'</span><span class="p">,</span> <span class="s1">'assessment_date'</span><span class="p">]),</span>
+        <span class="n">models</span><span class="o">.</span><span class="n">Index</span><span class="p">(</span><span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s1">'user'</span><span class="p">,</span> <span class="s1">'assessment_date'</span><span class="p">]),</span>
+        <span class="n">models</span><span class="o">.</span><span class="n">Index</span><span class="p">(</span><span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s1">'overall_severity'</span><span class="p">]),</span>
+    <span class="p">]</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="form-handling">
+<h2>Form Handling<a class="headerlink" href="#form-handling" title="Link to this heading"></a></h2>
+<section id="assessment-update-form">
+<h3>1. Assessment Update Form<a class="headerlink" href="#assessment-update-form" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># assessments/forms.py</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django</span><span class="w"> </span><span class="kn">import</span> <span class="n">forms</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">VehicleAssessment</span><span class="p">,</span> <span class="n">ExteriorBodyDamage</span><span class="p">,</span> <span class="n">WheelsAndTires</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">AssessmentUpdateForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">VehicleAssessment</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s1">'status'</span><span class="p">,</span> <span class="s1">'overall_severity'</span><span class="p">,</span> <span class="s1">'estimated_repair_cost'</span><span class="p">,</span> 
+            <span class="s1">'vehicle_market_value'</span><span class="p">,</span> <span class="s1">'salvage_value'</span><span class="p">,</span> <span class="s1">'overall_notes'</span><span class="p">,</span> <span class="s1">'recommendations'</span>
+        <span class="p">]</span>
+        <span class="n">widgets</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">'overall_notes'</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">Textarea</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">'rows'</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">'class'</span><span class="p">:</span> <span class="s1">'form-control'</span><span class="p">}),</span>
+            <span class="s1">'recommendations'</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">Textarea</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">'rows'</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">'class'</span><span class="p">:</span> <span class="s1">'form-control'</span><span class="p">}),</span>
+            <span class="s1">'estimated_repair_cost'</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">NumberInput</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">'class'</span><span class="p">:</span> <span class="s1">'form-control'</span><span class="p">,</span> <span class="s1">'step'</span><span class="p">:</span> <span class="s1">'0.01'</span><span class="p">}),</span>
+            <span class="s1">'vehicle_market_value'</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">NumberInput</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">'class'</span><span class="p">:</span> <span class="s1">'form-control'</span><span class="p">,</span> <span class="s1">'step'</span><span class="p">:</span> <span class="s1">'0.01'</span><span class="p">}),</span>
+            <span class="s1">'salvage_value'</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">NumberInput</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">'class'</span><span class="p">:</span> <span class="s1">'form-control'</span><span class="p">,</span> <span class="s1">'step'</span><span class="p">:</span> <span class="s1">'0.01'</span><span class="p">}),</span>
+        <span class="p">}</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ExteriorDamageForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">ExteriorBodyDamage</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="s1">'__all__'</span>
+        <span class="n">exclude</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'assessment'</span><span class="p">]</span>
+        <span class="n">widgets</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">'front_bumper_notes'</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">Textarea</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">'rows'</span><span class="p">:</span> <span class="mi">2</span><span class="p">}),</span>
+            <span class="s1">'hood_notes'</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">Textarea</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">'rows'</span><span class="p">:</span> <span class="mi">2</span><span class="p">}),</span>
+            <span class="c1"># Add more widgets as needed</span>
+        <span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="form-views">
+<h3>2. Form Views<a class="headerlink" href="#form-views" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># assessments/views.py</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.shortcuts</span><span class="w"> </span><span class="kn">import</span> <span class="n">redirect</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.contrib</span><span class="w"> </span><span class="kn">import</span> <span class="n">messages</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.forms</span><span class="w"> </span><span class="kn">import</span> <span class="n">AssessmentUpdateForm</span><span class="p">,</span> <span class="n">ExteriorDamageForm</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">update_assessment</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">claim_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Update assessment details"""</span>
+    <span class="n">assessment</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">VehicleAssessment</span><span class="p">,</span> <span class="n">assessment_id</span><span class="o">=</span><span class="n">claim_id</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">'POST'</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">AssessmentUpdateForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">assessment</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">'Assessment updated successfully'</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">'assessment_detail'</span><span class="p">,</span> <span class="n">claim_id</span><span class="o">=</span><span class="n">claim_id</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">AssessmentUpdateForm</span><span class="p">(</span><span class="n">instance</span><span class="o">=</span><span class="n">assessment</span><span class="p">)</span>
+    
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">'form'</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span>
+        <span class="s1">'assessment'</span><span class="p">:</span> <span class="n">assessment</span><span class="p">,</span>
+        <span class="s1">'claim_id'</span><span class="p">:</span> <span class="n">claim_id</span><span class="p">,</span>
+    <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">'dashboard/update_assessment.html'</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">update_section</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">claim_id</span><span class="p">,</span> <span class="n">section_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Update specific section details"""</span>
+    <span class="n">assessment</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">VehicleAssessment</span><span class="p">,</span> <span class="n">assessment_id</span><span class="o">=</span><span class="n">claim_id</span><span class="p">)</span>
+    
+    <span class="c1"># Get the appropriate form based on section_id</span>
+    <span class="n">form_class</span> <span class="o">=</span> <span class="n">get_section_form_class</span><span class="p">(</span><span class="n">section_id</span><span class="p">)</span>
+    <span class="n">section_obj</span> <span class="o">=</span> <span class="n">get_section_object</span><span class="p">(</span><span class="n">assessment</span><span class="p">,</span> <span class="n">section_id</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">'POST'</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">form_class</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">section_obj</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">section_id</span><span class="o">.</span><span class="n">title</span><span class="p">()</span><span class="si">}</span><span class="s1"> section updated successfully'</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">'assessment_section_detail'</span><span class="p">,</span> <span class="n">claim_id</span><span class="o">=</span><span class="n">claim_id</span><span class="p">,</span> <span class="n">section_id</span><span class="o">=</span><span class="n">section_id</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">form_class</span><span class="p">(</span><span class="n">instance</span><span class="o">=</span><span class="n">section_obj</span><span class="p">)</span>
+    
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">'form'</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span>
+        <span class="s1">'assessment'</span><span class="p">:</span> <span class="n">assessment</span><span class="p">,</span>
+        <span class="s1">'section_id'</span><span class="p">:</span> <span class="n">section_id</span><span class="p">,</span>
+        <span class="s1">'claim_id'</span><span class="p">:</span> <span class="n">claim_id</span><span class="p">,</span>
+    <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">'dashboard/update_section.html'</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="testing-strategy">
+<h2>Testing Strategy<a class="headerlink" href="#testing-strategy" title="Link to this heading"></a></h2>
+<section id="unit-tests">
+<h3>1. Unit Tests<a class="headerlink" href="#unit-tests" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># assessments/tests.py</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.test</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestCase</span><span class="p">,</span> <span class="n">Client</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.contrib.auth.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">User</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.urls</span><span class="w"> </span><span class="kn">import</span> <span class="n">reverse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">VehicleAssessment</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">vehicles.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Vehicle</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">AssessmentViewTests</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span>
+            <span class="n">username</span><span class="o">=</span><span class="s1">'testuser'</span><span class="p">,</span>
+            <span class="n">email</span><span class="o">=</span><span class="s1">'test@example.com'</span><span class="p">,</span>
+            <span class="n">password</span><span class="o">=</span><span class="s1">'testpass123'</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vehicle</span> <span class="o">=</span> <span class="n">Vehicle</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">vin</span><span class="o">=</span><span class="s1">'1HGBH41JXMN109186'</span><span class="p">,</span>
+            <span class="n">make</span><span class="o">=</span><span class="s1">'Honda'</span><span class="p">,</span>
+            <span class="n">model</span><span class="o">=</span><span class="s1">'Civic'</span><span class="p">,</span>
+            <span class="n">year</span><span class="o">=</span><span class="mi">2020</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assessment</span> <span class="o">=</span> <span class="n">VehicleAssessment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">assessment_id</span><span class="o">=</span><span class="s1">'TEST-001'</span><span class="p">,</span>
+            <span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span>
+            <span class="n">vehicle</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">vehicle</span><span class="p">,</span>
+            <span class="n">assessor_name</span><span class="o">=</span><span class="s1">'Test Assessor'</span><span class="p">,</span>
+            <span class="n">overall_severity</span><span class="o">=</span><span class="s1">'moderate'</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">force_login</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_assessment_dashboard</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Test assessment dashboard view"""</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s1">'assessment_dashboard'</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertContains</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="s1">'Assessment Dashboard'</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_assessment_detail</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Test assessment detail view"""</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s1">'assessment_detail'</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">assessment</span><span class="o">.</span><span class="n">assessment_id</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertContains</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">assessment</span><span class="o">.</span><span class="n">assessment_id</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_section_detail</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Test section detail view"""</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s1">'assessment_section_detail'</span><span class="p">,</span> 
+                                        <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">assessment</span><span class="o">.</span><span class="n">assessment_id</span><span class="p">,</span> <span class="s1">'exterior'</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_api_assessment_sections</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Test API endpoint for assessment sections"""</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s1">'api_assessment_sections'</span><span class="p">,</span> 
+                                        <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">assessment</span><span class="o">.</span><span class="n">assessment_id</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">'success'</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="s1">'sections'</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">AssessmentModelTests</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_assessment_creation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Test assessment model creation"""</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span><span class="s1">'testuser'</span><span class="p">,</span> <span class="s1">'test@example.com'</span><span class="p">,</span> <span class="s1">'password'</span><span class="p">)</span>
+        <span class="n">vehicle</span> <span class="o">=</span> <span class="n">Vehicle</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">vin</span><span class="o">=</span><span class="s1">'1HGBH41JXMN109186'</span><span class="p">,</span>
+            <span class="n">make</span><span class="o">=</span><span class="s1">'Honda'</span><span class="p">,</span>
+            <span class="n">model</span><span class="o">=</span><span class="s1">'Civic'</span><span class="p">,</span>
+            <span class="n">year</span><span class="o">=</span><span class="mi">2020</span>
+        <span class="p">)</span>
+        
+        <span class="n">assessment</span> <span class="o">=</span> <span class="n">VehicleAssessment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">assessment_id</span><span class="o">=</span><span class="s1">'TEST-002'</span><span class="p">,</span>
+            <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span>
+            <span class="n">vehicle</span><span class="o">=</span><span class="n">vehicle</span><span class="p">,</span>
+            <span class="n">assessor_name</span><span class="o">=</span><span class="s1">'Test Assessor'</span>
+        <span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">assessment_id</span><span class="p">,</span> <span class="s1">'TEST-002'</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">vehicle</span><span class="p">,</span> <span class="n">vehicle</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="integration-tests">
+<h3>2. Integration Tests<a class="headerlink" href="#integration-tests" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">AssessmentIntegrationTests</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_complete_assessment_workflow</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Test complete assessment workflow"""</span>
+        <span class="c1"># Create assessment</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span><span class="s1">'testuser'</span><span class="p">,</span> <span class="s1">'test@example.com'</span><span class="p">,</span> <span class="s1">'password'</span><span class="p">)</span>
+        <span class="n">vehicle</span> <span class="o">=</span> <span class="n">Vehicle</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">vin</span><span class="o">=</span><span class="s1">'1HGBH41JXMN109186'</span><span class="p">,</span>
+            <span class="n">make</span><span class="o">=</span><span class="s1">'Honda'</span><span class="p">,</span>
+            <span class="n">model</span><span class="o">=</span><span class="s1">'Civic'</span><span class="p">,</span>
+            <span class="n">year</span><span class="o">=</span><span class="mi">2020</span>
+        <span class="p">)</span>
+        
+        <span class="n">assessment</span> <span class="o">=</span> <span class="n">VehicleAssessment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+            <span class="n">assessment_id</span><span class="o">=</span><span class="s1">'TEST-003'</span><span class="p">,</span>
+            <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span>
+            <span class="n">vehicle</span><span class="o">=</span><span class="n">vehicle</span><span class="p">,</span>
+            <span class="n">assessor_name</span><span class="o">=</span><span class="s1">'Test Assessor'</span>
+        <span class="p">)</span>
+        
+        <span class="c1"># Test dashboard access</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">()</span>
+        <span class="n">client</span><span class="o">.</span><span class="n">force_login</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+        
+        <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s1">'assessment_dashboard'</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+        
+        <span class="c1"># Test detail view</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s1">'assessment_detail'</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">assessment</span><span class="o">.</span><span class="n">assessment_id</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+        
+        <span class="c1"># Test section detail</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s1">'assessment_section_detail'</span><span class="p">,</span> 
+                                    <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">assessment</span><span class="o">.</span><span class="n">assessment_id</span><span class="p">,</span> <span class="s1">'exterior'</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="implementation-phases">
+<h2>Implementation Phases<a class="headerlink" href="#implementation-phases" title="Link to this heading"></a></h2>
+<section id="phase-1-core-functionality-week-1-2">
+<h3>Phase 1: Core Functionality (Week 1-2)<a class="headerlink" href="#phase-1-core-functionality-week-1-2" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>[ ] URL routing setup</p></li>
+<li><p>[ ] Basic view implementations</p></li>
+<li><p>[ ] Data serialization functions</p></li>
+<li><p>[ ] Template context preparation</p></li>
+<li><p>[ ] Basic testing</p></li>
+</ul>
+</section>
+<section id="phase-2-enhanced-features-week-3-4">
+<h3>Phase 2: Enhanced Features (Week 3-4)<a class="headerlink" href="#phase-2-enhanced-features-week-3-4" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>[ ] API endpoints for dynamic loading</p></li>
+<li><p>[ ] Form handling for updates</p></li>
+<li><p>[ ] Database query optimization</p></li>
+<li><p>[ ] Error handling improvements</p></li>
+<li><p>[ ] Advanced testing</p></li>
+</ul>
+</section>
+<section id="phase-3-testing-optimization-week-5-6">
+<h3>Phase 3: Testing &amp; Optimization (Week 5-6)<a class="headerlink" href="#phase-3-testing-optimization-week-5-6" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>[ ] Comprehensive unit tests</p></li>
+<li><p>[ ] Integration tests</p></li>
+<li><p>[ ] Performance optimization</p></li>
+<li><p>[ ] Security review</p></li>
+<li><p>[ ] Documentation completion</p></li>
+</ul>
+</section>
+</section>
+<section id="file-structure">
+<h2>File Structure<a class="headerlink" href="#file-structure" title="Link to this heading"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>assessments/
+├── __init__.py
+├── admin.py
+├── apps.py
+├── forms.py
+├── managers.py
+├── models.py
+├── urls.py
+├── views.py
+├── api_views.py
+├── utils.py
+├── tests.py
+└── migrations/
+    └── __init__.py
+
+docs/
+└── backend-implementation-plan.md
+</pre></div>
+</div>
+</section>
+<section id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># requirements.txt</span>
+<span class="n">Django</span><span class="o">&gt;=</span><span class="mf">4.2.0</span>
+<span class="n">Pillow</span><span class="o">&gt;=</span><span class="mf">9.0.0</span>  <span class="c1"># For image handling</span>
+<span class="n">django</span><span class="o">-</span><span class="n">cors</span><span class="o">-</span><span class="n">headers</span><span class="o">&gt;=</span><span class="mf">4.0.0</span>  <span class="c1"># For API endpoints</span>
+<span class="n">django</span><span class="o">-</span><span class="n">extensions</span><span class="o">&gt;=</span><span class="mf">3.2.0</span>  <span class="c1"># For development tools</span>
+</pre></div>
+</div>
+</section>
+<section id="security-considerations">
+<h2>Security Considerations<a class="headerlink" href="#security-considerations" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><strong>Authentication</strong>: All views require login</p></li>
+<li><p><strong>Authorization</strong>: Users can only access their own assessments</p></li>
+<li><p><strong>CSRF Protection</strong>: All forms include CSRF tokens</p></li>
+<li><p><strong>Input Validation</strong>: All form inputs are validated</p></li>
+<li><p><strong>SQL Injection</strong>: Use Django ORM to prevent SQL injection</p></li>
+<li><p><strong>XSS Protection</strong>: Template auto-escaping enabled</p></li>
+</ol>
+</section>
+<section id="performance-considerations">
+<h2>Performance Considerations<a class="headerlink" href="#performance-considerations" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><strong>Database Queries</strong>: Use select_related and prefetch_related</p></li>
+<li><p><strong>Caching</strong>: Implement Redis caching for frequently accessed data</p></li>
+<li><p><strong>Pagination</strong>: Implement pagination for large datasets</p></li>
+<li><p><strong>Image Optimization</strong>: Compress and resize uploaded images</p></li>
+<li><p><strong>CDN</strong>: Use CDN for static assets</p></li>
+</ol>
+</section>
+<section id="monitoring-and-logging">
+<h2>Monitoring and Logging<a class="headerlink" href="#monitoring-and-logging" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><strong>Error Logging</strong>: Implement comprehensive error logging</p></li>
+<li><p><strong>Performance Monitoring</strong>: Track query performance</p></li>
+<li><p><strong>User Activity</strong>: Log user actions for audit trails</p></li>
+<li><p><strong>System Health</strong>: Monitor system resources and performance</p></li>
+</ol>
+<p>This implementation plan provides a complete roadmap for making the insurance assessment system fully functional with proper backend support for all frontend features.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="VEHICLE_SELECTION_SEPARATION_SUMMARY.html" class="btn btn-neutral float-left" title="Vehicle Selection Flow Separation - Implementation Summary" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Menzi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

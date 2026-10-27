@@ -1,0 +1,785 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vehicle Inspection System Documentation &mdash; Carfinity 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Initial Inspections System Documentation" href="Initial_Inspections_System.html" />
+    <link rel="prev" title="Inspections and Assessments" href="../inspections.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Carfinity
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Start Here</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../administration.html">Administration and Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vehicle-care.html">Vehicle Care and Maintenance</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../inspections.html">Inspections and Assessments</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Vehicle Inspection System Documentation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#table-of-contents">Table of Contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#system-architecture">System Architecture</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#data-flow">Data Flow</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#models">Models</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#inspection-model">Inspection Model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#inspections-model-50-point-checklist">Inspections Model (50-Point Checklist)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#forms">Forms</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#inspectionform">InspectionForm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#inspectionrecordform">InspectionRecordForm</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#views">Views</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#class-based-views">Class-Based Views</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#admin-interface">Admin Interface</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#inspectionsadmin">InspectionsAdmin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#inspectionadmin">InspectionAdmin</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#templates">Templates</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#template-structure">Template Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#template-features">Template Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#custom-template-filters">Custom Template Filters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#url-configuration">URL Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#url-patterns">URL Patterns</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#usage-guide">Usage Guide</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#for-technicians">For Technicians</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#for-administrators">For Administrators</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#api-reference">API Reference</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#model-properties">Model Properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#form-methods">Form Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#database-schema">Database Schema</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#key-relationships">Key Relationships</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#indexes">Indexes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#performance-considerations">Performance Considerations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#database-optimization">Database Optimization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#caching">Caching</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#security-considerations">Security Considerations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#access-control">Access Control</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#data-validation">Data Validation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#common-issues">Common Issues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#debug-commands">Debug Commands</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#future-enhancements">Future Enhancements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#planned-features">Planned Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api-development">API Development</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#support">Support</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#version-history">Version History</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Initial_Inspections_System.html">Initial Inspections System Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Vehicle_Inspection_Scoring_System.html">Vehicle Inspection Scoring System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SecondHand_Vehicle_160_Point_Inspection.html">160-Point Vehicle Inspection Checklist (Second-Hand Vehicles)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Quarterly_Vehicle_Health_Checklist.html">Quarterly Vehicle Health Inspection Checklist (50-Point)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inspection-pdf-system.html">Inspection PDF Attachment System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ASSESSMENT_IMPLEMENTATION_GUIDE.html">Vehicle Assessment System Implementation Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="WORKFLOW_DEMONSTRATION.html">Inspection Workflow Demonstration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../insurance-and-quotes.html">Insurance and Repair Quotes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../technical-reference.html">Technical Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project-history.html">Project History and Implementation Notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Carfinity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../inspections.html">Inspections and Assessments</a></li>
+      <li class="breadcrumb-item active">Vehicle Inspection System Documentation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/Inspection_System_Documentation.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="vehicle-inspection-system-documentation">
+<h1>Vehicle Inspection System Documentation<a class="headerlink" href="#vehicle-inspection-system-documentation" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The Vehicle Inspection System is a comprehensive Django-based solution for managing detailed vehicle inspections using a standardized 50-point checklist. This system allows technicians to perform thorough vehicle inspections, track progress, and generate detailed reports.</p>
+</section>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#system-architecture">System Architecture</a></p></li>
+<li><p><a class="reference internal" href="#models">Models</a></p></li>
+<li><p><a class="reference internal" href="#forms">Forms</a></p></li>
+<li><p><a class="reference internal" href="#views">Views</a></p></li>
+<li><p><a class="reference internal" href="#admin-interface">Admin Interface</a></p></li>
+<li><p><a class="reference internal" href="#templates">Templates</a></p></li>
+<li><p><a class="reference internal" href="#url-configuration">URL Configuration</a></p></li>
+<li><p><a class="reference internal" href="#usage-guide">Usage Guide</a></p></li>
+<li><p><a class="reference internal" href="#api-reference">API Reference</a></p></li>
+<li><p><a class="reference internal" href="#troubleshooting">Troubleshooting</a></p></li>
+</ol>
+</section>
+<section id="system-architecture">
+<h2>System Architecture<a class="headerlink" href="#system-architecture" title="Link to this heading"></a></h2>
+<p>The inspection system consists of two main components:</p>
+<ol class="arabic simple">
+<li><p><strong>Inspection Records</strong> (<code class="docutils literal notranslate"><span class="pre">Inspection</span></code> model) - Basic inspection information</p></li>
+<li><p><strong>Inspection Forms</strong> (<code class="docutils literal notranslate"><span class="pre">Inspections</span></code> model) - Detailed 50-point checklist</p></li>
+</ol>
+<section id="data-flow">
+<h3>Data Flow<a class="headerlink" href="#data-flow" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Vehicle → Inspection Record → Inspection Form (50-point checklist) → Results &amp; Reports
+</pre></div>
+</div>
+</section>
+</section>
+<section id="models">
+<h2>Models<a class="headerlink" href="#models" title="Link to this heading"></a></h2>
+<section id="inspection-model">
+<h3>Inspection Model<a class="headerlink" href="#inspection-model" title="Link to this heading"></a></h3>
+<p>Basic inspection record containing:</p>
+<ul class="simple">
+<li><p>Vehicle reference</p></li>
+<li><p>Inspection number (unique)</p></li>
+<li><p>Year</p></li>
+<li><p>Inspection result (Pass/Fail with variations)</p></li>
+<li><p>Carfinity rating</p></li>
+<li><p>Inspection date</p></li>
+<li><p>External links and PDF attachments</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Inspection</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">vehicle</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Vehicle</span><span class="p">,</span> <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">)</span>
+    <span class="n">inspection_number</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">year</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">()</span>
+    <span class="n">inspection_result</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">RESULT_CHOICES</span><span class="p">)</span>
+    <span class="n">carfinity_rating</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+    <span class="n">inspection_date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateField</span><span class="p">()</span>
+    <span class="c1"># ... additional fields</span>
+</pre></div>
+</div>
+</section>
+<section id="inspections-model-50-point-checklist">
+<h3>Inspections Model (50-Point Checklist)<a class="headerlink" href="#inspections-model-50-point-checklist" title="Link to this heading"></a></h3>
+<p>Detailed inspection form containing:</p>
+<ul class="simple">
+<li><p>One-to-one relationship with Inspection</p></li>
+<li><p>Technician reference</p></li>
+<li><p>50 individual inspection points organized by categories</p></li>
+<li><p>Section-specific notes</p></li>
+<li><p>Overall summary and recommendations</p></li>
+<li><p>Completion tracking</p></li>
+</ul>
+<section id="inspection-categories">
+<h4>Inspection Categories<a class="headerlink" href="#inspection-categories" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p><strong>Engine &amp; Powertrain</strong> (10 points)</p>
+<ul class="simple">
+<li><p>Engine oil level &amp; quality</p></li>
+<li><p>Oil filter condition</p></li>
+<li><p>Coolant level &amp; leaks</p></li>
+<li><p>Drive belts for cracks/wear</p></li>
+<li><p>Hoses for leaks or soft spots</p></li>
+<li><p>Air filter condition</p></li>
+<li><p>Cabin air filter condition</p></li>
+<li><p>Transmission fluid level &amp; leaks</p></li>
+<li><p>Engine/transmission mounts</p></li>
+<li><p>Fluid leaks under engine &amp; gearbox</p></li>
+</ul>
+</li>
+<li><p><strong>Electrical &amp; Battery</strong> (5 points)</p>
+<ul class="simple">
+<li><p>Battery voltage &amp; charging system</p></li>
+<li><p>Battery terminals for corrosion</p></li>
+<li><p>Alternator output</p></li>
+<li><p>Starter motor performance</p></li>
+<li><p>All fuses and relays</p></li>
+</ul>
+</li>
+<li><p><strong>Brakes &amp; Suspension</strong> (7 points)</p>
+<ul class="simple">
+<li><p>Brake pads/shoes thickness</p></li>
+<li><p>Brake discs/drums damage/warping</p></li>
+<li><p>Brake fluid level &amp; condition</p></li>
+<li><p>Parking brake function</p></li>
+<li><p>Shocks/struts for leaks</p></li>
+<li><p>Suspension bushings &amp; joints</p></li>
+<li><p>Wheel bearings for noise/play</p></li>
+</ul>
+</li>
+<li><p><strong>Steering &amp; Tires</strong> (6 points)</p>
+<ul class="simple">
+<li><p>Steering response &amp; play</p></li>
+<li><p>Steering fluid level &amp; leaks</p></li>
+<li><p>Tire tread depth (&gt;5/32”)</p></li>
+<li><p>Tire pressure (all tires + spare)</p></li>
+<li><p>Tire wear patterns</p></li>
+<li><p>Wheels &amp; rims for damage</p></li>
+</ul>
+</li>
+<li><p><strong>Exhaust &amp; Emissions</strong> (3 points)</p>
+<ul class="simple">
+<li><p>Exhaust for leaks/damage</p></li>
+<li><p>Catalytic converter/muffler condition</p></li>
+<li><p>No exhaust warning lights</p></li>
+</ul>
+</li>
+<li><p><strong>Safety Equipment</strong> (5 points)</p>
+<ul class="simple">
+<li><p>Seat belts operation &amp; condition</p></li>
+<li><p>Airbags (warning light off)</p></li>
+<li><p>Horn function</p></li>
+<li><p>First-aid kit contents</p></li>
+<li><p>Warning triangle/reflective vest present</p></li>
+</ul>
+</li>
+<li><p><strong>Lighting &amp; Visibility</strong> (8 points)</p>
+<ul class="simple">
+<li><p>Headlights (low/high beam)</p></li>
+<li><p>Brake/reverse/fog lights</p></li>
+<li><p>Turn signals &amp; hazard lights</p></li>
+<li><p>Interior dome/courtesy lights</p></li>
+<li><p>Windshield for cracks/chips</p></li>
+<li><p>Wiper blades &amp; washer spray</p></li>
+<li><p>Rear defogger/heater operation</p></li>
+<li><p>Mirrors adjustment &amp; condition</p></li>
+</ul>
+</li>
+<li><p><strong>HVAC &amp; Interior</strong> (4 points)</p>
+<ul class="simple">
+<li><p>Air conditioning &amp; heating performance</p></li>
+<li><p>Ventilation airflow</p></li>
+<li><p>Seat adjustments &amp; seat heaters</p></li>
+<li><p>Power windows &amp; locks</p></li>
+</ul>
+</li>
+<li><p><strong>Technology &amp; Driver Assist</strong> (2 points)</p>
+<ul class="simple">
+<li><p>Infotainment system &amp; Bluetooth/USB</p></li>
+<li><p>Rear-view camera/parking sensors</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="status-options">
+<h4>Status Options<a class="headerlink" href="#status-options" title="Link to this heading"></a></h4>
+<p>Each inspection point can have one of the following statuses:</p>
+<ul class="simple">
+<li><p><strong>Pass</strong> - Item meets requirements</p></li>
+<li><p><strong>Fail</strong> - Item fails inspection</p></li>
+<li><p><strong>Minor Issue</strong> - Minor problem noted</p></li>
+<li><p><strong>Major Issue</strong> - Significant problem requiring attention</p></li>
+<li><p><strong>Not Applicable</strong> - Item not applicable to this vehicle</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="forms">
+<h2>Forms<a class="headerlink" href="#forms" title="Link to this heading"></a></h2>
+<section id="inspectionform">
+<h3>InspectionForm<a class="headerlink" href="#inspectionform" title="Link to this heading"></a></h3>
+<p>Comprehensive Django form for the 50-point checklist with:</p>
+<ul class="simple">
+<li><p>All inspection points organized by categories</p></li>
+<li><p>Section-specific notes fields</p></li>
+<li><p>Form validation for critical safety points</p></li>
+<li><p>Automatic completion tracking</p></li>
+<li><p>Responsive styling with Tailwind CSS</p></li>
+</ul>
+</section>
+<section id="inspectionrecordform">
+<h3>InspectionRecordForm<a class="headerlink" href="#inspectionrecordform" title="Link to this heading"></a></h3>
+<p>Basic form for creating inspection records with:</p>
+<ul class="simple">
+<li><p>Vehicle selection</p></li>
+<li><p>Inspection number validation</p></li>
+<li><p>PDF upload functionality</p></li>
+<li><p>File size and type validation</p></li>
+</ul>
+</section>
+</section>
+<section id="views">
+<h2>Views<a class="headerlink" href="#views" title="Link to this heading"></a></h2>
+<section id="class-based-views">
+<h3>Class-Based Views<a class="headerlink" href="#class-based-views" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>InspectionFormListView</strong></p>
+<ul class="simple">
+<li><p>Lists all inspection forms</p></li>
+<li><p>Shows progress and completion status</p></li>
+<li><p>Pagination support</p></li>
+<li><p>Filter and search capabilities</p></li>
+</ul>
+</li>
+<li><p><strong>InspectionFormDetailView</strong></p>
+<ul class="simple">
+<li><p>Displays complete inspection results</p></li>
+<li><p>Organized by categories</p></li>
+<li><p>Shows failed points and issues</p></li>
+<li><p>Progress visualization</p></li>
+</ul>
+</li>
+<li><p><strong>CreateInspectionFormView</strong></p>
+<ul class="simple">
+<li><p>Creates new 50-point inspection forms</p></li>
+<li><p>Form validation and error handling</p></li>
+<li><p>Progress tracking</p></li>
+<li><p>Transaction safety</p></li>
+</ul>
+</li>
+<li><p><strong>UpdateInspectionFormView</strong></p>
+<ul class="simple">
+<li><p>Updates existing inspection forms</p></li>
+<li><p>AJAX support for real-time updates</p></li>
+<li><p>Progress recalculation</p></li>
+<li><p>Validation for completion</p></li>
+</ul>
+</li>
+<li><p><strong>CreateInspectionRecordView</strong></p>
+<ul class="simple">
+<li><p>Creates basic inspection records</p></li>
+<li><p>File upload handling</p></li>
+<li><p>Form validation</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+<section id="admin-interface">
+<h2>Admin Interface<a class="headerlink" href="#admin-interface" title="Link to this heading"></a></h2>
+<section id="inspectionsadmin">
+<h3>InspectionsAdmin<a class="headerlink" href="#inspectionsadmin" title="Link to this heading"></a></h3>
+<p>Comprehensive admin interface featuring:</p>
+<ul class="simple">
+<li><p>Organized fieldsets by inspection categories</p></li>
+<li><p>Collapsible sections for better navigation</p></li>
+<li><p>Progress tracking and completion status</p></li>
+<li><p>Issue detection and reporting</p></li>
+<li><p>Bulk actions for efficiency</p></li>
+</ul>
+<section id="admin-features">
+<h4>Admin Features<a class="headerlink" href="#admin-features" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>List Display</strong>: Shows key information and progress</p></li>
+<li><p><strong>Filters</strong>: Filter by completion status, technician, date</p></li>
+<li><p><strong>Search</strong>: Search by inspection number, VIN, technician</p></li>
+<li><p><strong>Actions</strong>: Mark as completed, generate reports</p></li>
+<li><p><strong>Fieldsets</strong>: Organized by inspection categories</p></li>
+</ul>
+</section>
+</section>
+<section id="inspectionadmin">
+<h3>InspectionAdmin<a class="headerlink" href="#inspectionadmin" title="Link to this heading"></a></h3>
+<p>Basic inspection record admin with:</p>
+<ul class="simple">
+<li><p>PDF file management</p></li>
+<li><p>File size tracking</p></li>
+<li><p>Download functionality</p></li>
+<li><p>Metadata display</p></li>
+</ul>
+</section>
+</section>
+<section id="templates">
+<h2>Templates<a class="headerlink" href="#templates" title="Link to this heading"></a></h2>
+<section id="template-structure">
+<h3>Template Structure<a class="headerlink" href="#template-structure" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>maintenance_history/templates/maintenance/
+├── inspection_form_list.html          # List all inspection forms
+├── inspection_form_detail.html        # Detailed inspection results
+├── create_inspection_form.html        # Create new inspection form
+├── update_inspection_form.html        # Update existing form
+└── create_inspection_record.html      # Create basic inspection record
+</pre></div>
+</div>
+</section>
+<section id="template-features">
+<h3>Template Features<a class="headerlink" href="#template-features" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Responsive Design</strong>: Mobile-friendly with Tailwind CSS</p></li>
+<li><p><strong>Progress Indicators</strong>: Visual progress bars and percentages</p></li>
+<li><p><strong>Status Badges</strong>: Color-coded status indicators</p></li>
+<li><p><strong>Issue Highlighting</strong>: Clear display of failed points</p></li>
+<li><p><strong>Interactive Forms</strong>: Real-time validation and feedback</p></li>
+</ul>
+</section>
+<section id="custom-template-filters">
+<h3>Custom Template Filters<a class="headerlink" href="#custom-template-filters" title="Link to this heading"></a></h3>
+<p>Located in <code class="docutils literal notranslate"><span class="pre">maintenance_history/templatetags/custom_filters.py</span></code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">getattr</span></code>: Dynamic attribute access</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">status_badge_class</span></code>: CSS classes for status badges</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">status_display</span></code>: User-friendly status text</p></li>
+</ul>
+</section>
+</section>
+<section id="url-configuration">
+<h2>URL Configuration<a class="headerlink" href="#url-configuration" title="Link to this heading"></a></h2>
+<section id="url-patterns">
+<h3>URL Patterns<a class="headerlink" href="#url-patterns" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Inspection Records</span>
+<span class="n">path</span><span class="p">(</span><span class="s1">'inspections/'</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">InspectionListView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s1">'inspection_list'</span><span class="p">)</span>
+<span class="n">path</span><span class="p">(</span><span class="s1">'inspections/&lt;int:pk&gt;/'</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">InspectionDetailView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s1">'inspection_detail'</span><span class="p">)</span>
+<span class="n">path</span><span class="p">(</span><span class="s1">'inspections/create/'</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">CreateInspectionRecordView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s1">'create_inspection_record'</span><span class="p">)</span>
+
+<span class="c1"># Inspection Forms (50-point checklist)</span>
+<span class="n">path</span><span class="p">(</span><span class="s1">'inspection-forms/'</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">InspectionFormListView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s1">'inspection_form_list'</span><span class="p">)</span>
+<span class="n">path</span><span class="p">(</span><span class="s1">'inspection-forms/&lt;int:pk&gt;/'</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">InspectionFormDetailView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s1">'inspection_form_detail'</span><span class="p">)</span>
+<span class="n">path</span><span class="p">(</span><span class="s1">'inspection-forms/create/'</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">CreateInspectionFormView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s1">'create_inspection_form'</span><span class="p">)</span>
+<span class="n">path</span><span class="p">(</span><span class="s1">'inspection-forms/&lt;int:pk&gt;/update/'</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">UpdateInspectionFormView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s1">'update_inspection_form'</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="usage-guide">
+<h2>Usage Guide<a class="headerlink" href="#usage-guide" title="Link to this heading"></a></h2>
+<section id="for-technicians">
+<h3>For Technicians<a class="headerlink" href="#for-technicians" title="Link to this heading"></a></h3>
+<section id="step-1-create-inspection-record">
+<h4>Step 1: Create Inspection Record<a class="headerlink" href="#step-1-create-inspection-record" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>Navigate to “Create Inspection Record”</p></li>
+<li><p>Fill in basic inspection information</p></li>
+<li><p>Upload PDF report if available</p></li>
+<li><p>Save the record</p></li>
+</ol>
+</section>
+<section id="step-2-create-detailed-inspection-form">
+<h4>Step 2: Create Detailed Inspection Form<a class="headerlink" href="#step-2-create-detailed-inspection-form" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>Navigate to “Create Inspection Form”</p></li>
+<li><p>Select the inspection record created in Step 1</p></li>
+<li><p>Work through the 50-point checklist</p></li>
+<li><p>Add notes for each section as needed</p></li>
+<li><p>Mark critical issues appropriately</p></li>
+</ol>
+</section>
+<section id="step-3-complete-and-submit">
+<h4>Step 3: Complete and Submit<a class="headerlink" href="#step-3-complete-and-submit" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>Review all inspection points</p></li>
+<li><p>Add overall notes and recommendations</p></li>
+<li><p>Mark form as completed</p></li>
+<li><p>Submit for review</p></li>
+</ol>
+</section>
+</section>
+<section id="for-administrators">
+<h3>For Administrators<a class="headerlink" href="#for-administrators" title="Link to this heading"></a></h3>
+<section id="managing-inspections">
+<h4>Managing Inspections<a class="headerlink" href="#managing-inspections" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>Use Django admin interface</p></li>
+<li><p>Filter by completion status or technician</p></li>
+<li><p>Review failed points and issues</p></li>
+<li><p>Generate reports as needed</p></li>
+</ol>
+</section>
+<section id="bulk-operations">
+<h4>Bulk Operations<a class="headerlink" href="#bulk-operations" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>Select multiple inspections</p></li>
+<li><p>Use admin actions for bulk operations</p></li>
+<li><p>Mark multiple inspections as completed</p></li>
+<li><p>Generate batch reports</p></li>
+</ol>
+</section>
+</section>
+</section>
+<section id="api-reference">
+<h2>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading"></a></h2>
+<section id="model-properties">
+<h3>Model Properties<a class="headerlink" href="#model-properties" title="Link to this heading"></a></h3>
+<section id="inspections-model">
+<h4>Inspections Model<a class="headerlink" href="#inspections-model" title="Link to this heading"></a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Progress tracking</span>
+<span class="n">total_points_checked</span>          <span class="c1"># Number of completed points</span>
+<span class="n">completion_percentage</span>         <span class="c1"># Percentage complete (0-100)</span>
+
+<span class="c1"># Issue detection</span>
+<span class="n">failed_points</span>                 <span class="c1"># List of failed inspection points</span>
+<span class="n">has_major_issues</span>             <span class="c1"># Boolean indicating major issues</span>
+
+<span class="c1"># Status tracking</span>
+<span class="n">is_completed</span>                 <span class="c1"># Boolean completion status</span>
+<span class="n">completed_at</span>                 <span class="c1"># Timestamp of completion</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="form-methods">
+<h3>Form Methods<a class="headerlink" href="#form-methods" title="Link to this heading"></a></h3>
+<section id="id1">
+<h4>InspectionForm<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Validation</span>
+<span class="n">clean</span><span class="p">()</span>                      <span class="c1"># Form-wide validation</span>
+<span class="n">clean_</span><span class="o">&lt;</span><span class="n">field_name</span><span class="o">&gt;</span><span class="p">()</span>        <span class="c1"># Field-specific validation</span>
+
+<span class="c1"># Saving</span>
+<span class="n">save</span><span class="p">(</span><span class="n">commit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>           <span class="c1"># Save with completion tracking</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="database-schema">
+<h2>Database Schema<a class="headerlink" href="#database-schema" title="Link to this heading"></a></h2>
+<section id="key-relationships">
+<h3>Key Relationships<a class="headerlink" href="#key-relationships" title="Link to this heading"></a></h3>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="n">Vehicle</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="p">(</span><span class="n">Many</span><span class="p">)</span><span class="w"> </span><span class="n">Inspection</span>
+<span class="n">Inspection</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">Inspections</span>
+<span class="k">User</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="p">(</span><span class="n">Many</span><span class="p">)</span><span class="w"> </span><span class="n">Inspections</span><span class="w"> </span><span class="p">(</span><span class="k">as</span><span class="w"> </span><span class="n">technician</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="indexes">
+<h3>Indexes<a class="headerlink" href="#indexes" title="Link to this heading"></a></h3>
+<p>Recommended indexes for performance:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">inspection_date</span></code> (for date-based queries)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">is_completed</span></code> (for filtering)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">technician_id</span></code> (for technician-specific queries)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">inspection__vehicle_id</span></code> (for vehicle-specific queries)</p></li>
+</ul>
+</section>
+</section>
+<section id="performance-considerations">
+<h2>Performance Considerations<a class="headerlink" href="#performance-considerations" title="Link to this heading"></a></h2>
+<section id="database-optimization">
+<h3>Database Optimization<a class="headerlink" href="#database-optimization" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Select Related</strong>: Use <code class="docutils literal notranslate"><span class="pre">select_related()</span></code> for foreign keys</p></li>
+<li><p><strong>Prefetch Related</strong>: Use <code class="docutils literal notranslate"><span class="pre">prefetch_related()</span></code> for reverse relationships</p></li>
+<li><p><strong>Indexes</strong>: Ensure proper indexing on frequently queried fields</p></li>
+<li><p><strong>Pagination</strong>: Implement pagination for large datasets</p></li>
+</ol>
+</section>
+<section id="caching">
+<h3>Caching<a class="headerlink" href="#caching" title="Link to this heading"></a></h3>
+<p>Consider caching for:</p>
+<ul class="simple">
+<li><p>Inspection form templates</p></li>
+<li><p>Progress calculations</p></li>
+<li><p>Status summaries</p></li>
+</ul>
+</section>
+</section>
+<section id="security-considerations">
+<h2>Security Considerations<a class="headerlink" href="#security-considerations" title="Link to this heading"></a></h2>
+<section id="access-control">
+<h3>Access Control<a class="headerlink" href="#access-control" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Authentication</strong>: All views require login</p></li>
+<li><p><strong>Authorization</strong>: Technicians can only edit their own forms</p></li>
+<li><p><strong>File Uploads</strong>: PDF files are validated for type and size</p></li>
+<li><p><strong>SQL Injection</strong>: Use Django ORM to prevent SQL injection</p></li>
+</ol>
+</section>
+<section id="data-validation">
+<h3>Data Validation<a class="headerlink" href="#data-validation" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Form Validation</strong>: Server-side validation for all inputs</p></li>
+<li><p><strong>File Validation</strong>: Size and type checking for uploads</p></li>
+<li><p><strong>Business Logic</strong>: Validation of inspection completion rules</p></li>
+</ol>
+</section>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h2>
+<section id="common-issues">
+<h3>Common Issues<a class="headerlink" href="#common-issues" title="Link to this heading"></a></h3>
+<section id="form-not-saving">
+<h4>Form Not Saving<a class="headerlink" href="#form-not-saving" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Check form validation errors</p></li>
+<li><p>Ensure all required fields are filled</p></li>
+<li><p>Verify user permissions</p></li>
+</ul>
+</section>
+<section id="progress-not-updating">
+<h4>Progress Not Updating<a class="headerlink" href="#progress-not-updating" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Check that fields are being saved properly</p></li>
+<li><p>Verify <code class="docutils literal notranslate"><span class="pre">total_points_checked</span></code> calculation</p></li>
+<li><p>Ensure model <code class="docutils literal notranslate"><span class="pre">save()</span></code> method is called</p></li>
+</ul>
+</section>
+<section id="template-errors">
+<h4>Template Errors<a class="headerlink" href="#template-errors" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Verify custom template filters are loaded</p></li>
+<li><p>Check template inheritance</p></li>
+<li><p>Ensure static files are properly configured</p></li>
+</ul>
+</section>
+<section id="file-upload-issues">
+<h4>File Upload Issues<a class="headerlink" href="#file-upload-issues" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Check file size limits</p></li>
+<li><p>Verify file type validation</p></li>
+<li><p>Ensure proper media configuration</p></li>
+</ul>
+</section>
+</section>
+<section id="debug-commands">
+<h3>Debug Commands<a class="headerlink" href="#debug-commands" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check model integrity</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>shell
+&gt;&gt;&gt;<span class="w"> </span>from<span class="w"> </span>maintenance_history.models<span class="w"> </span>import<span class="w"> </span>Inspections
+&gt;&gt;&gt;<span class="w"> </span>Inspections.objects.filter<span class="o">(</span><span class="nv">is_completed</span><span class="o">=</span>True<span class="o">)</span>.count<span class="o">()</span>
+
+<span class="c1"># Validate forms</span>
+&gt;&gt;&gt;<span class="w"> </span>from<span class="w"> </span>maintenance_history.forms<span class="w"> </span>import<span class="w"> </span>InspectionForm
+&gt;&gt;&gt;<span class="w"> </span><span class="nv">form</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>InspectionForm<span class="o">(</span><span class="nv">data</span><span class="o">={})</span>
+&gt;&gt;&gt;<span class="w"> </span>form.is_valid<span class="o">()</span>
+&gt;&gt;&gt;<span class="w"> </span>form.errors
+
+<span class="c1"># Check template rendering</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>collectstatic
+python<span class="w"> </span>manage.py<span class="w"> </span>runserver<span class="w"> </span>--debug
+</pre></div>
+</div>
+</section>
+</section>
+<section id="future-enhancements">
+<h2>Future Enhancements<a class="headerlink" href="#future-enhancements" title="Link to this heading"></a></h2>
+<section id="planned-features">
+<h3>Planned Features<a class="headerlink" href="#planned-features" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>PDF Report Generation</strong>: Automatic PDF generation of completed inspections</p></li>
+<li><p><strong>Email Notifications</strong>: Notify supervisors of completed inspections</p></li>
+<li><p><strong>Mobile App</strong>: Native mobile app for field inspections</p></li>
+<li><p><strong>Photo Attachments</strong>: Allow photos for each inspection point</p></li>
+<li><p><strong>Digital Signatures</strong>: Electronic signatures for completed inspections</p></li>
+<li><p><strong>Integration</strong>: API integration with external inspection systems</p></li>
+</ol>
+</section>
+<section id="api-development">
+<h3>API Development<a class="headerlink" href="#api-development" title="Link to this heading"></a></h3>
+<p>Consider developing REST API endpoints for:</p>
+<ul class="simple">
+<li><p>Mobile app integration</p></li>
+<li><p>Third-party system integration</p></li>
+<li><p>Automated reporting</p></li>
+<li><p>Data export/import</p></li>
+</ul>
+</section>
+</section>
+<section id="support">
+<h2>Support<a class="headerlink" href="#support" title="Link to this heading"></a></h2>
+<p>For technical support or questions:</p>
+<ol class="arabic simple">
+<li><p>Check this documentation first</p></li>
+<li><p>Review Django logs for errors</p></li>
+<li><p>Use Django admin for data inspection</p></li>
+<li><p>Contact system administrator</p></li>
+</ol>
+</section>
+<section id="version-history">
+<h2>Version History<a class="headerlink" href="#version-history" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>v1.0</strong> - Initial implementation with 50-point checklist</p></li>
+<li><p><strong>v1.1</strong> - Added admin interface and bulk operations</p></li>
+<li><p><strong>v1.2</strong> - Enhanced templates and user experience</p></li>
+<li><p><strong>v1.3</strong> - Added progress tracking and issue detection</p></li>
+</ul>
+<hr class="docutils" />
+<p><em>Last updated: [Current Date]</em>
+<em>Documentation version: 1.3</em></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../inspections.html" class="btn btn-neutral float-left" title="Inspections and Assessments" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Initial_Inspections_System.html" class="btn btn-neutral float-right" title="Initial Inspections System Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Menzi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

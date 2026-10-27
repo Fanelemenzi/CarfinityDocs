@@ -1,0 +1,470 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inspection Workflow Demonstration &mdash; Carfinity 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Insurance and Repair Quotes" href="../insurance-and-quotes.html" />
+    <link rel="prev" title="Vehicle Assessment System Implementation Guide" href="ASSESSMENT_IMPLEMENTATION_GUIDE.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Carfinity
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Start Here</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../administration.html">Administration and Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vehicle-care.html">Vehicle Care and Maintenance</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../inspections.html">Inspections and Assessments</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Inspection_System_Documentation.html">Vehicle Inspection System Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Initial_Inspections_System.html">Initial Inspections System Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Vehicle_Inspection_Scoring_System.html">Vehicle Inspection Scoring System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SecondHand_Vehicle_160_Point_Inspection.html">160-Point Vehicle Inspection Checklist (Second-Hand Vehicles)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Quarterly_Vehicle_Health_Checklist.html">Quarterly Vehicle Health Inspection Checklist (50-Point)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inspection-pdf-system.html">Inspection PDF Attachment System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ASSESSMENT_IMPLEMENTATION_GUIDE.html">Vehicle Assessment System Implementation Guide</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Inspection Workflow Demonstration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#workflow-steps">Workflow Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#start-new-inspection">1. Start New Inspection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fill-out-50-point-inspection-form">2. Fill Out 50-Point Inspection Form</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#automatic-health-index-calculation">3. Automatic Health Index Calculation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#health-index-calculation-logic">Health Index Calculation Logic</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#weighting-system">Weighting System</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scoring-algorithm">Scoring Algorithm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#health-index-categories">Health Index Categories</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#inspection-result-determination">Inspection Result Determination</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#example-scenarios">Example Scenarios</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#scenario-1-excellent-vehicle">Scenario 1: Excellent Vehicle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scenario-2-critical-brake-failure">Scenario 2: Critical Brake Failure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scenario-3-multiple-minor-issues">Scenario 3: Multiple Minor Issues</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#automatic-recommendations">Automatic Recommendations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#benefits-of-this-approach">Benefits of This Approach</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#for-technicians">For Technicians</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#for-management">For Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#for-vehicle-owners">For Vehicle Owners</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#technical-implementation">Technical Implementation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../insurance-and-quotes.html">Insurance and Repair Quotes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../technical-reference.html">Technical Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project-history.html">Project History and Implementation Notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Carfinity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../inspections.html">Inspections and Assessments</a></li>
+      <li class="breadcrumb-item active">Inspection Workflow Demonstration</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/WORKFLOW_DEMONSTRATION.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="inspection-workflow-demonstration">
+<h1>Inspection Workflow Demonstration<a class="headerlink" href="#inspection-workflow-demonstration" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The inspection workflow has been successfully implemented to allow technicians to fill out inspection forms first, then automatically calculate the vehicle health index based on their results.</p>
+</section>
+<section id="workflow-steps">
+<h2>Workflow Steps<a class="headerlink" href="#workflow-steps" title="Link to this heading"></a></h2>
+<section id="start-new-inspection">
+<h3>1. Start New Inspection<a class="headerlink" href="#start-new-inspection" title="Link to this heading"></a></h3>
+<p><strong>URL</strong>: <code class="docutils literal notranslate"><span class="pre">/maintenance/inspections/start/</span></code></p>
+<p>Technician fills out basic information:</p>
+<ul class="simple">
+<li><p>Vehicle (VIN selection)</p></li>
+<li><p>Inspection year</p></li>
+<li><p>Inspection date</p></li>
+</ul>
+<p><strong>Code Example</strong> (from <code class="docutils literal notranslate"><span class="pre">StartInspectionWorkflowView</span></code>):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">form_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">form</span><span class="p">):</span>
+    <span class="c1"># Generate unique inspection number</span>
+    <span class="n">form</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">inspection_number</span> <span class="o">=</span> <span class="n">generate_inspection_number</span><span class="p">()</span>
+    
+    <span class="c1"># Set default values (will be updated by form)</span>
+    <span class="n">form</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">inspection_result</span> <span class="o">=</span> <span class="s1">'FAI'</span>  <span class="c1"># Default to Failed</span>
+    <span class="n">form</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">vehicle_health_index</span> <span class="o">=</span> <span class="s1">'Pending Assessment'</span>
+    
+    <span class="c1"># Save and redirect to form</span>
+    <span class="n">inspection</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="sa">f</span><span class="s1">'/maintenance/inspection-forms/create/?inspection_id=</span><span class="si">{</span><span class="n">inspection</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="fill-out-50-point-inspection-form">
+<h3>2. Fill Out 50-Point Inspection Form<a class="headerlink" href="#fill-out-50-point-inspection-form" title="Link to this heading"></a></h3>
+<p><strong>URL</strong>: <code class="docutils literal notranslate"><span class="pre">/maintenance/inspection-forms/create/?inspection_id=X</span></code></p>
+<p>Technician completes detailed checklist organized by categories:</p>
+<section id="engine-powertrain-10-points">
+<h4>Engine &amp; Powertrain (10 points)<a class="headerlink" href="#engine-powertrain-10-points" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Engine oil level &amp; quality</p></li>
+<li><p>Oil filter condition</p></li>
+<li><p>Coolant level &amp; leaks</p></li>
+<li><p>Drive belts for cracks/wear</p></li>
+<li><p>Hoses for leaks or soft spots</p></li>
+<li><p>Air filter condition</p></li>
+<li><p>Cabin air filter condition</p></li>
+<li><p>Transmission fluid level &amp; leaks</p></li>
+<li><p>Engine/transmission mounts</p></li>
+<li><p>Fluid leaks under engine &amp; gearbox</p></li>
+</ul>
+</section>
+<section id="brakes-suspension-7-points">
+<h4>Brakes &amp; Suspension (7 points)<a class="headerlink" href="#brakes-suspension-7-points" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Brake pads/shoes thickness</p></li>
+<li><p>Brake discs/drums damage/warping</p></li>
+<li><p>Brake fluid level &amp; condition</p></li>
+<li><p>Parking brake function</p></li>
+<li><p>Shocks/struts for leaks</p></li>
+<li><p>Suspension bushings &amp; joints</p></li>
+<li><p>Wheel bearings for noise/play</p></li>
+</ul>
+</section>
+<section id="safety-equipment-5-points">
+<h4>Safety Equipment (5 points)<a class="headerlink" href="#safety-equipment-5-points" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Seat belts operation &amp; condition</p></li>
+<li><p>Airbags (warning light off)</p></li>
+<li><p>Horn function</p></li>
+<li><p>First-aid kit contents</p></li>
+<li><p>Warning triangle/reflective vest present</p></li>
+</ul>
+<p><em>…and 28 more inspection points across all vehicle systems</em></p>
+<p>Each point can be marked as:</p>
+<ul class="simple">
+<li><p><strong>Pass</strong> - Component is in good condition</p></li>
+<li><p><strong>Minor</strong> - Minor issue that should be addressed</p></li>
+<li><p><strong>Major</strong> - Major issue requiring attention</p></li>
+<li><p><strong>Fail</strong> - Component has failed and needs immediate repair</p></li>
+<li><p><strong>N/A</strong> - Not applicable to this vehicle</p></li>
+</ul>
+</section>
+</section>
+<section id="automatic-health-index-calculation">
+<h3>3. Automatic Health Index Calculation<a class="headerlink" href="#automatic-health-index-calculation" title="Link to this heading"></a></h3>
+<p>When the form is marked as completed, the system automatically:</p>
+<p><strong>Code Example</strong> (from <code class="docutils literal notranslate"><span class="pre">Inspections.save()</span></code> method):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="c1"># Set completion timestamp when form is marked as completed</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_completed</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">completed_at</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">completed_at</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        
+    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    
+    <span class="c1"># Auto-update the related Inspection record with calculated health index</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_completed</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_inspection_record</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_update_inspection_record</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Update the related Inspection record with calculated health index and result"""</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">calculate_vehicle_health_index</span>
+    
+    <span class="n">health_index</span><span class="p">,</span> <span class="n">inspection_result</span> <span class="o">=</span> <span class="n">calculate_vehicle_health_index</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+    
+    <span class="c1"># Update the related Inspection record</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">inspection</span><span class="o">.</span><span class="n">vehicle_health_index</span> <span class="o">=</span> <span class="n">health_index</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">inspection</span><span class="o">.</span><span class="n">inspection_result</span> <span class="o">=</span> <span class="n">inspection_result</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">inspection</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">update_fields</span><span class="o">=</span><span class="p">[</span><span class="s1">'vehicle_health_index'</span><span class="p">,</span> <span class="s1">'inspection_result'</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="health-index-calculation-logic">
+<h2>Health Index Calculation Logic<a class="headerlink" href="#health-index-calculation-logic" title="Link to this heading"></a></h2>
+<p>The system uses a sophisticated weighted scoring algorithm:</p>
+<section id="weighting-system">
+<h3>Weighting System<a class="headerlink" href="#weighting-system" title="Link to this heading"></a></h3>
+<p><strong>Critical Systems</strong> (High Weight 6-10 points):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">critical_systems</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'brake_pads'</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>      <span class="c1"># Most critical</span>
+    <span class="s1">'brake_discs'</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>     <span class="c1"># Most critical</span>
+    <span class="s1">'brake_fluid'</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>      <span class="c1"># Very important</span>
+    <span class="s1">'tire_tread_depth'</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span> <span class="c1"># Safety critical</span>
+    <span class="s1">'tire_pressure'</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>    <span class="c1"># Important for safety</span>
+    <span class="s1">'headlights'</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>       <span class="c1"># Visibility critical</span>
+    <span class="s1">'brake_lights'</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>     <span class="c1"># Safety signaling</span>
+    <span class="s1">'seat_belts'</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>       <span class="c1"># Passenger safety</span>
+    <span class="s1">'steering_response'</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span> <span class="c1"># Control critical</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Important Systems</strong> (Medium Weight 3-6 points):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">important_systems</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'engine_oil_level'</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+    <span class="s1">'coolant_level'</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="s1">'battery_voltage'</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="s1">'alternator_output'</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="s1">'transmission_fluid'</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="s1">'exhaust_system'</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="s1">'air_filter'</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="s1">'wiper_blades'</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Minor Systems</strong> (Low Weight 1-2 points):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">minor_systems</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'cabin_air_filter'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s1">'interior_lights'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s1">'infotainment_system'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s1">'rear_view_camera'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s1">'air_conditioning'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s1">'power_windows'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="scoring-algorithm">
+<h3>Scoring Algorithm<a class="headerlink" href="#scoring-algorithm" title="Link to this heading"></a></h3>
+<p>For each inspected component:</p>
+<ul class="simple">
+<li><p><strong>Pass</strong>: 100% of weight value</p></li>
+<li><p><strong>Minor Issue</strong>: 70% of weight value</p></li>
+<li><p><strong>Major Issue</strong>: 30% of weight value</p></li>
+<li><p><strong>Fail</strong>: 0% of weight value</p></li>
+<li><p><strong>N/A</strong>: Excluded from calculation</p></li>
+</ul>
+<p><strong>Example Calculation</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># If brake_pads (weight=10) is marked as 'minor':</span>
+<span class="n">actual_score</span> <span class="o">+=</span> <span class="mi">10</span> <span class="o">*</span> <span class="mf">0.7</span>  <span class="c1"># = 7 points out of 10 possible</span>
+</pre></div>
+</div>
+</section>
+<section id="health-index-categories">
+<h3>Health Index Categories<a class="headerlink" href="#health-index-categories" title="Link to this heading"></a></h3>
+<p>Final percentage determines health category:</p>
+<ul class="simple">
+<li><p><strong>Excellent (90-100%)</strong>: Vehicle in outstanding condition</p></li>
+<li><p><strong>Good (80-89%)</strong>: Vehicle in good condition with minor maintenance needs</p></li>
+<li><p><strong>Fair (70-79%)</strong>: Vehicle needs attention but is serviceable</p></li>
+<li><p><strong>Poor (60-69%)</strong>: Vehicle has significant issues requiring maintenance</p></li>
+<li><p><strong>Critical (&lt;60%)</strong>: Vehicle has serious problems requiring immediate attention</p></li>
+</ul>
+</section>
+<section id="inspection-result-determination">
+<h3>Inspection Result Determination<a class="headerlink" href="#inspection-result-determination" title="Link to this heading"></a></h3>
+<p>Based on health percentage and critical failures:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">_determine_inspection_result</span><span class="p">(</span><span class="n">health_percentage</span><span class="p">,</span> <span class="n">major_failures</span><span class="p">,</span> <span class="n">minor_failures</span><span class="p">,</span> <span class="n">critical_systems</span><span class="p">,</span> <span class="n">inspection_form</span><span class="p">):</span>
+    <span class="c1"># Check for critical system failures</span>
+    <span class="n">critical_failures</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="n">critical_systems</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">field_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">inspection_form</span><span class="p">,</span> <span class="n">field_name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">field_value</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'fail'</span><span class="p">,</span> <span class="s1">'major'</span><span class="p">]:</span>
+            <span class="n">critical_failures</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">field_name</span><span class="p">)</span>
+    
+    <span class="c1"># Determine result</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">critical_failures</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">critical_failures</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">3</span> <span class="ow">or</span> <span class="n">health_percentage</span> <span class="o">&lt;</span> <span class="mi">50</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">"FAI"</span>  <span class="c1"># Failed</span>
+        <span class="k">elif</span> <span class="nb">any</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">inspection_form</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="o">==</span> <span class="s1">'fail'</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">critical_failures</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">"FJD"</span>  <span class="c1"># Failed due to major Defects</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">"FMD"</span>  <span class="c1"># Failed due to minor Defects</span>
+    
+    <span class="c1"># No critical failures - determine pass level</span>
+    <span class="k">if</span> <span class="n">major_failures</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">minor_failures</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">"PAS"</span>  <span class="c1"># Passed</span>
+    <span class="k">elif</span> <span class="n">major_failures</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">minor_failures</span> <span class="o">&lt;=</span> <span class="mi">5</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">"PMD"</span>  <span class="c1"># Passed with minor Defects</span>
+    <span class="k">elif</span> <span class="n">major_failures</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">"PJD"</span>  <span class="c1"># Passed with major Defects</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">"FMD"</span>  <span class="c1"># Failed due to minor Defects</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="example-scenarios">
+<h2>Example Scenarios<a class="headerlink" href="#example-scenarios" title="Link to this heading"></a></h2>
+<section id="scenario-1-excellent-vehicle">
+<h3>Scenario 1: Excellent Vehicle<a class="headerlink" href="#scenario-1-excellent-vehicle" title="Link to this heading"></a></h3>
+<p><strong>Input</strong>: All critical systems pass, minor issues with cabin air filter
+<strong>Calculation</strong>:</p>
+<ul class="simple">
+<li><p>Critical systems: 100% score</p></li>
+<li><p>Minor systems: 70% score for cabin air filter</p></li>
+<li><p><strong>Result</strong>: Health Index “Excellent (95%)”, Inspection Result “PMD”</p></li>
+</ul>
+</section>
+<section id="scenario-2-critical-brake-failure">
+<h3>Scenario 2: Critical Brake Failure<a class="headerlink" href="#scenario-2-critical-brake-failure" title="Link to this heading"></a></h3>
+<p><strong>Input</strong>: Brake pads failed, brake discs major issue, everything else passes
+<strong>Calculation</strong>:</p>
+<ul class="simple">
+<li><p>Brake pads: 0 points (failed)</p></li>
+<li><p>Brake discs: 3 points (30% of 10)</p></li>
+<li><p>Other systems: Full points</p></li>
+<li><p><strong>Result</strong>: Health Index “Poor (65%)”, Inspection Result “FJD”</p></li>
+</ul>
+</section>
+<section id="scenario-3-multiple-minor-issues">
+<h3>Scenario 3: Multiple Minor Issues<a class="headerlink" href="#scenario-3-multiple-minor-issues" title="Link to this heading"></a></h3>
+<p><strong>Input</strong>: 6 minor issues across various systems, no major failures
+<strong>Calculation</strong>:</p>
+<ul class="simple">
+<li><p>All systems get 70% of their weight</p></li>
+<li><p><strong>Result</strong>: Health Index “Good (85%)”, Inspection Result “PMD”</p></li>
+</ul>
+</section>
+</section>
+<section id="automatic-recommendations">
+<h2>Automatic Recommendations<a class="headerlink" href="#automatic-recommendations" title="Link to this heading"></a></h2>
+<p>The system generates maintenance recommendations based on failed points:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">recommendation_map</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'brake_pads'</span><span class="p">:</span> <span class="s2">"Replace brake pads immediately - critical safety issue"</span><span class="p">,</span>
+    <span class="s1">'brake_discs'</span><span class="p">:</span> <span class="s2">"Inspect and potentially replace brake discs"</span><span class="p">,</span>
+    <span class="s1">'tire_tread_depth'</span><span class="p">:</span> <span class="s2">"Replace tires - insufficient tread depth"</span><span class="p">,</span>
+    <span class="s1">'engine_oil_level'</span><span class="p">:</span> <span class="s2">"Change engine oil and filter"</span><span class="p">,</span>
+    <span class="s1">'battery_voltage'</span><span class="p">:</span> <span class="s2">"Test and potentially replace battery"</span><span class="p">,</span>
+    <span class="c1"># ... more mappings</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Example Output</strong>:</p>
+<ul class="simple">
+<li><p>“URGENT: Replace brake pads immediately - critical safety issue”</p></li>
+<li><p>“Replace air filter”</p></li>
+<li><p>“Top up coolant and check for leaks”</p></li>
+<li><p>“Schedule comprehensive vehicle service due to multiple issues”</p></li>
+</ul>
+</section>
+<section id="benefits-of-this-approach">
+<h2>Benefits of This Approach<a class="headerlink" href="#benefits-of-this-approach" title="Link to this heading"></a></h2>
+<section id="for-technicians">
+<h3>For Technicians<a class="headerlink" href="#for-technicians" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Structured Process</strong>: Clear, logical workflow</p></li>
+<li><p><strong>No Manual Calculations</strong>: System handles complex scoring</p></li>
+<li><p><strong>Immediate Feedback</strong>: See results as soon as form is completed</p></li>
+<li><p><strong>Comprehensive Coverage</strong>: All 50 points ensure nothing is missed</p></li>
+<li><p><strong>Professional Results</strong>: Consistent, standardized output</p></li>
+</ol>
+</section>
+<section id="for-management">
+<h3>For Management<a class="headerlink" href="#for-management" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Standardized Assessments</strong>: Same criteria applied to all vehicles</p></li>
+<li><p><strong>Objective Scoring</strong>: Removes subjective interpretation</p></li>
+<li><p><strong>Detailed Records</strong>: Complete audit trail of all inspections</p></li>
+<li><p><strong>Automatic Recommendations</strong>: System suggests next steps</p></li>
+<li><p><strong>Quality Assurance</strong>: Ensures critical systems are always checked</p></li>
+</ol>
+</section>
+<section id="for-vehicle-owners">
+<h3>For Vehicle Owners<a class="headerlink" href="#for-vehicle-owners" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Transparent Results</strong>: Clear health index and explanation</p></li>
+<li><p><strong>Prioritized Maintenance</strong>: Know what needs attention first</p></li>
+<li><p><strong>Professional Assessment</strong>: Comprehensive 50-point evaluation</p></li>
+<li><p><strong>Documentation</strong>: Official inspection record with PDF support</p></li>
+<li><p><strong>Peace of Mind</strong>: Thorough evaluation of vehicle safety and condition</p></li>
+</ol>
+</section>
+</section>
+<section id="technical-implementation">
+<h2>Technical Implementation<a class="headerlink" href="#technical-implementation" title="Link to this heading"></a></h2>
+<p>The workflow is implemented using Django’s robust framework:</p>
+<ul class="simple">
+<li><p><strong>Models</strong>: Proper database relationships and validation</p></li>
+<li><p><strong>Views</strong>: Class-based views for maintainable code</p></li>
+<li><p><strong>Forms</strong>: Comprehensive validation and user experience</p></li>
+<li><p><strong>Templates</strong>: Professional, responsive user interface</p></li>
+<li><p><strong>Utils</strong>: Reusable calculation and recommendation logic</p></li>
+<li><p><strong>URLs</strong>: RESTful routing structure</p></li>
+</ul>
+<p>This implementation provides a professional-grade vehicle inspection system that ensures consistent, thorough evaluations while automating the complex task of health index calculation.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ASSESSMENT_IMPLEMENTATION_GUIDE.html" class="btn btn-neutral float-left" title="Vehicle Assessment System Implementation Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../insurance-and-quotes.html" class="btn btn-neutral float-right" title="Insurance and Repair Quotes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Menzi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

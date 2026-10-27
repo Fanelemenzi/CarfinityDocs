@@ -1,0 +1,1065 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Parts-Based Quote System - Build Guide &mdash; Carfinity 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Insurance Assessment Repair Cost Calculation System" href="repair-cost-calculation-system.html" />
+    <link rel="prev" title="Parts-Based Repair Quotation System" href="parts_based_quote_system.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Carfinity
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Start Here</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../administration.html">Administration and Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vehicle-care.html">Vehicle Care and Maintenance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../inspections.html">Inspections and Assessments</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../insurance-and-quotes.html">Insurance and Repair Quotes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="insurance_claims_dashboard.html">Insurance Claims Agent Dashboard Specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="new_assessment_dashboard.html">Insurance Claims Assessment Dashboard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Insurance-risk-assessment-implementation.html">Insurance Risk Assessment Platform - Implementation Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Parts-Based-Quote-System-Workflow-Guide.html">Parts-Based Quote System - Complete Workflow Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parts_based_quote_system.html">Parts-Based Repair Quotation System</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Parts-Based Quote System - Build Guide</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#table-of-contents">Table of Contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#system-architecture">System Architecture</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#core-components">Core Components</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#key-features">Key Features</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#system-requirements">System Requirements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#external-services">External Services</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#installation-steps">Installation Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#clone-and-setup-environment">1. Clone and Setup Environment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#environment-configuration">2. Environment Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#install-quote-system-components">3. Install Quote System Components</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#database-setup">Database Setup</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#create-database-schema">1. Create Database Schema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#initialize-quote-system-configuration">2. Initialize Quote System Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setup-provider-configurations">3. Setup Provider Configurations</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration">Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#system-settings">1. System Settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#provider-settings">2. Provider Settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#django-settings">3. Django Settings</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#testing">Testing</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#run-unit-tests">1. Run Unit Tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#integration-testing">2. Integration Testing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#manual-testing">3. Manual Testing</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#deployment">Deployment</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#production-environment-setup">1. Production Environment Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#web-server-configuration">2. Web Server Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#background-tasks-setup">3. Background Tasks Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#health-monitoring-setup">4. Health Monitoring Setup</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#monitoring-maintenance">Monitoring &amp; Maintenance</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#system-health-monitoring">1. System Health Monitoring</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#log-management">2. Log Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#database-maintenance">3. Database Maintenance</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#common-issues">Common Issues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#performance-issues">Performance Issues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api-integration-issues">API Integration Issues</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#security-considerations">Security Considerations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#api-security">1. API Security</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#data-protection">2. Data Protection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#access-control">3. Access Control</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#backup-and-recovery">Backup and Recovery</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#database-backup">1. Database Backup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-backup">2. Configuration Backup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#recovery-procedures">3. Recovery Procedures</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="repair-cost-calculation-system.html">Insurance Assessment Repair Cost Calculation System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="repair-quotes-comparison-system.html">Repair Quotes Comparison System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="settlement-calculator-system.html">Settlement Calculator System</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../technical-reference.html">Technical Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project-history.html">Project History and Implementation Notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Carfinity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../insurance-and-quotes.html">Insurance and Repair Quotes</a></li>
+      <li class="breadcrumb-item active">Parts-Based Quote System - Build Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/Parts-Based-Quote-System-Build-Guide.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="parts-based-quote-system-build-guide">
+<h1>Parts-Based Quote System - Build Guide<a class="headerlink" href="#parts-based-quote-system-build-guide" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The Parts-Based Quote System is a comprehensive solution that replaces static hardcoded cost estimates with a dynamic, multi-provider quote collection system. This guide provides step-by-step instructions for building, deploying, and configuring the system.</p>
+</section>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#system-architecture">System Architecture</a></p></li>
+<li><p><a class="reference internal" href="#prerequisites">Prerequisites</a></p></li>
+<li><p><a class="reference internal" href="#installation-steps">Installation Steps</a></p></li>
+<li><p><a class="reference internal" href="#database-setup">Database Setup</a></p></li>
+<li><p><a class="reference internal" href="#configuration">Configuration</a></p></li>
+<li><p><a class="reference internal" href="#testing">Testing</a></p></li>
+<li><p><a class="reference internal" href="#deployment">Deployment</a></p></li>
+<li><p><a class="reference internal" href="#monitoring-maintenance">Monitoring &amp; Maintenance</a></p></li>
+<li><p><a class="reference internal" href="#troubleshooting">Troubleshooting</a></p></li>
+</ol>
+</section>
+<section id="system-architecture">
+<h2>System Architecture<a class="headerlink" href="#system-architecture" title="Link to this heading"></a></h2>
+<section id="core-components">
+<h3>Core Components<a class="headerlink" href="#core-components" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>┌─────────────────────────────────────────────────────────────┐
+│                    Parts-Based Quote System                  │
+├─────────────────────────────────────────────────────────────┤
+│  Frontend Layer                                             │
+│  ├── Parts Review Interface                                 │
+│  ├── Quote Request Dispatch                                 │
+│  ├── Quote Comparison &amp; Summary                             │
+│  └── Admin Dashboard                                        │
+├─────────────────────────────────────────────────────────────┤
+│  Business Logic Layer                                       │
+│  ├── Parts Identification Engine                            │
+│  ├── Quote Request Manager                                  │
+│  ├── Market Average Calculator                              │
+│  ├── Recommendation Engine                                  │
+│  └── Provider Integration Framework                         │
+├─────────────────────────────────────────────────────────────┤
+│  Data Layer                                                 │
+│  ├── Quote System Models                                    │
+│  ├── Configuration Management                               │
+│  ├── Audit Logging                                          │
+│  └── Health Monitoring                                      │
+├─────────────────────────────────────────────────────────────┤
+│  External Integrations                                      │
+│  ├── Assessor Estimates (Internal)                          │
+│  ├── Authorized Dealers (API/Email)                         │
+│  ├── Independent Garages (Platform)                         │
+│  └── Insurance Networks (API)                               │
+└─────────────────────────────────────────────────────────────┘
+</pre></div>
+</div>
+</section>
+<section id="key-features">
+<h3>Key Features<a class="headerlink" href="#key-features" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Automated Parts Identification</strong>: Scans completed assessments to identify damaged parts</p></li>
+<li><p><strong>Multi-Provider Quote Collection</strong>: Supports 4 provider types with different integration methods</p></li>
+<li><p><strong>Market Analysis</strong>: Calculates statistical averages and identifies outliers</p></li>
+<li><p><strong>Intelligent Recommendations</strong>: AI-powered provider selection based on multiple criteria</p></li>
+<li><p><strong>Comprehensive Admin Interface</strong>: Full configuration and monitoring capabilities</p></li>
+<li><p><strong>Audit Trail</strong>: Complete logging of all system operations</p></li>
+<li><p><strong>Health Monitoring</strong>: Real-time system performance tracking</p></li>
+</ul>
+</section>
+</section>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading"></a></h2>
+<section id="system-requirements">
+<h3>System Requirements<a class="headerlink" href="#system-requirements" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Python</strong>: 3.8+</p></li>
+<li><p><strong>Django</strong>: 4.2+</p></li>
+<li><p><strong>Database</strong>: PostgreSQL 12+ (recommended) or SQLite for development</p></li>
+<li><p><strong>Redis</strong>: 6.0+ (for caching and background tasks)</p></li>
+<li><p><strong>Node.js</strong>: 16+ (for frontend asset compilation)</p></li>
+</ul>
+</section>
+<section id="dependencies">
+<h3>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Core Django packages</span>
+Django&gt;<span class="o">=</span><span class="m">4</span>.2.0
+djangorestframework&gt;<span class="o">=</span><span class="m">3</span>.14.0
+django-cors-headers&gt;<span class="o">=</span><span class="m">4</span>.0.0
+
+<span class="c1"># Database</span>
+psycopg2-binary&gt;<span class="o">=</span><span class="m">2</span>.9.0<span class="w">  </span><span class="c1"># PostgreSQL</span>
+django-redis&gt;<span class="o">=</span><span class="m">5</span>.2.0<span class="w">     </span><span class="c1"># Redis caching</span>
+
+<span class="c1"># Background tasks</span>
+celery&gt;<span class="o">=</span><span class="m">5</span>.2.0
+django-celery-beat&gt;<span class="o">=</span><span class="m">2</span>.4.0
+
+<span class="c1"># API documentation</span>
+drf-spectacular&gt;<span class="o">=</span><span class="m">0</span>.26.0
+
+<span class="c1"># Utilities</span>
+python-decouple&gt;<span class="o">=</span><span class="m">3</span>.6
+Pillow&gt;<span class="o">=</span><span class="m">9</span>.0.0
+</pre></div>
+</div>
+</section>
+<section id="external-services">
+<h3>External Services<a class="headerlink" href="#external-services" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Email Service</strong>: SMTP server for email-based quote requests</p></li>
+<li><p><strong>API Keys</strong>: For external provider integrations</p></li>
+<li><p><strong>Monitoring</strong>: Optional APM service (e.g., Sentry, New Relic)</p></li>
+</ul>
+</section>
+</section>
+<section id="installation-steps">
+<h2>Installation Steps<a class="headerlink" href="#installation-steps" title="Link to this heading"></a></h2>
+<section id="clone-and-setup-environment">
+<h3>1. Clone and Setup Environment<a class="headerlink" href="#clone-and-setup-environment" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Clone the repository</span>
+git<span class="w"> </span>clone<span class="w"> </span>&lt;repository-url&gt;
+<span class="nb">cd</span><span class="w"> </span>&lt;project-directory&gt;
+
+<span class="c1"># Create virtual environment</span>
+python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>venv
+<span class="nb">source</span><span class="w"> </span>venv/bin/activate<span class="w">  </span><span class="c1"># On Windows: venv\Scripts\activate</span>
+
+<span class="c1"># Install dependencies</span>
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+</pre></div>
+</div>
+</section>
+<section id="environment-configuration">
+<h3>2. Environment Configuration<a class="headerlink" href="#environment-configuration" title="Link to this heading"></a></h3>
+<p>Create a <code class="docutils literal notranslate"><span class="pre">.env</span></code> file in the project root:</p>
+<div class="highlight-env notranslate"><div class="highlight"><pre><span></span># Database Configuration
+DATABASE_URL=postgresql://user:password@localhost:5432/carfinity_db
+
+# Redis Configuration
+REDIS_URL=redis://localhost:6379/0
+
+# Email Configuration
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_USE_TLS=True
+EMAIL_HOST_USER=your-email@gmail.com
+EMAIL_HOST_PASSWORD=your-app-password
+
+# Quote System Configuration
+QUOTE_SYSTEM_DEBUG=True
+QUOTE_SYSTEM_LOG_LEVEL=INFO
+
+# External API Keys
+DEALER_API_KEY=your-dealer-api-key
+GARAGE_PLATFORM_API_KEY=your-garage-api-key
+INSURANCE_NETWORK_API_KEY=your-network-api-key
+
+# Security
+SECRET_KEY=your-secret-key
+DEBUG=False
+ALLOWED_HOSTS=localhost,127.0.0.1,your-domain.com
+</pre></div>
+</div>
+</section>
+<section id="install-quote-system-components">
+<h3>3. Install Quote System Components<a class="headerlink" href="#install-quote-system-components" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install the insurance app with quote system</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>collectstatic<span class="w"> </span>--noinput
+
+<span class="c1"># Install frontend dependencies</span>
+npm<span class="w"> </span>install
+
+<span class="c1"># Build frontend assets</span>
+npm<span class="w"> </span>run<span class="w"> </span>build
+</pre></div>
+</div>
+</section>
+</section>
+<section id="database-setup">
+<h2>Database Setup<a class="headerlink" href="#database-setup" title="Link to this heading"></a></h2>
+<section id="create-database-schema">
+<h3>1. Create Database Schema<a class="headerlink" href="#create-database-schema" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create initial migrations</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>makemigrations<span class="w"> </span>insurance_app
+python<span class="w"> </span>manage.py<span class="w"> </span>makemigrations<span class="w"> </span>assessments
+
+<span class="c1"># Apply migrations</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>migrate
+
+<span class="c1"># Create superuser</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>createsuperuser
+</pre></div>
+</div>
+</section>
+<section id="initialize-quote-system-configuration">
+<h3>2. Initialize Quote System Configuration<a class="headerlink" href="#initialize-quote-system-configuration" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize system configuration with defaults</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>configure_quote_system<span class="w"> </span>--reset-defaults<span class="w"> </span>--user<span class="w"> </span>admin
+
+<span class="c1"># Verify configuration</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>configure_quote_system<span class="w"> </span>--show-config
+</pre></div>
+</div>
+</section>
+<section id="setup-provider-configurations">
+<h3>3. Setup Provider Configurations<a class="headerlink" href="#setup-provider-configurations" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Configure assessor estimates (internal)</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>configure_quote_system<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--provider-type<span class="w"> </span>assessor<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--reliability-score<span class="w"> </span><span class="m">85</span>
+
+<span class="c1"># Configure dealer integration</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>configure_quote_system<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--provider-type<span class="w"> </span>dealer<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--api-endpoint<span class="w"> </span><span class="s2">"https://dealer-api.example.com/quotes"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--api-key<span class="w"> </span><span class="s2">"your-dealer-api-key"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--reliability-score<span class="w"> </span><span class="m">75</span>
+
+<span class="c1"># Configure independent garages</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>configure_quote_system<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--provider-type<span class="w"> </span>independent<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--api-endpoint<span class="w"> </span><span class="s2">"https://garage-platform.example.com/api"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--api-key<span class="w"> </span><span class="s2">"your-garage-api-key"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--reliability-score<span class="w"> </span><span class="m">70</span>
+
+<span class="c1"># Configure insurance network</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>configure_quote_system<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--provider-type<span class="w"> </span>network<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--api-endpoint<span class="w"> </span><span class="s2">"https://network-api.example.com/quotes"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--api-key<span class="w"> </span><span class="s2">"your-network-api-key"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--reliability-score<span class="w"> </span><span class="m">80</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<section id="system-settings">
+<h3>1. System Settings<a class="headerlink" href="#system-settings" title="Link to this heading"></a></h3>
+<p>Configure the quote system through Django admin or management commands:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set labor rate</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>configure_quote_system<span class="w"> </span>--labor-rate<span class="w"> </span><span class="m">45</span>.00
+
+<span class="c1"># Set quote expiry period</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>configure_quote_system<span class="w"> </span>--quote-expiry-days<span class="w"> </span><span class="m">7</span>
+
+<span class="c1"># Set confidence threshold</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>configure_quote_system<span class="w"> </span>--confidence-threshold<span class="w"> </span><span class="m">70</span>
+
+<span class="c1"># Configure recommendation weights</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>configure_quote_system<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--price-weight<span class="w"> </span><span class="m">0</span>.40<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--quality-weight<span class="w"> </span><span class="m">0</span>.25<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--timeline-weight<span class="w"> </span><span class="m">0</span>.15
+</pre></div>
+</div>
+</section>
+<section id="provider-settings">
+<h3>2. Provider Settings<a class="headerlink" href="#provider-settings" title="Link to this heading"></a></h3>
+<p>Enable/disable providers as needed:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Enable all providers</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>configure_quote_system<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--enable-assessor<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--enable-dealer<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--enable-independent<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--enable-network
+
+<span class="c1"># Disable specific provider</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>configure_quote_system<span class="w"> </span>--disable-dealer
+</pre></div>
+</div>
+</section>
+<section id="django-settings">
+<h3>3. Django Settings<a class="headerlink" href="#django-settings" title="Link to this heading"></a></h3>
+<p>Add to your <code class="docutils literal notranslate"><span class="pre">settings.py</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Quote System Configuration</span>
+<span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># ... existing apps</span>
+    <span class="s1">'insurance_app'</span><span class="p">,</span>
+    <span class="s1">'assessments'</span><span class="p">,</span>
+    <span class="s1">'rest_framework'</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="c1"># Logging Configuration</span>
+<span class="n">LOGGING</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'version'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s1">'disable_existing_loggers'</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">'handlers'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">'quote_system'</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">'level'</span><span class="p">:</span> <span class="s1">'INFO'</span><span class="p">,</span>
+            <span class="s1">'class'</span><span class="p">:</span> <span class="s1">'logging.FileHandler'</span><span class="p">,</span>
+            <span class="s1">'filename'</span><span class="p">:</span> <span class="s1">'logs/quote_system.log'</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+    <span class="s1">'loggers'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">'quote_system'</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">'handlers'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'quote_system'</span><span class="p">],</span>
+            <span class="s1">'level'</span><span class="p">:</span> <span class="s1">'INFO'</span><span class="p">,</span>
+            <span class="s1">'propagate'</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+
+<span class="c1"># Celery Configuration (for background tasks)</span>
+<span class="n">CELERY_BROKER_URL</span> <span class="o">=</span> <span class="s1">'redis://localhost:6379/0'</span>
+<span class="n">CELERY_RESULT_BACKEND</span> <span class="o">=</span> <span class="s1">'redis://localhost:6379/0'</span>
+<span class="n">CELERY_ACCEPT_CONTENT</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'json'</span><span class="p">]</span>
+<span class="n">CELERY_TASK_SERIALIZER</span> <span class="o">=</span> <span class="s1">'json'</span>
+<span class="n">CELERY_RESULT_SERIALIZER</span> <span class="o">=</span> <span class="s1">'json'</span>
+<span class="n">CELERY_TIMEZONE</span> <span class="o">=</span> <span class="s1">'UTC'</span>
+
+<span class="c1"># Quote System Specific Settings</span>
+<span class="n">QUOTE_SYSTEM_SETTINGS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'DEFAULT_LABOR_RATE'</span><span class="p">:</span> <span class="mf">45.00</span><span class="p">,</span>
+    <span class="s1">'DEFAULT_QUOTE_EXPIRY_DAYS'</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+    <span class="s1">'ENABLE_PERFORMANCE_LOGGING'</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s1">'ENABLE_HEALTH_MONITORING'</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s1">'LOG_RETENTION_DAYS'</span><span class="p">:</span> <span class="mi">90</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Link to this heading"></a></h2>
+<section id="run-unit-tests">
+<h3>1. Run Unit Tests<a class="headerlink" href="#run-unit-tests" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run all quote system tests</span>
+python<span class="w"> </span>manage.py<span class="w"> </span><span class="nb">test</span><span class="w"> </span>insurance_app.tests_*
+
+<span class="c1"># Run specific test modules</span>
+python<span class="w"> </span>manage.py<span class="w"> </span><span class="nb">test</span><span class="w"> </span>insurance_app.tests_parts_identification
+python<span class="w"> </span>manage.py<span class="w"> </span><span class="nb">test</span><span class="w"> </span>insurance_app.tests_quote_managers
+python<span class="w"> </span>manage.py<span class="w"> </span><span class="nb">test</span><span class="w"> </span>insurance_app.tests_market_analysis
+python<span class="w"> </span>manage.py<span class="w"> </span><span class="nb">test</span><span class="w"> </span>insurance_app.tests_recommendation_engine
+python<span class="w"> </span>manage.py<span class="w"> </span><span class="nb">test</span><span class="w"> </span>insurance_app.tests_api_views
+
+<span class="c1"># Run assessment integration tests</span>
+python<span class="w"> </span>manage.py<span class="w"> </span><span class="nb">test</span><span class="w"> </span>assessments.tests_parts_quote_integration
+python<span class="w"> </span>manage.py<span class="w"> </span><span class="nb">test</span><span class="w"> </span>assessments.tests_workflow_integration
+</pre></div>
+</div>
+</section>
+<section id="integration-testing">
+<h3>2. Integration Testing<a class="headerlink" href="#integration-testing" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Test quote collection workflow</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>test_quote_collection
+
+<span class="c1"># Test provider integrations</span>
+python<span class="w"> </span>manage.py<span class="w"> </span><span class="nb">test</span><span class="w"> </span>insurance_app.tests_provider_integrations
+
+<span class="c1"># Test API endpoints</span>
+python<span class="w"> </span>manage.py<span class="w"> </span><span class="nb">test</span><span class="w"> </span>insurance_app.tests_api_views
+</pre></div>
+</div>
+</section>
+<section id="manual-testing">
+<h3>3. Manual Testing<a class="headerlink" href="#manual-testing" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Create Test Assessment</strong>:</p>
+<ul class="simple">
+<li><p>Navigate to <code class="docutils literal notranslate"><span class="pre">/admin/assessments/vehicleassessment/</span></code></p></li>
+<li><p>Create a new assessment with damaged parts</p></li>
+</ul>
+</li>
+<li><p><strong>Test Parts Identification</strong>:</p>
+<ul class="simple">
+<li><p>Complete the assessment</p></li>
+<li><p>Verify parts are automatically identified</p></li>
+<li><p>Check parts in <code class="docutils literal notranslate"><span class="pre">/admin/insurance_app/damagedpart/</span></code></p></li>
+</ul>
+</li>
+<li><p><strong>Test Quote Request</strong>:</p>
+<ul class="simple">
+<li><p>Navigate to assessment detail page</p></li>
+<li><p>Click “Review Parts” button</p></li>
+<li><p>Select providers and dispatch quotes</p></li>
+</ul>
+</li>
+<li><p><strong>Test Market Analysis</strong>:</p>
+<ul class="simple">
+<li><p>Add multiple quotes for the same part</p></li>
+<li><p>Verify market averages are calculated</p></li>
+<li><p>Check for outlier detection</p></li>
+</ul>
+</li>
+<li><p><strong>Test Recommendations</strong>:</p>
+<ul class="simple">
+<li><p>Ensure multiple quotes exist</p></li>
+<li><p>Generate recommendations</p></li>
+<li><p>Verify recommendation logic</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+<section id="deployment">
+<h2>Deployment<a class="headerlink" href="#deployment" title="Link to this heading"></a></h2>
+<section id="production-environment-setup">
+<h3>1. Production Environment Setup<a class="headerlink" href="#production-environment-setup" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set production environment variables</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DEBUG</span><span class="o">=</span>False
+<span class="nb">export</span><span class="w"> </span><span class="nv">QUOTE_SYSTEM_DEBUG</span><span class="o">=</span>False
+<span class="nb">export</span><span class="w"> </span><span class="nv">DATABASE_URL</span><span class="o">=</span>postgresql://prod_user:password@prod_host:5432/prod_db
+
+<span class="c1"># Collect static files</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>collectstatic<span class="w"> </span>--noinput
+
+<span class="c1"># Apply migrations</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>migrate<span class="w"> </span>--no-input
+</pre></div>
+</div>
+</section>
+<section id="web-server-configuration">
+<h3>2. Web Server Configuration<a class="headerlink" href="#web-server-configuration" title="Link to this heading"></a></h3>
+<p><strong>Nginx Configuration</strong> (<code class="docutils literal notranslate"><span class="pre">/etc/nginx/sites-available/carfinity</span></code>):</p>
+<div class="highlight-nginx notranslate"><div class="highlight"><pre><span></span><span class="k">server</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kn">listen</span><span class="w"> </span><span class="mi">80</span><span class="p">;</span>
+<span class="w">    </span><span class="kn">server_name</span><span class="w"> </span><span class="s">your-domain.com</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/static/</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kn">alias</span><span class="w"> </span><span class="s">/path/to/your/project/staticfiles/</span><span class="p">;</span>
+<span class="w">        </span><span class="kn">expires</span><span class="w"> </span><span class="s">1y</span><span class="p">;</span>
+<span class="w">        </span><span class="kn">add_header</span><span class="w"> </span><span class="s">Cache-Control</span><span class="w"> </span><span class="s">"public,</span><span class="w"> </span><span class="s">immutable"</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/media/</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kn">alias</span><span class="w"> </span><span class="s">/path/to/your/project/media/</span><span class="p">;</span>
+<span class="w">        </span><span class="kn">expires</span><span class="w"> </span><span class="s">1y</span><span class="p">;</span>
+<span class="w">        </span><span class="kn">add_header</span><span class="w"> </span><span class="s">Cache-Control</span><span class="w"> </span><span class="s">"public"</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kn">proxy_pass</span><span class="w"> </span><span class="s">http://127.0.0.1:8000</span><span class="p">;</span>
+<span class="w">        </span><span class="kn">proxy_set_header</span><span class="w"> </span><span class="s">Host</span><span class="w"> </span><span class="nv">$host</span><span class="p">;</span>
+<span class="w">        </span><span class="kn">proxy_set_header</span><span class="w"> </span><span class="s">X-Real-IP</span><span class="w"> </span><span class="nv">$remote_addr</span><span class="p">;</span>
+<span class="w">        </span><span class="kn">proxy_set_header</span><span class="w"> </span><span class="s">X-Forwarded-For</span><span class="w"> </span><span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+<span class="w">        </span><span class="kn">proxy_set_header</span><span class="w"> </span><span class="s">X-Forwarded-Proto</span><span class="w"> </span><span class="nv">$scheme</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Gunicorn Configuration</strong> (<code class="docutils literal notranslate"><span class="pre">gunicorn.conf.py</span></code>):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">bind</span> <span class="o">=</span> <span class="s2">"127.0.0.1:8000"</span>
+<span class="n">workers</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">worker_class</span> <span class="o">=</span> <span class="s2">"sync"</span>
+<span class="n">worker_connections</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">max_requests</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">max_requests_jitter</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">timeout</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="n">keepalive</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">preload_app</span> <span class="o">=</span> <span class="kc">True</span>
+</pre></div>
+</div>
+</section>
+<section id="background-tasks-setup">
+<h3>3. Background Tasks Setup<a class="headerlink" href="#background-tasks-setup" title="Link to this heading"></a></h3>
+<p><strong>Celery Worker Configuration</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Start Celery worker</span>
+celery<span class="w"> </span>-A<span class="w"> </span>carfinity<span class="w"> </span>worker<span class="w"> </span>--loglevel<span class="o">=</span>info
+
+<span class="c1"># Start Celery beat (scheduler)</span>
+celery<span class="w"> </span>-A<span class="w"> </span>carfinity<span class="w"> </span>beat<span class="w"> </span>--loglevel<span class="o">=</span>info
+
+<span class="c1"># For production, use supervisor or systemd</span>
+</pre></div>
+</div>
+<p><strong>Systemd Service</strong> (<code class="docutils literal notranslate"><span class="pre">/etc/systemd/system/carfinity-celery.service</span></code>):</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[Unit]</span>
+<span class="na">Description</span><span class="o">=</span><span class="s">Carfinity Celery Worker</span>
+<span class="na">After</span><span class="o">=</span><span class="s">network.target</span>
+
+<span class="k">[Service]</span>
+<span class="na">Type</span><span class="o">=</span><span class="s">forking</span>
+<span class="na">User</span><span class="o">=</span><span class="s">www-data</span>
+<span class="na">Group</span><span class="o">=</span><span class="s">www-data</span>
+<span class="na">EnvironmentFile</span><span class="o">=</span><span class="s">/path/to/your/project/.env</span>
+<span class="na">WorkingDirectory</span><span class="o">=</span><span class="s">/path/to/your/project</span>
+<span class="na">ExecStart</span><span class="o">=</span><span class="s">/path/to/your/venv/bin/celery -A carfinity worker --detach --loglevel=info</span>
+<span class="na">ExecStop</span><span class="o">=</span><span class="s">/path/to/your/venv/bin/celery -A carfinity control shutdown</span>
+<span class="na">ExecReload</span><span class="o">=</span><span class="s">/bin/kill -s HUP $MAINPID</span>
+<span class="na">KillMode</span><span class="o">=</span><span class="s">mixed</span>
+<span class="na">Restart</span><span class="o">=</span><span class="s">always</span>
+
+<span class="k">[Install]</span>
+<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
+</pre></div>
+</div>
+</section>
+<section id="health-monitoring-setup">
+<h3>4. Health Monitoring Setup<a class="headerlink" href="#health-monitoring-setup" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Setup cron job for health monitoring</span>
+crontab<span class="w"> </span>-e
+
+<span class="c1"># Add this line to run health monitoring every hour</span>
+<span class="m">0</span><span class="w"> </span>*<span class="w"> </span>*<span class="w"> </span>*<span class="w"> </span>*<span class="w"> </span>/path/to/your/venv/bin/python<span class="w"> </span>/path/to/your/project/manage.py<span class="w"> </span>monitor_quote_system_health
+
+<span class="c1"># For detailed reporting, run daily</span>
+<span class="m">0</span><span class="w"> </span><span class="m">6</span><span class="w"> </span>*<span class="w"> </span>*<span class="w"> </span>*<span class="w"> </span>/path/to/your/venv/bin/python<span class="w"> </span>/path/to/your/project/manage.py<span class="w"> </span>monitor_quote_system_health<span class="w"> </span>--generate-report<span class="w"> </span>--cleanup-logs
+</pre></div>
+</div>
+</section>
+</section>
+<section id="monitoring-maintenance">
+<h2>Monitoring &amp; Maintenance<a class="headerlink" href="#monitoring-maintenance" title="Link to this heading"></a></h2>
+<section id="system-health-monitoring">
+<h3>1. System Health Monitoring<a class="headerlink" href="#system-health-monitoring" title="Link to this heading"></a></h3>
+<p><strong>Daily Health Checks</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check system health</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>monitor_quote_system_health<span class="w"> </span>--generate-report
+
+<span class="c1"># Check configuration</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>configure_quote_system<span class="w"> </span>--show-config
+
+<span class="c1"># Verify provider status</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>shell<span class="w"> </span>-c<span class="w"> </span><span class="s2">"</span>
+<span class="s2">from insurance_app.models import ProviderConfiguration</span>
+<span class="s2">for p in ProviderConfiguration.objects.all():</span>
+<span class="s2">    print(f'{p.provider_type}: {\"Enabled\" if p.is_enabled else \"Disabled\"} - {p.reliability_score}%')</span>
+<span class="s2">"</span>
+</pre></div>
+</div>
+<p><strong>Performance Monitoring</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Monitor quote request success rates</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>shell<span class="w"> </span>-c<span class="w"> </span><span class="s2">"</span>
+<span class="s2">from insurance_app.models import QuoteSystemHealthMetrics</span>
+<span class="s2">latest = QuoteSystemHealthMetrics.objects.latest('recorded_at')</span>
+<span class="s2">print(f'Success Rate: {latest.get_overall_success_rate():.1f}%')</span>
+<span class="s2">print(f'System Health: {latest.get_system_health_status()}')</span>
+<span class="s2">"</span>
+</pre></div>
+</div>
+</section>
+<section id="log-management">
+<h3>2. Log Management<a class="headerlink" href="#log-management" title="Link to this heading"></a></h3>
+<p><strong>Log Rotation</strong> (<code class="docutils literal notranslate"><span class="pre">/etc/logrotate.d/carfinity-quotes</span></code>):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">your</span><span class="o">/</span><span class="n">project</span><span class="o">/</span><span class="n">logs</span><span class="o">/</span><span class="n">quote_system</span><span class="o">.</span><span class="n">log</span> <span class="p">{</span>
+    <span class="n">daily</span>
+    <span class="n">missingok</span>
+    <span class="n">rotate</span> <span class="mi">30</span>
+    <span class="n">compress</span>
+    <span class="n">delaycompress</span>
+    <span class="n">notifempty</span>
+    <span class="n">create</span> <span class="mi">644</span> <span class="n">www</span><span class="o">-</span><span class="n">data</span> <span class="n">www</span><span class="o">-</span><span class="n">data</span>
+    <span class="n">postrotate</span>
+        <span class="n">systemctl</span> <span class="n">reload</span> <span class="n">nginx</span>
+    <span class="n">endscript</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Log Cleanup</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Automated cleanup via management command</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>monitor_quote_system_health<span class="w"> </span>--cleanup-logs
+
+<span class="c1"># Manual cleanup of old audit logs</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>shell<span class="w"> </span>-c<span class="w"> </span><span class="s2">"</span>
+<span class="s2">from insurance_app.models import QuoteSystemAuditLog</span>
+<span class="s2">from django.utils import timezone</span>
+<span class="s2">from datetime import timedelta</span>
+<span class="s2">cutoff = timezone.now() - timedelta(days=90)</span>
+<span class="s2">deleted = QuoteSystemAuditLog.objects.filter(timestamp__lt=cutoff).delete()</span>
+<span class="s2">print(f'Deleted {deleted[0]} old audit log entries')</span>
+<span class="s2">"</span>
+</pre></div>
+</div>
+</section>
+<section id="database-maintenance">
+<h3>3. Database Maintenance<a class="headerlink" href="#database-maintenance" title="Link to this heading"></a></h3>
+<p><strong>Regular Maintenance Tasks</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Recalculate market averages</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>shell<span class="w"> </span>-c<span class="w"> </span><span class="s2">"</span>
+<span class="s2">from insurance_app.models import DamagedPart</span>
+<span class="s2">from insurance_app.market_analysis import MarketAverageCalculator</span>
+<span class="s2">calculator = MarketAverageCalculator()</span>
+<span class="s2">for part in DamagedPart.objects.filter(quotes__isnull=False).distinct():</span>
+<span class="s2">    try:</span>
+<span class="s2">        calculator.calculate_market_average(part)</span>
+<span class="s2">        print(f'Updated market average for {part.part_name}')</span>
+<span class="s2">    except Exception as e:</span>
+<span class="s2">        print(f'Error updating {part.part_name}: {e}')</span>
+<span class="s2">"</span>
+
+<span class="c1"># Clean up expired quotes</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>shell<span class="w"> </span>-c<span class="w"> </span><span class="s2">"</span>
+<span class="s2">from insurance_app.models import PartQuote</span>
+<span class="s2">from django.utils import timezone</span>
+<span class="s2">expired = PartQuote.objects.filter(valid_until__lt=timezone.now())</span>
+<span class="s2">print(f'Found {expired.count()} expired quotes')</span>
+<span class="s2">"</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h2>
+<section id="common-issues">
+<h3>Common Issues<a class="headerlink" href="#common-issues" title="Link to this heading"></a></h3>
+<section id="parts-not-being-identified">
+<h4>1. Parts Not Being Identified<a class="headerlink" href="#parts-not-being-identified" title="Link to this heading"></a></h4>
+<p><strong>Symptoms</strong>: No damaged parts created after assessment completion</p>
+<p><strong>Solutions</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check if parts identification is enabled</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>shell<span class="w"> </span>-c<span class="w"> </span><span class="s2">"</span>
+<span class="s2">from assessments.models import VehicleAssessment</span>
+<span class="s2">assessment = VehicleAssessment.objects.latest('id')</span>
+<span class="s2">print(f'Uses parts-based quotes: {assessment.uses_parts_based_quotes}')</span>
+<span class="s2">print(f'Parts identification complete: {assessment.parts_identification_complete}')</span>
+<span class="s2">"</span>
+
+<span class="c1"># Manually trigger parts identification</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>shell<span class="w"> </span>-c<span class="w"> </span><span class="s2">"</span>
+<span class="s2">from insurance_app.parts_identification import PartsIdentificationEngine</span>
+<span class="s2">from assessments.models import VehicleAssessment</span>
+<span class="s2">engine = PartsIdentificationEngine()</span>
+<span class="s2">assessment = VehicleAssessment.objects.get(id=YOUR_ASSESSMENT_ID)</span>
+<span class="s2">parts = engine.identify_damaged_parts(assessment)</span>
+<span class="s2">print(f'Identified {len(parts)} parts')</span>
+<span class="s2">"</span>
+</pre></div>
+</div>
+</section>
+<section id="quote-requests-not-dispatching">
+<h4>2. Quote Requests Not Dispatching<a class="headerlink" href="#quote-requests-not-dispatching" title="Link to this heading"></a></h4>
+<p><strong>Symptoms</strong>: Quote requests stuck in ‘pending’ status</p>
+<p><strong>Solutions</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check provider configurations</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>configure_quote_system<span class="w"> </span>--show-config
+
+<span class="c1"># Check for API errors in logs</span>
+tail<span class="w"> </span>-f<span class="w"> </span>logs/quote_system.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>ERROR
+
+<span class="c1"># Manually test provider integration</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>shell<span class="w"> </span>-c<span class="w"> </span><span class="s2">"</span>
+<span class="s2">from insurance_app.provider_integrations import AssessorEstimateGenerator</span>
+<span class="s2">generator = AssessorEstimateGenerator()</span>
+<span class="s2"># Test with a sample part</span>
+<span class="s2">"</span>
+</pre></div>
+</div>
+</section>
+<section id="market-averages-not-calculating">
+<h4>3. Market Averages Not Calculating<a class="headerlink" href="#market-averages-not-calculating" title="Link to this heading"></a></h4>
+<p><strong>Symptoms</strong>: No market average data for parts with multiple quotes</p>
+<p><strong>Solutions</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check minimum quotes requirement</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>shell<span class="w"> </span>-c<span class="w"> </span><span class="s2">"</span>
+<span class="s2">from insurance_app.models import QuoteSystemConfiguration</span>
+<span class="s2">config = QuoteSystemConfiguration.get_config()</span>
+<span class="s2">print(f'Minimum quotes required: {config.minimum_quotes_required}')</span>
+<span class="s2">"</span>
+
+<span class="c1"># Manually calculate market averages</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>shell<span class="w"> </span>-c<span class="w"> </span><span class="s2">"</span>
+<span class="s2">from insurance_app.models import DamagedPart</span>
+<span class="s2">from insurance_app.market_analysis import MarketAverageCalculator</span>
+<span class="s2">calculator = MarketAverageCalculator()</span>
+<span class="s2">part = DamagedPart.objects.get(id=YOUR_PART_ID)</span>
+<span class="s2">try:</span>
+<span class="s2">    avg = calculator.calculate_market_average(part)</span>
+<span class="s2">    print(f'Market average: £{avg.average_total_cost}')</span>
+<span class="s2">except Exception as e:</span>
+<span class="s2">    print(f'Error: {e}')</span>
+<span class="s2">"</span>
+</pre></div>
+</div>
+</section>
+<section id="recommendations-not-generating">
+<h4>4. Recommendations Not Generating<a class="headerlink" href="#recommendations-not-generating" title="Link to this heading"></a></h4>
+<p><strong>Symptoms</strong>: No recommendations available for assessments with quotes</p>
+<p><strong>Solutions</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check recommendation engine configuration</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>shell<span class="w"> </span>-c<span class="w"> </span><span class="s2">"</span>
+<span class="s2">from insurance_app.models import QuoteSystemConfiguration</span>
+<span class="s2">config = QuoteSystemConfiguration.get_config()</span>
+<span class="s2">total_weight = config.price_weight + config.quality_weight + config.timeline_weight + config.warranty_weight + config.reliability_weight</span>
+<span class="s2">print(f'Total recommendation weights: {total_weight} (should be 1.00)')</span>
+<span class="s2">"</span>
+
+<span class="c1"># Manually generate recommendations</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>shell<span class="w"> </span>-c<span class="w"> </span><span class="s2">"</span>
+<span class="s2">from insurance_app.recommendation_engine import QuoteRecommendationEngine</span>
+<span class="s2">from assessments.models import VehicleAssessment</span>
+<span class="s2">engine = QuoteRecommendationEngine()</span>
+<span class="s2">assessment = VehicleAssessment.objects.get(id=YOUR_ASSESSMENT_ID)</span>
+<span class="s2">recommendations = engine.generate_assessment_recommendations(assessment)</span>
+<span class="s2">print(f'Generated {len(recommendations)} recommendations')</span>
+<span class="s2">"</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="performance-issues">
+<h3>Performance Issues<a class="headerlink" href="#performance-issues" title="Link to this heading"></a></h3>
+<section id="slow-quote-processing">
+<h4>1. Slow Quote Processing<a class="headerlink" href="#slow-quote-processing" title="Link to this heading"></a></h4>
+<p><strong>Diagnosis</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check system performance metrics</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>monitor_quote_system_health<span class="w"> </span>--generate-report
+
+<span class="c1"># Monitor database queries</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>shell<span class="w"> </span>-c<span class="w"> </span><span class="s2">"</span>
+<span class="s2">from django.db import connection</span>
+<span class="s2">from django.conf import settings</span>
+<span class="s2">settings.DEBUG = True</span>
+<span class="s2"># Run your quote operations</span>
+<span class="s2">print(f'Database queries: {len(connection.queries)}')</span>
+<span class="s2">"</span>
+</pre></div>
+</div>
+<p><strong>Solutions</strong>:</p>
+<ul class="simple">
+<li><p>Enable database query optimization</p></li>
+<li><p>Add database indexes for frequently queried fields</p></li>
+<li><p>Implement caching for market averages</p></li>
+<li><p>Use background tasks for heavy operations</p></li>
+</ul>
+</section>
+<section id="high-memory-usage">
+<h4>2. High Memory Usage<a class="headerlink" href="#high-memory-usage" title="Link to this heading"></a></h4>
+<p><strong>Diagnosis</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Monitor memory usage</span>
+ps<span class="w"> </span>aux<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>python
+top<span class="w"> </span>-p<span class="w"> </span><span class="k">$(</span>pgrep<span class="w"> </span>-f<span class="w"> </span><span class="s2">"manage.py"</span><span class="k">)</span>
+</pre></div>
+</div>
+<p><strong>Solutions</strong>:</p>
+<ul class="simple">
+<li><p>Implement pagination for large datasets</p></li>
+<li><p>Use select_related and prefetch_related for database queries</p></li>
+<li><p>Clear unused objects from memory</p></li>
+<li><p>Optimize image processing for damage photos</p></li>
+</ul>
+</section>
+</section>
+<section id="api-integration-issues">
+<h3>API Integration Issues<a class="headerlink" href="#api-integration-issues" title="Link to this heading"></a></h3>
+<section id="provider-api-timeouts">
+<h4>1. Provider API Timeouts<a class="headerlink" href="#provider-api-timeouts" title="Link to this heading"></a></h4>
+<p><strong>Solutions</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Increase timeout settings</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>configure_quote_system<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--provider-type<span class="w"> </span>dealer<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--api-timeout<span class="w"> </span><span class="m">60</span>
+
+<span class="c1"># Check network connectivity</span>
+curl<span class="w"> </span>-I<span class="w"> </span>https://dealer-api.example.com/quotes
+</pre></div>
+</div>
+</section>
+<section id="authentication-failures">
+<h4>2. Authentication Failures<a class="headerlink" href="#authentication-failures" title="Link to this heading"></a></h4>
+<p><strong>Solutions</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Update API keys</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>configure_quote_system<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--provider-type<span class="w"> </span>dealer<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--api-key<span class="w"> </span><span class="s2">"new-api-key"</span>
+
+<span class="c1"># Test authentication</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>shell<span class="w"> </span>-c<span class="w"> </span><span class="s2">"</span>
+<span class="s2">from insurance_app.provider_integrations import DealerIntegration</span>
+<span class="s2">integration = DealerIntegration()</span>
+<span class="s2">result = integration.test_connection()</span>
+<span class="s2">print(f'Connection test: {result}')</span>
+<span class="s2">"</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="security-considerations">
+<h2>Security Considerations<a class="headerlink" href="#security-considerations" title="Link to this heading"></a></h2>
+<section id="api-security">
+<h3>1. API Security<a class="headerlink" href="#api-security" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Store API keys in environment variables, not in code</p></li>
+<li><p>Use HTTPS for all external API communications</p></li>
+<li><p>Implement rate limiting for API endpoints</p></li>
+<li><p>Validate all incoming quote data</p></li>
+<li><p>Log all API interactions for audit purposes</p></li>
+</ul>
+</section>
+<section id="data-protection">
+<h3>2. Data Protection<a class="headerlink" href="#data-protection" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Encrypt sensitive quote data in database</p></li>
+<li><p>Implement proper user authentication and authorization</p></li>
+<li><p>Use CSRF protection for all forms</p></li>
+<li><p>Sanitize all user inputs</p></li>
+<li><p>Regular security audits of quote system</p></li>
+</ul>
+</section>
+<section id="access-control">
+<h3>3. Access Control<a class="headerlink" href="#access-control" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example permission classes for API views</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rest_framework.permissions</span><span class="w"> </span><span class="kn">import</span> <span class="n">BasePermission</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">QuoteSystemPermission</span><span class="p">(</span><span class="n">BasePermission</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">has_permission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="s1">'insurance_app.view_partquote'</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">has_object_permission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">view</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="c1"># Only allow access to quotes for user's organization</span>
+        <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">quote_request</span><span class="o">.</span><span class="n">assessment</span><span class="o">.</span><span class="n">organization</span> <span class="o">==</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">organization</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="backup-and-recovery">
+<h2>Backup and Recovery<a class="headerlink" href="#backup-and-recovery" title="Link to this heading"></a></h2>
+<section id="database-backup">
+<h3>1. Database Backup<a class="headerlink" href="#database-backup" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Daily backup script</span>
+<span class="c1">#!/bin/bash</span>
+<span class="nv">DATE</span><span class="o">=</span><span class="k">$(</span>date<span class="w"> </span>+%Y%m%d_%H%M%S<span class="k">)</span>
+pg_dump<span class="w"> </span>carfinity_db<span class="w"> </span>&gt;<span class="w"> </span>/backups/carfinity_<span class="si">${</span><span class="nv">DATE</span><span class="si">}</span>.sql
+gzip<span class="w"> </span>/backups/carfinity_<span class="si">${</span><span class="nv">DATE</span><span class="si">}</span>.sql
+
+<span class="c1"># Keep only last 30 days of backups</span>
+find<span class="w"> </span>/backups<span class="w"> </span>-name<span class="w"> </span><span class="s2">"carfinity_*.sql.gz"</span><span class="w"> </span>-mtime<span class="w"> </span>+30<span class="w"> </span>-delete
+</pre></div>
+</div>
+</section>
+<section id="configuration-backup">
+<h3>2. Configuration Backup<a class="headerlink" href="#configuration-backup" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Backup system configuration</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>dumpdata<span class="w"> </span>insurance_app.QuoteSystemConfiguration<span class="w"> </span>insurance_app.ProviderConfiguration<span class="w"> </span>&gt;<span class="w"> </span>config_backup.json
+
+<span class="c1"># Restore configuration</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>loaddata<span class="w"> </span>config_backup.json
+</pre></div>
+</div>
+</section>
+<section id="recovery-procedures">
+<h3>3. Recovery Procedures<a class="headerlink" href="#recovery-procedures" title="Link to this heading"></a></h3>
+<ol class="arabic">
+<li><p><strong>Database Recovery</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Stop application</span>
+systemctl<span class="w"> </span>stop<span class="w"> </span>carfinity
+
+<span class="c1"># Restore database</span>
+dropdb<span class="w"> </span>carfinity_db
+createdb<span class="w"> </span>carfinity_db
+gunzip<span class="w"> </span>-c<span class="w"> </span>/backups/carfinity_YYYYMMDD_HHMMSS.sql.gz<span class="w"> </span><span class="p">|</span><span class="w"> </span>psql<span class="w"> </span>carfinity_db
+
+<span class="c1"># Restart application</span>
+systemctl<span class="w"> </span>start<span class="w"> </span>carfinity
+</pre></div>
+</div>
+</li>
+<li><p><strong>Configuration Recovery</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Reset to defaults and restore</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>configure_quote_system<span class="w"> </span>--reset-defaults
+python<span class="w"> </span>manage.py<span class="w"> </span>loaddata<span class="w"> </span>config_backup.json
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading"></a></h2>
+<p>This build guide provides comprehensive instructions for implementing, deploying, and maintaining the Parts-Based Quote System. The system is designed to be robust, scalable, and maintainable with proper monitoring and configuration management.</p>
+<p>For additional support:</p>
+<ul class="simple">
+<li><p>Check the system logs in <code class="docutils literal notranslate"><span class="pre">logs/quote_system.log</span></code></p></li>
+<li><p>Use the Django admin interface for configuration</p></li>
+<li><p>Run health monitoring commands regularly</p></li>
+<li><p>Follow the troubleshooting guide for common issues</p></li>
+</ul>
+<p>The system includes extensive logging and monitoring capabilities to help identify and resolve issues quickly. Regular maintenance and monitoring will ensure optimal performance and reliability.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="parts_based_quote_system.html" class="btn btn-neutral float-left" title="Parts-Based Repair Quotation System" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="repair-cost-calculation-system.html" class="btn btn-neutral float-right" title="Insurance Assessment Repair Cost Calculation System" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Menzi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

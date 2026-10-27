@@ -1,0 +1,1190 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Settlement Calculator System &mdash; Carfinity 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Technical Reference" href="../technical-reference.html" />
+    <link rel="prev" title="Repair Quotes Comparison System" href="repair-quotes-comparison-system.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Carfinity
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Start Here</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../administration.html">Administration and Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vehicle-care.html">Vehicle Care and Maintenance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../inspections.html">Inspections and Assessments</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../insurance-and-quotes.html">Insurance and Repair Quotes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="insurance_claims_dashboard.html">Insurance Claims Agent Dashboard Specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="new_assessment_dashboard.html">Insurance Claims Assessment Dashboard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Insurance-risk-assessment-implementation.html">Insurance Risk Assessment Platform - Implementation Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Parts-Based-Quote-System-Workflow-Guide.html">Parts-Based Quote System - Complete Workflow Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parts_based_quote_system.html">Parts-Based Repair Quotation System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Parts-Based-Quote-System-Build-Guide.html">Parts-Based Quote System - Build Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="repair-cost-calculation-system.html">Insurance Assessment Repair Cost Calculation System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="repair-quotes-comparison-system.html">Repair Quotes Comparison System</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Settlement Calculator System</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#table-of-contents">Table of Contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#system-architecture">System Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#total-loss-determination">Total Loss Determination</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#threshold-calculation">Threshold Calculation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#industry-standards">Industry Standards</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#total-loss-logic-flow">Total Loss Logic Flow</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#market-value-assessment">Market Value Assessment</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#market-value-sources">Market Value Sources</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#market-value-calculation">Market Value Calculation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#market-value-validation">Market Value Validation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#vehicle-age-and-depreciation">Vehicle Age and Depreciation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#age-based-depreciation-calculation">Age-Based Depreciation Calculation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#depreciation-schedule">Depreciation Schedule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#damage-based-depreciation">Damage-Based Depreciation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#combined-depreciation-calculation">Combined Depreciation Calculation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#depreciation-examples">Depreciation Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#repair-cost-analysis">Repair Cost Analysis</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#repair-cost-components">Repair Cost Components</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#repair-cost-validation">Repair Cost Validation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#policy-deductible-calculation">Policy Deductible Calculation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#deductible-sources">Deductible Sources</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#deductible-types-and-amounts">Deductible Types and Amounts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#deductible-application-logic">Deductible Application Logic</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#salvage-value-assessment">Salvage Value Assessment</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#salvage-value-calculation">Salvage Value Calculation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#salvage-value-factors">Salvage Value Factors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#salvage-value-examples">Salvage Value Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#settlement-amount-calculation">Settlement Amount Calculation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#total-loss-settlement">Total Loss Settlement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#repair-settlement">Repair Settlement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#complete-settlement-calculation">Complete Settlement Calculation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#frontend-integration">Frontend Integration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#settlement-display-template">Settlement Display Template</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#interactive-calculation-details">Interactive Calculation Details</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration-and-customization">Configuration and Customization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#adjusting-total-loss-threshold">Adjusting Total Loss Threshold</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#regional-adjustments">Regional Adjustments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#custom-depreciation-schedules">Custom Depreciation Schedules</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#api-reference">API Reference</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#main-methods">Main Methods</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#data-structures">Data Structures</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#best-practices">Best Practices</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#data-validation">1. Data Validation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#audit-trail">2. Audit Trail</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#regular-updates">3. Regular Updates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#quality-assurance">4. Quality Assurance</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#common-issues">Common Issues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#debugging-examples">Debugging Examples</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#performance-optimization">Performance Optimization</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../technical-reference.html">Technical Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project-history.html">Project History and Implementation Notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Carfinity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../insurance-and-quotes.html">Insurance and Repair Quotes</a></li>
+      <li class="breadcrumb-item active">Settlement Calculator System</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/settlement-calculator-system.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="settlement-calculator-system">
+<h1>Settlement Calculator System<a class="headerlink" href="#settlement-calculator-system" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The settlement calculator system determines whether a vehicle should be repaired or declared a total loss, and calculates the appropriate settlement amount. The system considers multiple factors including market value, vehicle age, repair costs, depreciation, policy deductibles, and salvage value to provide accurate settlement recommendations.</p>
+</section>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#system-architecture">System Architecture</a></p></li>
+<li><p><a class="reference internal" href="#total-loss-determination">Total Loss Determination</a></p></li>
+<li><p><a class="reference internal" href="#market-value-assessment">Market Value Assessment</a></p></li>
+<li><p><a class="reference internal" href="#vehicle-age-and-depreciation">Vehicle Age and Depreciation</a></p></li>
+<li><p><a class="reference internal" href="#repair-cost-analysis">Repair Cost Analysis</a></p></li>
+<li><p><a class="reference internal" href="#policy-deductible-calculation">Policy Deductible Calculation</a></p></li>
+<li><p><a class="reference internal" href="#salvage-value-assessment">Salvage Value Assessment</a></p></li>
+<li><p><a class="reference internal" href="#settlement-amount-calculation">Settlement Amount Calculation</a></p></li>
+<li><p><a class="reference internal" href="#frontend-integration">Frontend Integration</a></p></li>
+<li><p><a class="reference internal" href="#configuration-and-customization">Configuration and Customization</a></p></li>
+<li><p><a class="reference internal" href="#api-reference">API Reference</a></p></li>
+</ol>
+</section>
+<section id="system-architecture">
+<h2>System Architecture<a class="headerlink" href="#system-architecture" title="Link to this heading"></a></h2>
+<p>The settlement calculator is implemented in the <code class="docutils literal notranslate"><span class="pre">calculate_settlement_details()</span></code> method within <code class="docutils literal notranslate"><span class="pre">insurance_app/views.py</span></code>. The system follows this workflow:</p>
+<ol class="arabic simple">
+<li><p><strong>Input Validation</strong>: Verify required data (repair cost, market value)</p></li>
+<li><p><strong>Total Loss Check</strong>: Compare repair cost to total loss threshold</p></li>
+<li><p><strong>Depreciation Calculation</strong>: Calculate age and damage-based depreciation</p></li>
+<li><p><strong>Settlement Determination</strong>: Calculate final settlement amount</p></li>
+<li><p><strong>Recommendation Generation</strong>: Provide repair vs. total loss recommendation</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">calculate_settlement_details</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">assessment</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Calculate detailed settlement information with depreciation and deductibles"""</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">assessment</span><span class="o">.</span><span class="n">estimated_repair_cost</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">assessment</span><span class="o">.</span><span class="n">vehicle_market_value</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    
+    <span class="c1"># Extract base values</span>
+    <span class="n">repair_cost</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">estimated_repair_cost</span><span class="p">)</span>
+    <span class="n">market_value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">vehicle_market_value</span><span class="p">)</span>
+    <span class="n">salvage_value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">salvage_value</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span>
+    
+    <span class="c1"># Perform calculations...</span>
+    <span class="k">return</span> <span class="n">settlement_details</span>
+</pre></div>
+</div>
+</section>
+<section id="total-loss-determination">
+<h2>Total Loss Determination<a class="headerlink" href="#total-loss-determination" title="Link to this heading"></a></h2>
+<section id="threshold-calculation">
+<h3>Threshold Calculation<a class="headerlink" href="#threshold-calculation" title="Link to this heading"></a></h3>
+<p>The system uses a <strong>70% threshold</strong> to determine total loss status:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">total_loss_threshold</span> <span class="o">=</span> <span class="n">market_value</span> <span class="o">*</span> <span class="mf">0.70</span>
+<span class="n">is_total_loss</span> <span class="o">=</span> <span class="n">repair_cost</span> <span class="o">&gt;</span> <span class="n">total_loss_threshold</span>
+</pre></div>
+</div>
+</section>
+<section id="industry-standards">
+<h3>Industry Standards<a class="headerlink" href="#industry-standards" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>70% Rule</strong>: Most insurers declare total loss when repair costs exceed 70% of vehicle’s actual cash value</p></li>
+<li><p><strong>Regulatory Compliance</strong>: Threshold may vary by jurisdiction (65-80% range)</p></li>
+<li><p><strong>Economic Viability</strong>: Considers cost-effectiveness of repairs vs. replacement</p></li>
+</ul>
+</section>
+<section id="total-loss-logic-flow">
+<h3>Total Loss Logic Flow<a class="headerlink" href="#total-loss-logic-flow" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">repair_cost</span> <span class="o">&gt;</span> <span class="p">(</span><span class="n">market_value</span> <span class="o">*</span> <span class="mf">0.70</span><span class="p">):</span>
+    <span class="c1"># Vehicle is total loss</span>
+    <span class="n">settlement_type</span> <span class="o">=</span> <span class="s2">"Total Loss Settlement"</span>
+    <span class="n">calculation_method</span> <span class="o">=</span> <span class="s2">"market_value_based"</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="c1"># Vehicle is repairable</span>
+    <span class="n">settlement_type</span> <span class="o">=</span> <span class="s2">"Repair Settlement"</span>
+    <span class="n">calculation_method</span> <span class="o">=</span> <span class="s2">"repair_cost_based"</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="market-value-assessment">
+<h2>Market Value Assessment<a class="headerlink" href="#market-value-assessment" title="Link to this heading"></a></h2>
+<section id="market-value-sources">
+<h3>Market Value Sources<a class="headerlink" href="#market-value-sources" title="Link to this heading"></a></h3>
+<p>The system uses multiple data sources to determine vehicle market value:</p>
+<ol class="arabic simple">
+<li><p><strong>Industry Valuation Tools</strong></p>
+<ul class="simple">
+<li><p>Kelley Blue Book (KBB)</p></li>
+<li><p>Edmunds</p></li>
+<li><p>AutoTrader market data</p></li>
+<li><p>NADA Guides</p></li>
+</ul>
+</li>
+<li><p><strong>Regional Market Factors</strong></p>
+<ul class="simple">
+<li><p>Local supply and demand</p></li>
+<li><p>Regional price variations</p></li>
+<li><p>Seasonal adjustments</p></li>
+<li><p>Economic conditions</p></li>
+</ul>
+</li>
+<li><p><strong>Vehicle-Specific Factors</strong></p>
+<ul class="simple">
+<li><p>Mileage adjustments</p></li>
+<li><p>Condition assessments</p></li>
+<li><p>Optional equipment value</p></li>
+<li><p>Maintenance history impact</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="market-value-calculation">
+<h3>Market Value Calculation<a class="headerlink" href="#market-value-calculation" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">calculate_market_value</span><span class="p">(</span><span class="n">vehicle</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Calculate current market value based on multiple factors"""</span>
+    
+    <span class="c1"># Base value from industry sources</span>
+    <span class="n">base_value</span> <span class="o">=</span> <span class="n">get_industry_valuation</span><span class="p">(</span><span class="n">vehicle</span><span class="p">)</span>
+    
+    <span class="c1"># Mileage adjustment</span>
+    <span class="n">mileage_factor</span> <span class="o">=</span> <span class="n">calculate_mileage_adjustment</span><span class="p">(</span><span class="n">vehicle</span><span class="o">.</span><span class="n">mileage</span><span class="p">,</span> <span class="n">vehicle</span><span class="o">.</span><span class="n">year</span><span class="p">)</span>
+    
+    <span class="c1"># Condition adjustment</span>
+    <span class="n">condition_factor</span> <span class="o">=</span> <span class="n">get_condition_multiplier</span><span class="p">(</span><span class="n">vehicle</span><span class="o">.</span><span class="n">condition</span><span class="p">)</span>
+    
+    <span class="c1"># Regional adjustment</span>
+    <span class="n">regional_factor</span> <span class="o">=</span> <span class="n">get_regional_multiplier</span><span class="p">(</span><span class="n">vehicle</span><span class="o">.</span><span class="n">location</span><span class="p">)</span>
+    
+    <span class="c1"># Calculate final market value</span>
+    <span class="n">market_value</span> <span class="o">=</span> <span class="n">base_value</span> <span class="o">*</span> <span class="n">mileage_factor</span> <span class="o">*</span> <span class="n">condition_factor</span> <span class="o">*</span> <span class="n">regional_factor</span>
+    
+    <span class="k">return</span> <span class="n">market_value</span>
+</pre></div>
+</div>
+</section>
+<section id="market-value-validation">
+<h3>Market Value Validation<a class="headerlink" href="#market-value-validation" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Validate market value against reasonable ranges</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">validate_market_value</span><span class="p">(</span><span class="n">vehicle</span><span class="p">,</span> <span class="n">calculated_value</span><span class="p">):</span>
+    <span class="c1"># Check against MSRP depreciation curves</span>
+    <span class="n">expected_range</span> <span class="o">=</span> <span class="n">calculate_expected_value_range</span><span class="p">(</span><span class="n">vehicle</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">calculated_value</span> <span class="o">&lt;</span> <span class="n">expected_range</span><span class="p">[</span><span class="s1">'min'</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="n">expected_range</span><span class="p">[</span><span class="s1">'min'</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">calculated_value</span> <span class="o">&gt;</span> <span class="n">expected_range</span><span class="p">[</span><span class="s1">'max'</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="n">expected_range</span><span class="p">[</span><span class="s1">'max'</span><span class="p">]</span>
+    
+    <span class="k">return</span> <span class="n">calculated_value</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="vehicle-age-and-depreciation">
+<h2>Vehicle Age and Depreciation<a class="headerlink" href="#vehicle-age-and-depreciation" title="Link to this heading"></a></h2>
+<section id="age-based-depreciation-calculation">
+<h3>Age-Based Depreciation Calculation<a class="headerlink" href="#age-based-depreciation-calculation" title="Link to this heading"></a></h3>
+<p>The system calculates depreciation based on vehicle age with diminishing returns:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate vehicle age</span>
+<span class="n">vehicle_age</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">year</span> <span class="o">-</span> <span class="n">assessment</span><span class="o">.</span><span class="n">vehicle</span><span class="o">.</span><span class="n">manufacture_year</span>
+
+<span class="c1"># Age-based depreciation: 2% per year, maximum 15%</span>
+<span class="n">age_depreciation_rate</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.02</span> <span class="o">*</span> <span class="n">vehicle_age</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="depreciation-schedule">
+<h3>Depreciation Schedule<a class="headerlink" href="#depreciation-schedule" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Vehicle Age</p></th>
+<th class="head"><p>Annual Depreciation</p></th>
+<th class="head"><p>Cumulative Max</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1-2 years</p></td>
+<td><p>2% per year</p></td>
+<td><p>4%</p></td>
+</tr>
+<tr class="row-odd"><td><p>3-5 years</p></td>
+<td><p>2% per year</p></td>
+<td><p>10%</p></td>
+</tr>
+<tr class="row-even"><td><p>6-7 years</p></td>
+<td><p>2% per year</p></td>
+<td><p>14%</p></td>
+</tr>
+<tr class="row-odd"><td><p>8+ years</p></td>
+<td><p>Capped at 15%</p></td>
+<td><p>15%</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="damage-based-depreciation">
+<h3>Damage-Based Depreciation<a class="headerlink" href="#damage-based-depreciation" title="Link to this heading"></a></h3>
+<p>Additional depreciation based on damage severity:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">severity_depreciation</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'cosmetic'</span><span class="p">:</span> <span class="mf">0.02</span><span class="p">,</span>      <span class="c1"># 2% - Minor cosmetic damage</span>
+    <span class="s1">'minor'</span><span class="p">:</span> <span class="mf">0.03</span><span class="p">,</span>         <span class="c1"># 3% - Minor functional damage</span>
+    <span class="s1">'moderate'</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">,</span>      <span class="c1"># 5% - Moderate damage requiring repair</span>
+    <span class="s1">'major'</span><span class="p">:</span> <span class="mf">0.08</span><span class="p">,</span>         <span class="c1"># 8% - Major structural/mechanical damage</span>
+    <span class="s1">'total_loss'</span><span class="p">:</span> <span class="mf">0.15</span>     <span class="c1"># 15% - Severe damage beyond economic repair</span>
+<span class="p">}</span>
+
+<span class="n">damage_depreciation</span> <span class="o">=</span> <span class="n">severity_depreciation</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">overall_severity</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="combined-depreciation-calculation">
+<h3>Combined Depreciation Calculation<a class="headerlink" href="#combined-depreciation-calculation" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Total depreciation combines age and damage factors</span>
+<span class="n">total_depreciation_rate</span> <span class="o">=</span> <span class="n">age_depreciation_rate</span> <span class="o">+</span> <span class="n">damage_depreciation</span>
+<span class="n">depreciation_amount</span> <span class="o">=</span> <span class="n">market_value</span> <span class="o">*</span> <span class="n">total_depreciation_rate</span>
+
+<span class="c1"># Apply maximum depreciation cap (typically 25-30%)</span>
+<span class="n">max_depreciation_rate</span> <span class="o">=</span> <span class="mf">0.25</span>
+<span class="k">if</span> <span class="n">total_depreciation_rate</span> <span class="o">&gt;</span> <span class="n">max_depreciation_rate</span><span class="p">:</span>
+    <span class="n">total_depreciation_rate</span> <span class="o">=</span> <span class="n">max_depreciation_rate</span>
+    <span class="n">depreciation_amount</span> <span class="o">=</span> <span class="n">market_value</span> <span class="o">*</span> <span class="n">max_depreciation_rate</span>
+</pre></div>
+</div>
+</section>
+<section id="depreciation-examples">
+<h3>Depreciation Examples<a class="headerlink" href="#depreciation-examples" title="Link to this heading"></a></h3>
+<section id="example-1-3-year-old-vehicle-with-minor-damage">
+<h4>Example 1: 3-Year-Old Vehicle with Minor Damage<a class="headerlink" href="#example-1-3-year-old-vehicle-with-minor-damage" title="Link to this heading"></a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Vehicle: 2021 Honda Civic
+Market Value: £18,000
+Age: 3 years
+Damage: Minor
+
+Calculations:
+- Age Depreciation: 3 × 2% = 6%
+- Damage Depreciation: 3% (minor)
+- Total Depreciation: 9%
+- Depreciation Amount: £18,000 × 9% = £1,620
+</pre></div>
+</div>
+</section>
+<section id="example-2-8-year-old-vehicle-with-major-damage">
+<h4>Example 2: 8-Year-Old Vehicle with Major Damage<a class="headerlink" href="#example-2-8-year-old-vehicle-with-major-damage" title="Link to this heading"></a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Vehicle: 2016 Ford Focus
+Market Value: £8,000
+Age: 8 years
+Damage: Major
+
+Calculations:
+- Age Depreciation: 15% (capped)
+- Damage Depreciation: 8% (major)
+- Total Depreciation: 23%
+- Depreciation Amount: £8,000 × 23% = £1,840
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="repair-cost-analysis">
+<h2>Repair Cost Analysis<a class="headerlink" href="#repair-cost-analysis" title="Link to this heading"></a></h2>
+<section id="repair-cost-components">
+<h3>Repair Cost Components<a class="headerlink" href="#repair-cost-components" title="Link to this heading"></a></h3>
+<p>The system analyzes repair costs from the detailed cost breakdown:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">analyze_repair_costs</span><span class="p">(</span><span class="n">assessment</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Analyze repair cost components for settlement calculation"""</span>
+    
+    <span class="n">repair_breakdown</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">'parts_cost'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s1">'labor_cost'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s1">'paint_materials'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s1">'shop_supplies'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s1">'tax'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s1">'total_cost'</span><span class="p">:</span> <span class="mi">0</span>
+    <span class="p">}</span>
+    
+    <span class="c1"># Get detailed cost breakdown</span>
+    <span class="n">detailed_costs</span> <span class="o">=</span> <span class="n">calculate_detailed_cost_breakdown</span><span class="p">(</span><span class="n">assessment</span><span class="p">)</span>
+    
+    <span class="c1"># Extract components</span>
+    <span class="n">repair_breakdown</span><span class="p">[</span><span class="s1">'parts_cost'</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span>
+        <span class="n">section</span><span class="p">[</span><span class="s1">'parts_cost'</span><span class="p">]</span> <span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="n">detailed_costs</span><span class="p">[</span><span class="s1">'section_costs'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+    <span class="p">)</span>
+    <span class="n">repair_breakdown</span><span class="p">[</span><span class="s1">'labor_cost'</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span>
+        <span class="n">section</span><span class="p">[</span><span class="s1">'labor_cost'</span><span class="p">]</span> <span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="n">detailed_costs</span><span class="p">[</span><span class="s1">'section_costs'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+    <span class="p">)</span>
+    <span class="n">repair_breakdown</span><span class="p">[</span><span class="s1">'paint_materials'</span><span class="p">]</span> <span class="o">=</span> <span class="n">detailed_costs</span><span class="p">[</span><span class="s1">'paint_materials'</span><span class="p">]</span>
+    <span class="n">repair_breakdown</span><span class="p">[</span><span class="s1">'shop_supplies'</span><span class="p">]</span> <span class="o">=</span> <span class="n">detailed_costs</span><span class="p">[</span><span class="s1">'shop_supplies'</span><span class="p">]</span>
+    <span class="n">repair_breakdown</span><span class="p">[</span><span class="s1">'tax'</span><span class="p">]</span> <span class="o">=</span> <span class="n">detailed_costs</span><span class="p">[</span><span class="s1">'vat'</span><span class="p">]</span>
+    <span class="n">repair_breakdown</span><span class="p">[</span><span class="s1">'total_cost'</span><span class="p">]</span> <span class="o">=</span> <span class="n">detailed_costs</span><span class="p">[</span><span class="s1">'grand_total'</span><span class="p">]</span>
+    
+    <span class="k">return</span> <span class="n">repair_breakdown</span>
+</pre></div>
+</div>
+</section>
+<section id="repair-cost-validation">
+<h3>Repair Cost Validation<a class="headerlink" href="#repair-cost-validation" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">validate_repair_costs</span><span class="p">(</span><span class="n">repair_cost</span><span class="p">,</span> <span class="n">market_value</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Validate repair costs against market value"""</span>
+    
+    <span class="c1"># Check for unreasonable repair costs</span>
+    <span class="k">if</span> <span class="n">repair_cost</span> <span class="o">&gt;</span> <span class="n">market_value</span> <span class="o">*</span> <span class="mf">1.5</span><span class="p">:</span>
+        <span class="c1"># Repair cost exceeds 150% of market value - likely total loss</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">'valid'</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s1">'reason'</span><span class="p">:</span> <span class="s1">'Repair cost exceeds reasonable threshold'</span><span class="p">,</span>
+            <span class="s1">'recommendation'</span><span class="p">:</span> <span class="s1">'total_loss'</span>
+        <span class="p">}</span>
+    
+    <span class="k">if</span> <span class="n">repair_cost</span> <span class="o">&lt;</span> <span class="n">market_value</span> <span class="o">*</span> <span class="mf">0.05</span><span class="p">:</span>
+        <span class="c1"># Very low repair cost - verify assessment completeness</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">'valid'</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="s1">'reason'</span><span class="p">:</span> <span class="s1">'Low repair cost - verify assessment'</span><span class="p">,</span>
+            <span class="s1">'recommendation'</span><span class="p">:</span> <span class="s1">'repair'</span>
+        <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="p">{</span><span class="s1">'valid'</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">'reason'</span><span class="p">:</span> <span class="s1">'Repair cost within normal range'</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="policy-deductible-calculation">
+<h2>Policy Deductible Calculation<a class="headerlink" href="#policy-deductible-calculation" title="Link to this heading"></a></h2>
+<section id="deductible-sources">
+<h3>Deductible Sources<a class="headerlink" href="#deductible-sources" title="Link to this heading"></a></h3>
+<p>The system retrieves deductible information from multiple sources:</p>
+<ol class="arabic simple">
+<li><p><strong>Policy Database</strong>: Primary source from insurance policy</p></li>
+<li><p><strong>Default Values</strong>: Fallback deductible amounts</p></li>
+<li><p><strong>Coverage Type</strong>: Different deductibles for different coverage types</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_policy_deductible</span><span class="p">(</span><span class="n">assessment</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Get policy deductible from various sources"""</span>
+    
+    <span class="c1"># Try to get from policy relationship</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">vehicle</span><span class="p">,</span> <span class="s1">'policy'</span><span class="p">)</span> <span class="ow">and</span> <span class="n">assessment</span><span class="o">.</span><span class="n">vehicle</span><span class="o">.</span><span class="n">policy</span><span class="p">:</span>
+            <span class="n">policy</span> <span class="o">=</span> <span class="n">assessment</span><span class="o">.</span><span class="n">vehicle</span><span class="o">.</span><span class="n">policy</span>
+            
+            <span class="c1"># Check for collision deductible</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span> <span class="s1">'collision_deductible'</span><span class="p">):</span>
+                <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">policy</span><span class="o">.</span><span class="n">collision_deductible</span><span class="p">)</span>
+            
+            <span class="c1"># Check for comprehensive deductible</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span> <span class="s1">'comprehensive_deductible'</span><span class="p">):</span>
+                <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">policy</span><span class="o">.</span><span class="n">comprehensive_deductible</span><span class="p">)</span>
+            
+            <span class="c1"># Check for general deductible</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span> <span class="s1">'deductible'</span><span class="p">):</span>
+                <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">policy</span><span class="o">.</span><span class="n">deductible</span><span class="p">)</span>
+                
+    <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+        <span class="k">pass</span>
+    
+    <span class="c1"># Fallback to default deductible</span>
+    <span class="k">return</span> <span class="mf">500.0</span>  <span class="c1"># Default £500 deductible</span>
+</pre></div>
+</div>
+</section>
+<section id="deductible-types-and-amounts">
+<h3>Deductible Types and Amounts<a class="headerlink" href="#deductible-types-and-amounts" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Coverage Type</p></th>
+<th class="head"><p>Typical Deductible Range</p></th>
+<th class="head"><p>Default Amount</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Collision</p></td>
+<td><p>£250 - £1,000</p></td>
+<td><p>£500</p></td>
+</tr>
+<tr class="row-odd"><td><p>Comprehensive</p></td>
+<td><p>£100 - £500</p></td>
+<td><p>£250</p></td>
+</tr>
+<tr class="row-even"><td><p>Uninsured Motorist</p></td>
+<td><p>£250 - £500</p></td>
+<td><p>£300</p></td>
+</tr>
+<tr class="row-odd"><td><p>Glass Coverage</p></td>
+<td><p>£0 - £100</p></td>
+<td><p>£50</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="deductible-application-logic">
+<h3>Deductible Application Logic<a class="headerlink" href="#deductible-application-logic" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">apply_deductible</span><span class="p">(</span><span class="n">settlement_amount</span><span class="p">,</span> <span class="n">deductible</span><span class="p">,</span> <span class="n">settlement_type</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Apply deductible to settlement amount"""</span>
+    
+    <span class="k">if</span> <span class="n">settlement_type</span> <span class="o">==</span> <span class="s1">'total_loss'</span><span class="p">:</span>
+        <span class="c1"># For total loss, deductible reduces settlement</span>
+        <span class="n">final_settlement</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">settlement_amount</span> <span class="o">-</span> <span class="n">deductible</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># For repairs, deductible reduces repair payment</span>
+        <span class="n">final_settlement</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">settlement_amount</span> <span class="o">-</span> <span class="n">deductible</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">'gross_settlement'</span><span class="p">:</span> <span class="n">settlement_amount</span><span class="p">,</span>
+        <span class="s1">'deductible_applied'</span><span class="p">:</span> <span class="nb">min</span><span class="p">(</span><span class="n">deductible</span><span class="p">,</span> <span class="n">settlement_amount</span><span class="p">),</span>
+        <span class="s1">'net_settlement'</span><span class="p">:</span> <span class="n">final_settlement</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="salvage-value-assessment">
+<h2>Salvage Value Assessment<a class="headerlink" href="#salvage-value-assessment" title="Link to this heading"></a></h2>
+<section id="salvage-value-calculation">
+<h3>Salvage Value Calculation<a class="headerlink" href="#salvage-value-calculation" title="Link to this heading"></a></h3>
+<p>Salvage value represents the worth of a total loss vehicle sold for parts or scrap:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">calculate_salvage_value</span><span class="p">(</span><span class="n">vehicle</span><span class="p">,</span> <span class="n">market_value</span><span class="p">,</span> <span class="n">damage_severity</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Calculate salvage value based on vehicle condition and market factors"""</span>
+    
+    <span class="c1"># Base salvage percentages by damage severity</span>
+    <span class="n">salvage_percentages</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">'minor'</span><span class="p">:</span> <span class="mf">0.75</span><span class="p">,</span>      <span class="c1"># 75% of market value</span>
+        <span class="s1">'moderate'</span><span class="p">:</span> <span class="mf">0.60</span><span class="p">,</span>   <span class="c1"># 60% of market value</span>
+        <span class="s1">'major'</span><span class="p">:</span> <span class="mf">0.40</span><span class="p">,</span>      <span class="c1"># 40% of market value</span>
+        <span class="s1">'severe'</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span>     <span class="c1"># 25% of market value</span>
+        <span class="s1">'total_loss'</span><span class="p">:</span> <span class="mf">0.15</span>  <span class="c1"># 15% of market value</span>
+    <span class="p">}</span>
+    
+    <span class="c1"># Get base salvage percentage</span>
+    <span class="n">base_percentage</span> <span class="o">=</span> <span class="n">salvage_percentages</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">damage_severity</span><span class="p">,</span> <span class="mf">0.40</span><span class="p">)</span>
+    
+    <span class="c1"># Adjust for vehicle factors</span>
+    <span class="n">age_factor</span> <span class="o">=</span> <span class="n">calculate_age_factor</span><span class="p">(</span><span class="n">vehicle</span><span class="o">.</span><span class="n">year</span><span class="p">)</span>
+    <span class="n">mileage_factor</span> <span class="o">=</span> <span class="n">calculate_mileage_factor</span><span class="p">(</span><span class="n">vehicle</span><span class="o">.</span><span class="n">mileage</span><span class="p">)</span>
+    <span class="n">condition_factor</span> <span class="o">=</span> <span class="n">calculate_condition_factor</span><span class="p">(</span><span class="n">vehicle</span><span class="o">.</span><span class="n">condition</span><span class="p">)</span>
+    
+    <span class="c1"># Calculate salvage value</span>
+    <span class="n">salvage_value</span> <span class="o">=</span> <span class="n">market_value</span> <span class="o">*</span> <span class="n">base_percentage</span> <span class="o">*</span> <span class="n">age_factor</span> <span class="o">*</span> <span class="n">mileage_factor</span> <span class="o">*</span> <span class="n">condition_factor</span>
+    
+    <span class="c1"># Apply minimum salvage value (scrap metal value)</span>
+    <span class="n">min_salvage</span> <span class="o">=</span> <span class="n">calculate_minimum_scrap_value</span><span class="p">(</span><span class="n">vehicle</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">salvage_value</span><span class="p">,</span> <span class="n">min_salvage</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="salvage-value-factors">
+<h3>Salvage Value Factors<a class="headerlink" href="#salvage-value-factors" title="Link to this heading"></a></h3>
+<section id="age-factor">
+<h4>Age Factor<a class="headerlink" href="#age-factor" title="Link to this heading"></a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">calculate_age_factor</span><span class="p">(</span><span class="n">vehicle_year</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Calculate age factor for salvage value"""</span>
+    <span class="n">current_year</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">year</span>
+    <span class="n">age</span> <span class="o">=</span> <span class="n">current_year</span> <span class="o">-</span> <span class="n">vehicle_year</span>
+    
+    <span class="k">if</span> <span class="n">age</span> <span class="o">&lt;=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">1.0</span>      <span class="c1"># No age penalty for newer vehicles</span>
+    <span class="k">elif</span> <span class="n">age</span> <span class="o">&lt;=</span> <span class="mi">7</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.9</span>      <span class="c1"># 10% reduction for mid-age vehicles</span>
+    <span class="k">elif</span> <span class="n">age</span> <span class="o">&lt;=</span> <span class="mi">12</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.7</span>      <span class="c1"># 30% reduction for older vehicles</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.5</span>      <span class="c1"># 50% reduction for very old vehicles</span>
+</pre></div>
+</div>
+</section>
+<section id="mileage-factor">
+<h4>Mileage Factor<a class="headerlink" href="#mileage-factor" title="Link to this heading"></a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">calculate_mileage_factor</span><span class="p">(</span><span class="n">mileage</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Calculate mileage factor for salvage value"""</span>
+    <span class="k">if</span> <span class="n">mileage</span> <span class="o">&lt;=</span> <span class="mi">50000</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">1.0</span>      <span class="c1"># No mileage penalty</span>
+    <span class="k">elif</span> <span class="n">mileage</span> <span class="o">&lt;=</span> <span class="mi">100000</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.9</span>      <span class="c1"># 10% reduction</span>
+    <span class="k">elif</span> <span class="n">mileage</span> <span class="o">&lt;=</span> <span class="mi">150000</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.8</span>      <span class="c1"># 20% reduction</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.7</span>      <span class="c1"># 30% reduction for high mileage</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="salvage-value-examples">
+<h3>Salvage Value Examples<a class="headerlink" href="#salvage-value-examples" title="Link to this heading"></a></h3>
+<section id="example-1-moderate-damage-newer-vehicle">
+<h4>Example 1: Moderate Damage, Newer Vehicle<a class="headerlink" href="#example-1-moderate-damage-newer-vehicle" title="Link to this heading"></a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Vehicle: 2020 BMW 3 Series
+Market Value: £25,000
+Damage: Moderate
+Age: 4 years
+Mileage: 45,000
+
+Calculations:
+- Base Salvage: £25,000 × 60% = £15,000
+- Age Factor: 0.9 (4 years old)
+- Mileage Factor: 1.0 (low mileage)
+- Final Salvage: £15,000 × 0.9 × 1.0 = £13,500
+</pre></div>
+</div>
+</section>
+<section id="example-2-severe-damage-older-vehicle">
+<h4>Example 2: Severe Damage, Older Vehicle<a class="headerlink" href="#example-2-severe-damage-older-vehicle" title="Link to this heading"></a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Vehicle: 2015 Ford Fiesta
+Market Value: £6,000
+Damage: Severe
+Age: 9 years
+Mileage: 120,000
+
+Calculations:
+- Base Salvage: £6,000 × 25% = £1,500
+- Age Factor: 0.7 (9 years old)
+- Mileage Factor: 0.8 (high mileage)
+- Final Salvage: £1,500 × 0.7 × 0.8 = £840
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="settlement-amount-calculation">
+<h2>Settlement Amount Calculation<a class="headerlink" href="#settlement-amount-calculation" title="Link to this heading"></a></h2>
+<section id="total-loss-settlement">
+<h3>Total Loss Settlement<a class="headerlink" href="#total-loss-settlement" title="Link to this heading"></a></h3>
+<p>For vehicles declared total loss:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">calculate_total_loss_settlement</span><span class="p">(</span><span class="n">market_value</span><span class="p">,</span> <span class="n">depreciation_amount</span><span class="p">,</span> <span class="n">deductible</span><span class="p">,</span> <span class="n">salvage_value</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Calculate total loss settlement amount"""</span>
+    
+    <span class="c1"># Start with market value</span>
+    <span class="n">settlement_base</span> <span class="o">=</span> <span class="n">market_value</span>
+    
+    <span class="c1"># Subtract depreciation</span>
+    <span class="n">settlement_after_depreciation</span> <span class="o">=</span> <span class="n">settlement_base</span> <span class="o">-</span> <span class="n">depreciation_amount</span>
+    
+    <span class="c1"># Subtract deductible</span>
+    <span class="n">settlement_after_deductible</span> <span class="o">=</span> <span class="n">settlement_after_depreciation</span> <span class="o">-</span> <span class="n">deductible</span>
+    
+    <span class="c1"># Add salvage value (if customer keeps vehicle)</span>
+    <span class="c1"># Note: Salvage value is typically retained by insurer</span>
+    <span class="n">final_settlement</span> <span class="o">=</span> <span class="n">settlement_after_deductible</span>
+    
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">'settlement_type'</span><span class="p">:</span> <span class="s1">'Total Loss'</span><span class="p">,</span>
+        <span class="s1">'market_value'</span><span class="p">:</span> <span class="n">market_value</span><span class="p">,</span>
+        <span class="s1">'depreciation'</span><span class="p">:</span> <span class="n">depreciation_amount</span><span class="p">,</span>
+        <span class="s1">'deductible'</span><span class="p">:</span> <span class="n">deductible</span><span class="p">,</span>
+        <span class="s1">'salvage_value'</span><span class="p">:</span> <span class="n">salvage_value</span><span class="p">,</span>
+        <span class="s1">'gross_settlement'</span><span class="p">:</span> <span class="n">settlement_after_depreciation</span><span class="p">,</span>
+        <span class="s1">'net_settlement'</span><span class="p">:</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">final_settlement</span><span class="p">),</span>
+        <span class="s1">'calculation_method'</span><span class="p">:</span> <span class="s1">'ACV - Depreciation - Deductible'</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="repair-settlement">
+<h3>Repair Settlement<a class="headerlink" href="#repair-settlement" title="Link to this heading"></a></h3>
+<p>For repairable vehicles:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">calculate_repair_settlement</span><span class="p">(</span><span class="n">repair_cost</span><span class="p">,</span> <span class="n">deductible</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Calculate repair settlement amount"""</span>
+    
+    <span class="c1"># Repair settlement is repair cost minus deductible</span>
+    <span class="n">net_settlement</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">repair_cost</span> <span class="o">-</span> <span class="n">deductible</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">'settlement_type'</span><span class="p">:</span> <span class="s1">'Repair'</span><span class="p">,</span>
+        <span class="s1">'repair_cost'</span><span class="p">:</span> <span class="n">repair_cost</span><span class="p">,</span>
+        <span class="s1">'deductible'</span><span class="p">:</span> <span class="n">deductible</span><span class="p">,</span>
+        <span class="s1">'gross_settlement'</span><span class="p">:</span> <span class="n">repair_cost</span><span class="p">,</span>
+        <span class="s1">'net_settlement'</span><span class="p">:</span> <span class="n">net_settlement</span><span class="p">,</span>
+        <span class="s1">'calculation_method'</span><span class="p">:</span> <span class="s1">'Repair Cost - Deductible'</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="complete-settlement-calculation">
+<h3>Complete Settlement Calculation<a class="headerlink" href="#complete-settlement-calculation" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">calculate_settlement_details</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">assessment</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Calculate complete settlement details"""</span>
+    
+    <span class="c1"># Extract base values</span>
+    <span class="n">repair_cost</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">estimated_repair_cost</span><span class="p">)</span>
+    <span class="n">market_value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">vehicle_market_value</span><span class="p">)</span>
+    <span class="n">salvage_value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">salvage_value</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span>
+    
+    <span class="c1"># Calculate depreciation</span>
+    <span class="n">vehicle_age</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">year</span> <span class="o">-</span> <span class="n">assessment</span><span class="o">.</span><span class="n">vehicle</span><span class="o">.</span><span class="n">manufacture_year</span>
+    <span class="n">age_depreciation_rate</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.02</span> <span class="o">*</span> <span class="n">vehicle_age</span><span class="p">)</span>
+    
+    <span class="n">severity_depreciation</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">'cosmetic'</span><span class="p">:</span> <span class="mf">0.02</span><span class="p">,</span> <span class="s1">'minor'</span><span class="p">:</span> <span class="mf">0.03</span><span class="p">,</span> <span class="s1">'moderate'</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">,</span>
+        <span class="s1">'major'</span><span class="p">:</span> <span class="mf">0.08</span><span class="p">,</span> <span class="s1">'total_loss'</span><span class="p">:</span> <span class="mf">0.15</span>
+    <span class="p">}</span>
+    <span class="n">damage_depreciation</span> <span class="o">=</span> <span class="n">severity_depreciation</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">overall_severity</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span>
+    
+    <span class="n">total_depreciation_rate</span> <span class="o">=</span> <span class="n">age_depreciation_rate</span> <span class="o">+</span> <span class="n">damage_depreciation</span>
+    <span class="n">depreciation_amount</span> <span class="o">=</span> <span class="n">market_value</span> <span class="o">*</span> <span class="n">total_depreciation_rate</span>
+    
+    <span class="c1"># Get deductible</span>
+    <span class="n">deductible</span> <span class="o">=</span> <span class="n">get_policy_deductible</span><span class="p">(</span><span class="n">assessment</span><span class="p">)</span>
+    
+    <span class="c1"># Determine total loss status</span>
+    <span class="n">total_loss_threshold</span> <span class="o">=</span> <span class="n">market_value</span> <span class="o">*</span> <span class="mf">0.70</span>
+    <span class="n">is_total_loss</span> <span class="o">=</span> <span class="n">repair_cost</span> <span class="o">&gt;</span> <span class="n">total_loss_threshold</span>
+    
+    <span class="c1"># Calculate settlement</span>
+    <span class="k">if</span> <span class="n">is_total_loss</span><span class="p">:</span>
+        <span class="n">settlement_amount</span> <span class="o">=</span> <span class="n">market_value</span> <span class="o">-</span> <span class="n">depreciation_amount</span> <span class="o">-</span> <span class="n">deductible</span>
+        <span class="k">if</span> <span class="n">salvage_value</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">settlement_amount</span> <span class="o">+=</span> <span class="n">salvage_value</span>
+        <span class="n">recommendation</span> <span class="o">=</span> <span class="s1">'Total Loss Settlement'</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">settlement_amount</span> <span class="o">=</span> <span class="n">repair_cost</span> <span class="o">-</span> <span class="n">deductible</span>
+        <span class="n">recommendation</span> <span class="o">=</span> <span class="s1">'Repair Settlement'</span>
+    
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">'repair_cost'</span><span class="p">:</span> <span class="n">repair_cost</span><span class="p">,</span>
+        <span class="s1">'market_value'</span><span class="p">:</span> <span class="n">market_value</span><span class="p">,</span>
+        <span class="s1">'salvage_value'</span><span class="p">:</span> <span class="n">salvage_value</span><span class="p">,</span>
+        <span class="s1">'vehicle_age'</span><span class="p">:</span> <span class="n">vehicle_age</span><span class="p">,</span>
+        <span class="s1">'age_depreciation_rate'</span><span class="p">:</span> <span class="n">age_depreciation_rate</span><span class="p">,</span>
+        <span class="s1">'damage_depreciation_rate'</span><span class="p">:</span> <span class="n">damage_depreciation</span><span class="p">,</span>
+        <span class="s1">'total_depreciation_rate'</span><span class="p">:</span> <span class="n">total_depreciation_rate</span><span class="p">,</span>
+        <span class="s1">'depreciation_amount'</span><span class="p">:</span> <span class="n">depreciation_amount</span><span class="p">,</span>
+        <span class="s1">'deductible'</span><span class="p">:</span> <span class="n">deductible</span><span class="p">,</span>
+        <span class="s1">'total_loss_threshold'</span><span class="p">:</span> <span class="n">total_loss_threshold</span><span class="p">,</span>
+        <span class="s1">'is_total_loss'</span><span class="p">:</span> <span class="n">is_total_loss</span><span class="p">,</span>
+        <span class="s1">'settlement_amount'</span><span class="p">:</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">settlement_amount</span><span class="p">),</span>
+        <span class="s1">'recommendation'</span><span class="p">:</span> <span class="n">recommendation</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="frontend-integration">
+<h2>Frontend Integration<a class="headerlink" href="#frontend-integration" title="Link to this heading"></a></h2>
+<section id="settlement-display-template">
+<h3>Settlement Display Template<a class="headerlink" href="#settlement-display-template" title="Link to this heading"></a></h3>
+<p>The frontend displays settlement calculations in a structured format:</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="cm">&lt;!-- Settlement Calculator Panel --&gt;</span>
+<span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"bg-white rounded-2xl p-4 shadow-sm sticky top-6"</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">h3</span> <span class="na">class</span><span class="o">=</span><span class="s">"text-lg font-semibold mb-3"</span><span class="p">&gt;</span>Settlement Calculator<span class="p">&lt;/</span><span class="nt">h3</span><span class="p">&gt;</span>
+  
+  {% if settlement_details %}
+  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"space-y-3 text-sm"</span><span class="p">&gt;</span>
+    
+    <span class="cm">&lt;!-- Vehicle Information --&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"bg-gray-50 rounded-lg p-3"</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"flex items-center justify-between mb-1"</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">"text-xs text-gray-500"</span><span class="p">&gt;</span>Vehicle Market Value<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">"font-medium"</span><span class="p">&gt;</span>£{{ settlement_details.market_value|floatformat:0 }}<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+      <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"flex items-center justify-between"</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">"text-xs text-gray-500"</span><span class="p">&gt;</span>Vehicle Age<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">"text-xs"</span><span class="p">&gt;</span>{{ settlement_details.vehicle_age }} years<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+      <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    
+    <span class="cm">&lt;!-- Repair Cost --&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"flex items-center justify-between"</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">span</span><span class="p">&gt;</span>Repair Cost<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">"font-medium"</span><span class="p">&gt;</span>£{{ settlement_details.repair_cost|floatformat:0 }}<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    
+    <span class="cm">&lt;!-- Depreciation Breakdown --&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"bg-yellow-50 rounded-lg p-3"</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">p</span> <span class="na">class</span><span class="o">=</span><span class="s">"text-xs font-medium text-yellow-800 mb-2"</span><span class="p">&gt;</span>Depreciation Factors<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"space-y-1 text-xs"</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"flex justify-between"</span><span class="p">&gt;</span>
+          <span class="p">&lt;</span><span class="nt">span</span><span class="p">&gt;</span>Age Depreciation ({{ settlement_details.age_depreciation_rate|mul:100|floatformat:1 }}%):<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+          <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">"text-red-600"</span><span class="p">&gt;</span>-£{{ settlement_details.market_value|mul:settlement_details.age_depreciation_rate|floatformat:0 }}<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"flex justify-between"</span><span class="p">&gt;</span>
+          <span class="p">&lt;</span><span class="nt">span</span><span class="p">&gt;</span>Damage Depreciation ({{ settlement_details.damage_depreciation_rate|mul:100|floatformat:1 }}%):<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+          <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">"text-red-600"</span><span class="p">&gt;</span>-£{{ settlement_details.market_value|mul:settlement_details.damage_depreciation_rate|floatformat:0 }}<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"flex justify-between border-t pt-1 font-medium"</span><span class="p">&gt;</span>
+          <span class="p">&lt;</span><span class="nt">span</span><span class="p">&gt;</span>Total Depreciation:<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+          <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">"text-red-600"</span><span class="p">&gt;</span>-£{{ settlement_details.depreciation_amount|floatformat:0 }}<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+      <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    
+    <span class="cm">&lt;!-- Policy Deductible --&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"flex items-center justify-between"</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">span</span><span class="p">&gt;</span>Policy Deductible<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">"text-red-600"</span><span class="p">&gt;</span>-£{{ settlement_details.deductible|floatformat:0 }}<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    
+    <span class="cm">&lt;!-- Salvage Value (if applicable) --&gt;</span>
+    {% if settlement_details.salvage_value &gt; 0 %}
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"flex items-center justify-between"</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">span</span><span class="p">&gt;</span>Salvage Value<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">"text-green-600"</span><span class="p">&gt;</span>+£{{ settlement_details.salvage_value|floatformat:0 }}<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    {% endif %}
+    
+    <span class="cm">&lt;!-- Total Loss Check --&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"{% if settlement_details.is_total_loss %}bg-red-50 border border-red-200{% else %}bg-green-50 border border-green-200{% endif %} rounded-lg p-3"</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">p</span> <span class="na">class</span><span class="o">=</span><span class="s">"text-xs font-medium mb-1 {% if settlement_details.is_total_loss %}text-red-600{% else %}text-green-600{% endif %}"</span><span class="p">&gt;</span>
+        {% if settlement_details.is_total_loss %}TOTAL LOSS THRESHOLD EXCEEDED{% else %}REPAIR ECONOMICALLY VIABLE{% endif %}
+      <span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">p</span> <span class="na">class</span><span class="o">=</span><span class="s">"text-xs {% if settlement_details.is_total_loss %}text-red-700{% else %}text-green-700{% endif %}"</span><span class="p">&gt;</span>
+        Repair cost (£{{ settlement_details.repair_cost|floatformat:0 }}) 
+        {% if settlement_details.is_total_loss %}exceeds{% else %}is below{% endif %} 
+        70% threshold (£{{ settlement_details.total_loss_threshold|floatformat:0 }})
+      <span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    
+    <span class="cm">&lt;!-- Settlement Amount --&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"border-t pt-3 mt-3"</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"flex items-center justify-between"</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">"font-semibold"</span><span class="p">&gt;</span>{{ settlement_details.recommendation }}<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">"text-xl font-extrabold {% if settlement_details.is_total_loss %}text-red-600{% else %}text-green-600{% endif %}"</span><span class="p">&gt;</span>
+          £{{ settlement_details.settlement_amount|floatformat:0 }}
+        <span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+      <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    
+    <span class="cm">&lt;!-- Settlement Recommendation --&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"bg-blue-50 border border-blue-200 rounded-lg p-3 mt-3"</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">p</span> <span class="na">class</span><span class="o">=</span><span class="s">"text-xs text-blue-600 font-medium mb-1"</span><span class="p">&gt;</span>RECOMMENDATION<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">p</span> <span class="na">class</span><span class="o">=</span><span class="s">"text-xs text-blue-700"</span><span class="p">&gt;</span>
+        {% if settlement_details.is_total_loss %}
+          Recommend total loss settlement. Vehicle repair cost exceeds economic threshold.
+          {% if settlement_details.salvage_value &gt; 0 %}
+          Salvage value of £{{ settlement_details.salvage_value|floatformat:0 }} included in settlement.
+          {% endif %}
+        {% else %}
+          Recommend repair settlement. Repair is economically viable and cost-effective.
+        {% endif %}
+      <span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    
+  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+  {% endif %}
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="interactive-calculation-details">
+<h3>Interactive Calculation Details<a class="headerlink" href="#interactive-calculation-details" title="Link to this heading"></a></h3>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="cm">&lt;!-- Settlement Calculation Details --&gt;</span>
+<span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"mt-3 pt-3 border-t border-gray-200"</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">button</span> <span class="na">type</span><span class="o">=</span><span class="s">"button"</span> <span class="na">onclick</span><span class="o">=</span><span class="s">"toggleCalculationDetails()"</span> <span class="na">class</span><span class="o">=</span><span class="s">"text-xs text-blue-600 hover:text-blue-800 font-medium"</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">i</span> <span class="na">class</span><span class="o">=</span><span class="s">"fas fa-calculator mr-1"</span><span class="p">&gt;&lt;/</span><span class="nt">i</span><span class="p">&gt;</span>Show Calculation Details
+  <span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">"calculationDetails"</span> <span class="na">class</span><span class="o">=</span><span class="s">"hidden mt-2 text-xs text-gray-600 bg-gray-50 rounded p-2"</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">p</span> <span class="na">class</span><span class="o">=</span><span class="s">"font-medium mb-1"</span><span class="p">&gt;</span>Settlement Calculation:<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+    {% if settlement_details.is_total_loss %}
+    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Market Value: £{{ settlement_details.market_value|floatformat:0 }}<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>- Total Depreciation: £{{ settlement_details.depreciation_amount|floatformat:0 }}<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>- Policy Deductible: £{{ settlement_details.deductible|floatformat:0 }}<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+    {% if settlement_details.salvage_value &gt; 0 %}
+    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>+ Salvage Value: £{{ settlement_details.salvage_value|floatformat:0 }}<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+    {% endif %}
+    {% else %}
+    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Repair Cost: £{{ settlement_details.repair_cost|floatformat:0 }}<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>- Policy Deductible: £{{ settlement_details.deductible|floatformat:0 }}<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+    {% endif %}
+    <span class="p">&lt;</span><span class="nt">p</span> <span class="na">class</span><span class="o">=</span><span class="s">"font-medium border-t pt-1 mt-1"</span><span class="p">&gt;</span>= Settlement: £{{ settlement_details.settlement_amount|floatformat:0 }}<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="configuration-and-customization">
+<h2>Configuration and Customization<a class="headerlink" href="#configuration-and-customization" title="Link to this heading"></a></h2>
+<section id="adjusting-total-loss-threshold">
+<h3>Adjusting Total Loss Threshold<a class="headerlink" href="#adjusting-total-loss-threshold" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Configuration settings</span>
+<span class="n">SETTLEMENT_CONFIG</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'total_loss_threshold'</span><span class="p">:</span> <span class="mf">0.70</span><span class="p">,</span>  <span class="c1"># 70% threshold</span>
+    <span class="s1">'max_age_depreciation'</span><span class="p">:</span> <span class="mf">0.15</span><span class="p">,</span>  <span class="c1"># 15% maximum</span>
+    <span class="s1">'age_depreciation_rate'</span><span class="p">:</span> <span class="mf">0.02</span><span class="p">,</span> <span class="c1"># 2% per year</span>
+    <span class="s1">'default_deductible'</span><span class="p">:</span> <span class="mf">500.0</span><span class="p">,</span>   <span class="c1"># £500 default</span>
+    <span class="s1">'min_salvage_percentage'</span><span class="p">:</span> <span class="mf">0.10</span> <span class="c1"># 10% minimum salvage</span>
+<span class="p">}</span>
+
+<span class="c1"># Apply configuration</span>
+<span class="n">total_loss_threshold</span> <span class="o">=</span> <span class="n">market_value</span> <span class="o">*</span> <span class="n">SETTLEMENT_CONFIG</span><span class="p">[</span><span class="s1">'total_loss_threshold'</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="regional-adjustments">
+<h3>Regional Adjustments<a class="headerlink" href="#regional-adjustments" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Regional configuration</span>
+<span class="n">REGIONAL_ADJUSTMENTS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'london'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">'market_value_multiplier'</span><span class="p">:</span> <span class="mf">1.15</span><span class="p">,</span>  <span class="c1"># 15% higher in London</span>
+        <span class="s1">'repair_cost_multiplier'</span><span class="p">:</span> <span class="mf">1.20</span><span class="p">,</span>   <span class="c1"># 20% higher repair costs</span>
+        <span class="s1">'salvage_value_multiplier'</span><span class="p">:</span> <span class="mf">1.10</span>   <span class="c1"># 10% higher salvage value</span>
+    <span class="p">},</span>
+    <span class="s1">'scotland'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">'market_value_multiplier'</span><span class="p">:</span> <span class="mf">0.95</span><span class="p">,</span>   <span class="c1"># 5% lower in Scotland</span>
+        <span class="s1">'repair_cost_multiplier'</span><span class="p">:</span> <span class="mf">0.90</span><span class="p">,</span>    <span class="c1"># 10% lower repair costs</span>
+        <span class="s1">'salvage_value_multiplier'</span><span class="p">:</span> <span class="mf">0.85</span>    <span class="c1"># 15% lower salvage value</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="custom-depreciation-schedules">
+<h3>Custom Depreciation Schedules<a class="headerlink" href="#custom-depreciation-schedules" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Luxury vehicle depreciation schedule</span>
+<span class="n">LUXURY_DEPRECIATION</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'age_rates'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="mi">1</span><span class="p">:</span> <span class="mf">0.20</span><span class="p">,</span>  <span class="c1"># 20% first year</span>
+        <span class="mi">2</span><span class="p">:</span> <span class="mf">0.15</span><span class="p">,</span>  <span class="c1"># 15% second year</span>
+        <span class="mi">3</span><span class="p">:</span> <span class="mf">0.10</span><span class="p">,</span>  <span class="c1"># 10% third year</span>
+        <span class="mi">4</span><span class="p">:</span> <span class="mf">0.08</span><span class="p">,</span>  <span class="c1"># 8% fourth year</span>
+        <span class="mi">5</span><span class="p">:</span> <span class="mf">0.05</span>   <span class="c1"># 5% thereafter</span>
+    <span class="p">},</span>
+    <span class="s1">'damage_multipliers'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">'cosmetic'</span><span class="p">:</span> <span class="mf">1.5</span><span class="p">,</span>   <span class="c1"># Higher impact on luxury vehicles</span>
+        <span class="s1">'minor'</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">,</span>
+        <span class="s1">'moderate'</span><span class="p">:</span> <span class="mf">2.5</span><span class="p">,</span>
+        <span class="s1">'major'</span><span class="p">:</span> <span class="mf">3.0</span><span class="p">,</span>
+        <span class="s1">'total_loss'</span><span class="p">:</span> <span class="mf">3.5</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="api-reference">
+<h2>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading"></a></h2>
+<section id="main-methods">
+<h3>Main Methods<a class="headerlink" href="#main-methods" title="Link to this heading"></a></h3>
+<section id="calculate-settlement-details-assessment">
+<h4><code class="docutils literal notranslate"><span class="pre">calculate_settlement_details(assessment)</span></code><a class="headerlink" href="#calculate-settlement-details-assessment" title="Link to this heading"></a></h4>
+<p>Calculates complete settlement information including total loss determination.</p>
+<p><strong>Parameters:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">assessment</span></code>: VehicleAssessment object with required financial data</p></li>
+</ul>
+<p><strong>Returns:</strong> Dictionary with settlement details</p>
+<p><strong>Example Usage:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">settlement_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_settlement_details</span><span class="p">(</span><span class="n">assessment</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="get-policy-deductible-assessment">
+<h4><code class="docutils literal notranslate"><span class="pre">get_policy_deductible(assessment)</span></code><a class="headerlink" href="#get-policy-deductible-assessment" title="Link to this heading"></a></h4>
+<p>Retrieves policy deductible from various sources.</p>
+<p><strong>Parameters:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">assessment</span></code>: VehicleAssessment object</p></li>
+</ul>
+<p><strong>Returns:</strong> Float representing deductible amount</p>
+</section>
+<section id="calculate-salvage-value-vehicle-market-value-damage-severity">
+<h4><code class="docutils literal notranslate"><span class="pre">calculate_salvage_value(vehicle,</span> <span class="pre">market_value,</span> <span class="pre">damage_severity)</span></code><a class="headerlink" href="#calculate-salvage-value-vehicle-market-value-damage-severity" title="Link to this heading"></a></h4>
+<p>Calculates salvage value based on vehicle and damage factors.</p>
+<p><strong>Parameters:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">vehicle</span></code>: Vehicle object</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">market_value</span></code>: Float representing current market value</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">damage_severity</span></code>: String representing damage level</p></li>
+</ul>
+<p><strong>Returns:</strong> Float representing salvage value</p>
+</section>
+</section>
+<section id="data-structures">
+<h3>Data Structures<a class="headerlink" href="#data-structures" title="Link to this heading"></a></h3>
+<section id="settlement-details-object">
+<h4>Settlement Details Object<a class="headerlink" href="#settlement-details-object" title="Link to this heading"></a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">'repair_cost'</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>              <span class="c1"># Total repair cost</span>
+    <span class="s1">'market_value'</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>             <span class="c1"># Current market value</span>
+    <span class="s1">'salvage_value'</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>            <span class="c1"># Salvage value if total loss</span>
+    <span class="s1">'vehicle_age'</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>                <span class="c1"># Vehicle age in years</span>
+    <span class="s1">'age_depreciation_rate'</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>    <span class="c1"># Age-based depreciation rate</span>
+    <span class="s1">'damage_depreciation_rate'</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="c1"># Damage-based depreciation rate</span>
+    <span class="s1">'total_depreciation_rate'</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>  <span class="c1"># Combined depreciation rate</span>
+    <span class="s1">'depreciation_amount'</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>      <span class="c1"># Total depreciation amount</span>
+    <span class="s1">'deductible'</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>               <span class="c1"># Policy deductible</span>
+    <span class="s1">'total_loss_threshold'</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>     <span class="c1"># Total loss threshold amount</span>
+    <span class="s1">'is_total_loss'</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>             <span class="c1"># Total loss determination</span>
+    <span class="s1">'settlement_amount'</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>        <span class="c1"># Final settlement amount</span>
+    <span class="s1">'recommendation'</span><span class="p">:</span> <span class="nb">str</span>              <span class="c1"># Settlement recommendation</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="depreciation-breakdown-object">
+<h4>Depreciation Breakdown Object<a class="headerlink" href="#depreciation-breakdown-object" title="Link to this heading"></a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">'age_component'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">'rate'</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>                 <span class="c1"># Age depreciation rate</span>
+        <span class="s1">'amount'</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>               <span class="c1"># Age depreciation amount</span>
+        <span class="s1">'years'</span><span class="p">:</span> <span class="nb">int</span>                   <span class="c1"># Vehicle age</span>
+    <span class="p">},</span>
+    <span class="s1">'damage_component'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">'rate'</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>                 <span class="c1"># Damage depreciation rate</span>
+        <span class="s1">'amount'</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>               <span class="c1"># Damage depreciation amount</span>
+        <span class="s1">'severity'</span><span class="p">:</span> <span class="nb">str</span>                <span class="c1"># Damage severity level</span>
+    <span class="p">},</span>
+    <span class="s1">'total'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">'rate'</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>                 <span class="c1"># Total depreciation rate</span>
+        <span class="s1">'amount'</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>               <span class="c1"># Total depreciation amount</span>
+        <span class="s1">'capped'</span><span class="p">:</span> <span class="nb">bool</span>                 <span class="c1"># Whether depreciation was capped</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="best-practices">
+<h2>Best Practices<a class="headerlink" href="#best-practices" title="Link to this heading"></a></h2>
+<section id="data-validation">
+<h3>1. Data Validation<a class="headerlink" href="#data-validation" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Validate all input values before calculations</p></li>
+<li><p>Implement reasonable bounds checking</p></li>
+<li><p>Handle missing or invalid data gracefully</p></li>
+</ul>
+</section>
+<section id="audit-trail">
+<h3>2. Audit Trail<a class="headerlink" href="#audit-trail" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Log all settlement calculations</p></li>
+<li><p>Maintain detailed calculation breakdowns</p></li>
+<li><p>Track changes to settlement parameters</p></li>
+</ul>
+</section>
+<section id="regular-updates">
+<h3>3. Regular Updates<a class="headerlink" href="#regular-updates" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Review market value sources quarterly</p></li>
+<li><p>Update depreciation schedules annually</p></li>
+<li><p>Monitor total loss threshold effectiveness</p></li>
+</ul>
+</section>
+<section id="quality-assurance">
+<h3>4. Quality Assurance<a class="headerlink" href="#quality-assurance" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Implement calculation validation rules</p></li>
+<li><p>Cross-reference with industry standards</p></li>
+<li><p>Regular accuracy testing against actual settlements</p></li>
+</ul>
+</section>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h2>
+<section id="common-issues">
+<h3>Common Issues<a class="headerlink" href="#common-issues" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Missing Market Value</strong>: Ensure vehicle market value is properly set</p></li>
+<li><p><strong>Zero Settlement Amount</strong>: Check deductible doesn’t exceed settlement</p></li>
+<li><p><strong>Incorrect Total Loss Determination</strong>: Verify threshold calculations</p></li>
+<li><p><strong>Depreciation Calculation Errors</strong>: Validate age and severity inputs</p></li>
+</ol>
+</section>
+<section id="debugging-examples">
+<h3>Debugging Examples<a class="headerlink" href="#debugging-examples" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Debug settlement calculation</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_settlement_details</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">assessment</span><span class="p">):</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Starting settlement calculation for assessment </span><span class="si">{</span><span class="n">assessment</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    
+    <span class="c1"># Validate inputs</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">assessment</span><span class="o">.</span><span class="n">estimated_repair_cost</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">"Missing repair cost for settlement calculation"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">assessment</span><span class="o">.</span><span class="n">vehicle_market_value</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">"Missing market value for settlement calculation"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    
+    <span class="c1"># Log calculation steps</span>
+    <span class="n">repair_cost</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">estimated_repair_cost</span><span class="p">)</span>
+    <span class="n">market_value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">vehicle_market_value</span><span class="p">)</span>
+    
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Repair cost: £</span><span class="si">{</span><span class="n">repair_cost</span><span class="si">}</span><span class="s2">, Market value: £</span><span class="si">{</span><span class="n">market_value</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    
+    <span class="c1"># Continue with calculations...</span>
+    <span class="k">return</span> <span class="n">settlement_details</span>
+</pre></div>
+</div>
+</section>
+<section id="performance-optimization">
+<h3>Performance Optimization<a class="headerlink" href="#performance-optimization" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Cache market value lookups</p></li>
+<li><p>Optimize depreciation calculations</p></li>
+<li><p>Minimize database queries in settlement logic</p></li>
+</ul>
+<hr class="docutils" />
+<p><em>Last updated: December 2024</em>
+<em>Version: 1.0</em></p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="repair-quotes-comparison-system.html" class="btn btn-neutral float-left" title="Repair Quotes Comparison System" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../technical-reference.html" class="btn btn-neutral float-right" title="Technical Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Menzi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

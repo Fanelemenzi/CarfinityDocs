@@ -1,0 +1,715 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vehicle Inspection Scoring System &mdash; Carfinity 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="160-Point Vehicle Inspection Checklist (Second-Hand Vehicles)" href="SecondHand_Vehicle_160_Point_Inspection.html" />
+    <link rel="prev" title="Initial Inspections System Documentation" href="Initial_Inspections_System.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Carfinity
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Start Here</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../administration.html">Administration and Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vehicle-care.html">Vehicle Care and Maintenance</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../inspections.html">Inspections and Assessments</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Inspection_System_Documentation.html">Vehicle Inspection System Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Initial_Inspections_System.html">Initial Inspections System Documentation</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Vehicle Inspection Scoring System</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scoring-methodology">Scoring Methodology</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#weighted-point-system">Weighted Point System</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#condition-assessment-scale">Condition Assessment Scale</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#health-index-calculation">Health Index Calculation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#health-index-categories">Health Index Categories</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pass-fail-determination">Pass/Fail Determination</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pass-categories">Pass Categories</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fail-categories">Fail Categories</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#critical-system-failure-logic">Critical System Failure Logic</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#automatic-failure-triggers">Automatic Failure Triggers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#multiple-failure-assessment">Multiple Failure Assessment</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#scoring-examples">Scoring Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#example-1-well-maintained-vehicle">Example 1: Well-Maintained Vehicle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example-2-vehicle-with-minor-issues">Example 2: Vehicle with Minor Issues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example-3-vehicle-with-critical-brake-issue">Example 3: Vehicle with Critical Brake Issue</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example-4-multiple-system-failures">Example 4: Multiple System Failures</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#quality-assurance">Quality Assurance</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#validation-rules">Validation Rules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#consistency-measures">Consistency Measures</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#maintenance-recommendations">Maintenance Recommendations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#priority-levels">Priority Levels</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sample-recommendations">Sample Recommendations</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#system-benefits">System Benefits</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#for-vehicle-owners">For Vehicle Owners</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#for-technicians">For Technicians</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#for-fleet-managers">For Fleet Managers</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#technical-implementation">Technical Implementation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#database-storage">Database Storage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#integration-points">Integration Points</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="SecondHand_Vehicle_160_Point_Inspection.html">160-Point Vehicle Inspection Checklist (Second-Hand Vehicles)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Quarterly_Vehicle_Health_Checklist.html">Quarterly Vehicle Health Inspection Checklist (50-Point)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inspection-pdf-system.html">Inspection PDF Attachment System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ASSESSMENT_IMPLEMENTATION_GUIDE.html">Vehicle Assessment System Implementation Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="WORKFLOW_DEMONSTRATION.html">Inspection Workflow Demonstration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../insurance-and-quotes.html">Insurance and Repair Quotes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../technical-reference.html">Technical Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project-history.html">Project History and Implementation Notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Carfinity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../inspections.html">Inspections and Assessments</a></li>
+      <li class="breadcrumb-item active">Vehicle Inspection Scoring System</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/Vehicle_Inspection_Scoring_System.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="vehicle-inspection-scoring-system">
+<h1>Vehicle Inspection Scoring System<a class="headerlink" href="#vehicle-inspection-scoring-system" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The Vehicle Inspection Scoring System uses a sophisticated weighted algorithm to evaluate vehicle condition based on a comprehensive 50-point inspection checklist. This document explains how the health index is calculated and how pass/fail determinations are made.</p>
+</section>
+<section id="scoring-methodology">
+<h2>Scoring Methodology<a class="headerlink" href="#scoring-methodology" title="Link to this heading"></a></h2>
+<section id="weighted-point-system">
+<h3>Weighted Point System<a class="headerlink" href="#weighted-point-system" title="Link to this heading"></a></h3>
+<p>The system categorizes inspection points into three tiers based on safety criticality and impact on vehicle operation:</p>
+<section id="critical-safety-systems-high-weight-6-10-points">
+<h4>Critical Safety Systems (High Weight: 6-10 points)<a class="headerlink" href="#critical-safety-systems-high-weight-6-10-points" title="Link to this heading"></a></h4>
+<p>These systems directly impact vehicle safety and receive the highest weights:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>System</p></th>
+<th class="head"><p>Weight</p></th>
+<th class="head"><p>Rationale</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Brake pads</p></td>
+<td><p>10</p></td>
+<td><p>Critical for stopping power</p></td>
+</tr>
+<tr class="row-odd"><td><p>Brake discs</p></td>
+<td><p>10</p></td>
+<td><p>Essential for braking effectiveness</p></td>
+</tr>
+<tr class="row-even"><td><p>Tire tread depth</p></td>
+<td><p>9</p></td>
+<td><p>Affects traction and stopping distance</p></td>
+</tr>
+<tr class="row-odd"><td><p>Steering response</p></td>
+<td><p>9</p></td>
+<td><p>Critical for vehicle control</p></td>
+</tr>
+<tr class="row-even"><td><p>Brake fluid</p></td>
+<td><p>8</p></td>
+<td><p>Necessary for brake system function</p></td>
+</tr>
+<tr class="row-odd"><td><p>Seat belts</p></td>
+<td><p>8</p></td>
+<td><p>Primary safety restraint system</p></td>
+</tr>
+<tr class="row-even"><td><p>Suspension bushings</p></td>
+<td><p>7</p></td>
+<td><p>Affects handling and stability</p></td>
+</tr>
+<tr class="row-odd"><td><p>Tire pressure</p></td>
+<td><p>7</p></td>
+<td><p>Impacts handling and tire wear</p></td>
+</tr>
+<tr class="row-even"><td><p>Headlights</p></td>
+<td><p>6</p></td>
+<td><p>Essential for visibility</p></td>
+</tr>
+<tr class="row-odd"><td><p>Brake lights</p></td>
+<td><p>6</p></td>
+<td><p>Critical for signaling other drivers</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="important-systems-medium-weight-3-6-points">
+<h4>Important Systems (Medium Weight: 3-6 points)<a class="headerlink" href="#important-systems-medium-weight-3-6-points" title="Link to this heading"></a></h4>
+<p>These systems affect vehicle reliability and performance:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>System</p></th>
+<th class="head"><p>Weight</p></th>
+<th class="head"><p>Rationale</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Engine oil level</p></td>
+<td><p>6</p></td>
+<td><p>Engine protection and longevity</p></td>
+</tr>
+<tr class="row-odd"><td><p>Coolant level</p></td>
+<td><p>5</p></td>
+<td><p>Prevents engine overheating</p></td>
+</tr>
+<tr class="row-even"><td><p>Battery voltage</p></td>
+<td><p>5</p></td>
+<td><p>Powers electrical systems</p></td>
+</tr>
+<tr class="row-odd"><td><p>Transmission fluid</p></td>
+<td><p>5</p></td>
+<td><p>Transmission operation and protection</p></td>
+</tr>
+<tr class="row-even"><td><p>Alternator output</p></td>
+<td><p>4</p></td>
+<td><p>Charges battery and powers systems</p></td>
+</tr>
+<tr class="row-odd"><td><p>Exhaust system</p></td>
+<td><p>4</p></td>
+<td><p>Emissions control and safety</p></td>
+</tr>
+<tr class="row-even"><td><p>Wiper blades</p></td>
+<td><p>4</p></td>
+<td><p>Visibility in adverse weather</p></td>
+</tr>
+<tr class="row-odd"><td><p>Air filter</p></td>
+<td><p>3</p></td>
+<td><p>Engine performance and protection</p></td>
+</tr>
+<tr class="row-even"><td><p>Mirrors</p></td>
+<td><p>3</p></td>
+<td><p>Driver visibility and safety</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="minor-systems-low-weight-1-2-points">
+<h4>Minor Systems (Low Weight: 1-2 points)<a class="headerlink" href="#minor-systems-low-weight-1-2-points" title="Link to this heading"></a></h4>
+<p>These systems affect comfort and convenience:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>System</p></th>
+<th class="head"><p>Weight</p></th>
+<th class="head"><p>Rationale</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Cabin air filter</p></td>
+<td><p>2</p></td>
+<td><p>Interior air quality</p></td>
+</tr>
+<tr class="row-odd"><td><p>Interior lights</p></td>
+<td><p>2</p></td>
+<td><p>Convenience and visibility</p></td>
+</tr>
+<tr class="row-even"><td><p>Air conditioning</p></td>
+<td><p>2</p></td>
+<td><p>Driver comfort</p></td>
+</tr>
+<tr class="row-odd"><td><p>Rear view camera</p></td>
+<td><p>2</p></td>
+<td><p>Parking assistance</p></td>
+</tr>
+<tr class="row-even"><td><p>Infotainment system</p></td>
+<td><p>1</p></td>
+<td><p>Entertainment and navigation</p></td>
+</tr>
+<tr class="row-odd"><td><p>Power windows</p></td>
+<td><p>1</p></td>
+<td><p>Convenience feature</p></td>
+</tr>
+<tr class="row-even"><td><p>First aid kit</p></td>
+<td><p>1</p></td>
+<td><p>Emergency preparedness</p></td>
+</tr>
+<tr class="row-odd"><td><p>Warning triangle</p></td>
+<td><p>1</p></td>
+<td><p>Roadside safety equipment</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="condition-assessment-scale">
+<h3>Condition Assessment Scale<a class="headerlink" href="#condition-assessment-scale" title="Link to this heading"></a></h3>
+<p>Each inspection point is evaluated using a 5-point scale:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Status</p></th>
+<th class="head"><p>Score Multiplier</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Pass</strong></p></td>
+<td><p>100%</p></td>
+<td><p>Component meets all requirements</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Minor Issue</strong></p></td>
+<td><p>70%</p></td>
+<td><p>Small problem that doesn’t affect safety</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Major Issue</strong></p></td>
+<td><p>30%</p></td>
+<td><p>Significant problem requiring attention</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Fail</strong></p></td>
+<td><p>0%</p></td>
+<td><p>Component completely fails inspection</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Not Applicable</strong></p></td>
+<td><p>Excluded</p></td>
+<td><p>Component not present on this vehicle</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="health-index-calculation">
+<h3>Health Index Calculation<a class="headerlink" href="#health-index-calculation" title="Link to this heading"></a></h3>
+<p>The health index is calculated using this formula:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Health Index = (Actual Score / Total Possible Score) × 100%
+
+Where:
+- Actual Score = Σ(Weight × Condition Multiplier) for all inspected points
+- Total Possible Score = Σ(Weight) for all inspected points
+</pre></div>
+</div>
+<section id="example-calculation">
+<h4>Example Calculation<a class="headerlink" href="#example-calculation" title="Link to this heading"></a></h4>
+<p><strong>Vehicle with minor cabin air filter issue:</strong></p>
+<ul class="simple">
+<li><p>Cabin air filter: 2 points × 70% = 1.4 points</p></li>
+<li><p>All other systems pass: 98 points × 100% = 98 points</p></li>
+<li><p><strong>Total</strong>: 99.4 out of 100 possible points = 99.4% (Excellent)</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="health-index-categories">
+<h2>Health Index Categories<a class="headerlink" href="#health-index-categories" title="Link to this heading"></a></h2>
+<p>The calculated percentage determines the overall health category:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Category</p></th>
+<th class="head"><p>Range</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Typical Action</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Excellent</strong></p></td>
+<td><p>90-100%</p></td>
+<td><p>Vehicle in outstanding condition</p></td>
+<td><p>Continue regular maintenance</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Good</strong></p></td>
+<td><p>80-89%</p></td>
+<td><p>Vehicle in good condition with minor issues</p></td>
+<td><p>Address minor issues soon</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Fair</strong></p></td>
+<td><p>70-79%</p></td>
+<td><p>Vehicle needs attention</p></td>
+<td><p>Schedule maintenance within 30 days</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Poor</strong></p></td>
+<td><p>60-69%</p></td>
+<td><p>Vehicle has significant problems</p></td>
+<td><p>Immediate maintenance required</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Critical</strong></p></td>
+<td><p>&lt;60%</p></td>
+<td><p>Vehicle may be unsafe to operate</p></td>
+<td><p>Do not drive until repaired</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="pass-fail-determination">
+<h2>Pass/Fail Determination<a class="headerlink" href="#pass-fail-determination" title="Link to this heading"></a></h2>
+<p>The system uses six inspection result categories based on failure patterns and health scores:</p>
+<section id="pass-categories">
+<h3>Pass Categories<a class="headerlink" href="#pass-categories" title="Link to this heading"></a></h3>
+<section id="pas-passed">
+<h4>PAS - Passed<a class="headerlink" href="#pas-passed" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Criteria</strong>:</p>
+<ul>
+<li><p>No major failures in any system</p></li>
+<li><p>Maximum 2 minor issues allowed</p></li>
+<li><p>No critical system failures</p></li>
+</ul>
+</li>
+<li><p><strong>Health Index</strong>: Typically 85-100%</p></li>
+<li><p><strong>Action</strong>: Continue normal operation and maintenance</p></li>
+</ul>
+</section>
+<section id="pmd-passed-with-minor-defects">
+<h4>PMD - Passed with Minor Defects<a class="headerlink" href="#pmd-passed-with-minor-defects" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Criteria</strong>:</p>
+<ul>
+<li><p>No major failures in any system</p></li>
+<li><p>3-5 minor issues present</p></li>
+<li><p>No critical system failures</p></li>
+</ul>
+</li>
+<li><p><strong>Health Index</strong>: Typically 75-90%</p></li>
+<li><p><strong>Action</strong>: Address minor issues within 60 days</p></li>
+</ul>
+</section>
+<section id="pjd-passed-with-major-defects">
+<h4>PJD - Passed with Major Defects<a class="headerlink" href="#pjd-passed-with-major-defects" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Criteria</strong>:</p>
+<ul>
+<li><p>Maximum 2 major failures</p></li>
+<li><p>No critical system complete failures</p></li>
+<li><p>Health index above minimum threshold</p></li>
+</ul>
+</li>
+<li><p><strong>Health Index</strong>: Typically 65-80%</p></li>
+<li><p><strong>Action</strong>: Address major issues within 30 days</p></li>
+</ul>
+</section>
+</section>
+<section id="fail-categories">
+<h3>Fail Categories<a class="headerlink" href="#fail-categories" title="Link to this heading"></a></h3>
+<section id="fmd-failed-due-to-minor-defects">
+<h4>FMD - Failed due to Minor Defects<a class="headerlink" href="#fmd-failed-due-to-minor-defects" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Criteria</strong>:</p>
+<ul>
+<li><p>More than 5 minor issues, OR</p></li>
+<li><p>More than 2 major failures</p></li>
+<li><p>No critical system complete failures</p></li>
+</ul>
+</li>
+<li><p><strong>Health Index</strong>: Typically 50-70%</p></li>
+<li><p><strong>Action</strong>: Repair before next inspection</p></li>
+</ul>
+</section>
+<section id="fjd-failed-due-to-major-defects">
+<h4>FJD - Failed due to Major Defects<a class="headerlink" href="#fjd-failed-due-to-major-defects" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Criteria</strong>:</p>
+<ul>
+<li><p>Critical system failures present</p></li>
+<li><p>Any critical system marked as “fail”</p></li>
+<li><p>Safety-related major issues</p></li>
+</ul>
+</li>
+<li><p><strong>Health Index</strong>: Typically 40-65%</p></li>
+<li><p><strong>Action</strong>: Immediate repair required, vehicle may be unsafe</p></li>
+</ul>
+</section>
+<section id="fai-failed">
+<h4>FAI - Failed<a class="headerlink" href="#fai-failed" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Criteria</strong>:</p>
+<ul>
+<li><p>3 or more critical system failures, OR</p></li>
+<li><p>Health percentage below 50%, OR</p></li>
+<li><p>Severe safety-related failures</p></li>
+</ul>
+</li>
+<li><p><strong>Health Index</strong>: Typically &lt;50%</p></li>
+<li><p><strong>Action</strong>: Vehicle should not be operated until repaired</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="critical-system-failure-logic">
+<h2>Critical System Failure Logic<a class="headerlink" href="#critical-system-failure-logic" title="Link to this heading"></a></h2>
+<p>The system automatically triggers failure conditions when critical safety systems are compromised:</p>
+<section id="automatic-failure-triggers">
+<h3>Automatic Failure Triggers<a class="headerlink" href="#automatic-failure-triggers" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Brake System Failures</strong>:</p>
+<ul class="simple">
+<li><p>Brake pads completely worn</p></li>
+<li><p>Brake discs severely damaged</p></li>
+<li><p>No brake fluid or contaminated fluid</p></li>
+</ul>
+</li>
+<li><p><strong>Steering System Failures</strong>:</p>
+<ul class="simple">
+<li><p>Excessive steering play</p></li>
+<li><p>Power steering failure</p></li>
+<li><p>Steering components loose or damaged</p></li>
+</ul>
+</li>
+<li><p><strong>Tire Safety Failures</strong>:</p>
+<ul class="simple">
+<li><p>Tread depth below legal minimum (5/32”)</p></li>
+<li><p>Severely under-inflated tires</p></li>
+<li><p>Tire damage affecting safety</p></li>
+</ul>
+</li>
+<li><p><strong>Lighting System Failures</strong>:</p>
+<ul class="simple">
+<li><p>Headlights not functioning</p></li>
+<li><p>Brake lights not working</p></li>
+<li><p>Turn signals inoperative</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="multiple-failure-assessment">
+<h3>Multiple Failure Assessment<a class="headerlink" href="#multiple-failure-assessment" title="Link to this heading"></a></h3>
+<p>When multiple systems fail, the severity escalates:</p>
+<ul class="simple">
+<li><p><strong>1 critical failure</strong>: May still pass with restrictions (PJD)</p></li>
+<li><p><strong>2 critical failures</strong>: Likely failure (FJD)</p></li>
+<li><p><strong>3+ critical failures</strong>: Automatic failure (FAI)</p></li>
+</ul>
+</section>
+</section>
+<section id="scoring-examples">
+<h2>Scoring Examples<a class="headerlink" href="#scoring-examples" title="Link to this heading"></a></h2>
+<section id="example-1-well-maintained-vehicle">
+<h3>Example 1: Well-Maintained Vehicle<a class="headerlink" href="#example-1-well-maintained-vehicle" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Critical Systems: All Pass (70 points × 100% = 70 points)
+Important Systems: All Pass (25 points × 100% = 25 points)
+Minor Systems: All Pass (5 points × 100% = 5 points)
+
+Total: 100/100 points = 100%
+Result: Excellent Health Index, PAS (Passed)
+</pre></div>
+</div>
+</section>
+<section id="example-2-vehicle-with-minor-issues">
+<h3>Example 2: Vehicle with Minor Issues<a class="headerlink" href="#example-2-vehicle-with-minor-issues" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Critical Systems: All Pass (70 points × 100% = 70 points)
+Important Systems: 2 Minor Issues (23 points × 100% + 2 points × 70% = 24.4 points)
+Minor Systems: 1 Minor Issue (4 points × 100% + 1 point × 70% = 4.7 points)
+
+Total: 99.1/100 points = 99.1%
+Result: Excellent Health Index, PMD (Passed with minor Defects)
+</pre></div>
+</div>
+</section>
+<section id="example-3-vehicle-with-critical-brake-issue">
+<h3>Example 3: Vehicle with Critical Brake Issue<a class="headerlink" href="#example-3-vehicle-with-critical-brake-issue" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Critical Systems: Brake pads fail (60 points × 100% + 10 points × 0% = 60 points)
+Important Systems: All Pass (25 points × 100% = 25 points)
+Minor Systems: All Pass (5 points × 100% = 5 points)
+
+Total: 90/100 points = 90%
+Result: Excellent Health Index, but FJD (Failed due to major Defects)
+Note: Critical brake failure overrides health percentage
+</pre></div>
+</div>
+</section>
+<section id="example-4-multiple-system-failures">
+<h3>Example 4: Multiple System Failures<a class="headerlink" href="#example-4-multiple-system-failures" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Critical Systems: 3 Major Issues (70 points × 70% = 49 points)
+Important Systems: 2 Failures (23 points × 100% + 2 points × 0% = 23 points)
+Minor Systems: All Pass (5 points × 100% = 5 points)
+
+Total: 77/100 points = 77%
+Result: Fair Health Index, FMD (Failed due to minor Defects)
+</pre></div>
+</div>
+</section>
+</section>
+<section id="quality-assurance">
+<h2>Quality Assurance<a class="headerlink" href="#quality-assurance" title="Link to this heading"></a></h2>
+<section id="validation-rules">
+<h3>Validation Rules<a class="headerlink" href="#validation-rules" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Completion Requirements</strong>: All critical systems must be inspected</p></li>
+<li><p><strong>Technician Verification</strong>: Qualified technician must complete inspection</p></li>
+<li><p><strong>Documentation</strong>: Notes required for all failed or major issue items</p></li>
+<li><p><strong>Review Process</strong>: Failed inspections require supervisor review</p></li>
+</ol>
+</section>
+<section id="consistency-measures">
+<h3>Consistency Measures<a class="headerlink" href="#consistency-measures" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Standardized Checklist</strong>: All technicians use identical 50-point checklist</p></li>
+<li><p><strong>Clear Definitions</strong>: Each inspection point has specific pass/fail criteria</p></li>
+<li><p><strong>Training Requirements</strong>: Technicians must be certified on scoring system</p></li>
+<li><p><strong>Audit Process</strong>: Random inspections reviewed for consistency</p></li>
+</ul>
+</section>
+</section>
+<section id="maintenance-recommendations">
+<h2>Maintenance Recommendations<a class="headerlink" href="#maintenance-recommendations" title="Link to this heading"></a></h2>
+<p>The system automatically generates maintenance recommendations based on inspection results:</p>
+<section id="priority-levels">
+<h3>Priority Levels<a class="headerlink" href="#priority-levels" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>URGENT</strong>: Critical safety systems that failed</p></li>
+<li><p><strong>High Priority</strong>: Major issues affecting safety or reliability</p></li>
+<li><p><strong>Medium Priority</strong>: Minor issues that should be addressed soon</p></li>
+<li><p><strong>Low Priority</strong>: Convenience items and preventive maintenance</p></li>
+</ol>
+</section>
+<section id="sample-recommendations">
+<h3>Sample Recommendations<a class="headerlink" href="#sample-recommendations" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Brake pads fail</strong>: “URGENT: Replace brake pads immediately - critical safety issue”</p></li>
+<li><p><strong>Engine oil minor</strong>: “Change engine oil and filter within 30 days”</p></li>
+<li><p><strong>Cabin air filter minor</strong>: “Replace cabin air filter at next service”</p></li>
+</ul>
+</section>
+</section>
+<section id="system-benefits">
+<h2>System Benefits<a class="headerlink" href="#system-benefits" title="Link to this heading"></a></h2>
+<section id="for-vehicle-owners">
+<h3>For Vehicle Owners<a class="headerlink" href="#for-vehicle-owners" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Objective Assessment</strong>: Consistent, unbiased evaluation</p></li>
+<li><p><strong>Clear Priorities</strong>: Know what needs immediate attention</p></li>
+<li><p><strong>Cost Planning</strong>: Understand maintenance requirements</p></li>
+<li><p><strong>Safety Assurance</strong>: Critical issues identified immediately</p></li>
+</ul>
+</section>
+<section id="for-technicians">
+<h3>For Technicians<a class="headerlink" href="#for-technicians" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Standardized Process</strong>: Clear guidelines for all inspections</p></li>
+<li><p><strong>Automatic Calculations</strong>: No manual scoring required</p></li>
+<li><p><strong>Documentation</strong>: Built-in recommendation system</p></li>
+<li><p><strong>Quality Control</strong>: Consistent results across all inspections</p></li>
+</ul>
+</section>
+<section id="for-fleet-managers">
+<h3>For Fleet Managers<a class="headerlink" href="#for-fleet-managers" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Risk Assessment</strong>: Identify high-risk vehicles</p></li>
+<li><p><strong>Maintenance Planning</strong>: Schedule repairs based on priorities</p></li>
+<li><p><strong>Compliance Tracking</strong>: Ensure all vehicles meet standards</p></li>
+<li><p><strong>Cost Management</strong>: Budget for required maintenance</p></li>
+</ul>
+</section>
+</section>
+<section id="technical-implementation">
+<h2>Technical Implementation<a class="headerlink" href="#technical-implementation" title="Link to this heading"></a></h2>
+<section id="database-storage">
+<h3>Database Storage<a class="headerlink" href="#database-storage" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Each inspection point stored as individual field</p></li>
+<li><p>Automatic calculation triggers on form completion</p></li>
+<li><p>Historical data preserved for trend analysis</p></li>
+<li><p>Audit trail maintained for all changes</p></li>
+</ul>
+</section>
+<section id="integration-points">
+<h3>Integration Points<a class="headerlink" href="#integration-points" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Vehicle management system</p></li>
+<li><p>Maintenance scheduling system</p></li>
+<li><p>Parts inventory system</p></li>
+<li><p>Reporting and analytics platform</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>Document Version</strong>: 1.0<br />
+<strong>Last Updated</strong>: December 2024<br />
+<strong>Maintained By</strong>: Vehicle Inspection System Team<br />
+<strong>Review Cycle</strong>: Annually or when scoring criteria change</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Initial_Inspections_System.html" class="btn btn-neutral float-left" title="Initial Inspections System Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="SecondHand_Vehicle_160_Point_Inspection.html" class="btn btn-neutral float-right" title="160-Point Vehicle Inspection Checklist (Second-Hand Vehicles)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Menzi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

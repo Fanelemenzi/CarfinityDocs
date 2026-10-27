@@ -1,0 +1,396 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inspection Workflow Summary &mdash; Carfinity 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Insurance App Django Admin Configuration" href="Insurance-Admin-Configuration-Summary.html" />
+    <link rel="prev" title="🔧 Connected Inspection Workflow - Implementation Summary" href="INSPECTION_WORKFLOW_CONNECTED.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Carfinity
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Start Here</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../administration.html">Administration and Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vehicle-care.html">Vehicle Care and Maintenance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../inspections.html">Inspections and Assessments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../insurance-and-quotes.html">Insurance and Repair Quotes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../technical-reference.html">Technical Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../project-history.html">Project History and Implementation Notes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="README_REDESIGN.html">Carfinity 2.0 - Recent Updates &amp; Redesigns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Accident-History-Integration-Summary.html">Insurance App - Vehicle History Integration Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DYNAMIC_DASHBOARD_ROUTING_IMPLEMENTATION.html">Dynamic Dashboard Routing Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="IMPLEMENTATION_SUMMARY.html">Authentication Service Implementation Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="INSPECTIONS_IMPLEMENTATION_SUMMARY.html">Inspections Card Implementation Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="INSPECTION_WORKFLOW_CONNECTED.html">🔧 Connected Inspection Workflow - Implementation Summary</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Inspection Workflow Summary</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#current-implementation-status">Current Implementation Status</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#models-structure">1. Models Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#workflow-process">2. Workflow Process</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#health-index-calculation">3. Health Index Calculation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#key-features">4. Key Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#templates-and-ui">5. Templates and UI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#url-structure">6. URL Structure</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#implementation-benefits">Implementation Benefits</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#for-technicians">For Technicians</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#for-management">For Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#for-system-integration">For System Integration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Insurance-Admin-Configuration-Summary.html">Insurance App Django Admin Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Insurance-URL-Configuration-Summary.html">Insurance App URL Configuration Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="INSURANCE_APP_SEPARATION_ANALYSIS.html">Insurance App Separation Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="LOGOUT_SESSION_MANAGEMENT_SUMMARY.html">Logout and Session Management Enhancement - Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="HEALTH_MONITORING_IMPLEMENTATION_SUMMARY.html">System Health Monitoring Implementation Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NAVIGATION_OPTIMIZATION_SUMMARY.html">Bottom Navigation Bar Lag Fix - Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="VEHICLE_SELECTION_SEPARATION_SUMMARY.html">Vehicle Selection Flow Separation - Implementation Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backend-implementation-plan.html">Backend Implementation Plan for Insurance Assessment System</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Carfinity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../project-history.html">Project History and Implementation Notes</a></li>
+      <li class="breadcrumb-item active">Inspection Workflow Summary</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/INSPECTION_WORKFLOW_SUMMARY.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="inspection-workflow-summary">
+<h1>Inspection Workflow Summary<a class="headerlink" href="#inspection-workflow-summary" title="Link to this heading"></a></h1>
+<section id="current-implementation-status">
+<h2>Current Implementation Status<a class="headerlink" href="#current-implementation-status" title="Link to this heading"></a></h2>
+<p>The inspection workflow has been successfully implemented with the following structure:</p>
+<section id="models-structure">
+<h3>1. Models Structure<a class="headerlink" href="#models-structure" title="Link to this heading"></a></h3>
+<section id="inspection-model-basic-record">
+<h4>Inspection Model (Basic Record)<a class="headerlink" href="#inspection-model-basic-record" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Purpose</strong>: Stores basic inspection information and final results</p></li>
+<li><p><strong>Fields</strong>:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">vehicle</span></code> - Vehicle being inspected</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">inspection_number</span></code> - Unique identifier (auto-generated)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">year</span></code> - Inspection year</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">inspection_result</span></code> - Final result (PAS, PMD, PJD, FMD, FJD, FAI)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vehicle_health_index</span></code> - Calculated health score</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">inspection_date</span></code> - When inspection was performed</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">inspection_pdf</span></code> - Optional PDF attachment</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="inspections-model-50-point-checklist">
+<h4>Inspections Model (50-Point Checklist)<a class="headerlink" href="#inspections-model-50-point-checklist" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Purpose</strong>: Detailed 50-point inspection form filled by technicians</p></li>
+<li><p><strong>Fields</strong>: All 50 inspection points organized by categories:</p>
+<ul>
+<li><p>Engine &amp; Powertrain (10 points)</p></li>
+<li><p>Electrical &amp; Battery (5 points)</p></li>
+<li><p>Brakes &amp; Suspension (7 points)</p></li>
+<li><p>Steering &amp; Tires (6 points)</p></li>
+<li><p>Exhaust &amp; Emissions (3 points)</p></li>
+<li><p>Safety Equipment (5 points)</p></li>
+<li><p>Lighting &amp; Visibility (8 points)</p></li>
+<li><p>HVAC &amp; Interior (4 points)</p></li>
+<li><p>Technology &amp; Driver Assist (2 points)</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="workflow-process">
+<h3>2. Workflow Process<a class="headerlink" href="#workflow-process" title="Link to this heading"></a></h3>
+<section id="step-1-start-inspection">
+<h4>Step 1: Start Inspection<a class="headerlink" href="#step-1-start-inspection" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>URL</strong>: <code class="docutils literal notranslate"><span class="pre">/maintenance/inspections/start/</span></code></p></li>
+<li><p><strong>View</strong>: <code class="docutils literal notranslate"><span class="pre">StartInspectionWorkflowView</span></code></p></li>
+<li><p><strong>Template</strong>: <code class="docutils literal notranslate"><span class="pre">templates/maintenance/start_inspection_workflow.html</span></code></p></li>
+<li><p><strong>Action</strong>: Creates basic <code class="docutils literal notranslate"><span class="pre">Inspection</span></code> record with default values</p></li>
+</ul>
+</section>
+<section id="step-2-fill-inspection-form">
+<h4>Step 2: Fill Inspection Form<a class="headerlink" href="#step-2-fill-inspection-form" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>URL</strong>: <code class="docutils literal notranslate"><span class="pre">/maintenance/inspection-forms/create/?inspection_id=X</span></code></p></li>
+<li><p><strong>View</strong>: <code class="docutils literal notranslate"><span class="pre">CreateInspectionFormView</span></code></p></li>
+<li><p><strong>Template</strong>: <code class="docutils literal notranslate"><span class="pre">templates/maintenance/create_inspection_form.html</span></code></p></li>
+<li><p><strong>Action</strong>: Technician fills out 50-point checklist</p></li>
+</ul>
+</section>
+<section id="step-3-auto-calculation">
+<h4>Step 3: Auto-calculation<a class="headerlink" href="#step-3-auto-calculation" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Trigger</strong>: When form is marked as completed</p></li>
+<li><p><strong>Function</strong>: <code class="docutils literal notranslate"><span class="pre">calculate_vehicle_health_index()</span></code> in <code class="docutils literal notranslate"><span class="pre">utils.py</span></code></p></li>
+<li><p><strong>Result</strong>: Updates <code class="docutils literal notranslate"><span class="pre">Inspection</span></code> record with calculated health index and result</p></li>
+</ul>
+</section>
+</section>
+<section id="health-index-calculation">
+<h3>3. Health Index Calculation<a class="headerlink" href="#health-index-calculation" title="Link to this heading"></a></h3>
+<p>The system uses a weighted scoring system:</p>
+<section id="critical-systems-high-weight">
+<h4>Critical Systems (High Weight)<a class="headerlink" href="#critical-systems-high-weight" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Brake pads/discs/fluid (8-10 points each)</p></li>
+<li><p>Tire tread depth/pressure (7-9 points each)</p></li>
+<li><p>Steering response (9 points)</p></li>
+<li><p>Seat belts (8 points)</p></li>
+<li><p>Headlights/brake lights (6 points each)</p></li>
+</ul>
+</section>
+<section id="important-systems-medium-weight">
+<h4>Important Systems (Medium Weight)<a class="headerlink" href="#important-systems-medium-weight" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Engine oil/coolant (5-6 points each)</p></li>
+<li><p>Battery/alternator (4-5 points each)</p></li>
+<li><p>Transmission fluid (5 points)</p></li>
+<li><p>Exhaust system (4 points)</p></li>
+</ul>
+</section>
+<section id="minor-systems-low-weight">
+<h4>Minor Systems (Low Weight)<a class="headerlink" href="#minor-systems-low-weight" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Cabin air filter (2 points)</p></li>
+<li><p>Interior lights (2 points)</p></li>
+<li><p>Infotainment (1 point)</p></li>
+<li><p>Power windows (1 point)</p></li>
+</ul>
+</section>
+<section id="scoring-logic">
+<h4>Scoring Logic<a class="headerlink" href="#scoring-logic" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Pass</strong>: 100% of weight</p></li>
+<li><p><strong>Minor Issue</strong>: 70% of weight</p></li>
+<li><p><strong>Major Issue</strong>: 30% of weight</p></li>
+<li><p><strong>Fail</strong>: 0% of weight</p></li>
+<li><p><strong>Not Applicable</strong>: Excluded from calculation</p></li>
+</ul>
+</section>
+<section id="health-index-categories">
+<h4>Health Index Categories<a class="headerlink" href="#health-index-categories" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Excellent</strong>: 90-100%</p></li>
+<li><p><strong>Good</strong>: 80-89%</p></li>
+<li><p><strong>Fair</strong>: 70-79%</p></li>
+<li><p><strong>Poor</strong>: 60-69%</p></li>
+<li><p><strong>Critical</strong>: &lt;60%</p></li>
+</ul>
+</section>
+<section id="inspection-results">
+<h4>Inspection Results<a class="headerlink" href="#inspection-results" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>PAS</strong> (Passed): No critical failures, minimal minor issues</p></li>
+<li><p><strong>PMD</strong> (Passed with minor Defects): Minor issues only</p></li>
+<li><p><strong>PJD</strong> (Passed with major Defects): Some major issues but not critical</p></li>
+<li><p><strong>FMD</strong> (Failed due to minor Defects): Too many minor issues</p></li>
+<li><p><strong>FJD</strong> (Failed due to major Defects): Critical system failures</p></li>
+<li><p><strong>FAI</strong> (Failed): Severe failures or very low health score</p></li>
+</ul>
+</section>
+</section>
+<section id="key-features">
+<h3>4. Key Features<a class="headerlink" href="#key-features" title="Link to this heading"></a></h3>
+<section id="form-validation">
+<h4>Form Validation<a class="headerlink" href="#form-validation" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Critical fields must be completed before marking as finished</p></li>
+<li><p>Real-time progress tracking</p></li>
+<li><p>Auto-save capabilities (optional)</p></li>
+</ul>
+</section>
+<section id="automatic-updates">
+<h4>Automatic Updates<a class="headerlink" href="#automatic-updates" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Health index calculated when form is completed</p></li>
+<li><p>Inspection result determined based on failures</p></li>
+<li><p>Related <code class="docutils literal notranslate"><span class="pre">Inspection</span></code> record updated automatically</p></li>
+</ul>
+</section>
+<section id="recommendations-system">
+<h4>Recommendations System<a class="headerlink" href="#recommendations-system" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Generates maintenance recommendations based on failed points</p></li>
+<li><p>Prioritizes critical safety issues</p></li>
+<li><p>Provides specific guidance for each failure type</p></li>
+</ul>
+</section>
+</section>
+<section id="templates-and-ui">
+<h3>5. Templates and UI<a class="headerlink" href="#templates-and-ui" title="Link to this heading"></a></h3>
+<section id="start-inspection-template">
+<h4>Start Inspection Template<a class="headerlink" href="#start-inspection-template" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Clean, professional interface</p></li>
+<li><p>Vehicle selection dropdown</p></li>
+<li><p>Year and date inputs</p></li>
+<li><p>Clear workflow explanation</p></li>
+</ul>
+</section>
+<section id="inspection-form-template">
+<h4>Inspection Form Template<a class="headerlink" href="#inspection-form-template" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Organized by system categories</p></li>
+<li><p>Visual status indicators</p></li>
+<li><p>Notes sections for each category</p></li>
+<li><p>Progress tracking</p></li>
+<li><p>Completion checkbox</p></li>
+</ul>
+</section>
+</section>
+<section id="url-structure">
+<h3>6. URL Structure<a class="headerlink" href="#url-structure" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/maintenance/inspections/start/                    # Start new inspection
+/maintenance/inspection-forms/create/              # Create form (standalone)
+/maintenance/inspection-forms/create/?inspection_id=X  # Create form (workflow)
+/maintenance/inspection-forms/                     # List all forms
+/maintenance/inspection-forms/&lt;id&gt;/                # View form details
+/maintenance/inspection-forms/&lt;id&gt;/update/         # Update existing form
+/maintenance/inspections/                          # List all inspections
+/maintenance/inspections/&lt;id&gt;/                     # View inspection details
+</pre></div>
+</div>
+</section>
+</section>
+<section id="implementation-benefits">
+<h2>Implementation Benefits<a class="headerlink" href="#implementation-benefits" title="Link to this heading"></a></h2>
+<section id="for-technicians">
+<h3>For Technicians<a class="headerlink" href="#for-technicians" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Structured Process</strong>: Clear step-by-step workflow</p></li>
+<li><p><strong>Comprehensive Checklist</strong>: All 50 points organized logically</p></li>
+<li><p><strong>Automatic Calculations</strong>: No manual health index calculation needed</p></li>
+<li><p><strong>Progress Tracking</strong>: Visual feedback on completion status</p></li>
+<li><p><strong>Flexible Input</strong>: Can save partial progress and return later</p></li>
+</ol>
+</section>
+<section id="for-management">
+<h3>For Management<a class="headerlink" href="#for-management" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Standardized Results</strong>: Consistent health index calculation</p></li>
+<li><p><strong>Detailed Records</strong>: Complete inspection history</p></li>
+<li><p><strong>Automatic Recommendations</strong>: System-generated maintenance suggestions</p></li>
+<li><p><strong>Quality Control</strong>: Ensures all critical points are checked</p></li>
+<li><p><strong>Reporting</strong>: Easy access to inspection trends and vehicle health</p></li>
+</ol>
+</section>
+<section id="for-system-integration">
+<h3>For System Integration<a class="headerlink" href="#for-system-integration" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Database Integrity</strong>: Proper foreign key relationships</p></li>
+<li><p><strong>Extensible Design</strong>: Easy to add new inspection points</p></li>
+<li><p><strong>API Ready</strong>: Models support API integration</p></li>
+<li><p><strong>Audit Trail</strong>: Complete history of changes</p></li>
+<li><p><strong>File Management</strong>: PDF attachment support</p></li>
+</ol>
+</section>
+</section>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading"></a></h2>
+<p>The workflow is fully functional and ready for use. Potential enhancements could include:</p>
+<ol class="arabic simple">
+<li><p><strong>Mobile Optimization</strong>: Responsive design for tablet/mobile use</p></li>
+<li><p><strong>Photo Attachments</strong>: Add image upload for specific inspection points</p></li>
+<li><p><strong>Digital Signatures</strong>: Technician signature capture</p></li>
+<li><p><strong>Barcode Scanning</strong>: Quick vehicle identification</p></li>
+<li><p><strong>Offline Capability</strong>: Work without internet connection</p></li>
+<li><p><strong>Advanced Analytics</strong>: Trend analysis and predictive maintenance</p></li>
+<li><p><strong>Integration</strong>: Connect with external inspection services</p></li>
+<li><p><strong>Notifications</strong>: Alert system for critical failures</p></li>
+</ol>
+<p>The current implementation provides a solid foundation for professional vehicle inspections with automatic health index calculation based on technician input.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="INSPECTION_WORKFLOW_CONNECTED.html" class="btn btn-neutral float-left" title="🔧 Connected Inspection Workflow - Implementation Summary" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Insurance-Admin-Configuration-Summary.html" class="btn btn-neutral float-right" title="Insurance App Django Admin Configuration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Menzi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

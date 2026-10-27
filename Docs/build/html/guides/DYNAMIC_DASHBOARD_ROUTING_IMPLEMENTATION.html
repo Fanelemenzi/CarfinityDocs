@@ -1,0 +1,462 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dynamic Dashboard Routing Implementation &mdash; Carfinity 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Authentication Service Implementation Summary" href="IMPLEMENTATION_SUMMARY.html" />
+    <link rel="prev" title="Insurance App - Vehicle History Integration Summary" href="Accident-History-Integration-Summary.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Carfinity
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Start Here</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../administration.html">Administration and Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vehicle-care.html">Vehicle Care and Maintenance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../inspections.html">Inspections and Assessments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../insurance-and-quotes.html">Insurance and Repair Quotes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../technical-reference.html">Technical Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../project-history.html">Project History and Implementation Notes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="README_REDESIGN.html">Carfinity 2.0 - Recent Updates &amp; Redesigns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Accident-History-Integration-Summary.html">Insurance App - Vehicle History Integration Summary</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Dynamic Dashboard Routing Implementation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#key-changes-made">Key Changes Made</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#updated-smart-dashboard-template-templates-dashboard-smart-dashboard-html">1. Updated Smart Dashboard Template (<code class="docutils literal notranslate"><span class="pre">templates/dashboard/smart_dashboard.html</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enhanced-authenticationservice-users-services-py">2. Enhanced AuthenticationService (<code class="docutils literal notranslate"><span class="pre">users/services.py</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#updated-template-tags-users-templatetags-dashboard-extras-py">3. Updated Template Tags (<code class="docutils literal notranslate"><span class="pre">users/templatetags/dashboard_extras.py</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enhanced-setup-command-users-management-commands-setup-auth-groups-py">4. Enhanced Setup Command (<code class="docutils literal notranslate"><span class="pre">users/management/commands/setup_auth_groups.py</span></code>)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#how-it-works-now">How It Works Now</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#user-authentication-flow">1. User Authentication Flow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dashboard-resolution-logic">2. Dashboard Resolution Logic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#template-rendering">3. Template Rendering</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#benefits">Benefits</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#no-more-hardcoded-group-checks">1. <strong>No More Hardcoded Group Checks</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#admin-configurable">2. <strong>Admin-Configurable</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#organization-compatibility">3. <strong>Organization Compatibility</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#better-error-handling">4. <strong>Better Error Handling</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#extensible">5. <strong>Extensible</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration-examples">Configuration Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#adding-a-new-dashboard-type">Adding a New Dashboard Type</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modifying-existing-dashboard">Modifying Existing Dashboard</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#testing-the-implementation">Testing the Implementation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#use-test-authentication-page">1. <strong>Use Test Authentication Page</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setup-default-configurations">2. <strong>Setup Default Configurations</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#test-different-scenarios">3. <strong>Test Different Scenarios</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#migration-path">Migration Path</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#for-existing-systems">For Existing Systems:</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#for-new-systems">For New Systems:</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#no-dashboard-configurations-found-error">“No dashboard configurations found” Error:</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#group-not-compatible-with-organization-type-warning">“Group not compatible with organization type” Warning:</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dashboard-not-loading">Dashboard not loading:</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="IMPLEMENTATION_SUMMARY.html">Authentication Service Implementation Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="INSPECTIONS_IMPLEMENTATION_SUMMARY.html">Inspections Card Implementation Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="INSPECTION_WORKFLOW_CONNECTED.html">🔧 Connected Inspection Workflow - Implementation Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="INSPECTION_WORKFLOW_SUMMARY.html">Inspection Workflow Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Insurance-Admin-Configuration-Summary.html">Insurance App Django Admin Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Insurance-URL-Configuration-Summary.html">Insurance App URL Configuration Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="INSURANCE_APP_SEPARATION_ANALYSIS.html">Insurance App Separation Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="LOGOUT_SESSION_MANAGEMENT_SUMMARY.html">Logout and Session Management Enhancement - Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="HEALTH_MONITORING_IMPLEMENTATION_SUMMARY.html">System Health Monitoring Implementation Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NAVIGATION_OPTIMIZATION_SUMMARY.html">Bottom Navigation Bar Lag Fix - Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="VEHICLE_SELECTION_SEPARATION_SUMMARY.html">Vehicle Selection Flow Separation - Implementation Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backend-implementation-plan.html">Backend Implementation Plan for Insurance Assessment System</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Carfinity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../project-history.html">Project History and Implementation Notes</a></li>
+      <li class="breadcrumb-item active">Dynamic Dashboard Routing Implementation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/DYNAMIC_DASHBOARD_ROUTING_IMPLEMENTATION.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="dynamic-dashboard-routing-implementation">
+<h1>Dynamic Dashboard Routing Implementation<a class="headerlink" href="#dynamic-dashboard-routing-implementation" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>I’ve implemented a dynamic dashboard routing system that pulls dashboard links and configurations from the Authentication Group Management system instead of using hardcoded group checks. This eliminates the “user group not assigned dashboard error” and makes the system much more flexible.</p>
+</section>
+<section id="key-changes-made">
+<h2>Key Changes Made<a class="headerlink" href="#key-changes-made" title="Link to this heading"></a></h2>
+<section id="updated-smart-dashboard-template-templates-dashboard-smart-dashboard-html">
+<h3>1. Updated Smart Dashboard Template (<code class="docutils literal notranslate"><span class="pre">templates/dashboard/smart_dashboard.html</span></code>)<a class="headerlink" href="#updated-smart-dashboard-template-templates-dashboard-smart-dashboard-html" title="Link to this heading"></a></h3>
+<p><strong>Before:</strong> Hardcoded group checks</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span>{% if user|has_group:"customers" and user|has_group:"insurance_company" %}
+    <span class="cm">&lt;!-- Multiple dashboard access --&gt;</span>
+{% elif user|has_group:"insurance_company" %}
+    <span class="cm">&lt;!-- Insurance dashboard --&gt;</span>
+{% elif user|has_group:"customers" %}
+    <span class="cm">&lt;!-- Customer dashboard --&gt;</span>
+</pre></div>
+</div>
+<p><strong>After:</strong> Dynamic configuration-based routing</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span>{% get_user_dashboard_access user as dashboard_access %}
+
+{% if not dashboard_access.available_dashboards %}
+    <span class="cm">&lt;!-- No dashboard configurations found --&gt;</span>
+{% elif dashboard_access.available_dashboards|length &gt; 1 %}
+    <span class="cm">&lt;!-- Multiple dashboard access - dynamic selector --&gt;</span>
+{% else %}
+    <span class="cm">&lt;!-- Single dashboard access - route to configured URL --&gt;</span>
+{% endif %}
+</pre></div>
+</div>
+</section>
+<section id="enhanced-authenticationservice-users-services-py">
+<h3>2. Enhanced AuthenticationService (<code class="docutils literal notranslate"><span class="pre">users/services.py</span></code>)<a class="headerlink" href="#enhanced-authenticationservice-users-services-py" title="Link to this heading"></a></h3>
+<p>Added new method <code class="docutils literal notranslate"><span class="pre">_resolve_dashboard_access_dynamic()</span></code> that:</p>
+<ul class="simple">
+<li><p>Queries <code class="docutils literal notranslate"><span class="pre">AuthenticationGroup</span></code> model for active configurations</p></li>
+<li><p>Checks organization type compatibility</p></li>
+<li><p>Returns dashboard URLs from database instead of hardcoded values</p></li>
+<li><p>Provides detailed conflict resolution</p></li>
+</ul>
+</section>
+<section id="updated-template-tags-users-templatetags-dashboard-extras-py">
+<h3>3. Updated Template Tags (<code class="docutils literal notranslate"><span class="pre">users/templatetags/dashboard_extras.py</span></code>)<a class="headerlink" href="#updated-template-tags-users-templatetags-dashboard-extras-py" title="Link to this heading"></a></h3>
+<p>Enhanced <code class="docutils literal notranslate"><span class="pre">get_dashboard_info</span></code> to:</p>
+<ul class="simple">
+<li><p>First check Authentication Group Management configurations</p></li>
+<li><p>Fall back to hardcoded configurations if needed</p></li>
+<li><p>Provide dynamic dashboard information</p></li>
+</ul>
+<p>Added <code class="docutils literal notranslate"><span class="pre">get_auth_group_configs</span></code> for debugging and admin interfaces.</p>
+</section>
+<section id="enhanced-setup-command-users-management-commands-setup-auth-groups-py">
+<h3>4. Enhanced Setup Command (<code class="docutils literal notranslate"><span class="pre">users/management/commands/setup_auth_groups.py</span></code>)<a class="headerlink" href="#enhanced-setup-command-users-management-commands-setup-auth-groups-py" title="Link to this heading"></a></h3>
+<p>Added default configurations for:</p>
+<ul class="simple">
+<li><p>Customer Users → <code class="docutils literal notranslate"><span class="pre">/dashboard/</span></code></p></li>
+<li><p>Insurance Company Users → <code class="docutils literal notranslate"><span class="pre">/insurance/</span></code></p></li>
+<li><p>Service Technicians → <code class="docutils literal notranslate"><span class="pre">/technician-dashboard/</span></code></p></li>
+<li><p>System Administrators → <code class="docutils literal notranslate"><span class="pre">/admin/</span></code></p></li>
+</ul>
+</section>
+</section>
+<section id="how-it-works-now">
+<h2>How It Works Now<a class="headerlink" href="#how-it-works-now" title="Link to this heading"></a></h2>
+<section id="user-authentication-flow">
+<h3>1. User Authentication Flow<a class="headerlink" href="#user-authentication-flow" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>User logs in → Dashboard view called
+    ↓
+Template loads → get_user_dashboard_access called
+    ↓
+AuthenticationService.get_user_permissions() called
+    ↓
+_resolve_dashboard_access_dynamic() queries AuthenticationGroup model
+    ↓
+Returns available dashboards based on:
+    - User's groups
+    - Active AuthenticationGroup configurations
+    - Organization type compatibility
+    ↓
+Template renders appropriate dashboard or selector
+</pre></div>
+</div>
+</section>
+<section id="dashboard-resolution-logic">
+<h3>2. Dashboard Resolution Logic<a class="headerlink" href="#dashboard-resolution-logic" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get user's groups</span>
+<span class="n">user_groups</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'customers'</span><span class="p">,</span> <span class="s1">'technicians'</span><span class="p">]</span>
+
+<span class="c1"># Query AuthenticationGroup configurations</span>
+<span class="n">auth_groups</span> <span class="o">=</span> <span class="n">AuthenticationGroup</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+    <span class="n">group__name__in</span><span class="o">=</span><span class="n">user_groups</span><span class="p">,</span>
+    <span class="n">is_active</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">'-priority'</span><span class="p">)</span>
+
+<span class="c1"># For each matching configuration:</span>
+<span class="k">for</span> <span class="n">auth_group</span> <span class="ow">in</span> <span class="n">auth_groups</span><span class="p">:</span>
+    <span class="c1"># Check organization compatibility</span>
+    <span class="k">if</span> <span class="n">org_type</span> <span class="ow">in</span> <span class="n">auth_group</span><span class="o">.</span><span class="n">compatible_org_types</span><span class="p">:</span>
+        <span class="c1"># Add dashboard to available list</span>
+        <span class="n">available_dashboards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">auth_group</span><span class="o">.</span><span class="n">dashboard_type</span><span class="p">)</span>
+        <span class="c1"># Store URL from database</span>
+        <span class="n">dashboard_urls</span><span class="p">[</span><span class="n">auth_group</span><span class="o">.</span><span class="n">dashboard_type</span><span class="p">]</span> <span class="o">=</span> <span class="n">auth_group</span><span class="o">.</span><span class="n">dashboard_url</span>
+</pre></div>
+</div>
+</section>
+<section id="template-rendering">
+<h3>3. Template Rendering<a class="headerlink" href="#template-rendering" title="Link to this heading"></a></h3>
+<p>The template now dynamically:</p>
+<ul class="simple">
+<li><p>Shows all available dashboards from configurations</p></li>
+<li><p>Uses URLs from database instead of hardcoded values</p></li>
+<li><p>Displays proper dashboard names and descriptions</p></li>
+<li><p>Handles any number of dashboard configurations</p></li>
+</ul>
+</section>
+</section>
+<section id="benefits">
+<h2>Benefits<a class="headerlink" href="#benefits" title="Link to this heading"></a></h2>
+<section id="no-more-hardcoded-group-checks">
+<h3>1. <strong>No More Hardcoded Group Checks</strong><a class="headerlink" href="#no-more-hardcoded-group-checks" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>System works with any group names</p></li>
+<li><p>No code changes needed for new dashboards</p></li>
+<li><p>Eliminates “unsupported group” errors</p></li>
+</ul>
+</section>
+<section id="admin-configurable">
+<h3>2. <strong>Admin-Configurable</strong><a class="headerlink" href="#admin-configurable" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Administrators can add/modify dashboard configurations via Django admin</p></li>
+<li><p>URLs can be changed without code deployment</p></li>
+<li><p>Dashboard priorities can be adjusted dynamically</p></li>
+</ul>
+</section>
+<section id="organization-compatibility">
+<h3>3. <strong>Organization Compatibility</strong><a class="headerlink" href="#organization-compatibility" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Checks organization type compatibility automatically</p></li>
+<li><p>Provides clear error messages for mismatches</p></li>
+<li><p>Supports multiple organization types per group</p></li>
+</ul>
+</section>
+<section id="better-error-handling">
+<h3>4. <strong>Better Error Handling</strong><a class="headerlink" href="#better-error-handling" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Specific error messages for different scenarios</p></li>
+<li><p>Fallback mechanisms for edge cases</p></li>
+<li><p>Clear guidance for administrators</p></li>
+</ul>
+</section>
+<section id="extensible">
+<h3>5. <strong>Extensible</strong><a class="headerlink" href="#extensible" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Easy to add new dashboard types</p></li>
+<li><p>Supports custom dashboard URLs</p></li>
+<li><p>Can handle complex routing scenarios</p></li>
+</ul>
+</section>
+</section>
+<section id="configuration-examples">
+<h2>Configuration Examples<a class="headerlink" href="#configuration-examples" title="Link to this heading"></a></h2>
+<section id="adding-a-new-dashboard-type">
+<h3>Adding a New Dashboard Type<a class="headerlink" href="#adding-a-new-dashboard-type" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Create Django Group:</strong></p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># In Django admin or shell</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.contrib.auth.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Group</span>
+<span class="n">group</span> <span class="o">=</span> <span class="n">Group</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'fleet_managers'</span><span class="p">)</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p><strong>Create Authentication Group Configuration:</strong></p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">users.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">AuthenticationGroup</span>
+<span class="n">AuthenticationGroup</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">,</span>
+    <span class="n">display_name</span><span class="o">=</span><span class="s1">'Fleet Managers'</span><span class="p">,</span>
+    <span class="n">dashboard_type</span><span class="o">=</span><span class="s1">'fleet'</span><span class="p">,</span>
+    <span class="n">dashboard_url</span><span class="o">=</span><span class="s1">'/fleet-dashboard/'</span><span class="p">,</span>
+    <span class="n">priority</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s1">'Fleet management tools and reporting'</span><span class="p">,</span>
+    <span class="n">compatible_org_types</span><span class="o">=</span><span class="p">[</span><span class="s1">'fleet'</span><span class="p">,</span> <span class="s1">'dealership'</span><span class="p">],</span>
+    <span class="n">is_active</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p><strong>System automatically handles the rest:</strong></p></li>
+</ol>
+<ul class="simple">
+<li><p>Users in ‘fleet_managers’ group get access to <code class="docutils literal notranslate"><span class="pre">/fleet-dashboard/</span></code></p></li>
+<li><p>Template shows “Fleet Managers” dashboard option</p></li>
+<li><p>Organization compatibility is checked automatically</p></li>
+</ul>
+</section>
+<section id="modifying-existing-dashboard">
+<h3>Modifying Existing Dashboard<a class="headerlink" href="#modifying-existing-dashboard" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Change customer dashboard URL</span>
+<span class="n">auth_group</span> <span class="o">=</span> <span class="n">AuthenticationGroup</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">dashboard_type</span><span class="o">=</span><span class="s1">'customer'</span><span class="p">)</span>
+<span class="n">auth_group</span><span class="o">.</span><span class="n">dashboard_url</span> <span class="o">=</span> <span class="s1">'/new-customer-portal/'</span>
+<span class="n">auth_group</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+<span class="c1"># All customer users now redirect to new URL automatically</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="testing-the-implementation">
+<h2>Testing the Implementation<a class="headerlink" href="#testing-the-implementation" title="Link to this heading"></a></h2>
+<section id="use-test-authentication-page">
+<h3>1. <strong>Use Test Authentication Page</strong><a class="headerlink" href="#use-test-authentication-page" title="Link to this heading"></a></h3>
+<p>Visit <code class="docutils literal notranslate"><span class="pre">/test-auth/</span></code> to see:</p>
+<ul class="simple">
+<li><p>Current user’s groups</p></li>
+<li><p>Available dashboard configurations</p></li>
+<li><p>Resolved dashboard access</p></li>
+<li><p>Any conflicts or issues</p></li>
+</ul>
+</section>
+<section id="setup-default-configurations">
+<h3>2. <strong>Setup Default Configurations</strong><a class="headerlink" href="#setup-default-configurations" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>manage.py<span class="w"> </span>setup_auth_groups
+</pre></div>
+</div>
+</section>
+<section id="test-different-scenarios">
+<h3>3. <strong>Test Different Scenarios</strong><a class="headerlink" href="#test-different-scenarios" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>User with no groups → Clear setup message</p></li>
+<li><p>User with single group → Direct routing to configured dashboard</p></li>
+<li><p>User with multiple groups → Dynamic dashboard selector</p></li>
+<li><p>User with incompatible org type → Clear error message</p></li>
+</ul>
+</section>
+</section>
+<section id="migration-path">
+<h2>Migration Path<a class="headerlink" href="#migration-path" title="Link to this heading"></a></h2>
+<section id="for-existing-systems">
+<h3>For Existing Systems:<a class="headerlink" href="#for-existing-systems" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">manage.py</span> <span class="pre">setup_auth_groups</span></code> to create default configurations</p></li>
+<li><p>Existing users continue working with same dashboard URLs</p></li>
+<li><p>Gradually migrate custom configurations to Authentication Group Management</p></li>
+<li><p>Remove hardcoded configurations when ready</p></li>
+</ol>
+</section>
+<section id="for-new-systems">
+<h3>For New Systems:<a class="headerlink" href="#for-new-systems" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Set up Authentication Group configurations first</p></li>
+<li><p>Assign users to appropriate groups</p></li>
+<li><p>System handles all routing automatically</p></li>
+</ol>
+</section>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h2>
+<section id="no-dashboard-configurations-found-error">
+<h3>“No dashboard configurations found” Error:<a class="headerlink" href="#no-dashboard-configurations-found-error" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Run setup command: <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">manage.py</span> <span class="pre">setup_auth_groups</span></code></p></li>
+<li><p>Check that AuthenticationGroup configurations exist and are active</p></li>
+<li><p>Verify user is assigned to groups that have configurations</p></li>
+</ul>
+</section>
+<section id="group-not-compatible-with-organization-type-warning">
+<h3>“Group not compatible with organization type” Warning:<a class="headerlink" href="#group-not-compatible-with-organization-type-warning" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Check organization type in user’s profile</p></li>
+<li><p>Update AuthenticationGroup.compatible_org_types to include user’s org type</p></li>
+<li><p>Or assign user to different organization</p></li>
+</ul>
+</section>
+<section id="dashboard-not-loading">
+<h3>Dashboard not loading:<a class="headerlink" href="#dashboard-not-loading" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Verify dashboard URL exists and is accessible</p></li>
+<li><p>Check that URL pattern is defined in Django urls.py</p></li>
+<li><p>Test URL manually in browser</p></li>
+</ul>
+<p>This implementation provides a robust, flexible, and admin-friendly dashboard routing system that eliminates hardcoded dependencies and provides clear feedback for all authentication scenarios.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Accident-History-Integration-Summary.html" class="btn btn-neutral float-left" title="Insurance App - Vehicle History Integration Summary" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="IMPLEMENTATION_SUMMARY.html" class="btn btn-neutral float-right" title="Authentication Service Implementation Summary" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Menzi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

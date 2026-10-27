@@ -1,0 +1,553 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Error Handling and User Feedback System Documentation &mdash; Carfinity 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="System Health Monitoring Guide" href="HEALTH_MONITORING_GUIDE.html" />
+    <link rel="prev" title="Database Schema Documentation" href="DATABASE_SCHEMA.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Carfinity
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Start Here</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../administration.html">Administration and Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vehicle-care.html">Vehicle Care and Maintenance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../inspections.html">Inspections and Assessments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../insurance-and-quotes.html">Insurance and Repair Quotes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../technical-reference.html">Technical Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="DATABASE_SCHEMA.html">Database Schema Documentation</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Error Handling and User Feedback System Documentation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#components">Components</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#error-handlers-error-handlers-py">1. Error Handlers (<code class="docutils literal notranslate"><span class="pre">error_handlers.py</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#error-templates">2. Error Templates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#middleware-middleware-py">3. Middleware (<code class="docutils literal notranslate"><span class="pre">middleware.py</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#updated-permission-decorators-permissions-py">4. Updated Permission Decorators (<code class="docutils literal notranslate"><span class="pre">permissions.py</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#logging-configuration-logging-config-py">5. Logging Configuration (<code class="docutils literal notranslate"><span class="pre">logging_config.py</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#updated-views-views-py">6. Updated Views (<code class="docutils literal notranslate"><span class="pre">views.py</span></code>)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#usage-examples">Usage Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#using-error-handlers-in-views">1. Using Error Handlers in Views</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#using-permission-decorators">2. Using Permission Decorators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#logging-security-events">3. Logging Security Events</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#custom-error-messages">4. Custom Error Messages</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration">Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#url-configuration">1. URL Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#middleware-configuration">2. Middleware Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#logging-configuration">3. Logging Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#testing">Testing</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#management-command">Management Command</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#available-test-scenarios">Available Test Scenarios:</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#security-considerations">Security Considerations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#information-disclosure">1. Information Disclosure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#logging-security">2. Logging Security</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#session-security">3. Session Security</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#maintenance">Maintenance</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#log-file-management">1. Log File Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#error-message-updates">2. Error Message Updates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#performance-monitoring">3. Performance Monitoring</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#common-issues">Common Issues:</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#integration-with-existing-code">Integration with Existing Code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#future-enhancements">Future Enhancements</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="HEALTH_MONITORING_GUIDE.html">System Health Monitoring Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PWA_SETUP_GUIDE.html">PWA Setup Complete - Installation Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backend-requirements.html">Backend Requirements for Insurance Dashboard</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../project-history.html">Project History and Implementation Notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Carfinity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../technical-reference.html">Technical Reference</a></li>
+      <li class="breadcrumb-item active">Error Handling and User Feedback System Documentation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/ERROR_HANDLING_DOCUMENTATION.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="error-handling-and-user-feedback-system-documentation">
+<h1>Error Handling and User Feedback System Documentation<a class="headerlink" href="#error-handling-and-user-feedback-system-documentation" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>This document describes the comprehensive error handling and user feedback system implemented for the group-based authentication system. The system provides consistent, user-friendly error messages, comprehensive logging, and proper guidance for users experiencing access issues.</p>
+</section>
+<section id="components">
+<h2>Components<a class="headerlink" href="#components" title="Link to this heading"></a></h2>
+<section id="error-handlers-error-handlers-py">
+<h3>1. Error Handlers (<code class="docutils literal notranslate"><span class="pre">error_handlers.py</span></code>)<a class="headerlink" href="#error-handlers-error-handlers-py" title="Link to this heading"></a></h3>
+<p>The main error handling module provides centralized error processing and user feedback.</p>
+<section id="key-classes">
+<h4>Key Classes:<a class="headerlink" href="#key-classes" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">ErrorType</span></code></strong>: Constants for different error types</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">SecurityEventLogger</span></code></strong>: Handles logging of security events and access violations</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">ErrorMessageGenerator</span></code></strong>: Generates user-friendly error messages and suggestions</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">AuthenticationErrorHandler</span></code></strong>: Main error handler for authentication and authorization errors</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">UserGuidanceProvider</span></code></strong>: Provides specific guidance based on user’s current state</p></li>
+</ul>
+</section>
+<section id="error-types">
+<h4>Error Types:<a class="headerlink" href="#error-types" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">NO_AUTHENTICATION</span></code>: User not logged in</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NO_GROUPS</span></code>: User has no group assignments</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NO_ORGANIZATION</span></code>: User not associated with any organization</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GROUP_ORG_MISMATCH</span></code>: Mismatch between user groups and organization type</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ACCESS_DENIED</span></code>: General access denied</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">INVALID_PERMISSIONS</span></code>: Invalid permission configuration</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SYSTEM_ERROR</span></code>: Unexpected system errors</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SESSION_EXPIRED</span></code>: Session timeout/expiration</p></li>
+</ul>
+</section>
+</section>
+<section id="error-templates">
+<h3>2. Error Templates<a class="headerlink" href="#error-templates" title="Link to this heading"></a></h3>
+<section id="templates-errors-access-denied-html">
+<h4><code class="docutils literal notranslate"><span class="pre">templates/errors/access_denied.html</span></code><a class="headerlink" href="#templates-errors-access-denied-html" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Enhanced version of the original access denied template</p></li>
+<li><p>Uses new error context variables</p></li>
+<li><p>Displays error IDs for support</p></li>
+<li><p>Conditional action buttons based on error type</p></li>
+</ul>
+</section>
+<section id="templates-errors-system-error-html">
+<h4><code class="docutils literal notranslate"><span class="pre">templates/errors/system_error.html</span></code><a class="headerlink" href="#templates-errors-system-error-html" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Template for system errors</p></li>
+<li><p>Includes error ID for support tracking</p></li>
+<li><p>Retry functionality for recoverable errors</p></li>
+</ul>
+</section>
+<section id="templates-errors-no-groups-html">
+<h4><code class="docutils literal notranslate"><span class="pre">templates/errors/no_groups.html</span></code><a class="headerlink" href="#templates-errors-no-groups-html" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Specific template for users with no group assignments</p></li>
+<li><p>Step-by-step guidance for resolution</p></li>
+<li><p>Contact information for administrators</p></li>
+</ul>
+</section>
+<section id="templates-errors-no-organization-html">
+<h4><code class="docutils literal notranslate"><span class="pre">templates/errors/no_organization.html</span></code><a class="headerlink" href="#templates-errors-no-organization-html" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Specific template for users with no organization assignments</p></li>
+<li><p>Information about organization types</p></li>
+<li><p>Clear next steps for users</p></li>
+</ul>
+</section>
+</section>
+<section id="middleware-middleware-py">
+<h3>3. Middleware (<code class="docutils literal notranslate"><span class="pre">middleware.py</span></code>)<a class="headerlink" href="#middleware-middleware-py" title="Link to this heading"></a></h3>
+<section id="authenticationerrormiddleware">
+<h4><code class="docutils literal notranslate"><span class="pre">AuthenticationErrorMiddleware</span></code><a class="headerlink" href="#authenticationerrormiddleware" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Catches authentication-related exceptions globally</p></li>
+<li><p>Provides consistent error handling across the application</p></li>
+<li><p>Logs security events automatically</p></li>
+</ul>
+</section>
+<section id="sessionsecuritymiddleware">
+<h4><code class="docutils literal notranslate"><span class="pre">SessionSecurityMiddleware</span></code><a class="headerlink" href="#sessionsecuritymiddleware" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Handles session security and timeout</p></li>
+<li><p>Detects session tampering</p></li>
+<li><p>Adds security headers to responses</p></li>
+</ul>
+</section>
+<section id="requestloggingmiddleware">
+<h4><code class="docutils literal notranslate"><span class="pre">RequestLoggingMiddleware</span></code><a class="headerlink" href="#requestloggingmiddleware" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Logs requests to sensitive endpoints</p></li>
+<li><p>Monitors authentication-related activities</p></li>
+<li><p>Tracks error responses</p></li>
+</ul>
+</section>
+</section>
+<section id="updated-permission-decorators-permissions-py">
+<h3>4. Updated Permission Decorators (<code class="docutils literal notranslate"><span class="pre">permissions.py</span></code>)<a class="headerlink" href="#updated-permission-decorators-permissions-py" title="Link to this heading"></a></h3>
+<p>Enhanced permission decorators now use the new error handling system:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&#64;require_group(group_name)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&#64;require_any_group(group_names)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&#64;require_organization_type(org_type)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&#64;require_dashboard_access(dashboard_name)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&#64;check_permission_conflicts</span></code></p></li>
+</ul>
+<p>All decorators now:</p>
+<ul class="simple">
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">SecurityEventLogger</span></code> for consistent logging</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">AuthenticationErrorHandler</span></code> for consistent responses</p></li>
+<li><p>Provide detailed error context</p></li>
+</ul>
+</section>
+<section id="logging-configuration-logging-config-py">
+<h3>5. Logging Configuration (<code class="docutils literal notranslate"><span class="pre">logging_config.py</span></code>)<a class="headerlink" href="#logging-configuration-logging-config-py" title="Link to this heading"></a></h3>
+<p>Comprehensive logging setup for security and authentication events:</p>
+<ul class="simple">
+<li><p><strong>Security Logger</strong>: Logs access violations, permission conflicts, security events</p></li>
+<li><p><strong>Authentication Logger</strong>: Logs login attempts, authentication events</p></li>
+<li><p><strong>File Handlers</strong>: Separate log files for security and authentication events</p></li>
+<li><p><strong>Console Handlers</strong>: Development-time console output</p></li>
+</ul>
+<section id="log-files">
+<h4>Log Files:<a class="headerlink" href="#log-files" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">logs/security.log</span></code>: Security events and access violations</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">logs/authentication.log</span></code>: Authentication attempts and events</p></li>
+</ul>
+</section>
+</section>
+<section id="updated-views-views-py">
+<h3>6. Updated Views (<code class="docutils literal notranslate"><span class="pre">views.py</span></code>)<a class="headerlink" href="#updated-views-views-py" title="Link to this heading"></a></h3>
+<p>Enhanced views with new error handling:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">access_denied()</span></code>: Uses new error handling system</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">no_groups_error()</span></code>: Specific view for no groups scenario</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">no_organization_error()</span></code>: Specific view for no organization scenario</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">system_error()</span></code>: View for system errors</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">login_user()</span></code>: Enhanced with security logging</p></li>
+</ul>
+</section>
+</section>
+<section id="usage-examples">
+<h2>Usage Examples<a class="headerlink" href="#usage-examples" title="Link to this heading"></a></h2>
+<section id="using-error-handlers-in-views">
+<h3>1. Using Error Handlers in Views<a class="headerlink" href="#using-error-handlers-in-views" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">users.error_handlers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AuthenticationErrorHandler</span><span class="p">,</span> <span class="n">ErrorType</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">my_view</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_authenticated</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">AuthenticationErrorHandler</span><span class="o">.</span><span class="n">handle_access_denied</span><span class="p">(</span>
+            <span class="n">request</span><span class="p">,</span> <span class="n">ErrorType</span><span class="o">.</span><span class="n">NO_AUTHENTICATION</span>
+        <span class="p">)</span>
+    
+    <span class="c1"># View logic here</span>
+</pre></div>
+</div>
+</section>
+<section id="using-permission-decorators">
+<h3>2. Using Permission Decorators<a class="headerlink" href="#using-permission-decorators" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">users.permissions</span><span class="w"> </span><span class="kn">import</span> <span class="n">require_group</span><span class="p">,</span> <span class="n">check_permission_conflicts</span>
+
+<span class="nd">@require_group</span><span class="p">(</span><span class="s1">'customers'</span><span class="p">)</span>
+<span class="nd">@check_permission_conflicts</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">customer_dashboard</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="c1"># Dashboard logic here</span>
+</pre></div>
+</div>
+</section>
+<section id="logging-security-events">
+<h3>3. Logging Security Events<a class="headerlink" href="#logging-security-events" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">users.error_handlers</span><span class="w"> </span><span class="kn">import</span> <span class="n">SecurityEventLogger</span><span class="p">,</span> <span class="n">ErrorType</span>
+
+<span class="c1"># Log access denied</span>
+<span class="n">SecurityEventLogger</span><span class="o">.</span><span class="n">log_access_denied</span><span class="p">(</span>
+    <span class="n">user</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span>
+    <span class="n">requested_resource</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
+    <span class="n">error_type</span><span class="o">=</span><span class="n">ErrorType</span><span class="o">.</span><span class="n">ACCESS_DENIED</span><span class="p">,</span>
+    <span class="n">additional_info</span><span class="o">=</span><span class="p">{</span><span class="s1">'custom'</span><span class="p">:</span> <span class="s1">'data'</span><span class="p">}</span>
+<span class="p">)</span>
+
+<span class="c1"># Log authentication attempt</span>
+<span class="n">SecurityEventLogger</span><span class="o">.</span><span class="n">log_authentication_attempt</span><span class="p">(</span>
+    <span class="n">username</span><span class="o">=</span><span class="s1">'user123'</span><span class="p">,</span>
+    <span class="n">success</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">ip_address</span><span class="o">=</span><span class="s1">'192.168.1.1'</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="custom-error-messages">
+<h3>4. Custom Error Messages<a class="headerlink" href="#custom-error-messages" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">users.error_handlers</span><span class="w"> </span><span class="kn">import</span> <span class="n">ErrorMessageGenerator</span>
+
+<span class="n">context</span> <span class="o">=</span> <span class="n">ErrorMessageGenerator</span><span class="o">.</span><span class="n">get_error_context</span><span class="p">(</span>
+    <span class="n">ErrorType</span><span class="o">.</span><span class="n">NO_GROUPS</span><span class="p">,</span>
+    <span class="n">user</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span>
+    <span class="n">custom_message</span><span class="o">=</span><span class="s2">"Your account needs group assignment."</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<section id="url-configuration">
+<h3>1. URL Configuration<a class="headerlink" href="#url-configuration" title="Link to this heading"></a></h3>
+<p>Add error handling URLs to your <code class="docutils literal notranslate"><span class="pre">urls.py</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">path</span><span class="p">(</span><span class="s1">'access-denied/'</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">access_denied</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">'access_denied'</span><span class="p">),</span>
+    <span class="n">path</span><span class="p">(</span><span class="s1">'no-groups/'</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">no_groups_error</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">'no_groups_error'</span><span class="p">),</span>
+    <span class="n">path</span><span class="p">(</span><span class="s1">'no-organization/'</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">no_organization_error</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">'no_organization_error'</span><span class="p">),</span>
+    <span class="n">path</span><span class="p">(</span><span class="s1">'system-error/'</span><span class="p">,</span> <span class="n">views</span><span class="o">.</span><span class="n">system_error</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">'system_error'</span><span class="p">),</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="middleware-configuration">
+<h3>2. Middleware Configuration<a class="headerlink" href="#middleware-configuration" title="Link to this heading"></a></h3>
+<p>Add middleware to your Django settings:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">MIDDLEWARE</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># ... other middleware</span>
+    <span class="s1">'users.middleware.AuthenticationErrorMiddleware'</span><span class="p">,</span>
+    <span class="s1">'users.middleware.SessionSecurityMiddleware'</span><span class="p">,</span>
+    <span class="s1">'users.middleware.RequestLoggingMiddleware'</span><span class="p">,</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="logging-configuration">
+<h3>3. Logging Configuration<a class="headerlink" href="#logging-configuration" title="Link to this heading"></a></h3>
+<p>Add logging configuration to your Django settings:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">users.logging_config</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOGGING_CONFIG</span>
+
+<span class="n">LOGGING</span> <span class="o">=</span> <span class="n">LOGGING_CONFIG</span>
+</pre></div>
+</div>
+<p>Or call the setup function in your Django app’s ready method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">users.logging_config</span><span class="w"> </span><span class="kn">import</span> <span class="n">setup_logging</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">ready</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">setup_logging</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Link to this heading"></a></h2>
+<section id="management-command">
+<h3>Management Command<a class="headerlink" href="#management-command" title="Link to this heading"></a></h3>
+<p>Use the test management command to verify the error handling system:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Test all scenarios</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>test_error_handling
+
+<span class="c1"># Test specific scenario</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>test_error_handling<span class="w"> </span>--scenario<span class="w"> </span>no_groups
+</pre></div>
+</div>
+</section>
+<section id="available-test-scenarios">
+<h3>Available Test Scenarios:<a class="headerlink" href="#available-test-scenarios" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">all</span></code>: Test all scenarios</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">no_auth</span></code>: Test unauthenticated user handling</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">no_groups</span></code>: Test users with no group assignments</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">no_org</span></code>: Test users with no organization assignments</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">conflicts</span></code>: Test permission conflicts</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">logging</span></code>: Test logging system</p></li>
+</ul>
+</section>
+</section>
+<section id="security-considerations">
+<h2>Security Considerations<a class="headerlink" href="#security-considerations" title="Link to this heading"></a></h2>
+<section id="information-disclosure">
+<h3>1. Information Disclosure<a class="headerlink" href="#information-disclosure" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Error messages are user-friendly but don’t reveal sensitive system information</p></li>
+<li><p>Detailed error information is logged securely for administrators</p></li>
+<li><p>Error IDs allow support to track issues without exposing details to users</p></li>
+</ul>
+</section>
+<section id="logging-security">
+<h3>2. Logging Security<a class="headerlink" href="#logging-security" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Security events are logged with appropriate detail levels</p></li>
+<li><p>Log files are stored securely and should be protected</p></li>
+<li><p>IP addresses and user agents are logged for security monitoring</p></li>
+</ul>
+</section>
+<section id="session-security">
+<h3>3. Session Security<a class="headerlink" href="#session-security" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Session tampering detection</p></li>
+<li><p>Automatic session invalidation on security violations</p></li>
+<li><p>Security headers added to responses</p></li>
+</ul>
+</section>
+</section>
+<section id="maintenance">
+<h2>Maintenance<a class="headerlink" href="#maintenance" title="Link to this heading"></a></h2>
+<section id="log-file-management">
+<h3>1. Log File Management<a class="headerlink" href="#log-file-management" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Monitor log file sizes and implement rotation</p></li>
+<li><p>Regularly review security logs for suspicious activity</p></li>
+<li><p>Archive old logs according to your retention policy</p></li>
+</ul>
+</section>
+<section id="error-message-updates">
+<h3>2. Error Message Updates<a class="headerlink" href="#error-message-updates" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Review error messages periodically for clarity</p></li>
+<li><p>Update contact information in templates as needed</p></li>
+<li><p>Add new error types as the system evolves</p></li>
+</ul>
+</section>
+<section id="performance-monitoring">
+<h3>3. Performance Monitoring<a class="headerlink" href="#performance-monitoring" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Monitor the performance impact of logging</p></li>
+<li><p>Adjust log levels in production as needed</p></li>
+<li><p>Consider async logging for high-traffic applications</p></li>
+</ul>
+</section>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h2>
+<section id="common-issues">
+<h3>Common Issues:<a class="headerlink" href="#common-issues" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Log files not created</strong></p>
+<ul class="simple">
+<li><p>Check directory permissions for <code class="docutils literal notranslate"><span class="pre">logs/</span></code> folder</p></li>
+<li><p>Verify logging configuration is properly loaded</p></li>
+<li><p>Check Django settings for logging configuration</p></li>
+</ul>
+</li>
+<li><p><strong>Error templates not found</strong></p>
+<ul class="simple">
+<li><p>Verify template paths in <code class="docutils literal notranslate"><span class="pre">templates/errors/</span></code></p></li>
+<li><p>Check Django template settings</p></li>
+<li><p>Ensure templates extend the correct base template</p></li>
+</ul>
+</li>
+<li><p><strong>Middleware not working</strong></p>
+<ul class="simple">
+<li><p>Verify middleware is added to Django settings</p></li>
+<li><p>Check middleware order (should be after authentication middleware)</p></li>
+<li><p>Ensure middleware classes are properly imported</p></li>
+</ul>
+</li>
+<li><p><strong>Permission decorators not working</strong></p>
+<ul class="simple">
+<li><p>Check that decorators are applied in correct order</p></li>
+<li><p>Verify user groups and organization assignments</p></li>
+<li><p>Check that required services are properly configured</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+<section id="integration-with-existing-code">
+<h2>Integration with Existing Code<a class="headerlink" href="#integration-with-existing-code" title="Link to this heading"></a></h2>
+<p>The error handling system is designed to integrate seamlessly with existing code:</p>
+<ol class="arabic simple">
+<li><p><strong>Backward Compatibility</strong>: Existing error handling continues to work</p></li>
+<li><p><strong>Gradual Migration</strong>: Views can be updated incrementally to use new system</p></li>
+<li><p><strong>Fallback Handling</strong>: System gracefully handles missing configurations</p></li>
+<li><p><strong>Flexible Configuration</strong>: Error messages and templates can be customized</p></li>
+</ol>
+</section>
+<section id="future-enhancements">
+<h2>Future Enhancements<a class="headerlink" href="#future-enhancements" title="Link to this heading"></a></h2>
+<p>Potential improvements to consider:</p>
+<ol class="arabic simple">
+<li><p><strong>Internationalization</strong>: Multi-language error messages</p></li>
+<li><p><strong>User Notifications</strong>: Email notifications for security events</p></li>
+<li><p><strong>Dashboard Integration</strong>: Admin dashboard for monitoring errors</p></li>
+<li><p><strong>API Error Handling</strong>: Extend system for API endpoints</p></li>
+<li><p><strong>Automated Recovery</strong>: Self-healing for certain error conditions</p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="DATABASE_SCHEMA.html" class="btn btn-neutral float-left" title="Database Schema Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="HEALTH_MONITORING_GUIDE.html" class="btn btn-neutral float-right" title="System Health Monitoring Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Menzi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

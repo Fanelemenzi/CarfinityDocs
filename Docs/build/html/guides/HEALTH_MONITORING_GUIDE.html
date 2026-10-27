@@ -1,0 +1,817 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>System Health Monitoring Guide &mdash; Carfinity 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="PWA Setup Complete - Installation Guide" href="PWA_SETUP_GUIDE.html" />
+    <link rel="prev" title="Error Handling and User Feedback System Documentation" href="ERROR_HANDLING_DOCUMENTATION.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Carfinity
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Start Here</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../administration.html">Administration and Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vehicle-care.html">Vehicle Care and Maintenance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../inspections.html">Inspections and Assessments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../insurance-and-quotes.html">Insurance and Repair Quotes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../technical-reference.html">Technical Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="DATABASE_SCHEMA.html">Database Schema Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ERROR_HANDLING_DOCUMENTATION.html">Error Handling and User Feedback System Documentation</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">System Health Monitoring Guide</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#architecture">Architecture</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#components">Components</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#alert-types">Alert Types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#thresholds">Thresholds</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#api-endpoints">API Endpoints</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#health-check-endpoint">Health Check Endpoint</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#system-alerts-endpoint">System Alerts Endpoint</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#programmatic-usage">Programmatic Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#creating-alerts">Creating Alerts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#checking-and-alerting">Checking and Alerting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#resolving-alerts">Resolving Alerts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#getting-active-alerts">Getting Active Alerts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#performance-metrics">Performance Metrics</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#monitoring-dashboard">Monitoring Dashboard</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#key-metrics-to-monitor">Key Metrics to Monitor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dashboard-access">Dashboard Access</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#high-error-rate-alert">High Error Rate Alert</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#push-delivery-degradation-alert">Push Delivery Degradation Alert</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#database-error-alert">Database Error Alert</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#calendar-service-unavailable">Calendar Service Unavailable</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#alerting-strategies">Alerting Strategies</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#critical-alerts">Critical Alerts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#warning-alerts">Warning Alerts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#info-alerts">Info Alerts</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#performance-optimization-based-on-alerts">Performance Optimization Based on Alerts</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#when-error-rate-is-high">When Error Rate is High</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#when-delivery-rate-is-low">When Delivery Rate is Low</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#when-processing-performance-degrades">When Processing Performance Degrades</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#integration-with-external-monitoring">Integration with External Monitoring</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#prometheus-metrics">Prometheus Metrics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#alerting-integration">Alerting Integration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#best-practices">Best Practices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#management-commands">Management Commands</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#health-check-command">Health Check Command</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#check-system-health-programmatically">Check System Health Programmatically</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="PWA_SETUP_GUIDE.html">PWA Setup Complete - Installation Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backend-requirements.html">Backend Requirements for Insurance Dashboard</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../project-history.html">Project History and Implementation Notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Carfinity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../technical-reference.html">Technical Reference</a></li>
+      <li class="breadcrumb-item active">System Health Monitoring Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/HEALTH_MONITORING_GUIDE.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="system-health-monitoring-guide">
+<h1>System Health Monitoring Guide<a class="headerlink" href="#system-health-monitoring-guide" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The webapp-pwa-notifications system includes comprehensive health monitoring capabilities to track system performance, detect failures, and alert administrators to issues. This guide covers all monitoring, alerting, and troubleshooting features.</p>
+</section>
+<section id="architecture">
+<h2>Architecture<a class="headerlink" href="#architecture" title="Link to this heading"></a></h2>
+<section id="components">
+<h3>Components<a class="headerlink" href="#components" title="Link to this heading"></a></h3>
+<section id="systemhealthmonitor">
+<h4>1. SystemHealthMonitor<a class="headerlink" href="#systemhealthmonitor" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Purpose</strong>: Performs system-wide health checks</p></li>
+<li><p><strong>Location</strong>: <code class="docutils literal notranslate"><span class="pre">notifications/error_handlers.py</span></code></p></li>
+<li><p><strong>Functionality</strong>:</p>
+<ul>
+<li><p>Database connectivity checks</p></li>
+<li><p>Error rate calculation</p></li>
+<li><p>Calendar service monitoring</p></li>
+<li><p>Push notification service status</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="systemalertingservice">
+<h4>2. SystemAlertingService<a class="headerlink" href="#systemalertingservice" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Purpose</strong>: Creates and manages system alerts</p></li>
+<li><p><strong>Location</strong>: <code class="docutils literal notranslate"><span class="pre">notifications/error_handlers.py</span></code></p></li>
+<li><p><strong>Functionality</strong>:</p>
+<ul>
+<li><p>Alert creation with threshold-based triggering</p></li>
+<li><p>Alert consolidation (prevents duplicates)</p></li>
+<li><p>Alert resolution and history tracking</p></li>
+<li><p>Severity-based alert management</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="performancemonitor">
+<h4>3. PerformanceMonitor<a class="headerlink" href="#performancemonitor" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Purpose</strong>: Collects comprehensive performance metrics</p></li>
+<li><p><strong>Location</strong>: <code class="docutils literal notranslate"><span class="pre">notifications/services.py</span></code></p></li>
+<li><p><strong>Functionality</strong>:</p>
+<ul>
+<li><p>Notification statistics collection</p></li>
+<li><p>Push subscription tracking</p></li>
+<li><p>Processing performance metrics</p></li>
+<li><p>Error rate statistics</p></li>
+<li><p>Delivery metrics by notification type</p></li>
+<li><p>Trend analysis</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="systemalert-model">
+<h4>4. SystemAlert Model<a class="headerlink" href="#systemalert-model" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Purpose</strong>: Stores alert data for history and tracking</p></li>
+<li><p><strong>Location</strong>: <code class="docutils literal notranslate"><span class="pre">notifications/models.py</span></code></p></li>
+<li><p><strong>Fields</strong>:</p>
+<ul>
+<li><p>Alert type and severity</p></li>
+<li><p>Description and component info</p></li>
+<li><p>Metric and threshold values</p></li>
+<li><p>Trigger count and timestamps</p></li>
+<li><p>Resolution tracking</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="alert-types">
+<h3>Alert Types<a class="headerlink" href="#alert-types" title="Link to this heading"></a></h3>
+<p>The system supports the following alert types:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Alert Type</p></th>
+<th class="head"><p>Severity</p></th>
+<th class="head"><p>Trigger Condition</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">push_service_failure</span></code></p></td>
+<td><p>Critical</p></td>
+<td><p>Push notifications failing to send</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">high_error_rate</span></code></p></td>
+<td><p>Warning</p></td>
+<td><p>Error rate exceeds 5%</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">push_delivery_degradation</span></code></p></td>
+<td><p>Warning</p></td>
+<td><p>Delivery rate below 80%</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">database_error</span></code></p></td>
+<td><p>Critical</p></td>
+<td><p>Database connectivity issues</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">calendar_service_unavailable</span></code></p></td>
+<td><p>Warning</p></td>
+<td><p>Calendar service down</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">performance_degradation</span></code></p></td>
+<td><p>Warning</p></td>
+<td><p>System performance metrics exceeded</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">queue_buildup</span></code></p></td>
+<td><p>Warning</p></td>
+<td><p>Notification queue &gt; 1000 items</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">subscription_expiration</span></code></p></td>
+<td><p>Info</p></td>
+<td><p>Push subscriptions expiring</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cache_failure</span></code></p></td>
+<td><p>Warning</p></td>
+<td><p>Cache system errors</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">batch_processor_failure</span></code></p></td>
+<td><p>Critical</p></td>
+<td><p>Batch processing errors</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="thresholds">
+<h3>Thresholds<a class="headerlink" href="#thresholds" title="Link to this heading"></a></h3>
+<p>Default thresholds for alert triggering:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">THRESHOLDS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'error_rate'</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">,</span>                  <span class="c1"># 5% error rate</span>
+    <span class="s1">'push_delivery_rate'</span><span class="p">:</span> <span class="mf">0.80</span><span class="p">,</span>          <span class="c1"># 80% minimum delivery rate</span>
+    <span class="s1">'push_failure_rate'</span><span class="p">:</span> <span class="mf">0.10</span><span class="p">,</span>           <span class="c1"># 10% maximum failure rate</span>
+    <span class="s1">'database_error_rate'</span><span class="p">:</span> <span class="mf">0.02</span><span class="p">,</span>         <span class="c1"># 2% database error rate</span>
+    <span class="s1">'queue_size'</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>                  <span class="c1"># Maximum notifications in queue</span>
+    <span class="s1">'calendar_errors_per_hour'</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>       <span class="c1"># Calendar service errors</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="api-endpoints">
+<h2>API Endpoints<a class="headerlink" href="#api-endpoints" title="Link to this heading"></a></h2>
+<section id="health-check-endpoint">
+<h3>Health Check Endpoint<a class="headerlink" href="#health-check-endpoint" title="Link to this heading"></a></h3>
+<p><strong>GET</strong> <code class="docutils literal notranslate"><span class="pre">/api/admin/system-health/</span></code></p>
+<p>Requires: Staff authentication</p>
+<p>Returns comprehensive system health status including:</p>
+<ul class="simple">
+<li><p>Component health (database, push service, batch processor, cache)</p></li>
+<li><p>Performance metrics</p></li>
+<li><p>Delivery metrics by type</p></li>
+<li><p>7-day trend analysis</p></li>
+<li><p>Active alert summary</p></li>
+</ul>
+<p><strong>Response Example:</strong></p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"healthy"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"timestamp"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2026-07-26T10:30:00Z"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"overall_status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"healthy"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"components"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"database"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"healthy"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"details"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Database responsive, 1234 notifications"</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"push_service"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"healthy"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"details"</span><span class="p">:</span><span class="w"> </span><span class="s2">"156 active push subscriptions"</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"batch_processor"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"healthy"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"details"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Success rate: 98.5%"</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"cache"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"healthy"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"details"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Cache system responsive"</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">"performance_metrics"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"notification_stats"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"total_notifications"</span><span class="p">:</span><span class="w"> </span><span class="mi">5432</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"notifications_last_hour"</span><span class="p">:</span><span class="w"> </span><span class="mi">45</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"notifications_last_day"</span><span class="p">:</span><span class="w"> </span><span class="mi">234</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"unread_notifications"</span><span class="p">:</span><span class="w"> </span><span class="mi">89</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"read_rate"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.84</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"push_subscription_stats"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"total_subscriptions"</span><span class="p">:</span><span class="w"> </span><span class="mi">156</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"active_subscriptions"</span><span class="p">:</span><span class="w"> </span><span class="mi">148</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"activation_rate"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.95</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"processing_performance"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"push_delivery_rate"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.92</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"push_failure_rate"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.08</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"total_push_attempts_24h"</span><span class="p">:</span><span class="w"> </span><span class="mi">450</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"error_rates"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"overall_error_rate"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.04</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"success_rate"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.96</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">"delivery_metrics_by_type"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"maintenance_reminder"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"total"</span><span class="p">:</span><span class="w"> </span><span class="mi">120</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"sent"</span><span class="p">:</span><span class="w"> </span><span class="mi">115</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"delivery_rate"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.96</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"read"</span><span class="p">:</span><span class="w"> </span><span class="mi">89</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"read_rate"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.74</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">"inspection_reminder"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"total"</span><span class="p">:</span><span class="w"> </span><span class="mi">85</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"sent"</span><span class="p">:</span><span class="w"> </span><span class="mi">78</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"delivery_rate"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.92</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"read"</span><span class="p">:</span><span class="w"> </span><span class="mi">62</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"read_rate"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.73</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">"trend_analysis"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"period_days"</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"daily_stats"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2026-07-19"</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"total"</span><span class="p">:</span><span class="w"> </span><span class="mi">245</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"sent"</span><span class="p">:</span><span class="w"> </span><span class="mi">238</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"delivery_rate"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.97</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">"read_rate"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.82</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">"delivery_trend"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stable"</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">"active_alerts"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+<span class="w">  </span><span class="nt">"alert_summary"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"critical_alerts"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"warning_alerts"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"total_active"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="system-alerts-endpoint">
+<h3>System Alerts Endpoint<a class="headerlink" href="#system-alerts-endpoint" title="Link to this heading"></a></h3>
+<p><strong>GET</strong> <code class="docutils literal notranslate"><span class="pre">/api/admin/system-alerts/</span></code></p>
+<p>Requires: Staff authentication</p>
+<p>Query Parameters:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">severity</span></code>: Filter by severity (critical, warning, info)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">alert_type</span></code>: Filter by alert type</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">active_only</span></code>: Show only active alerts (default: true)</p></li>
+</ul>
+<p>Returns list of system alerts with details.</p>
+<p><strong>POST</strong> <code class="docutils literal notranslate"><span class="pre">/api/admin/system-alerts/</span></code></p>
+<p>Requires: Staff authentication</p>
+<p>Resolve an alert.</p>
+<p>Request body:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"alert_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"resolution_notes"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Issue fixed by restarting service"</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="programmatic-usage">
+<h2>Programmatic Usage<a class="headerlink" href="#programmatic-usage" title="Link to this heading"></a></h2>
+<section id="creating-alerts">
+<h3>Creating Alerts<a class="headerlink" href="#creating-alerts" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">notifications.error_handlers</span><span class="w"> </span><span class="kn">import</span> <span class="n">SystemAlertingService</span>
+
+<span class="c1"># Create a basic alert</span>
+<span class="n">alert</span> <span class="o">=</span> <span class="n">SystemAlertingService</span><span class="o">.</span><span class="n">create_alert</span><span class="p">(</span>
+    <span class="n">alert_type</span><span class="o">=</span><span class="s1">'high_error_rate'</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s1">'High Error Rate Detected'</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s1">'Error rate of 8</span><span class="si">% e</span><span class="s1">xceeds threshold of 5%'</span><span class="p">,</span>
+    <span class="n">affected_component</span><span class="o">=</span><span class="s1">'Notification Processing'</span><span class="p">,</span>
+    <span class="n">metric_value</span><span class="o">=</span><span class="mf">0.08</span><span class="p">,</span>
+    <span class="n">threshold_value</span><span class="o">=</span><span class="mf">0.05</span>
+<span class="p">)</span>
+
+<span class="c1"># Create alert with metadata</span>
+<span class="n">alert</span> <span class="o">=</span> <span class="n">SystemAlertingService</span><span class="o">.</span><span class="n">create_alert</span><span class="p">(</span>
+    <span class="n">alert_type</span><span class="o">=</span><span class="s1">'push_delivery_degradation'</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s1">'Push Delivery Rate Degradation'</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s1">'Delivery rate of 75% below threshold of 80%'</span><span class="p">,</span>
+    <span class="n">affected_component</span><span class="o">=</span><span class="s1">'Push Notification Service'</span><span class="p">,</span>
+    <span class="n">metric_value</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span>
+    <span class="n">threshold_value</span><span class="o">=</span><span class="mf">0.80</span><span class="p">,</span>
+    <span class="n">metadata</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">'notification_type'</span><span class="p">:</span> <span class="s1">'maintenance_reminder'</span><span class="p">,</span>
+        <span class="s1">'sample_size'</span><span class="p">:</span> <span class="mi">250</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="checking-and-alerting">
+<h3>Checking and Alerting<a class="headerlink" href="#checking-and-alerting" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">notifications.error_handlers</span><span class="w"> </span><span class="kn">import</span> <span class="n">SystemAlertingService</span>
+
+<span class="c1"># Check error rate and alert if exceeded</span>
+<span class="n">error_rate</span> <span class="o">=</span> <span class="mf">0.08</span>
+<span class="n">SystemAlertingService</span><span class="o">.</span><span class="n">check_and_alert_error_rate</span><span class="p">(</span><span class="n">error_rate</span><span class="p">,</span> <span class="s1">'24hour'</span><span class="p">)</span>
+
+<span class="c1"># Check delivery rate and alert if below threshold</span>
+<span class="n">delivery_rate</span> <span class="o">=</span> <span class="mf">0.75</span>
+<span class="n">SystemAlertingService</span><span class="o">.</span><span class="n">check_and_alert_delivery_rate</span><span class="p">(</span><span class="n">delivery_rate</span><span class="p">,</span> <span class="s1">'all'</span><span class="p">)</span>
+
+<span class="c1"># Check push failure rate</span>
+<span class="n">failure_rate</span> <span class="o">=</span> <span class="mf">0.12</span>
+<span class="n">SystemAlertingService</span><span class="o">.</span><span class="n">check_and_alert_push_failures</span><span class="p">(</span><span class="n">failure_rate</span><span class="p">)</span>
+
+<span class="c1"># Check generic performance metric</span>
+<span class="n">SystemAlertingService</span><span class="o">.</span><span class="n">check_and_alert_performance</span><span class="p">(</span>
+    <span class="s1">'average_processing_time_ms'</span><span class="p">,</span>
+    <span class="n">metric_value</span><span class="o">=</span><span class="mi">450</span><span class="p">,</span>
+    <span class="n">threshold</span><span class="o">=</span><span class="mi">300</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="resolving-alerts">
+<h3>Resolving Alerts<a class="headerlink" href="#resolving-alerts" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">notifications.error_handlers</span><span class="w"> </span><span class="kn">import</span> <span class="n">SystemAlertingService</span>
+
+<span class="c1"># Resolve alerts by type</span>
+<span class="n">resolved_count</span> <span class="o">=</span> <span class="n">SystemAlertingService</span><span class="o">.</span><span class="n">resolve_alert</span><span class="p">(</span>
+    <span class="n">alert_type</span><span class="o">=</span><span class="s1">'high_error_rate'</span><span class="p">,</span>
+    <span class="n">affected_component</span><span class="o">=</span><span class="s1">'Notification Processing'</span><span class="p">,</span>
+    <span class="n">resolution_notes</span><span class="o">=</span><span class="s1">'Issue fixed by optimizing queries'</span>
+<span class="p">)</span>
+
+<span class="c1"># Or resolve individual alert</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">notifications.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">SystemAlert</span>
+
+<span class="n">alert</span> <span class="o">=</span> <span class="n">SystemAlert</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">123</span><span class="p">)</span>
+<span class="n">alert</span><span class="o">.</span><span class="n">resolve</span><span class="p">(</span><span class="s1">'Issue has been resolved'</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="getting-active-alerts">
+<h3>Getting Active Alerts<a class="headerlink" href="#getting-active-alerts" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">notifications.error_handlers</span><span class="w"> </span><span class="kn">import</span> <span class="n">SystemAlertingService</span>
+
+<span class="c1"># Get all active alerts</span>
+<span class="n">alerts</span> <span class="o">=</span> <span class="n">SystemAlertingService</span><span class="o">.</span><span class="n">get_active_alerts</span><span class="p">()</span>
+
+<span class="c1"># Get critical alerts only</span>
+<span class="n">critical_alerts</span> <span class="o">=</span> <span class="n">SystemAlertingService</span><span class="o">.</span><span class="n">get_active_alerts</span><span class="p">(</span><span class="n">severity</span><span class="o">=</span><span class="s1">'critical'</span><span class="p">)</span>
+
+<span class="c1"># Get specific alert type</span>
+<span class="n">delivery_alerts</span> <span class="o">=</span> <span class="n">SystemAlertingService</span><span class="o">.</span><span class="n">get_active_alerts</span><span class="p">(</span>
+    <span class="n">alert_type</span><span class="o">=</span><span class="s1">'push_delivery_degradation'</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="performance-metrics">
+<h3>Performance Metrics<a class="headerlink" href="#performance-metrics" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">notifications.services</span><span class="w"> </span><span class="kn">import</span> <span class="n">PerformanceMonitor</span>
+
+<span class="n">monitor</span> <span class="o">=</span> <span class="n">PerformanceMonitor</span><span class="p">()</span>
+
+<span class="c1"># Get comprehensive metrics</span>
+<span class="n">metrics</span> <span class="o">=</span> <span class="n">monitor</span><span class="o">.</span><span class="n">get_system_performance_metrics</span><span class="p">()</span>
+
+<span class="c1"># Get delivery metrics by notification type</span>
+<span class="n">delivery_by_type</span> <span class="o">=</span> <span class="n">monitor</span><span class="o">.</span><span class="n">get_delivery_metrics_by_type</span><span class="p">()</span>
+<span class="c1"># Returns:</span>
+<span class="c1"># {</span>
+<span class="c1">#   'maintenance_reminder': {</span>
+<span class="c1">#     'total': 120,</span>
+<span class="c1">#     'sent': 115,</span>
+<span class="c1">#     'delivery_rate': 0.96,</span>
+<span class="c1">#     'read': 89,</span>
+<span class="c1">#     'read_rate': 0.74</span>
+<span class="c1">#   },</span>
+<span class="c1">#   'inspection_reminder': {...}</span>
+<span class="c1"># }</span>
+
+<span class="c1"># Get trend analysis</span>
+<span class="n">trends</span> <span class="o">=</span> <span class="n">monitor</span><span class="o">.</span><span class="n">get_trend_analysis</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+<span class="c1"># Returns daily stats and trend direction</span>
+
+<span class="c1"># Check thresholds and create alerts</span>
+<span class="n">monitor</span><span class="o">.</span><span class="n">check_performance_thresholds</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="monitoring-dashboard">
+<h2>Monitoring Dashboard<a class="headerlink" href="#monitoring-dashboard" title="Link to this heading"></a></h2>
+<section id="key-metrics-to-monitor">
+<h3>Key Metrics to Monitor<a class="headerlink" href="#key-metrics-to-monitor" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>System Health Status</strong></p>
+<ul class="simple">
+<li><p>Overall health: healthy, degraded, unhealthy</p></li>
+<li><p>Component statuses</p></li>
+<li><p>Active alert count</p></li>
+</ul>
+</li>
+<li><p><strong>Notification Metrics</strong></p>
+<ul class="simple">
+<li><p>Total notifications created</p></li>
+<li><p>Read rate</p></li>
+<li><p>Unread count</p></li>
+<li><p>Notification distribution by type</p></li>
+</ul>
+</li>
+<li><p><strong>Push Notification Metrics</strong></p>
+<ul class="simple">
+<li><p>Active subscriptions</p></li>
+<li><p>Delivery rate</p></li>
+<li><p>Failure rate</p></li>
+<li><p>Trend analysis</p></li>
+</ul>
+</li>
+<li><p><strong>Performance Metrics</strong></p>
+<ul class="simple">
+<li><p>Error rates</p></li>
+<li><p>Processing times</p></li>
+<li><p>Database performance</p></li>
+<li><p>Cache effectiveness</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="dashboard-access">
+<h3>Dashboard Access<a class="headerlink" href="#dashboard-access" title="Link to this heading"></a></h3>
+<p>Staff members can access the health monitoring dashboard at:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/api/admin/system-health/</span></code> - Full health status</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/api/admin/system-alerts/</span></code> - Active alerts</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/api/admin/performance-metrics/</span></code> - Performance data</p></li>
+</ul>
+</section>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h2>
+<section id="high-error-rate-alert">
+<h3>High Error Rate Alert<a class="headerlink" href="#high-error-rate-alert" title="Link to this heading"></a></h3>
+<p><strong>Cause</strong>: Push notification failures exceeding 5% threshold</p>
+<p><strong>Investigation</strong>:</p>
+<ol class="arabic simple">
+<li><p>Check push subscription validity</p></li>
+<li><p>Verify VAPID keys are configured correctly</p></li>
+<li><p>Check for database connectivity issues</p></li>
+<li><p>Review notification retry history</p></li>
+</ol>
+<p><strong>Resolution</strong>:</p>
+<ol class="arabic simple">
+<li><p>Remove invalid subscriptions</p></li>
+<li><p>Restart push notification service</p></li>
+<li><p>Check and optimize database queries</p></li>
+<li><p>Monitor for patterns in failures</p></li>
+</ol>
+</section>
+<section id="push-delivery-degradation-alert">
+<h3>Push Delivery Degradation Alert<a class="headerlink" href="#push-delivery-degradation-alert" title="Link to this heading"></a></h3>
+<p><strong>Cause</strong>: Successful delivery rate below 80%</p>
+<p><strong>Investigation</strong>:</p>
+<ol class="arabic simple">
+<li><p>Analyze failed delivery logs</p></li>
+<li><p>Check subscription expiration dates</p></li>
+<li><p>Review network connectivity</p></li>
+<li><p>Check service worker registration</p></li>
+</ol>
+<p><strong>Resolution</strong>:</p>
+<ol class="arabic simple">
+<li><p>Clean up expired subscriptions</p></li>
+<li><p>Investigate failed delivery reasons</p></li>
+<li><p>Check client-side service worker health</p></li>
+<li><p>Monitor delivery rates over time</p></li>
+</ol>
+</section>
+<section id="database-error-alert">
+<h3>Database Error Alert<a class="headerlink" href="#database-error-alert" title="Link to this heading"></a></h3>
+<p><strong>Cause</strong>: Database connectivity or performance issues</p>
+<p><strong>Investigation</strong>:</p>
+<ol class="arabic simple">
+<li><p>Check database connection status</p></li>
+<li><p>Monitor database query performance</p></li>
+<li><p>Check for connection pool exhaustion</p></li>
+<li><p>Review slow query logs</p></li>
+</ol>
+<p><strong>Resolution</strong>:</p>
+<ol class="arabic simple">
+<li><p>Restart database service if needed</p></li>
+<li><p>Optimize slow queries</p></li>
+<li><p>Increase connection pool size</p></li>
+<li><p>Check disk space and memory</p></li>
+</ol>
+</section>
+<section id="calendar-service-unavailable">
+<h3>Calendar Service Unavailable<a class="headerlink" href="#calendar-service-unavailable" title="Link to this heading"></a></h3>
+<p><strong>Cause</strong>: Calendar service not responding</p>
+<p><strong>Investigation</strong>:</p>
+<ol class="arabic simple">
+<li><p>Verify calendar service is running</p></li>
+<li><p>Check network connectivity</p></li>
+<li><p>Review service logs</p></li>
+<li><p>Check service configuration</p></li>
+</ol>
+<p><strong>Resolution</strong>:</p>
+<ol class="arabic simple">
+<li><p>Restart calendar service</p></li>
+<li><p>Verify service configuration</p></li>
+<li><p>Check network connectivity</p></li>
+<li><p>Review and fix service issues</p></li>
+</ol>
+</section>
+</section>
+<section id="alerting-strategies">
+<h2>Alerting Strategies<a class="headerlink" href="#alerting-strategies" title="Link to this heading"></a></h2>
+<section id="critical-alerts">
+<h3>Critical Alerts<a class="headerlink" href="#critical-alerts" title="Link to this heading"></a></h3>
+<p>Should trigger immediate notification to on-call staff:</p>
+<ul class="simple">
+<li><p>Push service failures</p></li>
+<li><p>Database errors</p></li>
+<li><p>Batch processor failures</p></li>
+</ul>
+</section>
+<section id="warning-alerts">
+<h3>Warning Alerts<a class="headerlink" href="#warning-alerts" title="Link to this heading"></a></h3>
+<p>Should be reviewed during regular monitoring:</p>
+<ul class="simple">
+<li><p>High error rates</p></li>
+<li><p>Delivery rate degradation</p></li>
+<li><p>Performance issues</p></li>
+<li><p>Calendar service problems</p></li>
+</ul>
+</section>
+<section id="info-alerts">
+<h3>Info Alerts<a class="headerlink" href="#info-alerts" title="Link to this heading"></a></h3>
+<p>Can be archived after review:</p>
+<ul class="simple">
+<li><p>Subscription expirations</p></li>
+<li><p>Minor performance variations</p></li>
+<li><p>Non-critical service issues</p></li>
+</ul>
+</section>
+</section>
+<section id="performance-optimization-based-on-alerts">
+<h2>Performance Optimization Based on Alerts<a class="headerlink" href="#performance-optimization-based-on-alerts" title="Link to this heading"></a></h2>
+<section id="when-error-rate-is-high">
+<h3>When Error Rate is High<a class="headerlink" href="#when-error-rate-is-high" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Check for invalid notification data</p></li>
+<li><p>Optimize error handling</p></li>
+<li><p>Review retry mechanisms</p></li>
+<li><p>Analyze failed notification patterns</p></li>
+</ol>
+</section>
+<section id="when-delivery-rate-is-low">
+<h3>When Delivery Rate is Low<a class="headerlink" href="#when-delivery-rate-is-low" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Check subscription health</p></li>
+<li><p>Verify VAPID configuration</p></li>
+<li><p>Monitor network connectivity</p></li>
+<li><p>Review push service logs</p></li>
+</ol>
+</section>
+<section id="when-processing-performance-degrades">
+<h3>When Processing Performance Degrades<a class="headerlink" href="#when-processing-performance-degrades" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Check database query performance</p></li>
+<li><p>Optimize batch processing</p></li>
+<li><p>Review cache effectiveness</p></li>
+<li><p>Monitor resource utilization</p></li>
+</ol>
+</section>
+</section>
+<section id="integration-with-external-monitoring">
+<h2>Integration with External Monitoring<a class="headerlink" href="#integration-with-external-monitoring" title="Link to this heading"></a></h2>
+<section id="prometheus-metrics">
+<h3>Prometheus Metrics<a class="headerlink" href="#prometheus-metrics" title="Link to this heading"></a></h3>
+<p>The system can expose metrics to Prometheus:</p>
+<ul class="simple">
+<li><p>Notification counts</p></li>
+<li><p>Delivery rates</p></li>
+<li><p>Error rates</p></li>
+<li><p>Processing times</p></li>
+<li><p>Active subscriptions</p></li>
+</ul>
+</section>
+<section id="alerting-integration">
+<h3>Alerting Integration<a class="headerlink" href="#alerting-integration" title="Link to this heading"></a></h3>
+<p>Alerts can be integrated with external alerting systems:</p>
+<ul class="simple">
+<li><p>Webhook notifications</p></li>
+<li><p>Email alerts</p></li>
+<li><p>Slack integration</p></li>
+<li><p>PagerDuty integration</p></li>
+</ul>
+</section>
+</section>
+<section id="best-practices">
+<h2>Best Practices<a class="headerlink" href="#best-practices" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><strong>Regular Monitoring</strong>: Check health status and alerts daily</p></li>
+<li><p><strong>Alert Resolution</strong>: Resolve alerts promptly with notes</p></li>
+<li><p><strong>Trend Analysis</strong>: Review trends weekly to identify patterns</p></li>
+<li><p><strong>Threshold Adjustment</strong>: Update thresholds based on actual performance</p></li>
+<li><p><strong>Documentation</strong>: Document all alert resolutions for future reference</p></li>
+<li><p><strong>Alert Fatigue</strong>: Review and adjust thresholds to reduce false positives</p></li>
+<li><p><strong>Performance Baseline</strong>: Establish baseline metrics for comparison</p></li>
+<li><p><strong>Root Cause Analysis</strong>: Investigate underlying causes, not just symptoms</p></li>
+</ol>
+</section>
+<section id="management-commands">
+<h2>Management Commands<a class="headerlink" href="#management-commands" title="Link to this heading"></a></h2>
+<section id="health-check-command">
+<h3>Health Check Command<a class="headerlink" href="#health-check-command" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>manage.py<span class="w"> </span>manage_notification_system<span class="w"> </span>health-check
+</pre></div>
+</div>
+<p>Performs comprehensive system health check with output.</p>
+</section>
+<section id="check-system-health-programmatically">
+<h3>Check System Health Programmatically<a class="headerlink" href="#check-system-health-programmatically" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">notifications.error_handlers</span><span class="w"> </span><span class="kn">import</span> <span class="n">SystemHealthMonitor</span>
+
+<span class="n">health_status</span> <span class="o">=</span> <span class="n">SystemHealthMonitor</span><span class="o">.</span><span class="n">check_notification_system_health</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"System Health: </span><span class="si">{</span><span class="n">health_status</span><span class="p">[</span><span class="s1">'status'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">health_status</span><span class="p">[</span><span class="s1">'issues'</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">issue</span> <span class="ow">in</span> <span class="n">health_status</span><span class="p">[</span><span class="s1">'issues'</span><span class="p">]:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Issue: </span><span class="si">{</span><span class="n">issue</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h2>
+<p>The health monitoring system provides comprehensive visibility into notification system health and performance. Regular monitoring and prompt alert resolution ensure optimal system reliability and user experience.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ERROR_HANDLING_DOCUMENTATION.html" class="btn btn-neutral float-left" title="Error Handling and User Feedback System Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="PWA_SETUP_GUIDE.html" class="btn btn-neutral float-right" title="PWA Setup Complete - Installation Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Menzi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

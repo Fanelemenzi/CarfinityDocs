@@ -1,0 +1,319 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Backend Requirements for Insurance Dashboard &mdash; Carfinity 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Project History and Implementation Notes" href="../project-history.html" />
+    <link rel="prev" title="PWA Setup Complete - Installation Guide" href="PWA_SETUP_GUIDE.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Carfinity
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Start Here</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../administration.html">Administration and Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vehicle-care.html">Vehicle Care and Maintenance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../inspections.html">Inspections and Assessments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../insurance-and-quotes.html">Insurance and Repair Quotes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../technical-reference.html">Technical Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="DATABASE_SCHEMA.html">Database Schema Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ERROR_HANDLING_DOCUMENTATION.html">Error Handling and User Feedback System Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="HEALTH_MONITORING_GUIDE.html">System Health Monitoring Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PWA_SETUP_GUIDE.html">PWA Setup Complete - Installation Guide</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Backend Requirements for Insurance Dashboard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#api-endpoints-required">API Endpoints Required</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#authentication-authorization">Authentication &amp; Authorization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dashboard-data-endpoints">Dashboard Data Endpoints</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#claims-management-endpoints">Claims Management Endpoints</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#assessment-endpoints">Assessment Endpoints</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#document-management-endpoints">Document Management Endpoints</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#real-time-features">Real-time Features</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#database-models-required">Database Models Required</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#user-agent-model">User/Agent Model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#claims-model">Claims Model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#assessment-model">Assessment Model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#documents-model">Documents Model</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#integration-requirements">Integration Requirements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#external-apis">External APIs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#file-processing">File Processing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#performance-requirements">Performance Requirements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#security-requirements">Security Requirements</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#deployment-considerations">Deployment Considerations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../project-history.html">Project History and Implementation Notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Carfinity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../technical-reference.html">Technical Reference</a></li>
+      <li class="breadcrumb-item active">Backend Requirements for Insurance Dashboard</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/backend-requirements.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="backend-requirements-for-insurance-dashboard">
+<h1>Backend Requirements for Insurance Dashboard<a class="headerlink" href="#backend-requirements-for-insurance-dashboard" title="Link to this heading"></a></h1>
+<section id="api-endpoints-required">
+<h2>API Endpoints Required<a class="headerlink" href="#api-endpoints-required" title="Link to this heading"></a></h2>
+<section id="authentication-authorization">
+<h3>Authentication &amp; Authorization<a class="headerlink" href="#authentication-authorization" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>User authentication and session management</p></li>
+<li><p>Role-based access control for insurance agents</p></li>
+<li><p>JWT token handling for secure API access</p></li>
+</ul>
+</section>
+<section id="dashboard-data-endpoints">
+<h3>Dashboard Data Endpoints<a class="headerlink" href="#dashboard-data-endpoints" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/api/dashboard/kpi</span></code> - Key performance indicators data</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/api/dashboard/alerts</span></code> - Priority alerts and notifications</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/api/dashboard/claims</span></code> - Claims overview and status data</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/api/dashboard/assessments</span></code> - Assessment details and progress</p></li>
+</ul>
+</section>
+<section id="claims-management-endpoints">
+<h3>Claims Management Endpoints<a class="headerlink" href="#claims-management-endpoints" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/api/claims/</span></code> - CRUD operations for claims</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/api/claims/{id}/assessment</span></code> - Assessment data for specific claim</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/api/claims/{id}/timeline</span></code> - Workflow tracking and timeline</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/api/claims/{id}/communications</span></code> - Stakeholder communication log</p></li>
+</ul>
+</section>
+<section id="assessment-endpoints">
+<h3>Assessment Endpoints<a class="headerlink" href="#assessment-endpoints" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/api/assessments/</span></code> - Assessment CRUD operations</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/api/assessments/{id}/sections</span></code> - Assessment section data</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/api/assessments/{id}/photos</span></code> - Photo gallery management</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/api/assessments/{id}/estimates</span></code> - Cost estimates and comparisons</p></li>
+</ul>
+</section>
+<section id="document-management-endpoints">
+<h3>Document Management Endpoints<a class="headerlink" href="#document-management-endpoints" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/api/documents/upload</span></code> - File upload handling</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/api/documents/{id}</span></code> - Document retrieval and management</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/api/documents/process</span></code> - OCR and data extraction</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/api/documents/validate</span></code> - Document validation</p></li>
+</ul>
+</section>
+<section id="real-time-features">
+<h3>Real-time Features<a class="headerlink" href="#real-time-features" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>WebSocket endpoints for live updates</p></li>
+<li><p>Event-driven notifications</p></li>
+<li><p>Real-time status synchronization</p></li>
+</ul>
+</section>
+</section>
+<section id="database-models-required">
+<h2>Database Models Required<a class="headerlink" href="#database-models-required" title="Link to this heading"></a></h2>
+<section id="user-agent-model">
+<h3>User/Agent Model<a class="headerlink" href="#user-agent-model" title="Link to this heading"></a></h3>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">agents</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="n">UUID</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">name</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">255</span><span class="p">),</span>
+<span class="w">    </span><span class="n">department</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">certification_level</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
+<span class="w">    </span><span class="n">last_login</span><span class="w"> </span><span class="k">TIMESTAMP</span><span class="p">,</span>
+<span class="w">    </span><span class="n">created_at</span><span class="w"> </span><span class="k">TIMESTAMP</span><span class="p">,</span>
+<span class="w">    </span><span class="n">updated_at</span><span class="w"> </span><span class="k">TIMESTAMP</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="claims-model">
+<h3>Claims Model<a class="headerlink" href="#claims-model" title="Link to this heading"></a></h3>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">claims</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="n">UUID</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">claim_number</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="w"> </span><span class="k">UNIQUE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">status</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span>
+<span class="w">    </span><span class="n">priority</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+<span class="w">    </span><span class="n">customer_id</span><span class="w"> </span><span class="n">UUID</span><span class="p">,</span>
+<span class="w">    </span><span class="n">vehicle_id</span><span class="w"> </span><span class="n">UUID</span><span class="p">,</span>
+<span class="w">    </span><span class="n">incident_date</span><span class="w"> </span><span class="k">TIMESTAMP</span><span class="p">,</span>
+<span class="w">    </span><span class="n">assigned_assessor_id</span><span class="w"> </span><span class="n">UUID</span><span class="p">,</span>
+<span class="w">    </span><span class="n">estimated_cost</span><span class="w"> </span><span class="nb">DECIMAL</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span>
+<span class="w">    </span><span class="n">created_at</span><span class="w"> </span><span class="k">TIMESTAMP</span><span class="p">,</span>
+<span class="w">    </span><span class="n">updated_at</span><span class="w"> </span><span class="k">TIMESTAMP</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="assessment-model">
+<h3>Assessment Model<a class="headerlink" href="#assessment-model" title="Link to this heading"></a></h3>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">assessments</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="n">UUID</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">claim_id</span><span class="w"> </span><span class="n">UUID</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">claims</span><span class="p">(</span><span class="n">id</span><span class="p">),</span>
+<span class="w">    </span><span class="n">assessor_id</span><span class="w"> </span><span class="n">UUID</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">agents</span><span class="p">(</span><span class="n">id</span><span class="p">),</span>
+<span class="w">    </span><span class="n">status</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span>
+<span class="w">    </span><span class="n">completion_percentage</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
+<span class="w">    </span><span class="n">overall_severity</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
+<span class="w">    </span><span class="n">total_loss_recommendation</span><span class="w"> </span><span class="nb">BOOLEAN</span><span class="p">,</span>
+<span class="w">    </span><span class="n">created_at</span><span class="w"> </span><span class="k">TIMESTAMP</span><span class="p">,</span>
+<span class="w">    </span><span class="n">updated_at</span><span class="w"> </span><span class="k">TIMESTAMP</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="documents-model">
+<h3>Documents Model<a class="headerlink" href="#documents-model" title="Link to this heading"></a></h3>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">documents</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="n">UUID</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">claim_id</span><span class="w"> </span><span class="n">UUID</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">claims</span><span class="p">(</span><span class="n">id</span><span class="p">),</span>
+<span class="w">    </span><span class="n">filename</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">255</span><span class="p">),</span>
+<span class="w">    </span><span class="n">file_type</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span>
+<span class="w">    </span><span class="n">file_size</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
+<span class="w">    </span><span class="n">upload_date</span><span class="w"> </span><span class="k">TIMESTAMP</span><span class="p">,</span>
+<span class="w">    </span><span class="n">processed_data</span><span class="w"> </span><span class="n">JSONB</span><span class="p">,</span>
+<span class="w">    </span><span class="n">validation_status</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="integration-requirements">
+<h2>Integration Requirements<a class="headerlink" href="#integration-requirements" title="Link to this heading"></a></h2>
+<section id="external-apis">
+<h3>External APIs<a class="headerlink" href="#external-apis" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>DVLA integration for vehicle verification</p></li>
+<li><p>HPI checks for vehicle history</p></li>
+<li><p>VIN decoder services</p></li>
+<li><p>Weather API for risk assessment</p></li>
+<li><p>Mapping services for geographic claims</p></li>
+</ul>
+</section>
+<section id="file-processing">
+<h3>File Processing<a class="headerlink" href="#file-processing" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Image processing for damage assessment photos</p></li>
+<li><p>OCR for document text extraction</p></li>
+<li><p>PDF generation for reports</p></li>
+<li><p>File compression and optimization</p></li>
+</ul>
+</section>
+<section id="performance-requirements">
+<h3>Performance Requirements<a class="headerlink" href="#performance-requirements" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Sub-second response times for dashboard queries</p></li>
+<li><p>Real-time updates with &lt;100ms latency</p></li>
+<li><p>Support for concurrent users (50+ agents)</p></li>
+<li><p>Database query optimization with proper indexing</p></li>
+</ul>
+</section>
+<section id="security-requirements">
+<h3>Security Requirements<a class="headerlink" href="#security-requirements" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Data encryption at rest and in transit</p></li>
+<li><p>Audit logging for all user actions</p></li>
+<li><p>Secure file upload with virus scanning</p></li>
+<li><p>GDPR compliance for customer data</p></li>
+</ul>
+</section>
+</section>
+<section id="deployment-considerations">
+<h2>Deployment Considerations<a class="headerlink" href="#deployment-considerations" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Containerized deployment with Docker</p></li>
+<li><p>Load balancing for high availability</p></li>
+<li><p>Database backup and recovery procedures</p></li>
+<li><p>Monitoring and alerting systems</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="PWA_SETUP_GUIDE.html" class="btn btn-neutral float-left" title="PWA Setup Complete - Installation Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../project-history.html" class="btn btn-neutral float-right" title="Project History and Implementation Notes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Menzi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

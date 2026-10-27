@@ -1,0 +1,410 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quick Setup Guide: Group-Based Authentication &mdash; Carfinity 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Administrator Guide: Setting Up Authentication Groups" href="Admin-Guide-Authentication-Groups.html" />
+    <link rel="prev" title="Administration and Authentication" href="../administration.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Carfinity
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Start Here</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../administration.html">Administration and Authentication</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Quick Setup Guide: Group-Based Authentication</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#minute-quick-setup">5-Minute Quick Setup</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#step-1-run-automated-setup-recommended">Step 1: Run Automated Setup (Recommended)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-2-access-admin-interface">Step 2: Access Admin Interface</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-3-verify-default-setup">Step 3: Verify Default Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-4-test-configuration">Step 4: Test Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#adding-custom-groups-10-minutes">Adding Custom Groups (10 minutes)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#example-adding-service-technicians">Example: Adding Service Technicians</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#common-setup-scenarios">Common Setup Scenarios</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#scenario-1-insurance-company-with-multiple-roles">Scenario 1: Insurance Company with Multiple Roles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scenario-2-fleet-management-company">Scenario 2: Fleet Management Company</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scenario-3-service-center-with-multiple-access-levels">Scenario 3: Service Center with Multiple Access Levels</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#user-assignment-quick-reference">User Assignment Quick Reference</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#method-1-direct-user-assignment">Method 1: Direct User Assignment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#method-2-organization-based-recommended">Method 2: Organization-Based (Recommended)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#method-3-bulk-assignment">Method 3: Bulk Assignment</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#quick-troubleshooting">Quick Troubleshooting</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#diagnostic-tools">Diagnostic Tools</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#management-commands-quick-reference">Management Commands Quick Reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#default-group-configurations">Default Group Configurations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Admin-Guide-Authentication-Groups.html">Administrator Guide: Setting Up Authentication Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Administrator-Guide-User-Permissions.html">Administrator Guide: Managing User Permissions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="authentication_setup.html">Configurable Group-Based Authentication Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Authentication-File-Structure-Documentation.html">Authentication System File Structure Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Django-Admin-Authentication-Integration.html">Django Admin Authentication Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Insurance-Organization-Setup.html">Insurance Organization Setup Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../vehicle-care.html">Vehicle Care and Maintenance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../inspections.html">Inspections and Assessments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../insurance-and-quotes.html">Insurance and Repair Quotes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../technical-reference.html">Technical Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project-history.html">Project History and Implementation Notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Carfinity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../administration.html">Administration and Authentication</a></li>
+      <li class="breadcrumb-item active">Quick Setup Guide: Group-Based Authentication</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/Quick-Setup-Guide-Authentication-Groups.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="quick-setup-guide-group-based-authentication">
+<h1>Quick Setup Guide: Group-Based Authentication<a class="headerlink" href="#quick-setup-guide-group-based-authentication" title="Link to this heading"></a></h1>
+<p>This is a practical, step-by-step guide for administrators to quickly set up group-based authentication in Carfinity. For detailed explanations, see the <a class="reference internal" href="Admin-Guide-Authentication-Groups.html"><span class="std std-doc">comprehensive Admin Guide</span></a>.</p>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Django admin superuser access</p></li>
+<li><p>Basic understanding of Django groups and users</p></li>
+</ul>
+</section>
+<section id="minute-quick-setup">
+<h2>5-Minute Quick Setup<a class="headerlink" href="#minute-quick-setup" title="Link to this heading"></a></h2>
+<section id="step-1-run-automated-setup-recommended">
+<h3>Step 1: Run Automated Setup (Recommended)<a class="headerlink" href="#step-1-run-automated-setup-recommended" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>manage.py<span class="w"> </span>setup_auth_groups
+</pre></div>
+</div>
+<p>This creates default configurations for customers and insurance companies.</p>
+</section>
+<section id="step-2-access-admin-interface">
+<h3>Step 2: Access Admin Interface<a class="headerlink" href="#step-2-access-admin-interface" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Go to <code class="docutils literal notranslate"><span class="pre">/admin/</span></code> and log in as superuser</p></li>
+<li><p>Look for <strong>“Group-Based Authentication Management”</strong> section on main page</p></li>
+<li><p>Click <strong>“Authentication Group Management”</strong></p></li>
+</ol>
+</section>
+<section id="step-3-verify-default-setup">
+<h3>Step 3: Verify Default Setup<a class="headerlink" href="#step-3-verify-default-setup" title="Link to this heading"></a></h3>
+<p>You should see two configured groups:</p>
+<ul class="simple">
+<li><p><strong>Customer Users</strong> (customers group) → <code class="docutils literal notranslate"><span class="pre">/dashboard/</span></code> (Priority 1)</p></li>
+<li><p><strong>Insurance Company Users</strong> (insurance_company group) → <code class="docutils literal notranslate"><span class="pre">/insurance/</span></code> (Priority 2)</p></li>
+</ul>
+</section>
+<section id="step-4-test-configuration">
+<h3>Step 4: Test Configuration<a class="headerlink" href="#step-4-test-configuration" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Click <strong>“Test Config”</strong> button for each group</p></li>
+<li><p>Verify no conflicts or errors appear</p></li>
+<li><p>Check that dashboard URLs are accessible</p></li>
+</ol>
+<p><strong>✅ Basic setup complete! Users can now be assigned to groups and will be routed to appropriate dashboards.</strong></p>
+</section>
+</section>
+<section id="adding-custom-groups-10-minutes">
+<h2>Adding Custom Groups (10 minutes)<a class="headerlink" href="#adding-custom-groups-10-minutes" title="Link to this heading"></a></h2>
+<section id="example-adding-service-technicians">
+<h3>Example: Adding Service Technicians<a class="headerlink" href="#example-adding-service-technicians" title="Link to this heading"></a></h3>
+<section id="step-1-create-django-group">
+<h4>Step 1: Create Django Group<a class="headerlink" href="#step-1-create-django-group" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>Go to <strong>Authentication and Authorization</strong> → <strong>Groups</strong></p></li>
+<li><p>Click <strong>“Add Group”</strong></p></li>
+<li><p>Name: <code class="docutils literal notranslate"><span class="pre">technicians</span></code></p></li>
+<li><p>Save</p></li>
+</ol>
+</section>
+<section id="step-2-configure-authentication-group">
+<h4>Step 2: Configure Authentication Group<a class="headerlink" href="#step-2-configure-authentication-group" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>Go to <strong>Authentication Group Configurations</strong> → <strong>“Add Authentication Group Configuration”</strong></p></li>
+<li><p>Fill in:</p>
+<ul class="simple">
+<li><p><strong>Group</strong>: technicians</p></li>
+<li><p><strong>Display Name</strong>: Service Technicians</p></li>
+<li><p><strong>Description</strong>: Access to technician tools and maintenance dashboard</p></li>
+<li><p><strong>Dashboard Type</strong>: technician</p></li>
+<li><p><strong>Dashboard URL</strong>: <code class="docutils literal notranslate"><span class="pre">/technician/</span></code></p></li>
+<li><p><strong>Priority</strong>: 1</p></li>
+<li><p><strong>Compatible Org Types</strong>: <code class="docutils literal notranslate"><span class="pre">[&quot;service&quot;,</span> <span class="pre">&quot;dealership&quot;]</span></code></p></li>
+<li><p><strong>Is Active</strong>: ✓ checked</p></li>
+</ul>
+</li>
+<li><p>Save</p></li>
+</ol>
+</section>
+<section id="step-3-test-new-group">
+<h4>Step 3: Test New Group<a class="headerlink" href="#step-3-test-new-group" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>Click <strong>“Test Config”</strong> for the new technicians group</p></li>
+<li><p>Verify no conflicts</p></li>
+</ol>
+</section>
+<section id="step-4-assign-users">
+<h4>Step 4: Assign Users<a class="headerlink" href="#step-4-assign-users" title="Link to this heading"></a></h4>
+<p><strong>Option A - Individual Assignment:</strong></p>
+<ol class="arabic simple">
+<li><p>Go to <strong>Users</strong> → Select user</p></li>
+<li><p>In <strong>Groups</strong> section, add user to “technicians” group</p></li>
+<li><p>Save</p></li>
+</ol>
+<p><strong>Option B - Organization-Based (Recommended):</strong></p>
+<ol class="arabic simple">
+<li><p>Go to <strong>Organizations</strong> → Select service organization</p></li>
+<li><p>In <strong>Group Management</strong> section, add “technicians” to <strong>Linked Groups</strong></p></li>
+<li><p>Click <strong>“Sync members to linked groups”</strong></p></li>
+</ol>
+</section>
+</section>
+</section>
+<section id="common-setup-scenarios">
+<h2>Common Setup Scenarios<a class="headerlink" href="#common-setup-scenarios" title="Link to this heading"></a></h2>
+<section id="scenario-1-insurance-company-with-multiple-roles">
+<h3>Scenario 1: Insurance Company with Multiple Roles<a class="headerlink" href="#scenario-1-insurance-company-with-multiple-roles" title="Link to this heading"></a></h3>
+<p><strong>Goal</strong>: Insurance employees need both insurance and customer access</p>
+<p><strong>Quick Setup</strong>:</p>
+<ol class="arabic simple">
+<li><p>Add users to both <code class="docutils literal notranslate"><span class="pre">insurance_company</span></code> and <code class="docutils literal notranslate"><span class="pre">customers</span></code> groups</p></li>
+<li><p>They’ll default to insurance dashboard (higher priority)</p></li>
+<li><p>Can access customer dashboard via <code class="docutils literal notranslate"><span class="pre">/dashboard-selector/</span></code></p></li>
+</ol>
+</section>
+<section id="scenario-2-fleet-management-company">
+<h3>Scenario 2: Fleet Management Company<a class="headerlink" href="#scenario-2-fleet-management-company" title="Link to this heading"></a></h3>
+<p><strong>Goal</strong>: Fleet company with managers and drivers</p>
+<p><strong>Quick Setup</strong>:</p>
+<ol class="arabic simple">
+<li><p>Create groups: <code class="docutils literal notranslate"><span class="pre">fleet_managers</span></code>, <code class="docutils literal notranslate"><span class="pre">fleet_drivers</span></code></p></li>
+<li><p>Configure authentication groups:</p>
+<ul class="simple">
+<li><p>Fleet Managers: <code class="docutils literal notranslate"><span class="pre">/fleet-management/</span></code>, priority 3</p></li>
+<li><p>Fleet Drivers: <code class="docutils literal notranslate"><span class="pre">/driver/</span></code>, priority 1</p></li>
+</ul>
+</li>
+<li><p>Set both compatible with <code class="docutils literal notranslate"><span class="pre">[&quot;fleet&quot;]</span></code> organization type</p></li>
+<li><p>Link fleet organization to both groups</p></li>
+</ol>
+</section>
+<section id="scenario-3-service-center-with-multiple-access-levels">
+<h3>Scenario 3: Service Center with Multiple Access Levels<a class="headerlink" href="#scenario-3-service-center-with-multiple-access-levels" title="Link to this heading"></a></h3>
+<p><strong>Goal</strong>: Service center with technicians, managers, and customer service</p>
+<p><strong>Quick Setup</strong>:</p>
+<ol class="arabic simple">
+<li><p>Create groups: <code class="docutils literal notranslate"><span class="pre">technicians</span></code>, <code class="docutils literal notranslate"><span class="pre">service_managers</span></code>, <code class="docutils literal notranslate"><span class="pre">customer_service</span></code></p></li>
+<li><p>Configure different dashboard URLs and priorities</p></li>
+<li><p>Set all compatible with <code class="docutils literal notranslate"><span class="pre">[&quot;service&quot;]</span></code> organization type</p></li>
+<li><p>Use organization-based assignment</p></li>
+</ol>
+</section>
+</section>
+<section id="user-assignment-quick-reference">
+<h2>User Assignment Quick Reference<a class="headerlink" href="#user-assignment-quick-reference" title="Link to this heading"></a></h2>
+<section id="method-1-direct-user-assignment">
+<h3>Method 1: Direct User Assignment<a class="headerlink" href="#method-1-direct-user-assignment" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Admin → Users → [Select User] → Groups → Add to group → Save
+</pre></div>
+</div>
+</section>
+<section id="method-2-organization-based-recommended">
+<h3>Method 2: Organization-Based (Recommended)<a class="headerlink" href="#method-2-organization-based-recommended" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Admin → Organizations → [Select Org] → Linked Groups → Select groups → Save
+Then: Click "Sync members to linked groups"
+</pre></div>
+</div>
+</section>
+<section id="method-3-bulk-assignment">
+<h3>Method 3: Bulk Assignment<a class="headerlink" href="#method-3-bulk-assignment" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Admin → Bulk User Management → Select users → Choose action → Apply
+</pre></div>
+</div>
+</section>
+</section>
+<section id="quick-troubleshooting">
+<h2>Quick Troubleshooting<a class="headerlink" href="#quick-troubleshooting" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Problem</p></th>
+<th class="head"><p>Quick Fix</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>User gets “No Groups” error</p></td>
+<td><p>Add user to a group with active authentication configuration</p></td>
+</tr>
+<tr class="row-odd"><td><p>User goes to wrong dashboard</p></td>
+<td><p>Check group priorities (higher number = higher priority)</p></td>
+</tr>
+<tr class="row-even"><td><p>“Access Denied” error</p></td>
+<td><p>Verify authentication group is active and dashboard URL exists</p></td>
+</tr>
+<tr class="row-odd"><td><p>Organization members missing groups</p></td>
+<td><p>Use “Sync members to linked groups” in organization admin</p></td>
+</tr>
+<tr class="row-even"><td><p>URL conflicts</p></td>
+<td><p>Check for duplicate dashboard URLs in authentication configurations</p></td>
+</tr>
+</tbody>
+</table>
+<section id="diagnostic-tools">
+<h3>Diagnostic Tools<a class="headerlink" href="#diagnostic-tools" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Test Config</strong> button: Test individual group configurations</p></li>
+<li><p><strong>User Permissions Overview</strong>: See all user permissions at a glance</p></li>
+<li><p><strong>Organization Group Management</strong>: Visual overview of org-group relationships</p></li>
+</ul>
+</section>
+</section>
+<section id="management-commands-quick-reference">
+<h2>Management Commands Quick Reference<a class="headerlink" href="#management-commands-quick-reference" title="Link to this heading"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initial setup (run once)</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>setup_auth_groups
+
+<span class="c1"># Reset all configurations</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>setup_auth_groups<span class="w"> </span>--reset
+
+<span class="c1"># Check for conflicts</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>manage_auth_system<span class="w"> </span>check-conflicts
+
+<span class="c1"># Fix permission issues</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>manage_auth_system<span class="w"> </span>fix-permissions<span class="w"> </span>--fix
+
+<span class="c1"># Generate report</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>manage_auth_system<span class="w"> </span>generate-report<span class="w"> </span>--output<span class="w"> </span>report.csv
+</pre></div>
+</div>
+</section>
+<section id="default-group-configurations">
+<h2>Default Group Configurations<a class="headerlink" href="#default-group-configurations" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Group</p></th>
+<th class="head"><p>Dashboard Type</p></th>
+<th class="head"><p>URL</p></th>
+<th class="head"><p>Priority</p></th>
+<th class="head"><p>Compatible Orgs</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>customers</p></td>
+<td><p>customer</p></td>
+<td><p>/dashboard/</p></td>
+<td><p>1</p></td>
+<td><p>fleet, dealership, service, other</p></td>
+</tr>
+<tr class="row-odd"><td><p>insurance_company</p></td>
+<td><p>insurance</p></td>
+<td><p>/insurance/</p></td>
+<td><p>2</p></td>
+<td><p>insurance</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><strong>Test with real users</strong>: Create test users and verify they can access correct dashboards</p></li>
+<li><p><strong>Set up organizations</strong>: Link organizations to appropriate groups for automatic user assignment</p></li>
+<li><p><strong>Customize dashboards</strong>: Ensure dashboard URLs exist and provide appropriate functionality</p></li>
+<li><p><strong>Monitor access</strong>: Use admin tools to monitor user access patterns and resolve conflicts</p></li>
+</ol>
+<p>For detailed explanations, advanced configurations, and troubleshooting, see the <a class="reference internal" href="Admin-Guide-Authentication-Groups.html"><span class="std std-doc">comprehensive Admin Guide</span></a>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../administration.html" class="btn btn-neutral float-left" title="Administration and Authentication" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Admin-Guide-Authentication-Groups.html" class="btn btn-neutral float-right" title="Administrator Guide: Setting Up Authentication Groups" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Menzi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

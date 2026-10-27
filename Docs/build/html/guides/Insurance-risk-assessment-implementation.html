@@ -1,0 +1,953 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Insurance Risk Assessment Platform - Implementation Guide &mdash; Carfinity 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.2.0/dist/mermaid-layout-elk.esm.min.mjs"></script>
+      <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.2.0/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+      <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+      <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+const defaultStyle = document.createElement('style');
+defaultStyle.textContent = `pre.mermaid {
+    /* Same as .mermaid-container > pre */
+    display: block;
+    width: 100%;
+}
+
+pre.mermaid > svg {
+    /* Same as .mermaid-container > pre > svg */
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}
+`;
+document.head.appendChild(defaultStyle);
+
+const fullscreenStyle = document.createElement('style');
+fullscreenStyle.textContent = `.mermaid-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.mermaid-container > pre {
+    display: block;
+    width: 100%;
+}
+
+.mermaid-container > pre > svg {
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}
+
+.mermaid-fullscreen-btn {
+    width: 28px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    line-height: 1;
+    padding: 0;
+    color: #333;
+}
+
+.mermaid-fullscreen-btn:hover {
+    opacity: 100% !important;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-btn.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-btn.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 3px 10px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal {
+    display: none;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 95vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.98);
+    z-index: 9999;
+    padding: 20px;
+    overflow: auto;
+}
+
+.mermaid-fullscreen-modal.dark-theme {
+    background: rgba(0, 0, 0, 0.98);
+}
+
+.mermaid-fullscreen-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen {
+    position: relative;
+    width: 95vw;
+    height: 90vh;
+    max-width: 95vw;
+    max-height: 90vh;
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    overflow: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen.dark-theme {
+    background: #1a1a1a;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+}
+
+.mermaid-container-fullscreen pre.mermaid {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen .mermaid svg {
+    height: 100% !important;
+    width: 100% !important;
+    cursor: grab;
+}
+
+.mermaid-fullscreen-close {
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s;
+    font-size: 24px;
+    line-height: 1;
+    color: #333;
+}
+
+.mermaid-fullscreen-close:hover {
+    background: white;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-close.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-close.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal .mermaid-fullscreen-btn {
+    display: none !important;
+}`;
+document.head.appendChild(fullscreenStyle);
+
+// Detect if page has dark background
+const isDarkTheme = () => {
+    const bgColor = window.getComputedStyle(document.body).backgroundColor;
+    const match = bgColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)/);
+    if (match) {
+        const r = parseInt(match[1]);
+        const g = parseInt(match[2]);
+        const b = parseInt(match[3]);
+        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        return brightness < 128;
+    }
+    return false;
+};
+
+const load = async () => {
+    await mermaid.run();
+
+    const all_mermaids = document.querySelectorAll(".mermaid");
+    const mermaids_processed = document.querySelectorAll(".mermaid[data-processed='true']");
+
+    if ("False" === "True") {
+        const mermaids_to_add_zoom = -1 === -1 ? all_mermaids.length : -1;
+        if(mermaids_to_add_zoom > 0) {
+            var svgs = d3.selectAll("");
+            if(all_mermaids.length !== mermaids_processed.length) {
+                setTimeout(load, 200);
+                return;
+            } else if(svgs.size() !== mermaids_to_add_zoom) {
+                setTimeout(load, 200);
+                return;
+            } else {
+                svgs.each(function() {
+                    var svg = d3.select(this);
+                    svg.html("<g class='wrapper'>" + svg.html() + "</g>");
+                    var inner = svg.select("g");
+                    var zoom = d3.zoom().on("zoom", function(event) {
+                        inner.attr("transform", event.transform);
+                    });
+                    svg.call(zoom);
+                });
+            }
+        }
+    } else if(all_mermaids.length !== mermaids_processed.length) {
+        // Wait for mermaid to process all diagrams
+        setTimeout(load, 200);
+        return;
+    }
+
+    const darkTheme = isDarkTheme();
+
+    // Stop here if not adding fullscreen capability
+    if ("True" !== "True") return;
+
+    const modal = document.createElement('div');
+    modal.className = 'mermaid-fullscreen-modal' + (darkTheme ? ' dark-theme' : '');
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Fullscreen diagram viewer');
+    modal.innerHTML = `
+        <button class="mermaid-fullscreen-close${darkTheme ? ' dark-theme' : ''}" aria-label="Close fullscreen">✕</button>
+        <div class="mermaid-container-fullscreen${darkTheme ? ' dark-theme' : ''}"></div>
+    `;
+    document.body.appendChild(modal);
+
+    const modalContent = modal.querySelector('.mermaid-container-fullscreen');
+    const closeBtn = modal.querySelector('.mermaid-fullscreen-close');
+
+    let previousScrollOffset = [window.scrollX, window.scrollY];
+
+    const closeModal = () => {
+        modal.classList.remove('active');
+        modalContent.innerHTML = '';
+        document.body.style.overflow = ''
+        window.scrollTo({left: previousScrollOffset[0], top: previousScrollOffset[1], behavior: 'instant'});
+    };
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal();
+        }
+    });
+
+    const allButtons = [];
+
+    document.querySelectorAll('.mermaid').forEach((mermaidDiv) => {
+        if (mermaidDiv.parentNode.classList.contains('mermaid-container') ||
+            mermaidDiv.closest('.mermaid-fullscreen-modal')) {
+            return;
+        }
+
+        const container = document.createElement('div');
+        container.className = 'mermaid-container';
+        mermaidDiv.parentNode.insertBefore(container, mermaidDiv);
+        container.appendChild(mermaidDiv);
+
+        const fullscreenBtn = document.createElement('button');
+        fullscreenBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+        fullscreenBtn.setAttribute('aria-label', 'View diagram in fullscreen');
+        fullscreenBtn.textContent = '⛶';
+        fullscreenBtn.style.opacity = '50%';
+
+        // Calculate dynamic position based on diagram's margin and padding
+        const diagramStyle = window.getComputedStyle(mermaidDiv);
+        const marginTop = parseFloat(diagramStyle.marginTop) || 0;
+        const marginRight = parseFloat(diagramStyle.marginRight) || 0;
+        const paddingTop = parseFloat(diagramStyle.paddingTop) || 0;
+        const paddingRight = parseFloat(diagramStyle.paddingRight) || 0;
+        fullscreenBtn.style.top = `${marginTop + paddingTop + 4}px`;
+        fullscreenBtn.style.right = `${marginRight + paddingRight + 4}px`;
+
+        fullscreenBtn.addEventListener('click', () => {
+            previousScrollOffset = [window.scroll, window.scrollY];
+            const clone = mermaidDiv.cloneNode(true);
+            modalContent.innerHTML = '';
+            modalContent.appendChild(clone);
+
+            const svg = clone.querySelector('svg');
+            if (svg) {
+                svg.removeAttribute('width');
+                svg.removeAttribute('height');
+                svg.style.width = '100%';
+                svg.style.height = 'auto';
+                svg.style.maxWidth = '100%';
+                svg.style.sdisplay = 'block';
+
+                if ("False" === "True") {
+                    setTimeout(() => {
+                        const g = svg.querySelector('g');
+                        if (g) {
+                            var svgD3 = d3.select(svg);
+                            svgD3.html("<g class='wrapper'>" + svgD3.html() + "</g>");
+                            var inner = svgD3.select("g");
+                            var zoom = d3.zoom().on("zoom", function(event) {
+                                inner.attr("transform", event.transform);
+                            });
+                            svgD3.call(zoom);
+                        }
+                    }, 100);
+                }
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+
+        container.appendChild(fullscreenBtn);
+        allButtons.push(fullscreenBtn);
+    });
+
+    // Update theme classes when theme changes
+    const updateTheme = () => {
+        const dark = isDarkTheme();
+        allButtons.forEach(btn => {
+            if (dark) {
+                btn.classList.add('dark-theme');
+            } else {
+                btn.classList.remove('dark-theme');
+            }
+        });
+        if (dark) {
+            modal.classList.add('dark-theme');
+            modalContent.classList.add('dark-theme');
+            closeBtn.classList.add('dark-theme');
+        } else {
+            modal.classList.remove('dark-theme');
+            modalContent.classList.remove('dark-theme');
+            closeBtn.classList.remove('dark-theme');
+        }
+    };
+
+    // Watch for theme changes
+    const observer = new MutationObserver(updateTheme);
+    observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+    observer.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class', 'style']
+    });
+};
+
+window.addEventListener("load", load);
+</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Parts-Based Quote System - Complete Workflow Guide" href="Parts-Based-Quote-System-Workflow-Guide.html" />
+    <link rel="prev" title="Insurance Claims Assessment Dashboard" href="new_assessment_dashboard.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Carfinity
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Start Here</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../administration.html">Administration and Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vehicle-care.html">Vehicle Care and Maintenance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../inspections.html">Inspections and Assessments</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../insurance-and-quotes.html">Insurance and Repair Quotes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="insurance_claims_dashboard.html">Insurance Claims Agent Dashboard Specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="new_assessment_dashboard.html">Insurance Claims Assessment Dashboard</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Insurance Risk Assessment Platform - Implementation Guide</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#table-of-contents">Table of Contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#architecture-overview">Architecture Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#file-structure-and-dependencies">File Structure and Dependencies</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#core-django-files-and-their-relationships">Core Django Files and Their Relationships</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dependency-chain">Dependency Chain</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#data-flow-and-connections">Data Flow and Connections</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#model-relationships-models-py">1. Model Relationships (<code class="docutils literal notranslate"><span class="pre">models.py</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#serializer-dependencies-serializers-py">2. Serializer Dependencies (<code class="docutils literal notranslate"><span class="pre">serializers.py</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#view-layer-connections-views-py">3. View Layer Connections (<code class="docutils literal notranslate"><span class="pre">views.py</span></code>)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#component-interactions">Component Interactions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#risk-score-calculation-pipeline">1. Risk Score Calculation Pipeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#maintenance-compliance-flow">2. Maintenance Compliance Flow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#alert-generation-system">3. Alert Generation System</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#api-integration-patterns">API Integration Patterns</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#restful-endpoint-structure-urls-py">1. RESTful Endpoint Structure (<code class="docutils literal notranslate"><span class="pre">urls.py</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api-data-flow">2. API Data Flow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#real-time-updates">3. Real-time Updates</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#background-processing-pipeline">Background Processing Pipeline</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#celery-task-integration">1. Celery Task Integration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#processing-pipeline">2. Processing Pipeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#command-dependencies">3. Command Dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#frontend-backend-communication">Frontend-Backend Communication</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#template-integration">1. Template Integration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#react-component-integration-optional">2. React Component Integration (Optional)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#data-synchronization">3. Data Synchronization</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#implementation-flow-summary">Implementation Flow Summary</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#initial-setup-flow">1. Initial Setup Flow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#runtime-data-flow">2. Runtime Data Flow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#key-integration-points">3. Key Integration Points</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Parts-Based-Quote-System-Workflow-Guide.html">Parts-Based Quote System - Complete Workflow Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parts_based_quote_system.html">Parts-Based Repair Quotation System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Parts-Based-Quote-System-Build-Guide.html">Parts-Based Quote System - Build Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="repair-cost-calculation-system.html">Insurance Assessment Repair Cost Calculation System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="repair-quotes-comparison-system.html">Repair Quotes Comparison System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="settlement-calculator-system.html">Settlement Calculator System</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../technical-reference.html">Technical Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project-history.html">Project History and Implementation Notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Carfinity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../insurance-and-quotes.html">Insurance and Repair Quotes</a></li>
+      <li class="breadcrumb-item active">Insurance Risk Assessment Platform - Implementation Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/Insurance-risk-assessment-implementation.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="insurance-risk-assessment-platform-implementation-guide">
+<h1>Insurance Risk Assessment Platform - Implementation Guide<a class="headerlink" href="#insurance-risk-assessment-platform-implementation-guide" title="Link to this heading"></a></h1>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="#architecture-overview">Architecture Overview</a></p></li>
+<li><p><a class="reference internal" href="#file-structure-and-dependencies">File Structure and Dependencies</a></p></li>
+<li><p><a class="reference internal" href="#data-flow-and-connections">Data Flow and Connections</a></p></li>
+<li><p><a class="reference internal" href="#component-interactions">Component Interactions</a></p></li>
+<li><p><a class="reference internal" href="#api-integration-patterns">API Integration Patterns</a></p></li>
+<li><p><a class="reference internal" href="#background-processing-pipeline">Background Processing Pipeline</a></p></li>
+<li><p><a class="reference internal" href="#frontend-backend-communication">Frontend-Backend Communication</a></p></li>
+</ul>
+</section>
+<section id="architecture-overview">
+<h2>Architecture Overview<a class="headerlink" href="#architecture-overview" title="Link to this heading"></a></h2>
+<p>This Django-based insurance risk assessment platform implements a comprehensive system for tracking vehicle maintenance compliance, condition scoring, accident correlation, and high-risk vehicle identification. The architecture follows Django’s Model-View-Template (MVT) pattern enhanced with REST API capabilities.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Frontend      │    │   Backend       │    │   Background    │
+│   Dashboard     │◄──►│   Django API    │◄──►│   Processing    │
+│                 │    │                 │    │                 │
+│ - Tailwind CSS  │    │ - Models        │    │ - Celery Tasks  │
+│ - Chart.js      │    │ - Views         │    │ - Management    │
+│ - React (opt)   │    │ - Serializers   │    │   Commands      │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+         │                        │                        │
+         └────────────────────────┼────────────────────────┘
+                                  │
+                        ┌─────────▼─────────┐
+                        │    Database       │
+                        │   PostgreSQL      │
+                        └───────────────────┘
+</pre></div>
+</div>
+</section>
+<section id="file-structure-and-dependencies">
+<h2>File Structure and Dependencies<a class="headerlink" href="#file-structure-and-dependencies" title="Link to this heading"></a></h2>
+<section id="core-django-files-and-their-relationships">
+<h3>Core Django Files and Their Relationships<a class="headerlink" href="#core-django-files-and-their-relationships" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>insurance_app/
+├── models.py           # Database schema and business logic
+├── views.py            # API endpoints and view logic
+├── serializers.py      # REST API serialization
+├── urls.py             # URL routing and API endpoints
+├── tasks.py            # Background processing (Celery)
+├── templates/
+│   └── insurance/
+│       ├── insurance_dashboard.html        # Main dashboard template
+│       └── vehicle_detail.html   # Vehicle detail view
+├── management/
+│   └── commands/
+│       ├── calculate_risk_scores.py
+│       ├── update_compliance_scores.py
+│       └── generate_risk_report.py
+└── static/
+    ├── css/
+    └── js/
+</pre></div>
+</div>
+</section>
+<section id="dependency-chain">
+<h3>Dependency Chain<a class="headerlink" href="#dependency-chain" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>models.py → serializers.py → views.py → urls.py → templates/
+    ↓              ↓             ↓
+tasks.py    management/    static files
+             commands/
+</pre></div>
+</div>
+</section>
+</section>
+<section id="data-flow-and-connections">
+<h2>Data Flow and Connections<a class="headerlink" href="#data-flow-and-connections" title="Link to this heading"></a></h2>
+<section id="model-relationships-models-py">
+<h3>1. Model Relationships (<code class="docutils literal notranslate"><span class="pre">models.py</span></code>)<a class="headerlink" href="#model-relationships-models-py" title="Link to this heading"></a></h3>
+<p>The models create a hierarchical data structure with clear relationships:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Primary relationship chain</span>
+<span class="n">InsurancePolicy</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="err">──→</span> <span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="n">Vehicle</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="err">──→</span> <span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="n">MaintenanceSchedule</span>
+                                     <span class="err">│</span>
+                                     <span class="err">├──→</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="n">MaintenanceCompliance</span>
+                                     <span class="err">├──→</span> <span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="n">VehicleConditionScore</span>
+                                     <span class="err">├──→</span> <span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="n">Accident</span>
+                                     <span class="err">└──→</span> <span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="n">RiskAlert</span>
+
+<span class="c1"># Aggregation model</span>
+<span class="n">RiskAssessmentMetrics</span> <span class="err">──→</span> <span class="n">InsurancePolicy</span>
+</pre></div>
+</div>
+<p><strong>Key Connections:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Vehicle.policy</span></code> → <code class="docutils literal notranslate"><span class="pre">InsurancePolicy</span></code> (Foreign Key)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MaintenanceSchedule.vehicle</span></code> → <code class="docutils literal notranslate"><span class="pre">Vehicle</span></code> (Foreign Key)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MaintenanceCompliance.vehicle</span></code> → <code class="docutils literal notranslate"><span class="pre">Vehicle</span></code> (One-to-One)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RiskAlert.vehicle</span></code> → <code class="docutils literal notranslate"><span class="pre">Vehicle</span></code> (Foreign Key)</p></li>
+</ul>
+</section>
+<section id="serializer-dependencies-serializers-py">
+<h3>2. Serializer Dependencies (<code class="docutils literal notranslate"><span class="pre">serializers.py</span></code>)<a class="headerlink" href="#serializer-dependencies-serializers-py" title="Link to this heading"></a></h3>
+<p>Serializers create JSON representations and handle nested relationships:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">VehicleSerializer</span><span class="p">:</span>
+<span class="err">├──</span> <span class="n">includes</span> <span class="err">→</span> <span class="n">MaintenanceScheduleSerializer</span> <span class="p">(</span><span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="err">├──</span> <span class="n">includes</span> <span class="err">→</span> <span class="n">MaintenanceComplianceSerializer</span>
+<span class="err">├──</span> <span class="n">includes</span> <span class="err">→</span> <span class="n">latest_condition_score</span> <span class="p">(</span><span class="n">SerializerMethodField</span><span class="p">)</span>
+<span class="err">└──</span> <span class="n">includes</span> <span class="err">→</span> <span class="n">active_alerts_count</span> <span class="p">(</span><span class="n">calculated</span> <span class="n">field</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Connection Pattern:</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>models.py → serializers.py
+    ↓            ↓
+Business Logic → API Data Structure
+</pre></div>
+</div>
+</section>
+<section id="view-layer-connections-views-py">
+<h3>3. View Layer Connections (<code class="docutils literal notranslate"><span class="pre">views.py</span></code>)<a class="headerlink" href="#view-layer-connections-views-py" title="Link to this heading"></a></h3>
+<p>Views orchestrate data flow between models, serializers, and API responses:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Class-based views connect to models</span>
+<span class="n">DashboardView</span> <span class="err">→</span> <span class="n">InsurancePolicy</span><span class="p">,</span> <span class="n">Vehicle</span><span class="p">,</span> <span class="n">MaintenanceCompliance</span>
+<span class="n">VehicleDetailView</span> <span class="err">→</span> <span class="n">Vehicle</span> <span class="o">+</span> <span class="n">related</span> <span class="n">objects</span>
+
+<span class="c1"># API ViewSets use serializers</span>
+<span class="n">VehicleViewSet</span> <span class="err">→</span> <span class="n">VehicleSerializer</span> <span class="err">→</span> <span class="n">Vehicle</span> <span class="n">model</span>
+<span class="n">MaintenanceComplianceViewSet</span> <span class="err">→</span> <span class="n">MaintenanceComplianceSerializer</span>
+
+<span class="c1"># Function-based views aggregate data</span>
+<span class="n">calculate_portfolio_metrics</span><span class="p">()</span> <span class="err">→</span> <span class="n">Multiple</span> <span class="n">models</span> <span class="err">→</span> <span class="n">JSON</span> <span class="n">response</span>
+</pre></div>
+</div>
+<p><strong>Data Flow in Views:</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>HTTP Request → View → Model Query → Serializer → JSON Response
+              ↓
+         Business Logic
+</pre></div>
+</div>
+</section>
+</section>
+<section id="component-interactions">
+<h2>Component Interactions<a class="headerlink" href="#component-interactions" title="Link to this heading"></a></h2>
+<section id="risk-score-calculation-pipeline">
+<h3>1. Risk Score Calculation Pipeline<a class="headerlink" href="#risk-score-calculation-pipeline" title="Link to this heading"></a></h3>
+<p>The risk assessment system involves multiple file interactions:</p>
+<pre  class="mermaid">
+        graph TD
+    A[management/calculate_risk_scores.py] --&gt; B[models.py: Vehicle]
+    B --&gt; C[models.py: MaintenanceCompliance]
+    B --&gt; D[models.py: Accident]
+    B --&gt; E[models.py: VehicleConditionScore]
+    C --&gt; F[Risk Calculation Algorithm]
+    D --&gt; F
+    E --&gt; F
+    F --&gt; G[models.py: RiskAlert]
+    F --&gt; H[Update Vehicle.risk_score]
+    </pre><p><strong>File Connections:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Management Command</strong> (<code class="docutils literal notranslate"><span class="pre">calculate_risk_scores.py</span></code>) triggers the process</p></li>
+<li><p><strong>Models</strong> (<code class="docutils literal notranslate"><span class="pre">models.py</span></code>) provide data and business logic</p></li>
+<li><p><strong>Tasks</strong> (<code class="docutils literal notranslate"><span class="pre">tasks.py</span></code>) can run this automatically via Celery</p></li>
+<li><p><strong>Views</strong> (<code class="docutils literal notranslate"><span class="pre">views.py</span></code>) expose risk data via API</p></li>
+<li><p><strong>Frontend</strong> displays updated risk scores</p></li>
+</ol>
+</section>
+<section id="maintenance-compliance-flow">
+<h3>2. Maintenance Compliance Flow<a class="headerlink" href="#maintenance-compliance-flow" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># models.py - Business logic</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MaintenanceCompliance</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_compliance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Calculates compliance rates from maintenance schedules</span>
+        
+<span class="c1"># management/commands/update_compliance_scores.py</span>
+<span class="c1"># Bulk updates all compliance scores</span>
+
+<span class="c1"># views.py - API exposure</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MaintenanceComplianceViewSet</span><span class="p">:</span>
+    <span class="nd">@action</span><span class="p">(</span><span class="n">detail</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">portfolio_compliance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Returns aggregated compliance data</span>
+        
+<span class="c1"># templates/dashboard.html - Display</span>
+<span class="c1"># Shows compliance charts and metrics</span>
+</pre></div>
+</div>
+</section>
+<section id="alert-generation-system">
+<h3>3. Alert Generation System<a class="headerlink" href="#alert-generation-system" title="Link to this heading"></a></h3>
+<p>The alert system connects multiple components:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Trigger Sources:
+├── Risk Score Changes (calculate_risk_scores.py)
+├── Overdue Maintenance (tasks.py: generate_maintenance_alerts)
+├── Condition Deterioration (tasks.py: check_condition_deterioration)
+└── Manual Triggers (views.py: API endpoints)
+                    ↓
+Alert Creation (models.py: RiskAlert)
+                    ↓
+API Exposure (views.py: RiskAlertViewSet)
+                    ↓
+Frontend Display (dashboard.html: alerts section)
+</pre></div>
+</div>
+</section>
+</section>
+<section id="api-integration-patterns">
+<h2>API Integration Patterns<a class="headerlink" href="#api-integration-patterns" title="Link to this heading"></a></h2>
+<section id="restful-endpoint-structure-urls-py">
+<h3>1. RESTful Endpoint Structure (<code class="docutils literal notranslate"><span class="pre">urls.py</span></code>)<a class="headerlink" href="#restful-endpoint-structure-urls-py" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># URL routing connects views to endpoints</span>
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># Dashboard views</span>
+    <span class="n">path</span><span class="p">(</span><span class="s1">''</span><span class="p">,</span> <span class="n">DashboardView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s1">'dashboard'</span><span class="p">),</span>
+    
+    <span class="c1"># API routes using Django REST framework router</span>
+    <span class="n">path</span><span class="p">(</span><span class="s1">'api/'</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="n">router</span><span class="o">.</span><span class="n">urls</span><span class="p">)),</span>
+    
+    <span class="c1"># Custom API endpoints</span>
+    <span class="n">path</span><span class="p">(</span><span class="s1">'api/calculate-portfolio-metrics/'</span><span class="p">,</span> <span class="n">calculate_portfolio_metrics</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="c1"># Router connects ViewSets to URL patterns</span>
+<span class="n">router</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="sa">r</span><span class="s1">'vehicles'</span><span class="p">,</span> <span class="n">VehicleViewSet</span><span class="p">)</span>
+<span class="n">router</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="sa">r</span><span class="s1">'risk-alerts'</span><span class="p">,</span> <span class="n">RiskAlertViewSet</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="api-data-flow">
+<h3>2. API Data Flow<a class="headerlink" href="#api-data-flow" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Frontend JavaScript → Django URLs → Views → Serializers → Models → Database
+                                     ↓
+Dashboard Updates ← JSON Response ← Business Logic ← Query Results
+</pre></div>
+</div>
+<p><strong>Example API Call Chain:</strong></p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="c1">// Frontend (dashboard.html)</span>
+<span class="nx">fetch</span><span class="p">(</span><span class="s1">'/api/calculate-portfolio-metrics/'</span><span class="p">)</span>
+
+<span class="c1">// URLs (urls.py) </span>
+<span class="err">→</span><span class="w"> </span><span class="nx">path</span><span class="p">(</span><span class="s1">'api/calculate-portfolio-metrics/'</span><span class="p">,</span><span class="w"> </span><span class="nx">calculate_portfolio_metrics</span><span class="p">)</span>
+
+<span class="c1">// Views (views.py)</span>
+<span class="err">→</span><span class="w"> </span><span class="nx">def</span><span class="w"> </span><span class="nx">calculate_portfolio_metrics</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span><span class="o">:</span>
+
+<span class="c1">// Models (models.py)</span>
+<span class="err">→</span><span class="w"> </span><span class="nx">Vehicle</span><span class="p">.</span><span class="nx">objects</span><span class="p">.</span><span class="nx">filter</span><span class="p">(...).</span><span class="nx">aggregate</span><span class="p">(...)</span>
+
+<span class="c1">// Response</span>
+<span class="err">→</span><span class="w"> </span><span class="nx">JsonResponse</span><span class="p">({</span><span class="s1">'metrics'</span><span class="o">:</span><span class="w"> </span><span class="p">{...}})</span>
+</pre></div>
+</div>
+</section>
+<section id="real-time-updates">
+<h3>3. Real-time Updates<a class="headerlink" href="#real-time-updates" title="Link to this heading"></a></h3>
+<p>The system implements real-time updates through multiple channels:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># JavaScript polling (dashboard.html)</span>
+<span class="n">setInterval</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="n">fetchMetrics</span><span class="p">(),</span> <span class="mi">30000</span><span class="p">)</span>
+
+<span class="c1"># Background tasks (tasks.py)</span>
+<span class="nd">@shared_task</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_daily_risk_scores</span><span class="p">()</span>
+
+<span class="c1"># Management commands (calculate_risk_scores.py)</span>
+<span class="c1"># Can be called manually or via cron jobs</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="background-processing-pipeline">
+<h2>Background Processing Pipeline<a class="headerlink" href="#background-processing-pipeline" title="Link to this heading"></a></h2>
+<section id="celery-task-integration">
+<h3>1. Celery Task Integration<a class="headerlink" href="#celery-task-integration" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># tasks.py defines background jobs</span>
+<span class="nd">@shared_task</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_daily_risk_scores</span><span class="p">():</span>
+    <span class="n">call_command</span><span class="p">(</span><span class="s1">'calculate_risk_scores'</span><span class="p">)</span>
+    
+<span class="c1"># Management commands perform actual work</span>
+<span class="c1"># management/commands/calculate_risk_scores.py</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Command</span><span class="p">(</span><span class="n">BaseCommand</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Risk calculation logic</span>
+        
+<span class="c1"># Settings integrate Celery</span>
+<span class="n">CELERY_BEAT_SCHEDULE</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'calculate-daily-risk-scores'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">'task'</span><span class="p">:</span> <span class="s1">'insurance.tasks.calculate_daily_risk_scores'</span><span class="p">,</span>
+        <span class="s1">'schedule'</span><span class="p">:</span> <span class="n">crontab</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="processing-pipeline">
+<h3>2. Processing Pipeline<a class="headerlink" href="#processing-pipeline" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Scheduled Time → Celery Beat → Task Queue → Worker Process → Management Command → Model Updates → Database
+                                                                    ↓
+Frontend Refresh ← API Response ← Views ← Updated Data ← Trigger Alerts ← Alert Generation
+</pre></div>
+</div>
+</section>
+<section id="command-dependencies">
+<h3>3. Command Dependencies<a class="headerlink" href="#command-dependencies" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># calculate_risk_scores.py</span>
+<span class="err">├──</span> <span class="n">Reads</span> <span class="n">from</span><span class="p">:</span> <span class="n">Vehicle</span><span class="p">,</span> <span class="n">MaintenanceCompliance</span><span class="p">,</span> <span class="n">Accident</span><span class="p">,</span> <span class="n">VehicleConditionScore</span>
+<span class="err">├──</span> <span class="n">Updates</span><span class="p">:</span> <span class="n">Vehicle</span><span class="o">.</span><span class="n">risk_score</span><span class="p">,</span> <span class="n">Vehicle</span><span class="o">.</span><span class="n">vehicle_health_index</span>
+<span class="err">└──</span> <span class="n">Creates</span><span class="p">:</span> <span class="n">RiskAlert</span> <span class="n">records</span>
+
+<span class="c1"># update_compliance_scores.py</span>
+<span class="err">├──</span> <span class="n">Reads</span> <span class="n">from</span><span class="p">:</span> <span class="n">MaintenanceSchedule</span>
+<span class="err">├──</span> <span class="n">Updates</span><span class="p">:</span> <span class="n">MaintenanceCompliance</span>
+<span class="err">└──</span> <span class="n">Triggers</span><span class="p">:</span> <span class="n">Risk</span> <span class="n">score</span> <span class="n">recalculation</span>
+
+<span class="c1"># generate_risk_report.py</span>
+<span class="err">├──</span> <span class="n">Reads</span> <span class="n">from</span><span class="p">:</span> <span class="n">All</span> <span class="n">models</span>
+<span class="err">└──</span> <span class="n">Outputs</span><span class="p">:</span> <span class="n">CSV</span><span class="o">/</span><span class="n">JSON</span> <span class="n">reports</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="frontend-backend-communication">
+<h2>Frontend-Backend Communication<a class="headerlink" href="#frontend-backend-communication" title="Link to this heading"></a></h2>
+<section id="template-integration">
+<h3>1. Template Integration<a class="headerlink" href="#template-integration" title="Link to this heading"></a></h3>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="cm">&lt;!-- dashboard.html --&gt;</span>
+<span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="w">    </span><span class="c1">// Connects to Django API endpoints</span>
+<span class="w">    </span><span class="nx">fetch</span><span class="p">(</span><span class="s1">'/api/calculate-portfolio-metrics/'</span><span class="p">)</span>
+<span class="w">    </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">response</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">())</span>
+<span class="w">    </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">data</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">updateDashboard</span><span class="p">(</span><span class="nx">data</span><span class="p">));</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="c1">// Uses data from Django context</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">vehicles</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{{</span><span class="w"> </span><span class="nx">vehicles</span><span class="o">|</span><span class="nx">safe</span><span class="w"> </span><span class="p">}};</span>
+<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="react-component-integration-optional">
+<h3>2. React Component Integration (Optional)<a class="headerlink" href="#react-component-integration-optional" title="Link to this heading"></a></h3>
+<div class="highlight-jsx notranslate"><div class="highlight"><pre><span></span><span class="c1">// React component can replace Django templates</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">InsuranceRiskDashboard</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Connects to same Django API endpoints</span>
+<span class="w">    </span><span class="nx">useEffect</span><span class="p">(()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">fetch</span><span class="p">(</span><span class="s1">'/api/vehicles/'</span><span class="p">)</span>
+<span class="w">        </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">response</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">())</span>
+<span class="w">        </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">data</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">setVehicles</span><span class="p">(</span><span class="nx">data</span><span class="p">));</span>
+<span class="w">    </span><span class="p">},</span><span class="w"> </span><span class="p">[]);</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</section>
+<section id="data-synchronization">
+<h3>3. Data Synchronization<a class="headerlink" href="#data-synchronization" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Database Changes → Django Signals → Cache Invalidation → API Response Updates → Frontend Refresh
+                      ↓
+Background Tasks → Model Updates → WebSocket Notifications (optional) → Real-time Updates
+</pre></div>
+</div>
+</section>
+</section>
+<section id="implementation-flow-summary">
+<h2>Implementation Flow Summary<a class="headerlink" href="#implementation-flow-summary" title="Link to this heading"></a></h2>
+<section id="initial-setup-flow">
+<h3>1. Initial Setup Flow<a class="headerlink" href="#initial-setup-flow" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">1.</span> <span class="n">Define</span> <span class="n">models</span> <span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">py</span><span class="p">)</span>
+<span class="mf">2.</span> <span class="n">Create</span> <span class="n">serializers</span> <span class="p">(</span><span class="n">serializers</span><span class="o">.</span><span class="n">py</span><span class="p">)</span>
+<span class="mf">3.</span> <span class="n">Build</span> <span class="n">views</span> <span class="ow">and</span> <span class="n">API</span> <span class="n">endpoints</span> <span class="p">(</span><span class="n">views</span><span class="o">.</span><span class="n">py</span><span class="p">)</span>
+<span class="mf">4.</span> <span class="n">Configure</span> <span class="n">URLs</span> <span class="p">(</span><span class="n">urls</span><span class="o">.</span><span class="n">py</span><span class="p">)</span>
+<span class="mf">5.</span> <span class="n">Create</span> <span class="n">templates</span> <span class="p">(</span><span class="n">dashboard</span><span class="o">.</span><span class="n">html</span><span class="p">)</span>
+<span class="mf">6.</span> <span class="n">Setup</span> <span class="n">background</span> <span class="n">processing</span> <span class="p">(</span><span class="n">tasks</span><span class="o">.</span><span class="n">py</span><span class="p">,</span> <span class="n">management</span> <span class="n">commands</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="runtime-data-flow">
+<h3>2. Runtime Data Flow<a class="headerlink" href="#runtime-data-flow" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>User Request → URL Routing → View Processing → Database Query → Business Logic → API Response → Frontend Update
+                                                     ↓
+Background Processing → Model Updates → Alert Generation → Cache Updates → Real-time Sync
+</pre></div>
+</div>
+</section>
+<section id="key-integration-points">
+<h3>3. Key Integration Points<a class="headerlink" href="#key-integration-points" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Component</p></th>
+<th class="head"><p>Primary Connections</p></th>
+<th class="head"><p>Purpose</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">models.py</span></code></p></td>
+<td><p>All other components</p></td>
+<td><p>Data structure and business logic</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">views.py</span></code></p></td>
+<td><p>models.py, serializers.py, templates</p></td>
+<td><p>API endpoints and view logic</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">serializers.py</span></code></p></td>
+<td><p>models.py, views.py</p></td>
+<td><p>Data transformation</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">urls.py</span></code></p></td>
+<td><p>views.py</p></td>
+<td><p>Request routing</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">tasks.py</span></code></p></td>
+<td><p>models.py, management commands</p></td>
+<td><p>Background processing</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">templates/</span></code></p></td>
+<td><p>views.py, static files</p></td>
+<td><p>User interface</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">management/commands/</span></code></p></td>
+<td><p>models.py, tasks.py</p></td>
+<td><p>Batch operations</p></td>
+</tr>
+</tbody>
+</table>
+<p>This interconnected architecture ensures that changes in one component properly propagate through the system, maintaining data consistency and providing real-time updates to users while handling complex risk assessment calculations in the background.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="new_assessment_dashboard.html" class="btn btn-neutral float-left" title="Insurance Claims Assessment Dashboard" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Parts-Based-Quote-System-Workflow-Guide.html" class="btn btn-neutral float-right" title="Parts-Based Quote System - Complete Workflow Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Menzi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

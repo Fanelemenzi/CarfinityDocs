@@ -1,0 +1,927 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Administrator Guide: Managing User Permissions &mdash; Carfinity 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Configurable Group-Based Authentication Setup" href="authentication_setup.html" />
+    <link rel="prev" title="Administrator Guide: Setting Up Authentication Groups" href="Admin-Guide-Authentication-Groups.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Carfinity
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Start Here</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../administration.html">Administration and Authentication</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Quick-Setup-Guide-Authentication-Groups.html">Quick Setup Guide: Group-Based Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Admin-Guide-Authentication-Groups.html">Administrator Guide: Setting Up Authentication Groups</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Administrator Guide: Managing User Permissions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#table-of-contents">Table of Contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#key-concepts">Key Concepts</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#getting-started">Getting Started</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#accessing-the-admin-interface">Accessing the Admin Interface</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#admin-dashboard-overview">Admin Dashboard Overview</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#understanding-the-permission-system">Understanding the Permission System</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#group-types">Group Types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#organization-types">Organization Types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#permission-matrix">Permission Matrix</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#daily-administrative-tasks">Daily Administrative Tasks</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#checking-system-health">1. Checking System Health</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reviewing-new-user-registrations">2. Reviewing New User Registrations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#monitoring-permission-conflicts">3. Monitoring Permission Conflicts</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#user-management-workflows">User Management Workflows</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#adding-a-new-user">Adding a New User</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modifying-existing-user-permissions">Modifying Existing User Permissions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bulk-operations">Bulk Operations</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#troubleshooting-common-issues">Troubleshooting Common Issues</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#issue-1-user-can-t-access-dashboard">Issue 1: User Can’t Access Dashboard</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#issue-2-permission-conflicts">Issue 2: Permission Conflicts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#issue-3-bulk-operations-failing">Issue 3: Bulk Operations Failing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#issue-4-organization-groups-not-syncing">Issue 4: Organization Groups Not Syncing</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#maintenance-and-monitoring">Maintenance and Monitoring</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#weekly-maintenance-tasks">Weekly Maintenance Tasks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#monthly-maintenance-tasks">Monthly Maintenance Tasks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#monitoring-checklist">Monitoring Checklist</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#best-practices">Best Practices</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#user-management">User Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#security-practices">Security Practices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#performance-optimization">Performance Optimization</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#emergency-procedures">Emergency Procedures</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#user-locked-out-of-system">User Locked Out of System</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mass-permission-issues">Mass Permission Issues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#system-corruption">System Corruption</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#reporting-and-auditing">Reporting and Auditing</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#regular-reports">Regular Reports</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#compliance-reporting">Compliance Reporting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#report-templates">Report Templates</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#quick-reference">Quick Reference</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#common-admin-urls">Common Admin URLs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#essential-commands">Essential Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#status-indicators">Status Indicators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#emergency-contacts">Emergency Contacts</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="authentication_setup.html">Configurable Group-Based Authentication Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Authentication-File-Structure-Documentation.html">Authentication System File Structure Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Django-Admin-Authentication-Integration.html">Django Admin Authentication Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Insurance-Organization-Setup.html">Insurance Organization Setup Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../vehicle-care.html">Vehicle Care and Maintenance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../inspections.html">Inspections and Assessments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../insurance-and-quotes.html">Insurance and Repair Quotes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../technical-reference.html">Technical Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project-history.html">Project History and Implementation Notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Carfinity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../administration.html">Administration and Authentication</a></li>
+      <li class="breadcrumb-item active">Administrator Guide: Managing User Permissions</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/Administrator-Guide-User-Permissions.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="administrator-guide-managing-user-permissions">
+<h1>Administrator Guide: Managing User Permissions<a class="headerlink" href="#administrator-guide-managing-user-permissions" title="Link to this heading"></a></h1>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#overview">Overview</a></p></li>
+<li><p><a class="reference internal" href="#getting-started">Getting Started</a></p></li>
+<li><p><a class="reference internal" href="#understanding-the-permission-system">Understanding the Permission System</a></p></li>
+<li><p><a class="reference internal" href="#daily-administrative-tasks">Daily Administrative Tasks</a></p></li>
+<li><p><a class="reference internal" href="#user-management-workflows">User Management Workflows</a></p></li>
+<li><p><a class="reference internal" href="#troubleshooting-common-issues">Troubleshooting Common Issues</a></p></li>
+<li><p><a class="reference internal" href="#maintenance-and-monitoring">Maintenance and Monitoring</a></p></li>
+<li><p><a class="reference internal" href="#best-practices">Best Practices</a></p></li>
+<li><p><a class="reference internal" href="#emergency-procedures">Emergency Procedures</a></p></li>
+<li><p><a class="reference internal" href="#reporting-and-auditing">Reporting and Auditing</a></p></li>
+</ol>
+</section>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>This guide provides step-by-step instructions for administrators to manage user permissions in the Carfinity group-based authentication system. The system controls user access to different dashboards and features based on their group membership and organization association.</p>
+<section id="key-concepts">
+<h3>Key Concepts<a class="headerlink" href="#key-concepts" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Groups</strong>: Define user roles (customers, insurance_company)</p></li>
+<li><p><strong>Organizations</strong>: Business entities users belong to</p></li>
+<li><p><strong>Dashboards</strong>: Different interfaces users can access</p></li>
+<li><p><strong>Permissions</strong>: Combination of groups and organization types that determine access</p></li>
+</ul>
+</section>
+</section>
+<section id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Link to this heading"></a></h2>
+<section id="accessing-the-admin-interface">
+<h3>Accessing the Admin Interface<a class="headerlink" href="#accessing-the-admin-interface" title="Link to this heading"></a></h3>
+<ol class="arabic">
+<li><p><strong>Login to Admin</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">URL</span><span class="p">:</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">your</span><span class="o">-</span><span class="n">domain</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">admin</span><span class="o">/</span>
+<span class="n">Credentials</span><span class="p">:</span> <span class="n">Use</span> <span class="n">your</span> <span class="n">staff</span><span class="o">/</span><span class="n">superuser</span> <span class="n">account</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Navigate to Authentication Management</strong></p>
+<ul class="simple">
+<li><p>From the admin dashboard, look for the “Group-Based Authentication Management” section</p></li>
+<li><p>This provides quick access to all permission management tools</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="admin-dashboard-overview">
+<h3>Admin Dashboard Overview<a class="headerlink" href="#admin-dashboard-overview" title="Link to this heading"></a></h3>
+<p>The enhanced admin dashboard includes:</p>
+<ul class="simple">
+<li><p><strong>User Permissions Overview</strong>: View all user permissions at a glance</p></li>
+<li><p><strong>Bulk User Management</strong>: Perform operations on multiple users</p></li>
+<li><p><strong>Permission Conflicts Report</strong>: Identify and resolve permission issues</p></li>
+<li><p><strong>Group-Organization Mapping</strong>: Understand system relationships</p></li>
+<li><p><strong>Export User Permissions</strong>: Generate reports for auditing</p></li>
+</ul>
+</section>
+</section>
+<section id="understanding-the-permission-system">
+<h2>Understanding the Permission System<a class="headerlink" href="#understanding-the-permission-system" title="Link to this heading"></a></h2>
+<section id="group-types">
+<h3>Group Types<a class="headerlink" href="#group-types" title="Link to this heading"></a></h3>
+<section id="customers-group">
+<h4>1. customers Group<a class="headerlink" href="#customers-group" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Purpose</strong>: For regular business users</p></li>
+<li><p><strong>Compatible Organizations</strong>:</p>
+<ul>
+<li><p>Fleet Management</p></li>
+<li><p>Dealership</p></li>
+<li><p>Service Provider</p></li>
+<li><p>Other</p></li>
+</ul>
+</li>
+<li><p><strong>Dashboard Access</strong>: Customer Dashboard (<code class="docutils literal notranslate"><span class="pre">/dashboard/</span></code>)</p></li>
+</ul>
+</section>
+<section id="insurance-company-group">
+<h4>2. insurance_company Group<a class="headerlink" href="#insurance-company-group" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Purpose</strong>: For insurance company users</p></li>
+<li><p><strong>Compatible Organizations</strong>:</p>
+<ul>
+<li><p>Insurance Company</p></li>
+</ul>
+</li>
+<li><p><strong>Dashboard Access</strong>: Insurance Dashboard (<code class="docutils literal notranslate"><span class="pre">/insurance-dashboard/</span></code>)</p></li>
+</ul>
+</section>
+</section>
+<section id="organization-types">
+<h3>Organization Types<a class="headerlink" href="#organization-types" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Organization Type</p></th>
+<th class="head"><p>Compatible Groups</p></th>
+<th class="head"><p>Default Dashboard</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Fleet Management</p></td>
+<td><p>customers</p></td>
+<td><p>Customer Dashboard</p></td>
+</tr>
+<tr class="row-odd"><td><p>Dealership</p></td>
+<td><p>customers</p></td>
+<td><p>Customer Dashboard</p></td>
+</tr>
+<tr class="row-even"><td><p>Service Provider</p></td>
+<td><p>customers</p></td>
+<td><p>Customer Dashboard</p></td>
+</tr>
+<tr class="row-odd"><td><p>Insurance Company</p></td>
+<td><p>insurance_company</p></td>
+<td><p>Insurance Dashboard</p></td>
+</tr>
+<tr class="row-even"><td><p>Other</p></td>
+<td><p>customers</p></td>
+<td><p>Customer Dashboard</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="permission-matrix">
+<h3>Permission Matrix<a class="headerlink" href="#permission-matrix" title="Link to this heading"></a></h3>
+<p>The system uses a permission matrix to determine access:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>(Group, Organization Type) → Dashboard Access
+├── (customers, fleet) → Customer Dashboard
+├── (customers, dealership) → Customer Dashboard
+├── (customers, service) → Customer Dashboard
+├── (customers, other) → Customer Dashboard
+├── (insurance_company, insurance) → Insurance Dashboard
+└── (customers, insurance) → Both Dashboards (Selector)
+</pre></div>
+</div>
+</section>
+</section>
+<section id="daily-administrative-tasks">
+<h2>Daily Administrative Tasks<a class="headerlink" href="#daily-administrative-tasks" title="Link to this heading"></a></h2>
+<section id="checking-system-health">
+<h3>1. Checking System Health<a class="headerlink" href="#checking-system-health" title="Link to this heading"></a></h3>
+<p><strong>Frequency</strong>: Daily (morning routine)</p>
+<ol class="arabic simple">
+<li><p>Navigate to <strong>User Permissions Overview</strong></p></li>
+<li><p>Review the statistics dashboard:</p>
+<ul class="simple">
+<li><p>Total users</p></li>
+<li><p>Users with groups</p></li>
+<li><p>Users with organizations</p></li>
+</ul>
+</li>
+<li><p>Look for any red indicators (conflicts)</p></li>
+</ol>
+<p><strong>What to Look For</strong>:</p>
+<ul class="simple">
+<li><p>Users without groups (red indicators)</p></li>
+<li><p>Users without organizations</p></li>
+<li><p>Permission conflicts</p></li>
+</ul>
+</section>
+<section id="reviewing-new-user-registrations">
+<h3>2. Reviewing New User Registrations<a class="headerlink" href="#reviewing-new-user-registrations" title="Link to this heading"></a></h3>
+<p><strong>Frequency</strong>: As needed when new users register</p>
+<ol class="arabic simple">
+<li><p>Go to <strong>Users</strong> in the admin</p></li>
+<li><p>Filter by recent registrations (use date joined filter)</p></li>
+<li><p>For each new user:</p>
+<ul class="simple">
+<li><p>Verify they have appropriate groups</p></li>
+<li><p>Confirm organization assignment</p></li>
+<li><p>Check dashboard access</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="monitoring-permission-conflicts">
+<h3>3. Monitoring Permission Conflicts<a class="headerlink" href="#monitoring-permission-conflicts" title="Link to this heading"></a></h3>
+<p><strong>Frequency</strong>: Daily</p>
+<ol class="arabic simple">
+<li><p>Access <strong>Permission Conflicts Report</strong></p></li>
+<li><p>Review any users listed</p></li>
+<li><p>Follow resolution steps for each conflict</p></li>
+<li><p>Re-check after fixes are applied</p></li>
+</ol>
+</section>
+</section>
+<section id="user-management-workflows">
+<h2>User Management Workflows<a class="headerlink" href="#user-management-workflows" title="Link to this heading"></a></h2>
+<section id="adding-a-new-user">
+<h3>Adding a New User<a class="headerlink" href="#adding-a-new-user" title="Link to this heading"></a></h3>
+<section id="step-1-create-user-account">
+<h4>Step 1: Create User Account<a class="headerlink" href="#step-1-create-user-account" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>Navigate to <strong>Users</strong> → <strong>Add User</strong></p></li>
+<li><p>Fill in required information:</p>
+<ul class="simple">
+<li><p>Username</p></li>
+<li><p>Email</p></li>
+<li><p>Password</p></li>
+<li><p>First/Last Name</p></li>
+</ul>
+</li>
+<li><p>Save the user</p></li>
+</ol>
+</section>
+<section id="step-2-assign-groups">
+<h4>Step 2: Assign Groups<a class="headerlink" href="#step-2-assign-groups" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>In the user edit form, scroll to <strong>Groups</strong></p></li>
+<li><p>Select appropriate group based on user role:</p>
+<ul class="simple">
+<li><p><strong>customers</strong>: For fleet, dealership, service users</p></li>
+<li><p><strong>insurance_company</strong>: For insurance company users</p></li>
+</ul>
+</li>
+<li><p>Save changes</p></li>
+</ol>
+</section>
+<section id="step-3-associate-with-organization">
+<h4>Step 3: Associate with Organization<a class="headerlink" href="#step-3-associate-with-organization" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>Navigate to <strong>Organization Users</strong> → <strong>Add</strong></p></li>
+<li><p>Select the user and organization</p></li>
+<li><p>Choose appropriate role</p></li>
+<li><p>Save the association</p></li>
+</ol>
+</section>
+<section id="step-4-verify-permissions">
+<h4>Step 4: Verify Permissions<a class="headerlink" href="#step-4-verify-permissions" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>Go to <strong>User Permissions Overview</strong></p></li>
+<li><p>Search for the new user</p></li>
+<li><p>Verify:</p>
+<ul class="simple">
+<li><p>Groups are correctly assigned</p></li>
+<li><p>Organization is associated</p></li>
+<li><p>Dashboard access is appropriate</p></li>
+<li><p>No conflicts are shown</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+<section id="modifying-existing-user-permissions">
+<h3>Modifying Existing User Permissions<a class="headerlink" href="#modifying-existing-user-permissions" title="Link to this heading"></a></h3>
+<section id="changing-user-groups">
+<h4>Changing User Groups<a class="headerlink" href="#changing-user-groups" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>Navigate to <strong>Users</strong> and find the user</p></li>
+<li><p>Edit the user</p></li>
+<li><p>Modify <strong>Groups</strong> section</p></li>
+<li><p>Save changes</p></li>
+<li><p>Verify in <strong>User Permissions Overview</strong></p></li>
+</ol>
+</section>
+<section id="changing-organization-assignment">
+<h4>Changing Organization Assignment<a class="headerlink" href="#changing-organization-assignment" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>Navigate to <strong>Organization Users</strong></p></li>
+<li><p>Find the user’s organization assignment</p></li>
+<li><p>Edit or delete/recreate as needed</p></li>
+<li><p>Use <strong>Sync with organization groups</strong> action if needed</p></li>
+</ol>
+</section>
+</section>
+<section id="bulk-operations">
+<h3>Bulk Operations<a class="headerlink" href="#bulk-operations" title="Link to this heading"></a></h3>
+<section id="bulk-group-assignment">
+<h4>Bulk Group Assignment<a class="headerlink" href="#bulk-group-assignment" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>Go to <strong>Bulk User Management</strong></p></li>
+<li><p>Select users to modify</p></li>
+<li><p>Choose “Add to group” action</p></li>
+<li><p>Select the target group</p></li>
+<li><p>Execute action</p></li>
+<li><p>Verify results in <strong>User Permissions Overview</strong></p></li>
+</ol>
+</section>
+<section id="bulk-organization-sync">
+<h4>Bulk Organization Sync<a class="headerlink" href="#bulk-organization-sync" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>Go to <strong>Bulk User Management</strong></p></li>
+<li><p>Select users to sync</p></li>
+<li><p>Choose “Sync users with their organization groups”</p></li>
+<li><p>Execute action</p></li>
+<li><p>Check for any error messages</p></li>
+</ol>
+</section>
+</section>
+</section>
+<section id="troubleshooting-common-issues">
+<h2>Troubleshooting Common Issues<a class="headerlink" href="#troubleshooting-common-issues" title="Link to this heading"></a></h2>
+<section id="issue-1-user-can-t-access-dashboard">
+<h3>Issue 1: User Can’t Access Dashboard<a class="headerlink" href="#issue-1-user-can-t-access-dashboard" title="Link to this heading"></a></h3>
+<p><strong>Symptoms</strong>: User gets “Access Denied” error when trying to access dashboard</p>
+<p><strong>Diagnosis Steps</strong>:</p>
+<ol class="arabic simple">
+<li><p>Go to <strong>User Permissions Overview</strong></p></li>
+<li><p>Search for the user</p></li>
+<li><p>Check the “Dashboard Access” column</p></li>
+</ol>
+<p><strong>Common Causes &amp; Solutions</strong>:</p>
+<section id="no-groups-assigned">
+<h4>No Groups Assigned<a class="headerlink" href="#no-groups-assigned" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Cause</strong>: User has no group membership</p></li>
+<li><p><strong>Solution</strong>:</p>
+<ol class="arabic simple">
+<li><p>Edit user in <strong>Users</strong> admin</p></li>
+<li><p>Assign appropriate group (customers or insurance_company)</p></li>
+<li><p>Save changes</p></li>
+</ol>
+</li>
+</ul>
+</section>
+<section id="no-organization-assignment">
+<h4>No Organization Assignment<a class="headerlink" href="#no-organization-assignment" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Cause</strong>: User not associated with any organization</p></li>
+<li><p><strong>Solution</strong>:</p>
+<ol class="arabic simple">
+<li><p>Go to <strong>Organization Users</strong> → <strong>Add</strong></p></li>
+<li><p>Associate user with correct organization</p></li>
+<li><p>Save changes</p></li>
+</ol>
+</li>
+</ul>
+</section>
+<section id="group-organization-mismatch">
+<h4>Group-Organization Mismatch<a class="headerlink" href="#group-organization-mismatch" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Cause</strong>: User’s group doesn’t match organization type</p></li>
+<li><p><strong>Solution</strong>:</p>
+<ol class="arabic simple">
+<li><p>Review user’s organization type</p></li>
+<li><p>Assign correct group:</p>
+<ul>
+<li><p>Insurance org → insurance_company group</p></li>
+<li><p>Other orgs → customers group</p></li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</section>
+</section>
+<section id="issue-2-permission-conflicts">
+<h3>Issue 2: Permission Conflicts<a class="headerlink" href="#issue-2-permission-conflicts" title="Link to this heading"></a></h3>
+<p><strong>Symptoms</strong>: User appears in Permission Conflicts Report</p>
+<p><strong>Resolution Process</strong>:</p>
+<ol class="arabic simple">
+<li><p>Access <strong>Permission Conflicts Report</strong></p></li>
+<li><p>Find the user in the list</p></li>
+<li><p>Read the conflict details</p></li>
+<li><p>Follow the recommended actions provided</p></li>
+<li><p>Use quick action buttons to edit user/organization</p></li>
+<li><p>Re-check conflicts after changes</p></li>
+</ol>
+</section>
+<section id="issue-3-bulk-operations-failing">
+<h3>Issue 3: Bulk Operations Failing<a class="headerlink" href="#issue-3-bulk-operations-failing" title="Link to this heading"></a></h3>
+<p><strong>Symptoms</strong>: Bulk actions don’t complete or show errors</p>
+<p><strong>Troubleshooting Steps</strong>:</p>
+<ol class="arabic simple">
+<li><p>Verify all selected users exist and are active</p></li>
+<li><p>Ensure target group exists (for group operations)</p></li>
+<li><p>Check admin error messages</p></li>
+<li><p>Try operation on smaller batches</p></li>
+<li><p>Use management commands for detailed error analysis</p></li>
+</ol>
+</section>
+<section id="issue-4-organization-groups-not-syncing">
+<h3>Issue 4: Organization Groups Not Syncing<a class="headerlink" href="#issue-4-organization-groups-not-syncing" title="Link to this heading"></a></h3>
+<p><strong>Symptoms</strong>: Users not automatically getting organization groups</p>
+<p><strong>Resolution Steps</strong>:</p>
+<ol class="arabic simple">
+<li><p>Go to <strong>Group-Organization Mapping</strong></p></li>
+<li><p>Verify organization has linked groups</p></li>
+<li><p>If no linked groups:</p>
+<ul class="simple">
+<li><p>Edit organization in <strong>Organizations</strong> admin</p></li>
+<li><p>Add appropriate groups to “Linked groups” field</p></li>
+</ul>
+</li>
+<li><p>Use “Sync members to linked groups” action</p></li>
+<li><p>Verify users now have correct groups</p></li>
+</ol>
+</section>
+</section>
+<section id="maintenance-and-monitoring">
+<h2>Maintenance and Monitoring<a class="headerlink" href="#maintenance-and-monitoring" title="Link to this heading"></a></h2>
+<section id="weekly-maintenance-tasks">
+<h3>Weekly Maintenance Tasks<a class="headerlink" href="#weekly-maintenance-tasks" title="Link to this heading"></a></h3>
+<section id="system-validation">
+<h4>1. System Validation<a class="headerlink" href="#system-validation" title="Link to this heading"></a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run system validation command</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>manage_auth_system<span class="w"> </span>validate-system<span class="w"> </span>--verbose
+</pre></div>
+</div>
+</section>
+<section id="conflict-check">
+<h4>2. Conflict Check<a class="headerlink" href="#conflict-check" title="Link to this heading"></a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check for permission conflicts</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>manage_auth_system<span class="w"> </span>check-conflicts<span class="w"> </span>--verbose
+</pre></div>
+</div>
+</section>
+<section id="generate-reports">
+<h4>3. Generate Reports<a class="headerlink" href="#generate-reports" title="Link to this heading"></a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate weekly permission report</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>manage_auth_system<span class="w"> </span>generate-report<span class="w"> </span>--output<span class="w"> </span>weekly_report.csv
+</pre></div>
+</div>
+</section>
+</section>
+<section id="monthly-maintenance-tasks">
+<h3>Monthly Maintenance Tasks<a class="headerlink" href="#monthly-maintenance-tasks" title="Link to this heading"></a></h3>
+<section id="full-system-sync">
+<h4>1. Full System Sync<a class="headerlink" href="#full-system-sync" title="Link to this heading"></a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sync all organization groups</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>manage_auth_system<span class="w"> </span>sync-org-groups<span class="w"> </span>--verbose
+</pre></div>
+</div>
+</section>
+<section id="comprehensive-audit">
+<h4>2. Comprehensive Audit<a class="headerlink" href="#comprehensive-audit" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>Export full permission report</p></li>
+<li><p>Review for any anomalies</p></li>
+<li><p>Document any changes made</p></li>
+<li><p>Archive reports for compliance</p></li>
+</ol>
+</section>
+</section>
+<section id="monitoring-checklist">
+<h3>Monitoring Checklist<a class="headerlink" href="#monitoring-checklist" title="Link to this heading"></a></h3>
+<p><strong>Daily</strong>:</p>
+<ul class="simple">
+<li><p>[ ] Check Permission Conflicts Report</p></li>
+<li><p>[ ] Review new user registrations</p></li>
+<li><p>[ ] Verify system statistics in User Permissions Overview</p></li>
+</ul>
+<p><strong>Weekly</strong>:</p>
+<ul class="simple">
+<li><p>[ ] Run system validation command</p></li>
+<li><p>[ ] Generate and review permission reports</p></li>
+<li><p>[ ] Check for users without groups/organizations</p></li>
+</ul>
+<p><strong>Monthly</strong>:</p>
+<ul class="simple">
+<li><p>[ ] Full system sync</p></li>
+<li><p>[ ] Comprehensive audit</p></li>
+<li><p>[ ] Review and update documentation</p></li>
+<li><p>[ ] Archive reports</p></li>
+</ul>
+</section>
+</section>
+<section id="best-practices">
+<h2>Best Practices<a class="headerlink" href="#best-practices" title="Link to this heading"></a></h2>
+<section id="user-management">
+<h3>User Management<a class="headerlink" href="#user-management" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Consistent Group Assignment</strong></p>
+<ul class="simple">
+<li><p>Always assign groups based on organization type</p></li>
+<li><p>Use bulk operations for efficiency</p></li>
+<li><p>Verify assignments after changes</p></li>
+</ul>
+</li>
+<li><p><strong>Organization Setup</strong></p>
+<ul class="simple">
+<li><p>Link organizations to appropriate groups</p></li>
+<li><p>Use descriptive organization names</p></li>
+<li><p>Maintain accurate organization types</p></li>
+</ul>
+</li>
+<li><p><strong>Regular Auditing</strong></p>
+<ul class="simple">
+<li><p>Export permission reports monthly</p></li>
+<li><p>Review conflict reports daily</p></li>
+<li><p>Document all changes</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="security-practices">
+<h3>Security Practices<a class="headerlink" href="#security-practices" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Access Control</strong></p>
+<ul class="simple">
+<li><p>Limit admin access to necessary personnel</p></li>
+<li><p>Use strong passwords for admin accounts</p></li>
+<li><p>Regular review of admin user list</p></li>
+</ul>
+</li>
+<li><p><strong>Change Management</strong></p>
+<ul class="simple">
+<li><p>Document all permission changes</p></li>
+<li><p>Test changes in staging environment</p></li>
+<li><p>Have rollback procedures ready</p></li>
+</ul>
+</li>
+<li><p><strong>Monitoring</strong></p>
+<ul class="simple">
+<li><p>Set up alerts for permission conflicts</p></li>
+<li><p>Monitor admin access logs</p></li>
+<li><p>Regular security audits</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="performance-optimization">
+<h3>Performance Optimization<a class="headerlink" href="#performance-optimization" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Efficient Operations</strong></p>
+<ul class="simple">
+<li><p>Use bulk operations for multiple users</p></li>
+<li><p>Schedule maintenance during low-usage periods</p></li>
+<li><p>Monitor system performance during operations</p></li>
+</ul>
+</li>
+<li><p><strong>Data Management</strong></p>
+<ul class="simple">
+<li><p>Regular cleanup of inactive users</p></li>
+<li><p>Archive old reports</p></li>
+<li><p>Optimize database queries</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+<section id="emergency-procedures">
+<h2>Emergency Procedures<a class="headerlink" href="#emergency-procedures" title="Link to this heading"></a></h2>
+<section id="user-locked-out-of-system">
+<h3>User Locked Out of System<a class="headerlink" href="#user-locked-out-of-system" title="Link to this heading"></a></h3>
+<p><strong>Immediate Actions</strong>:</p>
+<ol class="arabic simple">
+<li><p>Verify user identity</p></li>
+<li><p>Check <strong>User Permissions Overview</strong> for the user</p></li>
+<li><p>Identify the issue (no groups, no org, conflicts)</p></li>
+<li><p>Apply appropriate fix:</p>
+<ul class="simple">
+<li><p>Add missing groups</p></li>
+<li><p>Associate with organization</p></li>
+<li><p>Resolve conflicts</p></li>
+</ul>
+</li>
+<li><p>Test user access</p></li>
+<li><p>Document the incident</p></li>
+</ol>
+</section>
+<section id="mass-permission-issues">
+<h3>Mass Permission Issues<a class="headerlink" href="#mass-permission-issues" title="Link to this heading"></a></h3>
+<p><strong>If Multiple Users Affected</strong>:</p>
+<ol class="arabic">
+<li><p>Don’t panic - assess the scope</p></li>
+<li><p>Check <strong>Permission Conflicts Report</strong> for affected users</p></li>
+<li><p>Identify common cause (org changes, group deletions, etc.)</p></li>
+<li><p>Use bulk operations to fix:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Emergency sync all users</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>manage_auth_system<span class="w"> </span>sync-org-groups<span class="w"> </span>--verbose
+
+<span class="c1"># Fix permissions automatically</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>manage_auth_system<span class="w"> </span>fix-permissions<span class="w"> </span>--fix<span class="w"> </span>--verbose
+</pre></div>
+</div>
+</li>
+<li><p>Verify fixes with system validation</p></li>
+<li><p>Communicate with affected users</p></li>
+<li><p>Document incident and prevention measures</p></li>
+</ol>
+</section>
+<section id="system-corruption">
+<h3>System Corruption<a class="headerlink" href="#system-corruption" title="Link to this heading"></a></h3>
+<p><strong>If Permission System Appears Corrupted</strong>:</p>
+<ol class="arabic">
+<li><p><strong>DO NOT</strong> make bulk changes immediately</p></li>
+<li><p>Export current state:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>manage.py<span class="w"> </span>manage_auth_system<span class="w"> </span>generate-report<span class="w"> </span>--output<span class="w"> </span>emergency_backup.csv
+</pre></div>
+</div>
+</li>
+<li><p>Run system validation:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>manage.py<span class="w"> </span>manage_auth_system<span class="w"> </span>validate-system<span class="w"> </span>--verbose
+</pre></div>
+</div>
+</li>
+<li><p>Contact technical team with validation results</p></li>
+<li><p>Follow technical team guidance for recovery</p></li>
+</ol>
+</section>
+</section>
+<section id="reporting-and-auditing">
+<h2>Reporting and Auditing<a class="headerlink" href="#reporting-and-auditing" title="Link to this heading"></a></h2>
+<section id="regular-reports">
+<h3>Regular Reports<a class="headerlink" href="#regular-reports" title="Link to this heading"></a></h3>
+<section id="daily-dashboard-check">
+<h4>Daily Dashboard Check<a class="headerlink" href="#daily-dashboard-check" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Access <strong>User Permissions Overview</strong></p></li>
+<li><p>Note statistics and any red indicators</p></li>
+<li><p>Document any actions taken</p></li>
+</ul>
+</section>
+<section id="weekly-permission-report">
+<h4>Weekly Permission Report<a class="headerlink" href="#weekly-permission-report" title="Link to this heading"></a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate weekly report</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>manage_auth_system<span class="w"> </span>generate-report<span class="w"> </span>--output<span class="w"> </span>reports/weekly_<span class="k">$(</span>date<span class="w"> </span>+%Y%m%d<span class="k">)</span>.csv
+</pre></div>
+</div>
+</section>
+<section id="monthly-audit-report">
+<h4>Monthly Audit Report<a class="headerlink" href="#monthly-audit-report" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>Generate comprehensive permission export</p></li>
+<li><p>Review for:</p>
+<ul class="simple">
+<li><p>Users without proper assignments</p></li>
+<li><p>Unusual permission patterns</p></li>
+<li><p>Inactive users with permissions</p></li>
+</ul>
+</li>
+<li><p>Document findings and actions</p></li>
+</ol>
+</section>
+</section>
+<section id="compliance-reporting">
+<h3>Compliance Reporting<a class="headerlink" href="#compliance-reporting" title="Link to this heading"></a></h3>
+<section id="user-access-audit">
+<h4>User Access Audit<a class="headerlink" href="#user-access-audit" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Export all user permissions</p></li>
+<li><p>Review against business requirements</p></li>
+<li><p>Document any exceptions or special cases</p></li>
+<li><p>Maintain audit trail of changes</p></li>
+</ul>
+</section>
+<section id="security-review">
+<h4>Security Review<a class="headerlink" href="#security-review" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Review admin access logs</p></li>
+<li><p>Check for unauthorized changes</p></li>
+<li><p>Verify all admin accounts are legitimate</p></li>
+<li><p>Document security incidents</p></li>
+</ul>
+</section>
+</section>
+<section id="report-templates">
+<h3>Report Templates<a class="headerlink" href="#report-templates" title="Link to this heading"></a></h3>
+<section id="daily-status-report">
+<h4>Daily Status Report<a class="headerlink" href="#daily-status-report" title="Link to this heading"></a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Date</span><span class="p">:</span> <span class="p">[</span><span class="n">DATE</span><span class="p">]</span>
+<span class="n">Total</span> <span class="n">Users</span><span class="p">:</span> <span class="p">[</span><span class="n">NUMBER</span><span class="p">]</span>
+<span class="n">Users</span> <span class="k">with</span> <span class="n">Groups</span><span class="p">:</span> <span class="p">[</span><span class="n">NUMBER</span><span class="p">]</span>
+<span class="n">Users</span> <span class="k">with</span> <span class="n">Organizations</span><span class="p">:</span> <span class="p">[</span><span class="n">NUMBER</span><span class="p">]</span>
+<span class="n">Permission</span> <span class="n">Conflicts</span><span class="p">:</span> <span class="p">[</span><span class="n">NUMBER</span><span class="p">]</span>
+<span class="n">Actions</span> <span class="n">Taken</span><span class="p">:</span> <span class="p">[</span><span class="n">DESCRIPTION</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="weekly-summary-report">
+<h4>Weekly Summary Report<a class="headerlink" href="#weekly-summary-report" title="Link to this heading"></a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Week</span> <span class="n">of</span><span class="p">:</span> <span class="p">[</span><span class="n">DATE</span> <span class="n">RANGE</span><span class="p">]</span>
+<span class="n">New</span> <span class="n">Users</span> <span class="n">Added</span><span class="p">:</span> <span class="p">[</span><span class="n">NUMBER</span><span class="p">]</span>
+<span class="n">Permission</span> <span class="n">Issues</span> <span class="n">Resolved</span><span class="p">:</span> <span class="p">[</span><span class="n">NUMBER</span><span class="p">]</span>
+<span class="n">Bulk</span> <span class="n">Operations</span> <span class="n">Performed</span><span class="p">:</span> <span class="p">[</span><span class="n">NUMBER</span><span class="p">]</span>
+<span class="n">System</span> <span class="n">Health</span><span class="p">:</span> <span class="p">[</span><span class="n">GOOD</span><span class="o">/</span><span class="n">FAIR</span><span class="o">/</span><span class="n">POOR</span><span class="p">]</span>
+<span class="n">Recommendations</span><span class="p">:</span> <span class="p">[</span><span class="n">LIST</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="id1">
+<h4>Monthly Audit Report<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Month</span><span class="p">:</span> <span class="p">[</span><span class="n">MONTH</span> <span class="n">YEAR</span><span class="p">]</span>
+<span class="n">Total</span> <span class="n">System</span> <span class="n">Users</span><span class="p">:</span> <span class="p">[</span><span class="n">NUMBER</span><span class="p">]</span>
+<span class="n">Permission</span> <span class="n">Accuracy</span><span class="p">:</span> <span class="p">[</span><span class="n">PERCENTAGE</span><span class="p">]</span>
+<span class="n">Security</span> <span class="n">Incidents</span><span class="p">:</span> <span class="p">[</span><span class="n">NUMBER</span><span class="p">]</span>
+<span class="n">System</span> <span class="n">Changes</span><span class="p">:</span> <span class="p">[</span><span class="n">DESCRIPTION</span><span class="p">]</span>
+<span class="n">Compliance</span> <span class="n">Status</span><span class="p">:</span> <span class="p">[</span><span class="n">COMPLIANT</span><span class="o">/</span><span class="n">NON</span><span class="o">-</span><span class="n">COMPLIANT</span><span class="p">]</span>
+<span class="n">Action</span> <span class="n">Items</span><span class="p">:</span> <span class="p">[</span><span class="n">LIST</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="quick-reference">
+<h2>Quick Reference<a class="headerlink" href="#quick-reference" title="Link to this heading"></a></h2>
+<section id="common-admin-urls">
+<h3>Common Admin URLs<a class="headerlink" href="#common-admin-urls" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>User Permissions Overview: <code class="docutils literal notranslate"><span class="pre">/admin/users/user-permissions/</span></code></p></li>
+<li><p>Bulk Management: <code class="docutils literal notranslate"><span class="pre">/admin/users/bulk-management/</span></code></p></li>
+<li><p>Permission Conflicts: <code class="docutils literal notranslate"><span class="pre">/admin/users/permission-conflicts/</span></code></p></li>
+<li><p>Group-Org Mapping: <code class="docutils literal notranslate"><span class="pre">/admin/users/group-org-mapping/</span></code></p></li>
+<li><p>Export Permissions: <code class="docutils literal notranslate"><span class="pre">/admin/users/export-permissions/</span></code></p></li>
+</ul>
+</section>
+<section id="essential-commands">
+<h3>Essential Commands<a class="headerlink" href="#essential-commands" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check system health</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>manage_auth_system<span class="w"> </span>validate-system
+
+<span class="c1"># Fix permission issues</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>manage_auth_system<span class="w"> </span>fix-permissions<span class="w"> </span>--fix
+
+<span class="c1"># Generate report</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>manage_auth_system<span class="w"> </span>generate-report<span class="w"> </span>--output<span class="w"> </span>report.csv
+
+<span class="c1"># Sync organization groups</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>manage_auth_system<span class="w"> </span>sync-org-groups
+</pre></div>
+</div>
+</section>
+<section id="status-indicators">
+<h3>Status Indicators<a class="headerlink" href="#status-indicators" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>🟢 <strong>Green</strong>: Good status, no issues</p></li>
+<li><p>🟡 <strong>Yellow</strong>: Warning, attention needed</p></li>
+<li><p>🔴 <strong>Red</strong>: Error, immediate action required</p></li>
+<li><p>🔵 <strong>Blue</strong>: Informational, no action needed</p></li>
+</ul>
+</section>
+<section id="emergency-contacts">
+<h3>Emergency Contacts<a class="headerlink" href="#emergency-contacts" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Technical Team: [CONTACT INFO]</p></li>
+<li><p>System Administrator: [CONTACT INFO]</p></li>
+<li><p>Security Team: [CONTACT INFO]</p></li>
+</ul>
+<hr class="docutils" />
+<p><strong>Remember</strong>: When in doubt, document your actions and consult with the technical team. It’s better to ask for help than to make changes that could affect multiple users.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Admin-Guide-Authentication-Groups.html" class="btn btn-neutral float-left" title="Administrator Guide: Setting Up Authentication Groups" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="authentication_setup.html" class="btn btn-neutral float-right" title="Configurable Group-Based Authentication Setup" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Menzi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

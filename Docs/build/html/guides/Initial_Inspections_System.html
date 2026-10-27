@@ -1,0 +1,1186 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Initial Inspections System Documentation &mdash; Carfinity 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs"></script>
+      <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.2.0/dist/mermaid-layout-elk.esm.min.mjs"></script>
+      <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.2.0/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+      <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+      <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+const defaultStyle = document.createElement('style');
+defaultStyle.textContent = `pre.mermaid {
+    /* Same as .mermaid-container > pre */
+    display: block;
+    width: 100%;
+}
+
+pre.mermaid > svg {
+    /* Same as .mermaid-container > pre > svg */
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}
+`;
+document.head.appendChild(defaultStyle);
+
+const fullscreenStyle = document.createElement('style');
+fullscreenStyle.textContent = `.mermaid-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.mermaid-container > pre {
+    display: block;
+    width: 100%;
+}
+
+.mermaid-container > pre > svg {
+    height: 500px;
+    width: 100%;
+    max-width: 100% !important;
+}
+
+.mermaid-fullscreen-btn {
+    width: 28px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    line-height: 1;
+    padding: 0;
+    color: #333;
+}
+
+.mermaid-fullscreen-btn:hover {
+    opacity: 100% !important;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-btn.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-btn.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 3px 10px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal {
+    display: none;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 95vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.98);
+    z-index: 9999;
+    padding: 20px;
+    overflow: auto;
+}
+
+.mermaid-fullscreen-modal.dark-theme {
+    background: rgba(0, 0, 0, 0.98);
+}
+
+.mermaid-fullscreen-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen {
+    position: relative;
+    width: 95vw;
+    height: 90vh;
+    max-width: 95vw;
+    max-height: 90vh;
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    overflow: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen.dark-theme {
+    background: #1a1a1a;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+}
+
+.mermaid-container-fullscreen pre.mermaid {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mermaid-container-fullscreen .mermaid svg {
+    height: 100% !important;
+    width: 100% !important;
+    cursor: grab;
+}
+
+.mermaid-fullscreen-close {
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s;
+    font-size: 24px;
+    line-height: 1;
+    color: #333;
+}
+
+.mermaid-fullscreen-close:hover {
+    background: white;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    transform: scale(1.1);
+}
+
+.mermaid-fullscreen-close.dark-theme {
+    background: rgba(50, 50, 50, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #e0e0e0;
+}
+
+.mermaid-fullscreen-close.dark-theme:hover {
+    background: rgba(60, 60, 60, 1);
+    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2);
+}
+
+.mermaid-fullscreen-modal .mermaid-fullscreen-btn {
+    display: none !important;
+}`;
+document.head.appendChild(fullscreenStyle);
+
+// Detect if page has dark background
+const isDarkTheme = () => {
+    const bgColor = window.getComputedStyle(document.body).backgroundColor;
+    const match = bgColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)/);
+    if (match) {
+        const r = parseInt(match[1]);
+        const g = parseInt(match[2]);
+        const b = parseInt(match[3]);
+        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        return brightness < 128;
+    }
+    return false;
+};
+
+const load = async () => {
+    await mermaid.run();
+
+    const all_mermaids = document.querySelectorAll(".mermaid");
+    const mermaids_processed = document.querySelectorAll(".mermaid[data-processed='true']");
+
+    if ("False" === "True") {
+        const mermaids_to_add_zoom = -1 === -1 ? all_mermaids.length : -1;
+        if(mermaids_to_add_zoom > 0) {
+            var svgs = d3.selectAll("");
+            if(all_mermaids.length !== mermaids_processed.length) {
+                setTimeout(load, 200);
+                return;
+            } else if(svgs.size() !== mermaids_to_add_zoom) {
+                setTimeout(load, 200);
+                return;
+            } else {
+                svgs.each(function() {
+                    var svg = d3.select(this);
+                    svg.html("<g class='wrapper'>" + svg.html() + "</g>");
+                    var inner = svg.select("g");
+                    var zoom = d3.zoom().on("zoom", function(event) {
+                        inner.attr("transform", event.transform);
+                    });
+                    svg.call(zoom);
+                });
+            }
+        }
+    } else if(all_mermaids.length !== mermaids_processed.length) {
+        // Wait for mermaid to process all diagrams
+        setTimeout(load, 200);
+        return;
+    }
+
+    const darkTheme = isDarkTheme();
+
+    // Stop here if not adding fullscreen capability
+    if ("True" !== "True") return;
+
+    const modal = document.createElement('div');
+    modal.className = 'mermaid-fullscreen-modal' + (darkTheme ? ' dark-theme' : '');
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Fullscreen diagram viewer');
+    modal.innerHTML = `
+        <button class="mermaid-fullscreen-close${darkTheme ? ' dark-theme' : ''}" aria-label="Close fullscreen">✕</button>
+        <div class="mermaid-container-fullscreen${darkTheme ? ' dark-theme' : ''}"></div>
+    `;
+    document.body.appendChild(modal);
+
+    const modalContent = modal.querySelector('.mermaid-container-fullscreen');
+    const closeBtn = modal.querySelector('.mermaid-fullscreen-close');
+
+    let previousScrollOffset = [window.scrollX, window.scrollY];
+
+    const closeModal = () => {
+        modal.classList.remove('active');
+        modalContent.innerHTML = '';
+        document.body.style.overflow = ''
+        window.scrollTo({left: previousScrollOffset[0], top: previousScrollOffset[1], behavior: 'instant'});
+    };
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal();
+        }
+    });
+
+    const allButtons = [];
+
+    document.querySelectorAll('.mermaid').forEach((mermaidDiv) => {
+        if (mermaidDiv.parentNode.classList.contains('mermaid-container') ||
+            mermaidDiv.closest('.mermaid-fullscreen-modal')) {
+            return;
+        }
+
+        const container = document.createElement('div');
+        container.className = 'mermaid-container';
+        mermaidDiv.parentNode.insertBefore(container, mermaidDiv);
+        container.appendChild(mermaidDiv);
+
+        const fullscreenBtn = document.createElement('button');
+        fullscreenBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+        fullscreenBtn.setAttribute('aria-label', 'View diagram in fullscreen');
+        fullscreenBtn.textContent = '⛶';
+        fullscreenBtn.style.opacity = '50%';
+
+        // Calculate dynamic position based on diagram's margin and padding
+        const diagramStyle = window.getComputedStyle(mermaidDiv);
+        const marginTop = parseFloat(diagramStyle.marginTop) || 0;
+        const marginRight = parseFloat(diagramStyle.marginRight) || 0;
+        const paddingTop = parseFloat(diagramStyle.paddingTop) || 0;
+        const paddingRight = parseFloat(diagramStyle.paddingRight) || 0;
+        fullscreenBtn.style.top = `${marginTop + paddingTop + 4}px`;
+        fullscreenBtn.style.right = `${marginRight + paddingRight + 4}px`;
+
+        fullscreenBtn.addEventListener('click', () => {
+            previousScrollOffset = [window.scroll, window.scrollY];
+            const clone = mermaidDiv.cloneNode(true);
+            modalContent.innerHTML = '';
+            modalContent.appendChild(clone);
+
+            const svg = clone.querySelector('svg');
+            if (svg) {
+                svg.removeAttribute('width');
+                svg.removeAttribute('height');
+                svg.style.width = '100%';
+                svg.style.height = 'auto';
+                svg.style.maxWidth = '100%';
+                svg.style.sdisplay = 'block';
+
+                if ("False" === "True") {
+                    setTimeout(() => {
+                        const g = svg.querySelector('g');
+                        if (g) {
+                            var svgD3 = d3.select(svg);
+                            svgD3.html("<g class='wrapper'>" + svgD3.html() + "</g>");
+                            var inner = svgD3.select("g");
+                            var zoom = d3.zoom().on("zoom", function(event) {
+                                inner.attr("transform", event.transform);
+                            });
+                            svgD3.call(zoom);
+                        }
+                    }, 100);
+                }
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+
+        container.appendChild(fullscreenBtn);
+        allButtons.push(fullscreenBtn);
+    });
+
+    // Update theme classes when theme changes
+    const updateTheme = () => {
+        const dark = isDarkTheme();
+        allButtons.forEach(btn => {
+            if (dark) {
+                btn.classList.add('dark-theme');
+            } else {
+                btn.classList.remove('dark-theme');
+            }
+        });
+        if (dark) {
+            modal.classList.add('dark-theme');
+            modalContent.classList.add('dark-theme');
+            closeBtn.classList.add('dark-theme');
+        } else {
+            modal.classList.remove('dark-theme');
+            modalContent.classList.remove('dark-theme');
+            closeBtn.classList.remove('dark-theme');
+        }
+    };
+
+    // Watch for theme changes
+    const observer = new MutationObserver(updateTheme);
+    observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+    observer.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class', 'style']
+    });
+};
+
+window.addEventListener("load", load);
+</script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Vehicle Inspection Scoring System" href="Vehicle_Inspection_Scoring_System.html" />
+    <link rel="prev" title="Vehicle Inspection System Documentation" href="Inspection_System_Documentation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Carfinity
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Start Here</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../administration.html">Administration and Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vehicle-care.html">Vehicle Care and Maintenance</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../inspections.html">Inspections and Assessments</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Inspection_System_Documentation.html">Vehicle Inspection System Documentation</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Initial Inspections System Documentation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#table-of-contents">Table of Contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#system-architecture">System Architecture</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#core-components">Core Components</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#key-files">Key Files</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#inspection-process">Inspection Process</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#inspection-creation">1. Inspection Creation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#inspection-workflow">2. Inspection Workflow</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#point-checklist">160-Point Checklist</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#section-breakdown">Section Breakdown</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#critical-safety-systems">Critical Safety Systems</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#health-index-calculation">Health Index Calculation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#scoring-algorithm">Scoring Algorithm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#health-index-categories">Health Index Categories</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#inspection-results">Inspection Results</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#user-interface">User Interface</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#technician-dashboard-integration">Technician Dashboard Integration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#form-features">Form Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#search-results-integration">Search Results Integration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#api-endpoints">API Endpoints</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#url-patterns">URL Patterns</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#view-classes">View Classes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#database-schema">Database Schema</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#initialinspection-model">InitialInspection Model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#status-choices">Status Choices</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#integration-points">Integration Points</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#vehicle-search-integration">Vehicle Search Integration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dashboard-statistics">Dashboard Statistics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#health-index-utilities">Health Index Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#best-practices">Best Practices</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#for-technicians">For Technicians</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#for-developers">For Developers</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#common-issues">Common Issues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#debug-commands">Debug Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#performance-monitoring">Performance Monitoring</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#future-enhancements">Future Enhancements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#planned-features">Planned Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#technical-improvements">Technical Improvements</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#support">Support</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Vehicle_Inspection_Scoring_System.html">Vehicle Inspection Scoring System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SecondHand_Vehicle_160_Point_Inspection.html">160-Point Vehicle Inspection Checklist (Second-Hand Vehicles)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Quarterly_Vehicle_Health_Checklist.html">Quarterly Vehicle Health Inspection Checklist (50-Point)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inspection-pdf-system.html">Inspection PDF Attachment System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ASSESSMENT_IMPLEMENTATION_GUIDE.html">Vehicle Assessment System Implementation Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="WORKFLOW_DEMONSTRATION.html">Inspection Workflow Demonstration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../insurance-and-quotes.html">Insurance and Repair Quotes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../technical-reference.html">Technical Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project-history.html">Project History and Implementation Notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Carfinity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../inspections.html">Inspections and Assessments</a></li>
+      <li class="breadcrumb-item active">Initial Inspections System Documentation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/Initial_Inspections_System.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="initial-inspections-system-documentation">
+<h1>Initial Inspections System Documentation<a class="headerlink" href="#initial-inspections-system-documentation" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The Initial Inspections System is a comprehensive 160-point pre-purchase vehicle assessment tool designed to provide detailed evaluations of second-hand vehicles. This system helps buyers make informed decisions by identifying potential issues, estimating repair costs, and providing purchase recommendations.</p>
+</section>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#system-architecture">System Architecture</a></p></li>
+<li><p><a class="reference internal" href="#inspection-process">Inspection Process</a></p></li>
+<li><p><a class="reference internal" href="#point-checklist">160-Point Checklist</a></p></li>
+<li><p><a class="reference internal" href="#health-index-calculation">Health Index Calculation</a></p></li>
+<li><p><a class="reference internal" href="#user-interface">User Interface</a></p></li>
+<li><p><a class="reference internal" href="#api-endpoints">API Endpoints</a></p></li>
+<li><p><a class="reference internal" href="#database-schema">Database Schema</a></p></li>
+<li><p><a class="reference internal" href="#integration-points">Integration Points</a></p></li>
+<li><p><a class="reference internal" href="#best-practices">Best Practices</a></p></li>
+<li><p><a class="reference internal" href="#troubleshooting">Troubleshooting</a></p></li>
+</ol>
+</section>
+<section id="system-architecture">
+<h2>System Architecture<a class="headerlink" href="#system-architecture" title="Link to this heading"></a></h2>
+<section id="core-components">
+<h3>Core Components<a class="headerlink" href="#core-components" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>InitialInspection Model</strong>: Django model storing all inspection data</p></li>
+<li><p><strong>InitialInspectionForm</strong>: Django form handling 160+ inspection fields</p></li>
+<li><p><strong>Health Index Calculator</strong>: Utility functions for scoring vehicle condition</p></li>
+<li><p><strong>Template System</strong>: Professional UI for inspection creation and viewing</p></li>
+<li><p><strong>Integration Layer</strong>: Connects with vehicle search and reporting systems</p></li>
+</ul>
+</section>
+<section id="key-files">
+<h3>Key Files<a class="headerlink" href="#key-files" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>maintenance_history/
+├── models.py              # InitialInspection model definition
+├── forms.py               # InitialInspectionForm with all 160+ fields
+├── views.py               # CRUD operations for initial inspections
+├── utils.py               # Health index calculation algorithms
+└── urls.py                # URL routing for inspection endpoints
+
+templates/maintenance/
+├── create_initial_inspection_form.html    # Main inspection form
+├── initial_inspection_list.html           # List view
+├── initial_inspection_detail.html         # Detail view
+└── update_initial_inspection_form.html    # Edit form
+
+Docs/
+└── Initial_Inspections_System.md          # This documentation
+</pre></div>
+</div>
+</section>
+</section>
+<section id="inspection-process">
+<h2>Inspection Process<a class="headerlink" href="#inspection-process" title="Link to this heading"></a></h2>
+<section id="inspection-creation">
+<h3>1. Inspection Creation<a class="headerlink" href="#inspection-creation" title="Link to this heading"></a></h3>
+<p><strong>Access Point</strong>: Technician Dashboard → “Initial Inspection” button</p>
+<p><strong>Process Flow</strong>:</p>
+<ol class="arabic simple">
+<li><p>Technician clicks “Initial Inspection” (160-point pre-purchase)</p></li>
+<li><p>System opens comprehensive inspection form</p></li>
+<li><p>Technician fills out vehicle details and inspection points</p></li>
+<li><p>Real-time progress tracking shows completion percentage</p></li>
+<li><p>System validates required fields and critical safety systems</p></li>
+<li><p>Upon completion, health index is automatically calculated</p></li>
+</ol>
+</section>
+<section id="inspection-workflow">
+<h3>2. Inspection Workflow<a class="headerlink" href="#inspection-workflow" title="Link to this heading"></a></h3>
+<pre  class="mermaid">
+        graph TD
+    A[Start Initial Inspection] --&gt; B[Enter Vehicle Details]
+    B --&gt; C[Road Test - 33 Points]
+    C --&gt; D[Frame &amp; Structure - 21 Points]
+    D --&gt; E[Under Hood - 14 Points]
+    E --&gt; F[Functional &amp; Walkaround - 14 Points]
+    F --&gt; G[Interior Functions - 46 Points]
+    G --&gt; H[Exterior Appearance - 24 Points]
+    H --&gt; I[Optional Systems - 8 Points]
+    I --&gt; J[Advanced Safety - 4 Points]
+    J --&gt; K[Hybrid Components - 14 Points]
+    K --&gt; L[Summary &amp; Recommendations]
+    L --&gt; M{Mark as Complete?}
+    M --&gt;|Yes| N[Calculate Health Index]
+    M --&gt;|No| O[Save Progress]
+    N --&gt; P[Generate Report]
+    O --&gt; Q[Continue Later]
+    </pre></section>
+</section>
+<section id="point-checklist">
+<h2>160-Point Checklist<a class="headerlink" href="#point-checklist" title="Link to this heading"></a></h2>
+<section id="section-breakdown">
+<h3>Section Breakdown<a class="headerlink" href="#section-breakdown" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Section</p></th>
+<th class="head"><p>Points</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Road Test</strong></p></td>
+<td><p>33</p></td>
+<td><p>Engine performance, transmission, steering, brakes, HVAC</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Frame &amp; Structure</strong></p></td>
+<td><p>21</p></td>
+<td><p>Structural integrity, suspension, underbody components</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Under Hood</strong></p></td>
+<td><p>14</p></td>
+<td><p>Engine bay, fluids, electrical systems, battery</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Functional &amp; Walkaround</strong></p></td>
+<td><p>14</p></td>
+<td><p>Lights, gauges, exterior functionality</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Interior Functions</strong></p></td>
+<td><p>46</p></td>
+<td><p>Controls, electronics, comfort features, spare tire</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Exterior Appearance</strong></p></td>
+<td><p>24</p></td>
+<td><p>Paint, body condition, cleanliness, cosmetics</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Optional Systems</strong></p></td>
+<td><p>8</p></td>
+<td><p>Sunroof, navigation, 4WD, truck bed features</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Advanced Safety</strong></p></td>
+<td><p>4</p></td>
+<td><p>Driver assistance, collision avoidance systems</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Hybrid Components</strong></p></td>
+<td><p>14</p></td>
+<td><p>Electric motor, battery, power management</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Assessment</strong></p></td>
+<td><p>-</p></td>
+<td><p>Overall rating, repair costs, recommendations</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="critical-safety-systems">
+<h3>Critical Safety Systems<a class="headerlink" href="#critical-safety-systems" title="Link to this heading"></a></h3>
+<p>The following systems are weighted heavily in the health index calculation:</p>
+<ul class="simple">
+<li><p><strong>Braking System</strong>: Brake pads, rotors, fluid, ABS operation</p></li>
+<li><p><strong>Steering System</strong>: Response, alignment, power steering</p></li>
+<li><p><strong>Tire Condition</strong>: Tread depth, pressure, specifications</p></li>
+<li><p><strong>Safety Equipment</strong>: Seat belts, airbags, lights</p></li>
+<li><p><strong>Structural Integrity</strong>: Frame, suspension, alignment</p></li>
+</ul>
+</section>
+</section>
+<section id="health-index-calculation">
+<h2>Health Index Calculation<a class="headerlink" href="#health-index-calculation" title="Link to this heading"></a></h2>
+<section id="scoring-algorithm">
+<h3>Scoring Algorithm<a class="headerlink" href="#scoring-algorithm" title="Link to this heading"></a></h3>
+<p>The health index uses a weighted scoring system:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Field Weight Categories</span>
+<span class="n">critical_systems</span> <span class="o">=</span> <span class="p">{</span>     <span class="c1"># Weight: 10-12 points</span>
+    <span class="s1">'brake_vibrations'</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+    <span class="s1">'steering_feel'</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+    <span class="s1">'tire_condition'</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span>
+    <span class="c1"># ... more critical fields</span>
+<span class="p">}</span>
+
+<span class="n">important_systems</span> <span class="o">=</span> <span class="p">{</span>    <span class="c1"># Weight: 6-9 points</span>
+    <span class="s1">'engine_operation'</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+    <span class="s1">'transmission'</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span>
+    <span class="c1"># ... more important fields</span>
+<span class="p">}</span>
+
+<span class="n">standard_systems</span> <span class="o">=</span> <span class="p">{</span>     <span class="c1"># Weight: 3-5 points</span>
+    <span class="s1">'interior_features'</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="s1">'appearance'</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="c1"># ... more standard fields</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="health-index-categories">
+<h3>Health Index Categories<a class="headerlink" href="#health-index-categories" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Score Range</p></th>
+<th class="head"><p>Category</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>90-100%</p></td>
+<td><p><strong>Excellent</strong></p></td>
+<td><p>Outstanding condition, minimal issues</p></td>
+</tr>
+<tr class="row-odd"><td><p>80-89%</p></td>
+<td><p><strong>Good</strong></p></td>
+<td><p>Minor issues, routine maintenance needed</p></td>
+</tr>
+<tr class="row-even"><td><p>70-79%</p></td>
+<td><p><strong>Fair</strong></p></td>
+<td><p>Some concerns, moderate repairs required</p></td>
+</tr>
+<tr class="row-odd"><td><p>60-69%</p></td>
+<td><p><strong>Poor</strong></p></td>
+<td><p>Multiple issues, significant repairs needed</p></td>
+</tr>
+<tr class="row-even"><td><p>&lt;60%</p></td>
+<td><p><strong>Critical</strong></p></td>
+<td><p>Major problems, extensive repairs required</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="inspection-results">
+<h3>Inspection Results<a class="headerlink" href="#inspection-results" title="Link to this heading"></a></h3>
+<p>Based on health index and critical failures:</p>
+<ul class="simple">
+<li><p><strong>PAS</strong> (Passed): No critical issues, high health score</p></li>
+<li><p><strong>PMD</strong> (Passed with Minor Defects): Minor issues only</p></li>
+<li><p><strong>PJD</strong> (Passed with Major Defects): Some major issues but acceptable</p></li>
+<li><p><strong>FMD</strong> (Failed Minor Defects): Too many minor issues</p></li>
+<li><p><strong>FJD</strong> (Failed Major Defects): Critical system failures</p></li>
+<li><p><strong>FAI</strong> (Failed): Unsafe vehicle, do not purchase</p></li>
+</ul>
+</section>
+</section>
+<section id="user-interface">
+<h2>User Interface<a class="headerlink" href="#user-interface" title="Link to this heading"></a></h2>
+<section id="technician-dashboard-integration">
+<h3>Technician Dashboard Integration<a class="headerlink" href="#technician-dashboard-integration" title="Link to this heading"></a></h3>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="cm">&lt;!-- Quick Action Card --&gt;</span>
+<span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">"{% url 'maintenance_history:create_initial_inspection' %}"</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"inspection-card"</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">h3</span><span class="p">&gt;</span>Initial Inspection<span class="p">&lt;/</span><span class="nt">h3</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>160-point pre-purchase<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+
+<span class="cm">&lt;!-- Statistics Card --&gt;</span>
+<span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"stats-card"</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h4</span><span class="p">&gt;</span>Initial Inspections<span class="p">&lt;/</span><span class="nt">h4</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">span</span><span class="p">&gt;</span>{{ total_initial_inspections|default:0 }}<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>160-point checks<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="form-features">
+<h3>Form Features<a class="headerlink" href="#form-features" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Progress Tracking</strong>: Real-time completion percentage</p></li>
+<li><p><strong>Section Organization</strong>: Logical grouping of inspection points</p></li>
+<li><p><strong>Field Validation</strong>: Required fields and data validation</p></li>
+<li><p><strong>Notes Sections</strong>: Detailed observations for each category</p></li>
+<li><p><strong>Responsive Design</strong>: Works on desktop and mobile devices</p></li>
+<li><p><strong>Auto-save Ready</strong>: JavaScript structure supports auto-save</p></li>
+</ul>
+</section>
+<section id="search-results-integration">
+<h3>Search Results Integration<a class="headerlink" href="#search-results-integration" title="Link to this heading"></a></h3>
+<p>Initial inspections appear in vehicle search results:</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="cm">&lt;!-- Initial Inspections Section --&gt;</span>
+{% if initial_inspections %}
+<span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"initial-inspections-section"</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h3</span><span class="p">&gt;</span>Initial Vehicle Inspections<span class="p">&lt;/</span><span class="nt">h3</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Comprehensive 160-point pre-purchase inspections<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+    
+    {% for inspection in initial_inspections %}
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"inspection-card"</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">h4</span><span class="p">&gt;</span>{{ inspection.inspection_number }}<span class="p">&lt;/</span><span class="nt">h4</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>{{ inspection.inspection_date|date:"M j, Y" }}<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"progress-bar"</span><span class="p">&gt;</span>
+            {{ inspection.completion_percentage }}% Complete
+        <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">button</span> <span class="na">onclick</span><span class="o">=</span><span class="s">"openInitialInspectionModal('{{ inspection.id }}')"</span><span class="p">&gt;</span>
+            View Details
+        <span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    {% endfor %}
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+{% endif %}
+</pre></div>
+</div>
+</section>
+</section>
+<section id="api-endpoints">
+<h2>API Endpoints<a class="headerlink" href="#api-endpoints" title="Link to this heading"></a></h2>
+<section id="url-patterns">
+<h3>URL Patterns<a class="headerlink" href="#url-patterns" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># maintenance_history/urls.py</span>
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># Initial Inspection URLs</span>
+    <span class="n">path</span><span class="p">(</span><span class="s1">'initial-inspections/'</span><span class="p">,</span> 
+         <span class="n">views</span><span class="o">.</span><span class="n">InitialInspectionListView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span> 
+         <span class="n">name</span><span class="o">=</span><span class="s1">'initial_inspection_list'</span><span class="p">),</span>
+    <span class="n">path</span><span class="p">(</span><span class="s1">'initial-inspections/&lt;int:pk&gt;/'</span><span class="p">,</span> 
+         <span class="n">views</span><span class="o">.</span><span class="n">InitialInspectionDetailView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span> 
+         <span class="n">name</span><span class="o">=</span><span class="s1">'initial_inspection_detail'</span><span class="p">),</span>
+    <span class="n">path</span><span class="p">(</span><span class="s1">'initial-inspections/create/'</span><span class="p">,</span> 
+         <span class="n">views</span><span class="o">.</span><span class="n">CreateInitialInspectionView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span> 
+         <span class="n">name</span><span class="o">=</span><span class="s1">'create_initial_inspection'</span><span class="p">),</span>
+    <span class="n">path</span><span class="p">(</span><span class="s1">'initial-inspections/&lt;int:pk&gt;/update/'</span><span class="p">,</span> 
+         <span class="n">views</span><span class="o">.</span><span class="n">UpdateInitialInspectionView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(),</span> 
+         <span class="n">name</span><span class="o">=</span><span class="s1">'update_initial_inspection'</span><span class="p">),</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="view-classes">
+<h3>View Classes<a class="headerlink" href="#view-classes" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">CreateInitialInspectionView</span><span class="p">(</span><span class="n">LoginRequiredMixin</span><span class="p">,</span> <span class="n">CreateView</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">InitialInspection</span>
+    <span class="n">form_class</span> <span class="o">=</span> <span class="n">InitialInspectionForm</span>
+    <span class="n">template_name</span> <span class="o">=</span> <span class="s1">'maintenance/create_initial_inspection_form.html'</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">form_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">form</span><span class="p">):</span>
+        <span class="c1"># Set technician and handle completion</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">form</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">technician</span><span class="p">:</span>
+            <span class="n">form</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">technician</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">user</span>
+        
+        <span class="n">initial_inspection</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        
+        <span class="c1"># Auto-calculate health index if completed</span>
+        <span class="k">if</span> <span class="n">initial_inspection</span><span class="o">.</span><span class="n">is_completed</span><span class="p">:</span>
+            <span class="n">initial_inspection</span><span class="o">.</span><span class="n">_update_calculated_fields</span><span class="p">()</span>
+        
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">form_valid</span><span class="p">(</span><span class="n">form</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="database-schema">
+<h2>Database Schema<a class="headerlink" href="#database-schema" title="Link to this heading"></a></h2>
+<section id="initialinspection-model">
+<h3>InitialInspection Model<a class="headerlink" href="#initialinspection-model" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">InitialInspection</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="c1"># Basic Information</span>
+    <span class="n">vehicle</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Vehicle</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">'initial_inspections'</span><span class="p">)</span>
+    <span class="n">inspection_number</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">technician</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">'initial_inspections'</span><span class="p">)</span>
+    <span class="n">inspection_date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">)</span>
+    <span class="n">mileage_at_inspection</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveIntegerField</span><span class="p">()</span>
+    
+    <span class="c1"># Road Test (33 fields)</span>
+    <span class="n">cold_engine_operation</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">STATUS_CHOICES</span><span class="p">)</span>
+    <span class="n">throttle_operation</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">STATUS_CHOICES</span><span class="p">)</span>
+    <span class="c1"># ... 31 more road test fields</span>
+    
+    <span class="c1"># Frame &amp; Structure (21 fields)</span>
+    <span class="n">frame_unibody_condition</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">STATUS_CHOICES</span><span class="p">)</span>
+    <span class="n">panel_alignment</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">STATUS_CHOICES</span><span class="p">)</span>
+    <span class="c1"># ... 19 more structure fields</span>
+    
+    <span class="c1"># ... Additional sections (Under Hood, Functional, Interior, etc.)</span>
+    
+    <span class="c1"># Assessment Fields</span>
+    <span class="n">overall_condition_rating</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">CONDITION_CHOICES</span><span class="p">)</span>
+    <span class="n">overall_notes</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">recommendations</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">estimated_repair_cost</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DecimalField</span><span class="p">(</span><span class="n">max_digits</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">decimal_places</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    
+    <span class="c1"># Completion Tracking</span>
+    <span class="n">is_completed</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">completed_at</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    
+    <span class="c1"># Timestamps</span>
+    <span class="n">created_at</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now_add</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">updated_at</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="status-choices">
+<h3>Status Choices<a class="headerlink" href="#status-choices" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">STATUS_CHOICES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s1">'pass'</span><span class="p">,</span> <span class="s1">'Pass'</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">'fail'</span><span class="p">,</span> <span class="s1">'Fail'</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">'na'</span><span class="p">,</span> <span class="s1">'Not Applicable'</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">'minor'</span><span class="p">,</span> <span class="s1">'Minor Issue'</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">'major'</span><span class="p">,</span> <span class="s1">'Major Issue'</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">'needs_attention'</span><span class="p">,</span> <span class="s1">'Needs Attention'</span><span class="p">),</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="integration-points">
+<h2>Integration Points<a class="headerlink" href="#integration-points" title="Link to this heading"></a></h2>
+<section id="vehicle-search-integration">
+<h3>Vehicle Search Integration<a class="headerlink" href="#vehicle-search-integration" title="Link to this heading"></a></h3>
+<p>Initial inspections are automatically included in vehicle search results:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># users/views.py - search_results function</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">search_results</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="c1"># ... existing code ...</span>
+    
+    <span class="c1"># Get initial inspections</span>
+    <span class="n">initial_inspections</span> <span class="o">=</span> <span class="n">InitialInspection</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+        <span class="n">vehicle</span><span class="o">=</span><span class="n">vehicle</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">select_related</span><span class="p">(</span><span class="s1">'technician'</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">'-inspection_date'</span><span class="p">)</span>
+    
+    <span class="n">context</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+        <span class="s1">'initial_inspections'</span><span class="p">:</span> <span class="n">initial_inspections</span><span class="p">,</span>
+        <span class="c1"># ... other context</span>
+    <span class="p">})</span>
+</pre></div>
+</div>
+</section>
+<section id="dashboard-statistics">
+<h3>Dashboard Statistics<a class="headerlink" href="#dashboard-statistics" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># maintenance_history/views.py - TechnicianDashboardView</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_context_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="c1"># ... existing code ...</span>
+    
+    <span class="c1"># Get initial inspection statistics</span>
+    <span class="n">user_initial_inspections</span> <span class="o">=</span> <span class="n">InitialInspection</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+        <span class="n">technician</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">user</span>
+    <span class="p">)</span>
+    <span class="n">context</span><span class="p">[</span><span class="s1">'total_initial_inspections'</span><span class="p">]</span> <span class="o">=</span> <span class="n">user_initial_inspections</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+    <span class="n">context</span><span class="p">[</span><span class="s1">'pending_initial_inspections'</span><span class="p">]</span> <span class="o">=</span> <span class="n">user_initial_inspections</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+        <span class="n">is_completed</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="health-index-utilities">
+<h3>Health Index Utilities<a class="headerlink" href="#health-index-utilities" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># maintenance_history/utils.py</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_initial_inspection_health_index</span><span class="p">(</span><span class="n">inspection</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Calculate health index for 160-point inspection"""</span>
+    <span class="n">field_weights</span> <span class="o">=</span> <span class="n">get_initial_inspection_field_weights</span><span class="p">()</span>
+    <span class="c1"># ... calculation logic ...</span>
+    <span class="k">return</span> <span class="n">health_index</span><span class="p">,</span> <span class="n">inspection_result</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_initial_inspection_recommendations</span><span class="p">(</span><span class="n">inspection</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Generate purchase recommendations"""</span>
+    <span class="c1"># ... recommendation logic ...</span>
+    <span class="k">return</span> <span class="n">recommendations_list</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="best-practices">
+<h2>Best Practices<a class="headerlink" href="#best-practices" title="Link to this heading"></a></h2>
+<section id="for-technicians">
+<h3>For Technicians<a class="headerlink" href="#for-technicians" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Complete Inspections Systematically</strong></p>
+<ul class="simple">
+<li><p>Follow the section order (Road Test → Structure → Under Hood → etc.)</p></li>
+<li><p>Don’t skip critical safety systems</p></li>
+<li><p>Use detailed notes for any issues found</p></li>
+</ul>
+</li>
+<li><p><strong>Accurate Assessment</strong></p>
+<ul class="simple">
+<li><p>Be honest about vehicle condition</p></li>
+<li><p>Document specific problems clearly</p></li>
+<li><p>Include repair cost estimates when possible</p></li>
+</ul>
+</li>
+<li><p><strong>Progress Management</strong></p>
+<ul class="simple">
+<li><p>Save progress regularly</p></li>
+<li><p>Aim for at least 80% completion before marking as complete</p></li>
+<li><p>Review all entries before final submission</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="for-developers">
+<h3>For Developers<a class="headerlink" href="#for-developers" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Form Validation</strong></p>
+<ul class="simple">
+<li><p>Ensure critical safety systems are inspected</p></li>
+<li><p>Validate completion percentage before allowing submission</p></li>
+<li><p>Handle edge cases gracefully</p></li>
+</ul>
+</li>
+<li><p><strong>Performance Optimization</strong></p>
+<ul class="simple">
+<li><p>Use select_related for database queries</p></li>
+<li><p>Implement auto-save functionality</p></li>
+<li><p>Optimize form rendering for large field count</p></li>
+</ul>
+</li>
+<li><p><strong>User Experience</strong></p>
+<ul class="simple">
+<li><p>Provide clear progress indicators</p></li>
+<li><p>Use consistent styling across sections</p></li>
+<li><p>Implement responsive design for mobile use</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h2>
+<section id="common-issues">
+<h3>Common Issues<a class="headerlink" href="#common-issues" title="Link to this heading"></a></h3>
+<p><strong>Issue</strong>: Health index not calculating</p>
+<ul class="simple">
+<li><p><strong>Cause</strong>: Inspection not marked as completed</p></li>
+<li><p><strong>Solution</strong>: Ensure <code class="docutils literal notranslate"><span class="pre">is_completed=True</span></code> and save the model</p></li>
+</ul>
+<p><strong>Issue</strong>: Form validation errors</p>
+<ul class="simple">
+<li><p><strong>Cause</strong>: Missing required fields or invalid data</p></li>
+<li><p><strong>Solution</strong>: Check field validation rules and ensure all required fields are filled</p></li>
+</ul>
+<p><strong>Issue</strong>: Progress tracking incorrect</p>
+<ul class="simple">
+<li><p><strong>Cause</strong>: JavaScript not counting all form fields</p></li>
+<li><p><strong>Solution</strong>: Verify field selectors in JavaScript match form structure</p></li>
+</ul>
+<p><strong>Issue</strong>: Template rendering slowly</p>
+<ul class="simple">
+<li><p><strong>Cause</strong>: Large number of form fields</p></li>
+<li><p><strong>Solution</strong>: Consider implementing progressive loading or section-based rendering</p></li>
+</ul>
+</section>
+<section id="debug-commands">
+<h3>Debug Commands<a class="headerlink" href="#debug-commands" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check inspection completion</span>
+<span class="n">inspection</span> <span class="o">=</span> <span class="n">InitialInspection</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Completion: </span><span class="si">{</span><span class="n">inspection</span><span class="o">.</span><span class="n">completion_percentage</span><span class="si">}</span><span class="s2">%"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Failed points: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">inspection</span><span class="o">.</span><span class="n">failed_points</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Recalculate health index</span>
+<span class="n">inspection</span><span class="o">.</span><span class="n">_update_calculated_fields</span><span class="p">()</span>
+
+<span class="c1"># View field weights</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">maintenance_history.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_initial_inspection_field_weights</span>
+<span class="n">weights</span> <span class="o">=</span> <span class="n">get_initial_inspection_field_weights</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Critical systems: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="p">[</span><span class="s1">'critical'</span><span class="p">])</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="performance-monitoring">
+<h3>Performance Monitoring<a class="headerlink" href="#performance-monitoring" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Monitor inspection creation time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">inspection</span> <span class="o">=</span> <span class="n">InitialInspection</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Creation time: </span><span class="si">{</span><span class="n">end_time</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start_time</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> seconds"</span><span class="p">)</span>
+
+<span class="c1"># Check database query count</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.db</span><span class="w"> </span><span class="kn">import</span> <span class="n">connection</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Queries executed: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">connection</span><span class="o">.</span><span class="n">queries</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="future-enhancements">
+<h2>Future Enhancements<a class="headerlink" href="#future-enhancements" title="Link to this heading"></a></h2>
+<section id="planned-features">
+<h3>Planned Features<a class="headerlink" href="#planned-features" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>PDF Report Generation</strong></p>
+<ul class="simple">
+<li><p>Automated report creation upon completion</p></li>
+<li><p>Professional formatting with charts and recommendations</p></li>
+<li><p>Email delivery to stakeholders</p></li>
+</ul>
+</li>
+<li><p><strong>Mobile App Integration</strong></p>
+<ul class="simple">
+<li><p>Native mobile app for field inspections</p></li>
+<li><p>Offline capability with sync</p></li>
+<li><p>Photo capture and annotation</p></li>
+</ul>
+</li>
+<li><p><strong>AI-Powered Recommendations</strong></p>
+<ul class="simple">
+<li><p>Machine learning for repair cost estimation</p></li>
+<li><p>Predictive maintenance suggestions</p></li>
+<li><p>Market value assessment integration</p></li>
+</ul>
+</li>
+<li><p><strong>Advanced Analytics</strong></p>
+<ul class="simple">
+<li><p>Inspection trend analysis</p></li>
+<li><p>Technician performance metrics</p></li>
+<li><p>Vehicle reliability scoring</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="technical-improvements">
+<h3>Technical Improvements<a class="headerlink" href="#technical-improvements" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Auto-save Functionality</strong></p>
+<ul class="simple">
+<li><p>Periodic form data saving</p></li>
+<li><p>Recovery from browser crashes</p></li>
+<li><p>Conflict resolution for concurrent edits</p></li>
+</ul>
+</li>
+<li><p><strong>Enhanced Validation</strong></p>
+<ul class="simple">
+<li><p>Real-time field validation</p></li>
+<li><p>Cross-field dependency checks</p></li>
+<li><p>Smart completion suggestions</p></li>
+</ul>
+</li>
+<li><p><strong>Performance Optimization</strong></p>
+<ul class="simple">
+<li><p>Form field lazy loading</p></li>
+<li><p>Database query optimization</p></li>
+<li><p>Caching for frequently accessed data</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+<section id="support">
+<h2>Support<a class="headerlink" href="#support" title="Link to this heading"></a></h2>
+<p>For technical support or questions about the Initial Inspections System:</p>
+<ul class="simple">
+<li><p><strong>Documentation</strong>: This file and related docs in <code class="docutils literal notranslate"><span class="pre">/Docs/</span></code> folder</p></li>
+<li><p><strong>Code Issues</strong>: Check model definitions and utility functions</p></li>
+<li><p><strong>UI Problems</strong>: Review template files and JavaScript functionality</p></li>
+<li><p><strong>Database Issues</strong>: Examine model relationships and migrations</p></li>
+</ul>
+<p><strong>Last Updated</strong>: December 2024
+<strong>Version</strong>: 1.0
+<strong>Maintainer</strong>: Development Team</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Inspection_System_Documentation.html" class="btn btn-neutral float-left" title="Vehicle Inspection System Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Vehicle_Inspection_Scoring_System.html" class="btn btn-neutral float-right" title="Vehicle Inspection Scoring System" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Menzi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

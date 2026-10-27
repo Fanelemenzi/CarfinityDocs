@@ -1,0 +1,343 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PWA Setup Complete - Installation Guide &mdash; Carfinity 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Backend Requirements for Insurance Dashboard" href="backend-requirements.html" />
+    <link rel="prev" title="System Health Monitoring Guide" href="HEALTH_MONITORING_GUIDE.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Carfinity
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Start Here</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../administration.html">Administration and Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vehicle-care.html">Vehicle Care and Maintenance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../inspections.html">Inspections and Assessments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../insurance-and-quotes.html">Insurance and Repair Quotes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../technical-reference.html">Technical Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="DATABASE_SCHEMA.html">Database Schema Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ERROR_HANDLING_DOCUMENTATION.html">Error Handling and User Feedback System Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="HEALTH_MONITORING_GUIDE.html">System Health Monitoring Guide</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">PWA Setup Complete - Installation Guide</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#your-pwa-is-ready">🎉 Your PWA is Ready!</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#what-s-been-set-up">📱 What’s Been Set Up</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#core-pwa-components">✅ Core PWA Components</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#features-enabled">✅ Features Enabled</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#next-steps">🚀 Next Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#generate-pwa-icons">1. Generate PWA Icons</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#test-your-pwa">2. Test Your PWA</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pwa-validation">3. PWA Validation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#installation-instructions-for-users">📋 Installation Instructions for Users</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#android-chrome-edge">Android (Chrome/Edge)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#iphone-ipad-safari">iPhone/iPad (Safari)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#desktop-chrome-edge">Desktop (Chrome/Edge)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#customization-options">🔧 Customization Options</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#update-app-colors">Update App Colors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modify-cached-resources">Modify Cached Resources</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#customize-install-prompt">Customize Install Prompt</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pwa-benefits-for-users">🎯 PWA Benefits for Users</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#troubleshooting">🔍 Troubleshooting</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#install-button-not-showing">Install Button Not Showing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#service-worker-issues">Service Worker Issues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#icons-not-loading">Icons Not Loading</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#monitoring-pwa-performance">📊 Monitoring PWA Performance</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="backend-requirements.html">Backend Requirements for Insurance Dashboard</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../project-history.html">Project History and Implementation Notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Carfinity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../technical-reference.html">Technical Reference</a></li>
+      <li class="breadcrumb-item active">PWA Setup Complete - Installation Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/PWA_SETUP_GUIDE.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pwa-setup-complete-installation-guide">
+<h1>PWA Setup Complete - Installation Guide<a class="headerlink" href="#pwa-setup-complete-installation-guide" title="Link to this heading"></a></h1>
+<section id="your-pwa-is-ready">
+<h2>🎉 Your PWA is Ready!<a class="headerlink" href="#your-pwa-is-ready" title="Link to this heading"></a></h2>
+<p>Your Carfinity app now has full Progressive Web App (PWA) functionality. Users can install it on their phones and use it like a native app.</p>
+</section>
+<section id="what-s-been-set-up">
+<h2>📱 What’s Been Set Up<a class="headerlink" href="#what-s-been-set-up" title="Link to this heading"></a></h2>
+<section id="core-pwa-components">
+<h3>✅ Core PWA Components<a class="headerlink" href="#core-pwa-components" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Service Worker</strong> (<code class="docutils literal notranslate"><span class="pre">static/js/sw.js</span></code>) - Enables offline functionality and caching</p></li>
+<li><p><strong>Web App Manifest</strong> (<code class="docutils literal notranslate"><span class="pre">static/manifest.json</span></code>) - Defines app metadata for installation</p></li>
+<li><p><strong>PWA Install Script</strong> (<code class="docutils literal notranslate"><span class="pre">static/js/pwa-install.js</span></code>) - Handles installation prompts and detection</p></li>
+<li><p><strong>Offline Page</strong> (<code class="docutils literal notranslate"><span class="pre">templates/offline.html</span></code>) - Shown when users are offline</p></li>
+<li><p><strong>Meta Tags</strong> - Added to base template for proper PWA recognition</p></li>
+</ul>
+</section>
+<section id="features-enabled">
+<h3>✅ Features Enabled<a class="headerlink" href="#features-enabled" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Install Prompt</strong> - Automatic install button appears on supported devices</p></li>
+<li><p><strong>Offline Support</strong> - App works without internet for cached content</p></li>
+<li><p><strong>App-like Experience</strong> - Runs in standalone mode (no browser UI)</p></li>
+<li><p><strong>Push Notifications</strong> - Ready for future notification features</p></li>
+<li><p><strong>Background Sync</strong> - Syncs data when connection is restored</p></li>
+<li><p><strong>iOS Support</strong> - Special handling for iPhone/iPad installation</p></li>
+</ul>
+</section>
+</section>
+<section id="next-steps">
+<h2>🚀 Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading"></a></h2>
+<section id="generate-pwa-icons">
+<h3>1. Generate PWA Icons<a class="headerlink" href="#generate-pwa-icons" title="Link to this heading"></a></h3>
+<p>Run the icon generator script to create all required icon sizes:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>generate_pwa_icons.py
+</pre></div>
+</div>
+<p>This will create icons in multiple sizes (72x72, 96x96, 128x128, 144x144, 152x152, 192x192, 384x384, 512x512) from your existing <code class="docutils literal notranslate"><span class="pre">static/images/icon.png</span></code>.</p>
+<p><strong>Requirements:</strong> Install Pillow if not already installed:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>Pillow
+</pre></div>
+</div>
+</section>
+<section id="test-your-pwa">
+<h3>2. Test Your PWA<a class="headerlink" href="#test-your-pwa" title="Link to this heading"></a></h3>
+<section id="desktop-testing">
+<h4>Desktop Testing:<a class="headerlink" href="#desktop-testing" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>Open Chrome/Edge Developer Tools (F12)</p></li>
+<li><p>Go to “Application” tab → “Manifest”</p></li>
+<li><p>Verify manifest loads correctly</p></li>
+<li><p>Check “Service Workers” tab to confirm registration</p></li>
+</ol>
+</section>
+<section id="mobile-testing">
+<h4>Mobile Testing:<a class="headerlink" href="#mobile-testing" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p><strong>Android Chrome:</strong></p>
+<ul class="simple">
+<li><p>Visit your site</p></li>
+<li><p>Look for “Add to Home Screen” prompt</p></li>
+<li><p>Or tap menu → “Add to Home Screen”</p></li>
+</ul>
+</li>
+<li><p><strong>iOS Safari:</strong></p>
+<ul class="simple">
+<li><p>Visit your site</p></li>
+<li><p>Tap Share button → “Add to Home Screen”</p></li>
+<li><p>Follow the banner instructions</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+<section id="pwa-validation">
+<h3>3. PWA Validation<a class="headerlink" href="#pwa-validation" title="Link to this heading"></a></h3>
+<p>Test your PWA with these tools:</p>
+<ul class="simple">
+<li><p><strong>Lighthouse PWA Audit:</strong> Chrome DevTools → Lighthouse → PWA</p></li>
+<li><p><strong>Web.dev Measure:</strong> https://web.dev/measure/</p></li>
+<li><p><strong>PWA Builder:</strong> https://www.pwabuilder.com/</p></li>
+</ul>
+</section>
+</section>
+<section id="installation-instructions-for-users">
+<h2>📋 Installation Instructions for Users<a class="headerlink" href="#installation-instructions-for-users" title="Link to this heading"></a></h2>
+<section id="android-chrome-edge">
+<h3>Android (Chrome/Edge)<a class="headerlink" href="#android-chrome-edge" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Visit your Carfinity website</p></li>
+<li><p>Look for the “Install App” button (appears automatically)</p></li>
+<li><p>Or tap browser menu → “Add to Home Screen”</p></li>
+<li><p>Confirm installation</p></li>
+</ol>
+</section>
+<section id="iphone-ipad-safari">
+<h3>iPhone/iPad (Safari)<a class="headerlink" href="#iphone-ipad-safari" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Visit your Carfinity website</p></li>
+<li><p>Tap the Share button (square with arrow)</p></li>
+<li><p>Scroll down and tap “Add to Home Screen”</p></li>
+<li><p>Tap “Add” to confirm</p></li>
+</ol>
+</section>
+<section id="desktop-chrome-edge">
+<h3>Desktop (Chrome/Edge)<a class="headerlink" href="#desktop-chrome-edge" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Visit your website</p></li>
+<li><p>Look for install icon in address bar</p></li>
+<li><p>Or click menu → “Install Carfinity”</p></li>
+</ol>
+</section>
+</section>
+<section id="customization-options">
+<h2>🔧 Customization Options<a class="headerlink" href="#customization-options" title="Link to this heading"></a></h2>
+<section id="update-app-colors">
+<h3>Update App Colors<a class="headerlink" href="#update-app-colors" title="Link to this heading"></a></h3>
+<p>Edit <code class="docutils literal notranslate"><span class="pre">carfinity/settings.py</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">PWA_APP_THEME_COLOR</span> <span class="o">=</span> <span class="s1">'#18cb96'</span>  <span class="c1"># Your brand color</span>
+<span class="n">PWA_APP_BACKGROUND_COLOR</span> <span class="o">=</span> <span class="s1">'#ffffff'</span>  <span class="c1"># Background color</span>
+</pre></div>
+</div>
+</section>
+<section id="modify-cached-resources">
+<h3>Modify Cached Resources<a class="headerlink" href="#modify-cached-resources" title="Link to this heading"></a></h3>
+<p>Edit <code class="docutils literal notranslate"><span class="pre">static/js/sw.js</span></code> to add/remove cached files:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span><span class="w"> </span><span class="nx">CACHE_URLS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="s1">'/'</span><span class="p">,</span>
+<span class="w">  </span><span class="s1">'/dashboard/'</span><span class="p">,</span>
+<span class="w">  </span><span class="c1">// Add your important pages here</span>
+<span class="p">];</span>
+</pre></div>
+</div>
+</section>
+<section id="customize-install-prompt">
+<h3>Customize Install Prompt<a class="headerlink" href="#customize-install-prompt" title="Link to this heading"></a></h3>
+<p>Edit <code class="docutils literal notranslate"><span class="pre">static/js/pwa-install.js</span></code> to modify the install button appearance and behavior.</p>
+</section>
+</section>
+<section id="pwa-benefits-for-users">
+<h2>🎯 PWA Benefits for Users<a class="headerlink" href="#pwa-benefits-for-users" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Fast Loading:</strong> Cached resources load instantly</p></li>
+<li><p><strong>Offline Access:</strong> View vehicle data without internet</p></li>
+<li><p><strong>Native Feel:</strong> Full-screen app experience</p></li>
+<li><p><strong>Push Notifications:</strong> Get maintenance reminders (when implemented)</p></li>
+<li><p><strong>Home Screen Access:</strong> One-tap access from phone home screen</p></li>
+<li><p><strong>Automatic Updates:</strong> App updates automatically in background</p></li>
+</ul>
+</section>
+<section id="troubleshooting">
+<h2>🔍 Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h2>
+<section id="install-button-not-showing">
+<h3>Install Button Not Showing<a class="headerlink" href="#install-button-not-showing" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Ensure HTTPS is enabled (required for PWA)</p></li>
+<li><p>Check browser console for service worker errors</p></li>
+<li><p>Verify manifest.json is accessible at <code class="docutils literal notranslate"><span class="pre">/manifest.json</span></code></p></li>
+</ul>
+</section>
+<section id="service-worker-issues">
+<h3>Service Worker Issues<a class="headerlink" href="#service-worker-issues" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Check Chrome DevTools → Application → Service Workers</p></li>
+<li><p>Clear browser cache and reload</p></li>
+<li><p>Verify service worker file is accessible</p></li>
+</ul>
+</section>
+<section id="icons-not-loading">
+<h3>Icons Not Loading<a class="headerlink" href="#icons-not-loading" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Run the icon generator script</p></li>
+<li><p>Check that icon files exist in <code class="docutils literal notranslate"><span class="pre">static/images/icons/</span></code></p></li>
+<li><p>Verify static files are being served correctly</p></li>
+</ul>
+</section>
+</section>
+<section id="monitoring-pwa-performance">
+<h2>📊 Monitoring PWA Performance<a class="headerlink" href="#monitoring-pwa-performance" title="Link to this heading"></a></h2>
+<p>Monitor your PWA with:</p>
+<ul class="simple">
+<li><p><strong>Google Analytics:</strong> Track PWA usage vs web</p></li>
+<li><p><strong>Chrome UX Report:</strong> Real user metrics</p></li>
+<li><p><strong>Lighthouse CI:</strong> Automated PWA audits</p></li>
+</ul>
+<p>Your PWA setup is complete! Users can now install Carfinity on their devices for a native app-like experience.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="HEALTH_MONITORING_GUIDE.html" class="btn btn-neutral float-left" title="System Health Monitoring Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="backend-requirements.html" class="btn btn-neutral float-right" title="Backend Requirements for Insurance Dashboard" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Menzi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

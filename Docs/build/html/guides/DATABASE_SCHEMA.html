@@ -1,0 +1,4023 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Database Schema Documentation &mdash; Carfinity 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Error Handling and User Feedback System Documentation" href="ERROR_HANDLING_DOCUMENTATION.html" />
+    <link rel="prev" title="Technical Reference" href="../technical-reference.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Carfinity
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Start Here</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../administration.html">Administration and Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vehicle-care.html">Vehicle Care and Maintenance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../inspections.html">Inspections and Assessments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../insurance-and-quotes.html">Insurance and Repair Quotes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../technical-reference.html">Technical Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Database Schema Documentation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#project-overview">Project Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#table-of-contents">Table of Contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#core-vehicle-management">Core Vehicle Management</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#vehicles-vehicle">vehicles_vehicle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vehicles-vehicleownership">vehicles_vehicleownership</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vehicles-vehiclestatus">vehicles_vehiclestatus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vehicles-vehiclehistory">vehicles_vehiclehistory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vehicles-vehicleimage">vehicles_vehicleimage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vehicles-vehiclevaluation">vehicles_vehiclevaluation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#user-management">User Management</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#users-profile">users_profile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#users-role">users_role</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#users-userrole">users_userrole</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#users-dataconsent">users_dataconsent</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#organization-management">Organization Management</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#organizations-organization">organizations_organization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#organizations-organizationuser">organizations_organizationuser</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#organizations-organizationvehicle">organizations_organizationvehicle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#organizations-insuranceorganization">organizations_insuranceorganization</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#maintenance-system">Maintenance System</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#maintenance-servicetype">maintenance_servicetype</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#maintenance-part">maintenance_part</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#maintenance-maintenanceplan">maintenance_maintenanceplan</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#maintenance-maintenancetask">maintenance_maintenancetask</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#maintenance-taskpartrequirement">maintenance_taskpartrequirement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#maintenance-assignedvehicleplan">maintenance_assignedvehicleplan</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#maintenance-scheduledmaintenance">maintenance_scheduledmaintenance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#maintenance-document">maintenance_document</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#maintenance-history-inspections">Maintenance History &amp; Inspections</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#maintenance-history-maintenancerecord">maintenance_history_maintenancerecord</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#maintenance-history-partusage">maintenance_history_partusage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#maintenance-history-inspection">maintenance_history_inspection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">maintenance_history_inspections</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#maintenance-history-initialinspection">maintenance_history_initialinspection</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#vehicle-equipment-specifications">Vehicle Equipment &amp; Specifications</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#vehicle-equip-powertrainanddrivetrain">vehicle_equip_powertrainanddrivetrain</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vehicle-equip-chassissuspensionandbraking">vehicle_equip_chassissuspensionandbraking</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vehicle-equip-electricalsystem">vehicle_equip_electricalsystem</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vehicle-equip-exteriorfeaturesandbody">vehicle_equip_exteriorfeaturesandbody</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vehicle-equip-activesafetyandadas">vehicle_equip_activesafetyandadas</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#assessment-system">Assessment System</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#assessments-vehicleassessment">assessments_vehicleassessment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#assessments-exteriorbodydamage">assessments_exteriorbodydamage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#assessments-wheelsandtires">assessments_wheelsandtires</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#assessments-interiordamage">assessments_interiordamage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#assessments-mechanicalsystems">assessments_mechanicalsystems</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#assessments-electricalsystems">assessments_electricalsystems</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#assessments-safetysystems">assessments_safetysystems</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#assessments-framestructural">assessments_framestructural</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#assessments-fluidsystems">assessments_fluidsystems</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#insurance-management">Insurance Management</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#insurance-app-insurancepolicy">insurance_app_insurancepolicy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#insurance-app-vehicle">insurance_app_vehicle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#insurance-app-maintenanceschedule">insurance_app_maintenanceschedule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#insurance-app-maintenancecompliance">insurance_app_maintenancecompliance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#insurance-app-accident">insurance_app_accident</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#insurance-app-vehicleconditionscore">insurance_app_vehicleconditionscore</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#insurance-app-riskalert">insurance_app_riskalert</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#insurance-app-riskassessmentmetrics">insurance_app_riskassessmentmetrics</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#notifications-alerts">Notifications &amp; Alerts</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#notifications-vehiclealert">notifications_vehiclealert</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#notifications-vehiclecostanalytics">notifications_vehiclecostanalytics</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#onboarding-system">Onboarding System</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#onboarding-pendingvehicleonboarding">onboarding_pendingvehicleonboarding</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#onboarding-customeronboarding">onboarding_customeronboarding</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#onboarding-vehicleonboarding">onboarding_vehicleonboarding</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#relationships-overview">Relationships Overview</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#primary-relationships">Primary Relationships</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#foreign-key-constraints">Foreign Key Constraints</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#indexes">Indexes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#data-integrity-rules">Data Integrity Rules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#validation-rules">Validation Rules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#business-rules">Business Rules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#audit-trail">Audit Trail</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ERROR_HANDLING_DOCUMENTATION.html">Error Handling and User Feedback System Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="HEALTH_MONITORING_GUIDE.html">System Health Monitoring Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PWA_SETUP_GUIDE.html">PWA Setup Complete - Installation Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backend-requirements.html">Backend Requirements for Insurance Dashboard</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../project-history.html">Project History and Implementation Notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Carfinity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../technical-reference.html">Technical Reference</a></li>
+      <li class="breadcrumb-item active">Database Schema Documentation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/DATABASE_SCHEMA.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="database-schema-documentation">
+<h1>Database Schema Documentation<a class="headerlink" href="#database-schema-documentation" title="Link to this heading"></a></h1>
+<section id="project-overview">
+<h2>Project Overview<a class="headerlink" href="#project-overview" title="Link to this heading"></a></h2>
+<p>This document outlines the complete database schema for the Vehicle Management System, which includes vehicle tracking, maintenance management, insurance assessments, inspections, and organizational management.</p>
+</section>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#core-vehicle-management">Core Vehicle Management</a></p></li>
+<li><p><a class="reference internal" href="#user-management">User Management</a></p></li>
+<li><p><a class="reference internal" href="#organization-management">Organization Management</a></p></li>
+<li><p><a class="reference internal" href="#maintenance-system">Maintenance System</a></p></li>
+<li><p><a class="reference internal" href="#maintenance-history-inspections">Maintenance History &amp; Inspections</a></p></li>
+<li><p><a class="reference internal" href="#vehicle-equipment-specifications">Vehicle Equipment &amp; Specifications</a></p></li>
+<li><p><a class="reference internal" href="#assessment-system">Assessment System</a></p></li>
+<li><p><a class="reference internal" href="#insurance-management">Insurance Management</a></p></li>
+<li><p><a class="reference internal" href="#notifications-alerts">Notifications &amp; Alerts</a></p></li>
+<li><p><a class="reference internal" href="#onboarding-system">Onboarding System</a></p></li>
+<li><p><a class="reference internal" href="#relationships-overview">Relationships Overview</a></p></li>
+</ol>
+</section>
+<section id="core-vehicle-management">
+<h2>Core Vehicle Management<a class="headerlink" href="#core-vehicle-management" title="Link to this heading"></a></h2>
+<section id="vehicles-vehicle">
+<h3>vehicles_vehicle<a class="headerlink" href="#vehicles-vehicle" title="Link to this heading"></a></h3>
+<p><strong>Primary vehicle information table</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>AutoField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Auto-incrementing primary key</p></td>
+</tr>
+<tr class="row-odd"><td><p>vin</p></td>
+<td><p>CharField(20)</p></td>
+<td><p>UNIQUE, NOT NULL</p></td>
+<td><p>Vehicle Identification Number</p></td>
+</tr>
+<tr class="row-even"><td><p>make</p></td>
+<td><p>CharField(50)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Vehicle manufacturer</p></td>
+</tr>
+<tr class="row-odd"><td><p>model</p></td>
+<td><p>CharField(50)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Vehicle model</p></td>
+</tr>
+<tr class="row-even"><td><p>manufacture_year</p></td>
+<td><p>PositiveIntegerField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Year of manufacture</p></td>
+</tr>
+<tr class="row-odd"><td><p>body_type</p></td>
+<td><p>CharField(20)</p></td>
+<td><p>NULL</p></td>
+<td><p>Vehicle body type</p></td>
+</tr>
+<tr class="row-even"><td><p>engine_code</p></td>
+<td><p>CharField(20)</p></td>
+<td><p>NULL</p></td>
+<td><p>Engine identification code</p></td>
+</tr>
+<tr class="row-odd"><td><p>interior_color</p></td>
+<td><p>CharField(30)</p></td>
+<td><p>NULL</p></td>
+<td><p>Interior color</p></td>
+</tr>
+<tr class="row-even"><td><p>exterior_color</p></td>
+<td><p>CharField(30)</p></td>
+<td><p>NULL</p></td>
+<td><p>Exterior color</p></td>
+</tr>
+<tr class="row-odd"><td><p>purchase_date</p></td>
+<td><p>DateField</p></td>
+<td><p>NULL</p></td>
+<td><p>Date of purchase</p></td>
+</tr>
+<tr class="row-even"><td><p>license_plate</p></td>
+<td><p>CharField(20)</p></td>
+<td><p>NULL</p></td>
+<td><p>License plate number</p></td>
+</tr>
+<tr class="row-odd"><td><p>fuel_type</p></td>
+<td><p>CharField(50)</p></td>
+<td><p>NULL</p></td>
+<td><p>Type of fuel</p></td>
+</tr>
+<tr class="row-even"><td><p>transmission_type</p></td>
+<td><p>CharField(50)</p></td>
+<td><p>NULL</p></td>
+<td><p>Transmission type</p></td>
+</tr>
+<tr class="row-odd"><td><p>powertrain_displacement</p></td>
+<td><p>CharField(50)</p></td>
+<td><p>NULL</p></td>
+<td><p>Engine displacement</p></td>
+</tr>
+<tr class="row-even"><td><p>powertrain_power</p></td>
+<td><p>CharField(5)</p></td>
+<td><p>NULL</p></td>
+<td><p>Engine power</p></td>
+</tr>
+<tr class="row-odd"><td><p>plant_location</p></td>
+<td><p>CharField(50)</p></td>
+<td><p>NULL</p></td>
+<td><p>Manufacturing plant location</p></td>
+</tr>
+<tr class="row-even"><td><p>created_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW_ADD</p></td>
+<td><p>Record creation timestamp</p></td>
+</tr>
+<tr class="row-odd"><td><p>updated_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW</p></td>
+<td><p>Record update timestamp</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Properties:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">current_mileage</span></code>: Latest mileage from maintenance/inspection records</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">health_score</span></code>: Latest vehicle health score from inspections</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">health_status</span></code>: Vehicle health status (Healthy/Needs Attention/Critical)</p></li>
+</ul>
+</section>
+<section id="vehicles-vehicleownership">
+<h3>vehicles_vehicleownership<a class="headerlink" href="#vehicles-vehicleownership" title="Link to this heading"></a></h3>
+<p><strong>Vehicle ownership tracking</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>AutoField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Auto-incrementing primary key</p></td>
+</tr>
+<tr class="row-odd"><td><p>vehicle_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Reference to vehicles_vehicle</p></td>
+</tr>
+<tr class="row-even"><td><p>user_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Reference to auth_user</p></td>
+</tr>
+<tr class="row-odd"><td><p>start_date</p></td>
+<td><p>DateField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Ownership start date</p></td>
+</tr>
+<tr class="row-even"><td><p>end_date</p></td>
+<td><p>DateField</p></td>
+<td><p>NULL</p></td>
+<td><p>Ownership end date</p></td>
+</tr>
+<tr class="row-odd"><td><p>is_current_owner</p></td>
+<td><p>BooleanField</p></td>
+<td><p>DEFAULT TRUE</p></td>
+<td><p>Current ownership status</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="vehicles-vehiclestatus">
+<h3>vehicles_vehiclestatus<a class="headerlink" href="#vehicles-vehiclestatus" title="Link to this heading"></a></h3>
+<p><strong>Vehicle status information (accidents, fraud, theft)</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>vehicle_id</p></td>
+<td><p>OneToOneField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Reference to vehicles_vehicle</p></td>
+</tr>
+<tr class="row-odd"><td><p>accident_history</p></td>
+<td><p>CharField(30)</p></td>
+<td><p>DEFAULT ‘NHA’</p></td>
+<td><p>Accident history status</p></td>
+</tr>
+<tr class="row-even"><td><p>odometer_fraud</p></td>
+<td><p>CharField(30)</p></td>
+<td><p>DEFAULT ‘NOF’</p></td>
+<td><p>Odometer fraud status</p></td>
+</tr>
+<tr class="row-odd"><td><p>theft_involvement</p></td>
+<td><p>CharField(30)</p></td>
+<td><p>DEFAULT ‘NHT’</p></td>
+<td><p>Theft involvement status</p></td>
+</tr>
+<tr class="row-even"><td><p>legal_status</p></td>
+<td><p>CharField(30)</p></td>
+<td><p>DEFAULT ‘LG’</p></td>
+<td><p>Legal status</p></td>
+</tr>
+<tr class="row-odd"><td><p>owner_history</p></td>
+<td><p>IntegerField</p></td>
+<td><p>DEFAULT 0</p></td>
+<td><p>Number of previous owners</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Choices:</strong></p>
+<ul class="simple">
+<li><p>accident_history: NHA (No History), OIIA (Once Involved), CAD (Currently Damaged)</p></li>
+<li><p>odometer_fraud: NOF (No Fraud), SOF (Suspected Fraud)</p></li>
+<li><p>theft_involvement: NHT (No History), OIT (Once Involved), STI (Suspected)</p></li>
+<li><p>legal_status: LG (Looks Good), ILA (Involved Legal Action)</p></li>
+</ul>
+</section>
+<section id="vehicles-vehiclehistory">
+<h3>vehicles_vehiclehistory<a class="headerlink" href="#vehicles-vehiclehistory" title="Link to this heading"></a></h3>
+<p><strong>Detailed vehicle history events</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>AutoField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Auto-incrementing primary key</p></td>
+</tr>
+<tr class="row-odd"><td><p>vehicle_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NULL</p></td>
+<td><p>Reference to vehicles_vehicle</p></td>
+</tr>
+<tr class="row-even"><td><p>owner_history</p></td>
+<td><p>IntegerField</p></td>
+<td><p>DEFAULT 0</p></td>
+<td><p>Number of previous owners</p></td>
+</tr>
+<tr class="row-odd"><td><p>event_type</p></td>
+<td><p>CharField(50)</p></td>
+<td><p>NULL</p></td>
+<td><p>Type of event</p></td>
+</tr>
+<tr class="row-even"><td><p>event_date</p></td>
+<td><p>DateField</p></td>
+<td><p>NULL</p></td>
+<td><p>Date of event</p></td>
+</tr>
+<tr class="row-odd"><td><p>reported_date</p></td>
+<td><p>DateField</p></td>
+<td><p>NULL</p></td>
+<td><p>Date event was reported</p></td>
+</tr>
+<tr class="row-even"><td><p>description</p></td>
+<td><p>TextField</p></td>
+<td><p>NULL</p></td>
+<td><p>Event description</p></td>
+</tr>
+<tr class="row-odd"><td><p>reported_by_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NULL</p></td>
+<td><p>User who reported event</p></td>
+</tr>
+<tr class="row-even"><td><p>verified</p></td>
+<td><p>BooleanField</p></td>
+<td><p>DEFAULT FALSE</p></td>
+<td><p>Verification status</p></td>
+</tr>
+<tr class="row-odd"><td><p>verified_by_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NULL</p></td>
+<td><p>User who verified event</p></td>
+</tr>
+<tr class="row-even"><td><p>verified_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>NULL</p></td>
+<td><p>Verification timestamp</p></td>
+</tr>
+<tr class="row-odd"><td><p>accident_severity</p></td>
+<td><p>CharField(50)</p></td>
+<td><p>NULL</p></td>
+<td><p>Accident severity level</p></td>
+</tr>
+<tr class="row-even"><td><p>accident_location</p></td>
+<td><p>CharField(255)</p></td>
+<td><p>NULL</p></td>
+<td><p>Accident location</p></td>
+</tr>
+<tr class="row-odd"><td><p>police_report_number</p></td>
+<td><p>CharField(100)</p></td>
+<td><p>NULL</p></td>
+<td><p>Police report number</p></td>
+</tr>
+<tr class="row-even"><td><p>insurance_claim_number</p></td>
+<td><p>CharField(100)</p></td>
+<td><p>NULL</p></td>
+<td><p>Insurance claim number</p></td>
+</tr>
+<tr class="row-odd"><td><p>odometer_reading</p></td>
+<td><p>PositiveIntegerField</p></td>
+<td><p>NULL</p></td>
+<td><p>Odometer reading at event</p></td>
+</tr>
+<tr class="row-even"><td><p>fraud_type</p></td>
+<td><p>CharField(50)</p></td>
+<td><p>NULL</p></td>
+<td><p>Type of fraud</p></td>
+</tr>
+<tr class="row-odd"><td><p>reported_mileage</p></td>
+<td><p>PositiveIntegerField</p></td>
+<td><p>NULL</p></td>
+<td><p>Reported mileage</p></td>
+</tr>
+<tr class="row-even"><td><p>theft_location</p></td>
+<td><p>CharField(255)</p></td>
+<td><p>NULL</p></td>
+<td><p>Theft location</p></td>
+</tr>
+<tr class="row-odd"><td><p>recovery_date</p></td>
+<td><p>DateField</p></td>
+<td><p>NULL</p></td>
+<td><p>Recovery date</p></td>
+</tr>
+<tr class="row-even"><td><p>recovery_location</p></td>
+<td><p>CharField(255)</p></td>
+<td><p>NULL</p></td>
+<td><p>Recovery location</p></td>
+</tr>
+<tr class="row-odd"><td><p>damage_during_theft</p></td>
+<td><p>TextField</p></td>
+<td><p>NULL</p></td>
+<td><p>Damage description</p></td>
+</tr>
+<tr class="row-even"><td><p>notes</p></td>
+<td><p>TextField</p></td>
+<td><p>NULL</p></td>
+<td><p>Additional notes</p></td>
+</tr>
+<tr class="row-odd"><td><p>created_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW_ADD</p></td>
+<td><p>Record creation timestamp</p></td>
+</tr>
+<tr class="row-even"><td><p>updated_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW</p></td>
+<td><p>Record update timestamp</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Event Types:</strong></p>
+<ul class="simple">
+<li><p>ACCIDENT, ODOMETER_FRAUD, THEFT, RECALL, REPAIR, OTHER</p></li>
+</ul>
+</section>
+<section id="vehicles-vehicleimage">
+<h3>vehicles_vehicleimage<a class="headerlink" href="#vehicles-vehicleimage" title="Link to this heading"></a></h3>
+<p><strong>Vehicle image storage</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>AutoField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Auto-incrementing primary key</p></td>
+</tr>
+<tr class="row-odd"><td><p>vehicle_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Reference to vehicles_vehicle</p></td>
+</tr>
+<tr class="row-even"><td><p>image</p></td>
+<td><p>ImageField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Image file</p></td>
+</tr>
+<tr class="row-odd"><td><p>image_type</p></td>
+<td><p>CharField(20)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Type of image</p></td>
+</tr>
+<tr class="row-even"><td><p>description</p></td>
+<td><p>CharField(255)</p></td>
+<td><p>NULL</p></td>
+<td><p>Image description</p></td>
+</tr>
+<tr class="row-odd"><td><p>uploaded_by_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NULL</p></td>
+<td><p>User who uploaded image</p></td>
+</tr>
+<tr class="row-even"><td><p>uploaded_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW_ADD</p></td>
+<td><p>Upload timestamp</p></td>
+</tr>
+<tr class="row-odd"><td><p>is_primary</p></td>
+<td><p>BooleanField</p></td>
+<td><p>DEFAULT FALSE</p></td>
+<td><p>Primary image flag</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Image Types:</strong></p>
+<ul class="simple">
+<li><p>FRONT, REAR, SIDE_LEFT, SIDE_RIGHT, INTERIOR, ENGINE, DASHBOARD, TRUNK, WHEELS, DAMAGE, DOCUMENTS, OTHER</p></li>
+</ul>
+</section>
+<section id="vehicles-vehiclevaluation">
+<h3>vehicles_vehiclevaluation<a class="headerlink" href="#vehicles-vehiclevaluation" title="Link to this heading"></a></h3>
+<p><strong>Vehicle valuation information</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>vehicle_id</p></td>
+<td><p>OneToOneField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Reference to vehicles_vehicle</p></td>
+</tr>
+<tr class="row-odd"><td><p>estimated_value</p></td>
+<td><p>DecimalField(10,2)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Estimated market value</p></td>
+</tr>
+<tr class="row-even"><td><p>condition_rating</p></td>
+<td><p>CharField(20)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Vehicle condition rating</p></td>
+</tr>
+<tr class="row-odd"><td><p>valuation_source</p></td>
+<td><p>CharField(20)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Source of valuation</p></td>
+</tr>
+<tr class="row-even"><td><p>last_updated</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW</p></td>
+<td><p>Last update timestamp</p></td>
+</tr>
+<tr class="row-odd"><td><p>mileage_at_valuation</p></td>
+<td><p>PositiveIntegerField</p></td>
+<td><p>NULL</p></td>
+<td><p>Mileage when valued</p></td>
+</tr>
+<tr class="row-even"><td><p>valuation_notes</p></td>
+<td><p>TextField</p></td>
+<td><p>NULL</p></td>
+<td><p>Valuation notes</p></td>
+</tr>
+<tr class="row-odd"><td><p>created_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW_ADD</p></td>
+<td><p>Record creation timestamp</p></td>
+</tr>
+<tr class="row-even"><td><p>updated_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW</p></td>
+<td><p>Record update timestamp</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="user-management">
+<h2>User Management<a class="headerlink" href="#user-management" title="Link to this heading"></a></h2>
+<section id="users-profile">
+<h3>users_profile<a class="headerlink" href="#users-profile" title="Link to this heading"></a></h3>
+<p><strong>Extended user profile information</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>AutoField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Auto-incrementing primary key</p></td>
+</tr>
+<tr class="row-odd"><td><p>user_id</p></td>
+<td><p>OneToOneField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Reference to auth_user</p></td>
+</tr>
+<tr class="row-even"><td><p>address</p></td>
+<td><p>CharField(255)</p></td>
+<td><p>NULL</p></td>
+<td><p>User address</p></td>
+</tr>
+<tr class="row-odd"><td><p>city</p></td>
+<td><p>CharField(100)</p></td>
+<td><p>NULL</p></td>
+<td><p>City</p></td>
+</tr>
+<tr class="row-even"><td><p>state</p></td>
+<td><p>CharField(100)</p></td>
+<td><p>NULL</p></td>
+<td><p>State/Province</p></td>
+</tr>
+<tr class="row-odd"><td><p>country</p></td>
+<td><p>CharField(100)</p></td>
+<td><p>NULL</p></td>
+<td><p>Country</p></td>
+</tr>
+<tr class="row-even"><td><p>postal_code</p></td>
+<td><p>CharField(20)</p></td>
+<td><p>NULL</p></td>
+<td><p>Postal/ZIP code</p></td>
+</tr>
+<tr class="row-odd"><td><p>profile_picture</p></td>
+<td><p>ImageField</p></td>
+<td><p>NULL</p></td>
+<td><p>Profile picture</p></td>
+</tr>
+<tr class="row-even"><td><p>date_of_birth</p></td>
+<td><p>DateField</p></td>
+<td><p>NULL</p></td>
+<td><p>Date of birth</p></td>
+</tr>
+<tr class="row-odd"><td><p>preferred_language</p></td>
+<td><p>CharField(10)</p></td>
+<td><p>DEFAULT ‘en’</p></td>
+<td><p>Preferred language</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="users-role">
+<h3>users_role<a class="headerlink" href="#users-role" title="Link to this heading"></a></h3>
+<p><strong>System roles definition</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>AutoField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Auto-incrementing primary key</p></td>
+</tr>
+<tr class="row-odd"><td><p>name</p></td>
+<td><p>CharField(100)</p></td>
+<td><p>UNIQUE, NOT NULL</p></td>
+<td><p>Role name</p></td>
+</tr>
+<tr class="row-even"><td><p>description</p></td>
+<td><p>TextField</p></td>
+<td><p>NULL</p></td>
+<td><p>Role description</p></td>
+</tr>
+<tr class="row-odd"><td><p>permissions</p></td>
+<td><p>JSONField</p></td>
+<td><p>DEFAULT {}</p></td>
+<td><p>Role permissions</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="users-userrole">
+<h3>users_userrole<a class="headerlink" href="#users-userrole" title="Link to this heading"></a></h3>
+<p><strong>User role assignments</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>AutoField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Auto-incrementing primary key</p></td>
+</tr>
+<tr class="row-odd"><td><p>user_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Reference to auth_user</p></td>
+</tr>
+<tr class="row-even"><td><p>role_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Reference to users_role</p></td>
+</tr>
+<tr class="row-odd"><td><p>assigned_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW_ADD</p></td>
+<td><p>Assignment timestamp</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Constraints:</strong></p>
+<ul class="simple">
+<li><p>UNIQUE(user_id, role_id)</p></li>
+</ul>
+</section>
+<section id="users-dataconsent">
+<h3>users_dataconsent<a class="headerlink" href="#users-dataconsent" title="Link to this heading"></a></h3>
+<p><strong>User data consent tracking</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>AutoField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Auto-incrementing primary key</p></td>
+</tr>
+<tr class="row-odd"><td><p>user_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Reference to auth_user</p></td>
+</tr>
+<tr class="row-even"><td><p>consent_type</p></td>
+<td><p>CharField(100)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Type of consent</p></td>
+</tr>
+<tr class="row-odd"><td><p>granted_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW_ADD</p></td>
+<td><p>Consent granted timestamp</p></td>
+</tr>
+<tr class="row-even"><td><p>revoked_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>NULL</p></td>
+<td><p>Consent revoked timestamp</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Consent Types:</strong></p>
+<ul class="simple">
+<li><p>PRIVACY, EMAIL, DATA, DATA_ANALYTICS</p></li>
+</ul>
+</section>
+</section>
+<section id="organization-management">
+<h2>Organization Management<a class="headerlink" href="#organization-management" title="Link to this heading"></a></h2>
+<section id="organizations-organization">
+<h3>organizations_organization<a class="headerlink" href="#organizations-organization" title="Link to this heading"></a></h3>
+<p><strong>Organization information</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>AutoField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Auto-incrementing primary key</p></td>
+</tr>
+<tr class="row-odd"><td><p>name</p></td>
+<td><p>CharField(255)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Organization name</p></td>
+</tr>
+<tr class="row-even"><td><p>organization_type</p></td>
+<td><p>CharField(20)</p></td>
+<td><p>DEFAULT ‘other’</p></td>
+<td><p>Organization type</p></td>
+</tr>
+<tr class="row-odd"><td><p>address</p></td>
+<td><p>CharField(255)</p></td>
+<td><p>NULL</p></td>
+<td><p>Organization address</p></td>
+</tr>
+<tr class="row-even"><td><p>city</p></td>
+<td><p>CharField(100)</p></td>
+<td><p>NULL</p></td>
+<td><p>City</p></td>
+</tr>
+<tr class="row-odd"><td><p>state</p></td>
+<td><p>CharField(100)</p></td>
+<td><p>NULL</p></td>
+<td><p>State/Province</p></td>
+</tr>
+<tr class="row-even"><td><p>country</p></td>
+<td><p>CharField(100)</p></td>
+<td><p>NULL</p></td>
+<td><p>Country</p></td>
+</tr>
+<tr class="row-odd"><td><p>postal_code</p></td>
+<td><p>CharField(20)</p></td>
+<td><p>NULL</p></td>
+<td><p>Postal code</p></td>
+</tr>
+<tr class="row-even"><td><p>contact_email</p></td>
+<td><p>EmailField</p></td>
+<td><p>NULL</p></td>
+<td><p>Contact email</p></td>
+</tr>
+<tr class="row-odd"><td><p>contact_phone</p></td>
+<td><p>CharField(15)</p></td>
+<td><p>NULL</p></td>
+<td><p>Contact phone</p></td>
+</tr>
+<tr class="row-even"><td><p>is_insurance_provider</p></td>
+<td><p>BooleanField</p></td>
+<td><p>DEFAULT FALSE</p></td>
+<td><p>Insurance provider flag</p></td>
+</tr>
+<tr class="row-odd"><td><p>insurance_license_number</p></td>
+<td><p>CharField(100)</p></td>
+<td><p>NULL</p></td>
+<td><p>Insurance license number</p></td>
+</tr>
+<tr class="row-even"><td><p>insurance_rating</p></td>
+<td><p>CharField(10)</p></td>
+<td><p>NULL</p></td>
+<td><p>Insurance rating</p></td>
+</tr>
+<tr class="row-odd"><td><p>created_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW_ADD</p></td>
+<td><p>Record creation timestamp</p></td>
+</tr>
+<tr class="row-even"><td><p>updated_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW</p></td>
+<td><p>Record update timestamp</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Organization Types:</strong></p>
+<ul class="simple">
+<li><p>insurance, fleet, dealership, service, other</p></li>
+</ul>
+</section>
+<section id="organizations-organizationuser">
+<h3>organizations_organizationuser<a class="headerlink" href="#organizations-organizationuser" title="Link to this heading"></a></h3>
+<p><strong>Organization membership</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>AutoField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Auto-incrementing primary key</p></td>
+</tr>
+<tr class="row-odd"><td><p>user_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Reference to auth_user</p></td>
+</tr>
+<tr class="row-even"><td><p>organization_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Reference to organizations_organization</p></td>
+</tr>
+<tr class="row-odd"><td><p>role</p></td>
+<td><p>CharField(50)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>User role in organization</p></td>
+</tr>
+<tr class="row-even"><td><p>joined_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW_ADD</p></td>
+<td><p>Join timestamp</p></td>
+</tr>
+<tr class="row-odd"><td><p>is_active</p></td>
+<td><p>BooleanField</p></td>
+<td><p>DEFAULT TRUE</p></td>
+<td><p>Active membership status</p></td>
+</tr>
+<tr class="row-even"><td><p>created_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW_ADD</p></td>
+<td><p>Record creation timestamp</p></td>
+</tr>
+<tr class="row-odd"><td><p>updated_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW</p></td>
+<td><p>Record update timestamp</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Roles:</strong></p>
+<ul class="simple">
+<li><p>ADMIN, MANAGER, DRIVER, AGENT, UNDERWRITER, CLAIMS_ADJUSTER</p></li>
+</ul>
+</section>
+<section id="organizations-organizationvehicle">
+<h3>organizations_organizationvehicle<a class="headerlink" href="#organizations-organizationvehicle" title="Link to this heading"></a></h3>
+<p><strong>Organization vehicle assignments</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>AutoField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Auto-incrementing primary key</p></td>
+</tr>
+<tr class="row-odd"><td><p>vehicle_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Reference to vehicles_vehicle</p></td>
+</tr>
+<tr class="row-even"><td><p>organization_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Reference to organizations_organization</p></td>
+</tr>
+<tr class="row-odd"><td><p>assigned_to_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NULL</p></td>
+<td><p>User assigned to vehicle</p></td>
+</tr>
+<tr class="row-even"><td><p>assigned_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>NULL</p></td>
+<td><p>Assignment timestamp</p></td>
+</tr>
+<tr class="row-odd"><td><p>is_active</p></td>
+<td><p>BooleanField</p></td>
+<td><p>DEFAULT TRUE</p></td>
+<td><p>Active assignment status</p></td>
+</tr>
+<tr class="row-even"><td><p>created_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW_ADD</p></td>
+<td><p>Record creation timestamp</p></td>
+</tr>
+<tr class="row-odd"><td><p>updated_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW</p></td>
+<td><p>Record update timestamp</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="organizations-insuranceorganization">
+<h3>organizations_insuranceorganization<a class="headerlink" href="#organizations-insuranceorganization" title="Link to this heading"></a></h3>
+<p><strong>Insurance-specific organization details</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>organization_id</p></td>
+<td><p>OneToOneField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Reference to organizations_organization</p></td>
+</tr>
+<tr class="row-odd"><td><p>naic_number</p></td>
+<td><p>CharField(20)</p></td>
+<td><p>NULL</p></td>
+<td><p>NAIC company code</p></td>
+</tr>
+<tr class="row-even"><td><p>am_best_rating</p></td>
+<td><p>CharField(10)</p></td>
+<td><p>NULL</p></td>
+<td><p>A.M. Best rating</p></td>
+</tr>
+<tr class="row-odd"><td><p>states_licensed</p></td>
+<td><p>TextField</p></td>
+<td><p>NULL</p></td>
+<td><p>Licensed states</p></td>
+</tr>
+<tr class="row-even"><td><p>total_policies</p></td>
+<td><p>IntegerField</p></td>
+<td><p>DEFAULT 0</p></td>
+<td><p>Total policies count</p></td>
+</tr>
+<tr class="row-odd"><td><p>total_premium_volume</p></td>
+<td><p>DecimalField(15,2)</p></td>
+<td><p>DEFAULT 0</p></td>
+<td><p>Total premium volume</p></td>
+</tr>
+<tr class="row-even"><td><p>max_risk_score_threshold</p></td>
+<td><p>FloatField</p></td>
+<td><p>DEFAULT 7.0</p></td>
+<td><p>Max acceptable risk score</p></td>
+</tr>
+<tr class="row-odd"><td><p>auto_approve_low_risk</p></td>
+<td><p>BooleanField</p></td>
+<td><p>DEFAULT TRUE</p></td>
+<td><p>Auto-approve low risk</p></td>
+</tr>
+<tr class="row-even"><td><p>require_inspection_threshold</p></td>
+<td><p>FloatField</p></td>
+<td><p>DEFAULT 5.0</p></td>
+<td><p>Inspection requirement threshold</p></td>
+</tr>
+<tr class="row-odd"><td><p>send_maintenance_alerts</p></td>
+<td><p>BooleanField</p></td>
+<td><p>DEFAULT TRUE</p></td>
+<td><p>Send maintenance alerts</p></td>
+</tr>
+<tr class="row-even"><td><p>send_risk_alerts</p></td>
+<td><p>BooleanField</p></td>
+<td><p>DEFAULT TRUE</p></td>
+<td><p>Send risk alerts</p></td>
+</tr>
+<tr class="row-odd"><td><p>alert_email</p></td>
+<td><p>EmailField</p></td>
+<td><p>NULL</p></td>
+<td><p>Alert email address</p></td>
+</tr>
+<tr class="row-even"><td><p>created_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW_ADD</p></td>
+<td><p>Record creation timestamp</p></td>
+</tr>
+<tr class="row-odd"><td><p>updated_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW</p></td>
+<td><p>Record update timestamp</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="maintenance-system">
+<h2>Maintenance System<a class="headerlink" href="#maintenance-system" title="Link to this heading"></a></h2>
+<section id="maintenance-servicetype">
+<h3>maintenance_servicetype<a class="headerlink" href="#maintenance-servicetype" title="Link to this heading"></a></h3>
+<p><strong>Service type definitions</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>AutoField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Auto-incrementing primary key</p></td>
+</tr>
+<tr class="row-odd"><td><p>name</p></td>
+<td><p>CharField(100)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Service type name</p></td>
+</tr>
+<tr class="row-even"><td><p>description</p></td>
+<td><p>TextField</p></td>
+<td><p>NULL</p></td>
+<td><p>Service description</p></td>
+</tr>
+<tr class="row-odd"><td><p>recommended_interval_mileage</p></td>
+<td><p>PositiveIntegerField</p></td>
+<td><p>NULL</p></td>
+<td><p>Recommended mileage interval</p></td>
+</tr>
+<tr class="row-even"><td><p>recommended_interval_time</p></td>
+<td><p>CharField(50)</p></td>
+<td><p>NULL</p></td>
+<td><p>Recommended time interval</p></td>
+</tr>
+<tr class="row-odd"><td><p>created_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW_ADD</p></td>
+<td><p>Record creation timestamp</p></td>
+</tr>
+<tr class="row-even"><td><p>updated_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW</p></td>
+<td><p>Record update timestamp</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="maintenance-part">
+<h3>maintenance_part<a class="headerlink" href="#maintenance-part" title="Link to this heading"></a></h3>
+<p><strong>Parts inventory</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>AutoField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Auto-incrementing primary key</p></td>
+</tr>
+<tr class="row-odd"><td><p>name</p></td>
+<td><p>CharField(100)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Part name</p></td>
+</tr>
+<tr class="row-even"><td><p>description</p></td>
+<td><p>TextField</p></td>
+<td><p>NULL</p></td>
+<td><p>Part description</p></td>
+</tr>
+<tr class="row-odd"><td><p>manufacturer</p></td>
+<td><p>CharField(100)</p></td>
+<td><p>NULL</p></td>
+<td><p>Manufacturer</p></td>
+</tr>
+<tr class="row-even"><td><p>part_number</p></td>
+<td><p>CharField(100)</p></td>
+<td><p>NULL</p></td>
+<td><p>Part number</p></td>
+</tr>
+<tr class="row-odd"><td><p>cost</p></td>
+<td><p>DecimalField(10,2)</p></td>
+<td><p>NULL</p></td>
+<td><p>Part cost</p></td>
+</tr>
+<tr class="row-even"><td><p>stock_quantity</p></td>
+<td><p>PositiveIntegerField</p></td>
+<td><p>DEFAULT 0</p></td>
+<td><p>Stock quantity</p></td>
+</tr>
+<tr class="row-odd"><td><p>minimum_stock_level</p></td>
+<td><p>PositiveIntegerField</p></td>
+<td><p>DEFAULT 5</p></td>
+<td><p>Minimum stock level</p></td>
+</tr>
+<tr class="row-even"><td><p>category</p></td>
+<td><p>CharField(100)</p></td>
+<td><p>NULL</p></td>
+<td><p>Part category</p></td>
+</tr>
+<tr class="row-odd"><td><p>created_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW_ADD</p></td>
+<td><p>Record creation timestamp</p></td>
+</tr>
+<tr class="row-even"><td><p>updated_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW</p></td>
+<td><p>Record update timestamp</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="maintenance-maintenanceplan">
+<h3>maintenance_maintenanceplan<a class="headerlink" href="#maintenance-maintenanceplan" title="Link to this heading"></a></h3>
+<p><strong>Maintenance plan templates</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>AutoField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Auto-incrementing primary key</p></td>
+</tr>
+<tr class="row-odd"><td><p>name</p></td>
+<td><p>CharField(100)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Plan name</p></td>
+</tr>
+<tr class="row-even"><td><p>vehicle_model</p></td>
+<td><p>CharField(50)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Vehicle model</p></td>
+</tr>
+<tr class="row-odd"><td><p>description</p></td>
+<td><p>TextField</p></td>
+<td><p>NULL</p></td>
+<td><p>Plan description</p></td>
+</tr>
+<tr class="row-even"><td><p>is_active</p></td>
+<td><p>BooleanField</p></td>
+<td><p>DEFAULT TRUE</p></td>
+<td><p>Active status</p></td>
+</tr>
+<tr class="row-odd"><td><p>created_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW_ADD</p></td>
+<td><p>Record creation timestamp</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="maintenance-maintenancetask">
+<h3>maintenance_maintenancetask<a class="headerlink" href="#maintenance-maintenancetask" title="Link to this heading"></a></h3>
+<p><strong>Individual maintenance tasks</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>AutoField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Auto-incrementing primary key</p></td>
+</tr>
+<tr class="row-odd"><td><p>plan_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Reference to maintenance_maintenanceplan</p></td>
+</tr>
+<tr class="row-even"><td><p>name</p></td>
+<td><p>CharField(100)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Task name</p></td>
+</tr>
+<tr class="row-odd"><td><p>description</p></td>
+<td><p>TextField</p></td>
+<td><p>NULL</p></td>
+<td><p>Task description</p></td>
+</tr>
+<tr class="row-even"><td><p>service_type_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Reference to maintenance_servicetype</p></td>
+</tr>
+<tr class="row-odd"><td><p>interval_miles</p></td>
+<td><p>PositiveIntegerField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Mileage interval</p></td>
+</tr>
+<tr class="row-even"><td><p>interval_months</p></td>
+<td><p>PositiveIntegerField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Time interval (months)</p></td>
+</tr>
+<tr class="row-odd"><td><p>estimated_time</p></td>
+<td><p>DurationField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Estimated duration</p></td>
+</tr>
+<tr class="row-even"><td><p>priority</p></td>
+<td><p>CharField(10)</p></td>
+<td><p>DEFAULT ‘MEDIUM’</p></td>
+<td><p>Task priority</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Priority Levels:</strong></p>
+<ul class="simple">
+<li><p>LOW, MEDIUM, HIGH</p></li>
+</ul>
+</section>
+<section id="maintenance-taskpartrequirement">
+<h3>maintenance_taskpartrequirement<a class="headerlink" href="#maintenance-taskpartrequirement" title="Link to this heading"></a></h3>
+<p><strong>Parts required for tasks</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>AutoField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Auto-incrementing primary key</p></td>
+</tr>
+<tr class="row-odd"><td><p>task_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Reference to maintenance_maintenancetask</p></td>
+</tr>
+<tr class="row-even"><td><p>part_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Reference to maintenance_part</p></td>
+</tr>
+<tr class="row-odd"><td><p>quantity</p></td>
+<td><p>PositiveIntegerField</p></td>
+<td><p>DEFAULT 1</p></td>
+<td><p>Required quantity</p></td>
+</tr>
+<tr class="row-even"><td><p>notes</p></td>
+<td><p>CharField(200)</p></td>
+<td><p>NULL</p></td>
+<td><p>Additional notes</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="maintenance-assignedvehicleplan">
+<h3>maintenance_assignedvehicleplan<a class="headerlink" href="#maintenance-assignedvehicleplan" title="Link to this heading"></a></h3>
+<p><strong>Vehicle-specific maintenance plan assignments</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>AutoField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Auto-incrementing primary key</p></td>
+</tr>
+<tr class="row-odd"><td><p>vehicle_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Reference to vehicles_vehicle</p></td>
+</tr>
+<tr class="row-even"><td><p>plan_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Reference to maintenance_maintenanceplan</p></td>
+</tr>
+<tr class="row-odd"><td><p>owner_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Reference to auth_user</p></td>
+</tr>
+<tr class="row-even"><td><p>start_date</p></td>
+<td><p>DateField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Plan start date</p></td>
+</tr>
+<tr class="row-odd"><td><p>current_mileage</p></td>
+<td><p>PositiveIntegerField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Current mileage</p></td>
+</tr>
+<tr class="row-even"><td><p>is_active</p></td>
+<td><p>BooleanField</p></td>
+<td><p>DEFAULT TRUE</p></td>
+<td><p>Active status</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="maintenance-scheduledmaintenance">
+<h3>maintenance_scheduledmaintenance<a class="headerlink" href="#maintenance-scheduledmaintenance" title="Link to this heading"></a></h3>
+<p><strong>Scheduled maintenance events</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>AutoField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Auto-incrementing primary key</p></td>
+</tr>
+<tr class="row-odd"><td><p>assigned_plan_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Reference to maintenance_assignedvehicleplan</p></td>
+</tr>
+<tr class="row-even"><td><p>task_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Reference to maintenance_maintenancetask</p></td>
+</tr>
+<tr class="row-odd"><td><p>due_date</p></td>
+<td><p>DateField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Due date</p></td>
+</tr>
+<tr class="row-even"><td><p>due_mileage</p></td>
+<td><p>PositiveIntegerField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Due mileage</p></td>
+</tr>
+<tr class="row-odd"><td><p>status</p></td>
+<td><p>CharField(20)</p></td>
+<td><p>DEFAULT ‘PENDING’</p></td>
+<td><p>Maintenance status</p></td>
+</tr>
+<tr class="row-even"><td><p>completed_date</p></td>
+<td><p>DateField</p></td>
+<td><p>NULL</p></td>
+<td><p>Completion date</p></td>
+</tr>
+<tr class="row-odd"><td><p>completed_mileage</p></td>
+<td><p>PositiveIntegerField</p></td>
+<td><p>NULL</p></td>
+<td><p>Completion mileage</p></td>
+</tr>
+<tr class="row-even"><td><p>notes</p></td>
+<td><p>TextField</p></td>
+<td><p>NULL</p></td>
+<td><p>Notes</p></td>
+</tr>
+<tr class="row-odd"><td><p>technician_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NULL</p></td>
+<td><p>Reference to auth_user</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Status Options:</strong></p>
+<ul class="simple">
+<li><p>PENDING, COMPLETED, OVERDUE, SKIPPED</p></li>
+</ul>
+</section>
+<section id="maintenance-document">
+<h3>maintenance_document<a class="headerlink" href="#maintenance-document" title="Link to this heading"></a></h3>
+<p><strong>Maintenance documentation</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>AutoField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Auto-incrementing primary key</p></td>
+</tr>
+<tr class="row-odd"><td><p>maintenance_record_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Reference to maintenance_scheduledmaintenance</p></td>
+</tr>
+<tr class="row-even"><td><p>file_url</p></td>
+<td><p>URLField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Document URL</p></td>
+</tr>
+<tr class="row-odd"><td><p>document_type</p></td>
+<td><p>CharField(50)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Document type</p></td>
+</tr>
+<tr class="row-even"><td><p>uploaded_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW_ADD</p></td>
+<td><p>Upload timestamp</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="maintenance-history-inspections">
+<h2>Maintenance History &amp; Inspections<a class="headerlink" href="#maintenance-history-inspections" title="Link to this heading"></a></h2>
+<section id="maintenance-history-maintenancerecord">
+<h3>maintenance_history_maintenancerecord<a class="headerlink" href="#maintenance-history-maintenancerecord" title="Link to this heading"></a></h3>
+<p><strong>Completed maintenance records</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>AutoField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Auto-incrementing primary key</p></td>
+</tr>
+<tr class="row-odd"><td><p>vehicle_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Reference to vehicles_vehicle</p></td>
+</tr>
+<tr class="row-even"><td><p>technician_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NULL</p></td>
+<td><p>Reference to auth_user</p></td>
+</tr>
+<tr class="row-odd"><td><p>scheduled_maintenance_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NULL</p></td>
+<td><p>Reference to maintenance_scheduledmaintenance</p></td>
+</tr>
+<tr class="row-even"><td><p>work_done</p></td>
+<td><p>TextField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Work performed description</p></td>
+</tr>
+<tr class="row-odd"><td><p>date_performed</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>DEFAULT NOW</p></td>
+<td><p>Service date/time</p></td>
+</tr>
+<tr class="row-even"><td><p>mileage</p></td>
+<td><p>PositiveIntegerField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Vehicle mileage at service</p></td>
+</tr>
+<tr class="row-odd"><td><p>notes</p></td>
+<td><p>TextField</p></td>
+<td><p>NULL</p></td>
+<td><p>Additional notes</p></td>
+</tr>
+<tr class="row-even"><td><p>service_provider</p></td>
+<td><p>CharField(255)</p></td>
+<td><p>NULL</p></td>
+<td><p>Service provider name</p></td>
+</tr>
+<tr class="row-odd"><td><p>cost</p></td>
+<td><p>DecimalField(10,2)</p></td>
+<td><p>NULL</p></td>
+<td><p>Total service cost</p></td>
+</tr>
+<tr class="row-even"><td><p>parts_replaced</p></td>
+<td><p>TextField</p></td>
+<td><p>NULL</p></td>
+<td><p>Parts replaced description</p></td>
+</tr>
+<tr class="row-odd"><td><p>service_image</p></td>
+<td><p>ImageField</p></td>
+<td><p>NULL</p></td>
+<td><p>Service proof image</p></td>
+</tr>
+<tr class="row-even"><td><p>image_type</p></td>
+<td><p>CharField(20)</p></td>
+<td><p>NULL</p></td>
+<td><p>Image type</p></td>
+</tr>
+<tr class="row-odd"><td><p>image_description</p></td>
+<td><p>CharField(255)</p></td>
+<td><p>NULL</p></td>
+<td><p>Image description</p></td>
+</tr>
+<tr class="row-even"><td><p>created_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW_ADD</p></td>
+<td><p>Record creation timestamp</p></td>
+</tr>
+<tr class="row-odd"><td><p>updated_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW</p></td>
+<td><p>Record update timestamp</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Image Types:</strong></p>
+<ul class="simple">
+<li><p>before, during, after, parts, tools, damage, repair, completion, other</p></li>
+</ul>
+</section>
+<section id="maintenance-history-partusage">
+<h3>maintenance_history_partusage<a class="headerlink" href="#maintenance-history-partusage" title="Link to this heading"></a></h3>
+<p><strong>Parts used in maintenance</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>AutoField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Auto-incrementing primary key</p></td>
+</tr>
+<tr class="row-odd"><td><p>maintenance_record_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Reference to maintenance_history_maintenancerecord</p></td>
+</tr>
+<tr class="row-even"><td><p>part_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Reference to maintenance_part</p></td>
+</tr>
+<tr class="row-odd"><td><p>quantity</p></td>
+<td><p>PositiveIntegerField</p></td>
+<td><p>DEFAULT 1</p></td>
+<td><p>Quantity used</p></td>
+</tr>
+<tr class="row-even"><td><p>unit_cost</p></td>
+<td><p>DecimalField(8,2)</p></td>
+<td><p>NULL</p></td>
+<td><p>Cost per unit</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Constraints:</strong></p>
+<ul class="simple">
+<li><p>UNIQUE(maintenance_record_id, part_id)</p></li>
+</ul>
+</section>
+<section id="maintenance-history-inspection">
+<h3>maintenance_history_inspection<a class="headerlink" href="#maintenance-history-inspection" title="Link to this heading"></a></h3>
+<p><strong>Vehicle inspection records</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>AutoField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Auto-incrementing primary key</p></td>
+</tr>
+<tr class="row-odd"><td><p>vehicle_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Reference to vehicles_vehicle</p></td>
+</tr>
+<tr class="row-even"><td><p>inspection_number</p></td>
+<td><p>CharField(20)</p></td>
+<td><p>UNIQUE, NOT NULL</p></td>
+<td><p>Inspection number</p></td>
+</tr>
+<tr class="row-odd"><td><p>year</p></td>
+<td><p>IntegerField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Inspection year</p></td>
+</tr>
+<tr class="row-even"><td><p>inspection_result</p></td>
+<td><p>CharField(30)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Inspection result</p></td>
+</tr>
+<tr class="row-odd"><td><p>vehicle_health_index</p></td>
+<td><p>CharField(50)</p></td>
+<td><p>NULL</p></td>
+<td><p>Health index score</p></td>
+</tr>
+<tr class="row-even"><td><p>inspection_date</p></td>
+<td><p>DateField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Inspection date</p></td>
+</tr>
+<tr class="row-odd"><td><p>link_to_results</p></td>
+<td><p>URLField</p></td>
+<td><p>NULL</p></td>
+<td><p>External results link</p></td>
+</tr>
+<tr class="row-even"><td><p>inspection_pdf</p></td>
+<td><p>FileField</p></td>
+<td><p>NULL</p></td>
+<td><p>Inspection report PDF</p></td>
+</tr>
+<tr class="row-odd"><td><p>pdf_uploaded_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>NULL</p></td>
+<td><p>PDF upload timestamp</p></td>
+</tr>
+<tr class="row-even"><td><p>pdf_file_size</p></td>
+<td><p>PositiveIntegerField</p></td>
+<td><p>NULL</p></td>
+<td><p>PDF file size</p></td>
+</tr>
+<tr class="row-odd"><td><p>created_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>NULL</p></td>
+<td><p>Record creation timestamp</p></td>
+</tr>
+<tr class="row-even"><td><p>updated_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>NULL</p></td>
+<td><p>Record update timestamp</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Inspection Results:</strong></p>
+<ul class="simple">
+<li><p>PAS (Passed), PMD (Passed with minor defects), PJD (Passed with major defects)</p></li>
+<li><p>FMD (Failed minor defects), FJD (Failed major defects), FAI (Failed)</p></li>
+</ul>
+</section>
+<section id="id1">
+<h3>maintenance_history_inspections<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<p><strong>50-Point quarterly inspection checklist</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>inspection_id</p></td>
+<td><p>OneToOneField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Reference to maintenance_history_inspection</p></td>
+</tr>
+<tr class="row-odd"><td><p>technician_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NULL</p></td>
+<td><p>Reference to auth_user</p></td>
+</tr>
+<tr class="row-even"><td><p>inspection_date</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>DEFAULT NOW</p></td>
+<td><p>Inspection date/time</p></td>
+</tr>
+<tr class="row-odd"><td><p>mileage_at_inspection</p></td>
+<td><p>PositiveIntegerField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Vehicle mileage</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Inspection Points (50 fields):</strong></p>
+<ul class="simple">
+<li><p>Engine &amp; Powertrain (10 points): engine_oil_level, oil_filter_condition, coolant_level, etc.</p></li>
+<li><p>Electrical &amp; Battery (5 points): battery_voltage, battery_terminals, alternator_output, etc.</p></li>
+<li><p>Brakes &amp; Suspension (7 points): brake_pads, brake_discs, brake_fluid, etc.</p></li>
+<li><p>Steering &amp; Tires (6 points): steering_response, tire_tread_depth, tire_pressure, etc.</p></li>
+<li><p>Exhaust &amp; Emissions (3 points): exhaust_system, catalytic_converter, etc.</p></li>
+<li><p>Safety Equipment (5 points): seat_belts, airbags, horn_function, etc.</p></li>
+<li><p>Lighting &amp; Visibility (8 points): headlights, brake_lights, windshield, etc.</p></li>
+<li><p>HVAC &amp; Interior (4 points): air_conditioning, ventilation, etc.</p></li>
+<li><p>Technology &amp; Driver Assist (2 points): infotainment_system, rear_view_camera</p></li>
+</ul>
+<p><strong>Additional Fields:</strong></p>
+<ul class="simple">
+<li><p>Section notes fields (9 fields): engine_notes, electrical_notes, etc.</p></li>
+<li><p>overall_notes, recommendations</p></li>
+<li><p>is_completed, completed_at</p></li>
+<li><p>created_at, updated_at</p></li>
+</ul>
+<p><strong>Status Options for each point:</strong></p>
+<ul class="simple">
+<li><p>pass, fail, na, minor, major</p></li>
+</ul>
+</section>
+<section id="maintenance-history-initialinspection">
+<h3>maintenance_history_initialinspection<a class="headerlink" href="#maintenance-history-initialinspection" title="Link to this heading"></a></h3>
+<p><strong>160-Point initial vehicle inspection</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>AutoField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Auto-incrementing primary key</p></td>
+</tr>
+<tr class="row-odd"><td><p>vehicle_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Reference to vehicles_vehicle</p></td>
+</tr>
+<tr class="row-even"><td><p>inspection_number</p></td>
+<td><p>CharField(20)</p></td>
+<td><p>UNIQUE, NOT NULL</p></td>
+<td><p>Inspection number</p></td>
+</tr>
+<tr class="row-odd"><td><p>technician_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NULL</p></td>
+<td><p>Reference to auth_user</p></td>
+</tr>
+<tr class="row-even"><td><p>inspection_date</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>DEFAULT NOW</p></td>
+<td><p>Inspection date/time</p></td>
+</tr>
+<tr class="row-odd"><td><p>mileage_at_inspection</p></td>
+<td><p>PositiveIntegerField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Vehicle mileage</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Inspection Sections:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Road Test (33 points)</strong>: cold_engine_operation, throttle_operation, brake_vibrations, etc.</p></li>
+<li><p><strong>Engine Bay (27 points)</strong>: engine_condition, fluid_levels, belt_condition, etc.</p></li>
+<li><p><strong>Interior (25 points)</strong>: seat_condition, dashboard_function, electronics, etc.</p></li>
+<li><p><strong>Exterior (25 points)</strong>: body_condition, paint_quality, glass_condition, etc.</p></li>
+<li><p><strong>Undercarriage (25 points)</strong>: suspension_components, exhaust_system, etc.</p></li>
+<li><p><strong>Electrical Systems (25 points)</strong>: lighting, charging_system, etc.</p></li>
+</ol>
+<p><strong>Status Options:</strong></p>
+<ul class="simple">
+<li><p>pass, fail, na, minor, major, needs_attention</p></li>
+</ul>
+</section>
+</section>
+<section id="vehicle-equipment-specifications">
+<h2>Vehicle Equipment &amp; Specifications<a class="headerlink" href="#vehicle-equipment-specifications" title="Link to this heading"></a></h2>
+<section id="vehicle-equip-powertrainanddrivetrain">
+<h3>vehicle_equip_powertrainanddrivetrain<a class="headerlink" href="#vehicle-equip-powertrainanddrivetrain" title="Link to this heading"></a></h3>
+<p><strong>Powertrain and drivetrain specifications</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>vehicle_id</p></td>
+<td><p>OneToOneField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Reference to vehicles_vehicle</p></td>
+</tr>
+<tr class="row-odd"><td><p>base_engine</p></td>
+<td><p>CharField(100)</p></td>
+<td><p>NULL</p></td>
+<td><p>Base engine type</p></td>
+</tr>
+<tr class="row-even"><td><p>engine_displacement</p></td>
+<td><p>DecimalField(3,1)</p></td>
+<td><p>NULL</p></td>
+<td><p>Engine displacement (L)</p></td>
+</tr>
+<tr class="row-odd"><td><p>engine_power</p></td>
+<td><p>PositiveIntegerField</p></td>
+<td><p>NULL</p></td>
+<td><p>Engine power (HP)</p></td>
+</tr>
+<tr class="row-even"><td><p>transmission_specifications</p></td>
+<td><p>CharField(100)</p></td>
+<td><p>NULL</p></td>
+<td><p>Transmission specs</p></td>
+</tr>
+<tr class="row-odd"><td><p>transmission_type</p></td>
+<td><p>CharField(3)</p></td>
+<td><p>NULL</p></td>
+<td><p>Transmission type</p></td>
+</tr>
+<tr class="row-even"><td><p>gear_count</p></td>
+<td><p>PositiveSmallIntegerField</p></td>
+<td><p>NULL</p></td>
+<td><p>Number of gears</p></td>
+</tr>
+<tr class="row-odd"><td><p>drive_layout</p></td>
+<td><p>CharField(3)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Drive configuration</p></td>
+</tr>
+<tr class="row-even"><td><p>fuel_system</p></td>
+<td><p>CharField(1)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Fuel system type</p></td>
+</tr>
+<tr class="row-odd"><td><p>emissions_standard</p></td>
+<td><p>CharField(4)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Emissions standard</p></td>
+</tr>
+<tr class="row-even"><td><p>has_start_stop</p></td>
+<td><p>BooleanField</p></td>
+<td><p>DEFAULT FALSE</p></td>
+<td><p>Start-stop system</p></td>
+</tr>
+<tr class="row-odd"><td><p>has_regenerative_braking</p></td>
+<td><p>BooleanField</p></td>
+<td><p>DEFAULT FALSE</p></td>
+<td><p>Regenerative braking</p></td>
+</tr>
+<tr class="row-even"><td><p>gearshift_position</p></td>
+<td><p>CharField(1)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Gearshift location</p></td>
+</tr>
+<tr class="row-odd"><td><p>gearshift_material</p></td>
+<td><p>CharField(50)</p></td>
+<td><p>NULL</p></td>
+<td><p>Gearshift material</p></td>
+</tr>
+<tr class="row-even"><td><p>notes</p></td>
+<td><p>TextField</p></td>
+<td><p>NULL</p></td>
+<td><p>Additional notes</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Transmission Types:</strong></p>
+<ul class="simple">
+<li><p>MT (Manual), AT (Automatic), CVT, DCT (Dual-Clutch), AMT (Automated Manual)</p></li>
+</ul>
+<p><strong>Drive Layouts:</strong></p>
+<ul class="simple">
+<li><p>FWD (Front-Wheel), RWD (Rear-Wheel), AWD (All-Wheel), 4WD (Four-Wheel)</p></li>
+</ul>
+<p><strong>Fuel Types:</strong></p>
+<ul class="simple">
+<li><p>G (Gasoline), D (Diesel), E (Electric), H (Hybrid), P (Plug-in Hybrid), F (Fuel Cell)</p></li>
+</ul>
+</section>
+<section id="vehicle-equip-chassissuspensionandbraking">
+<h3>vehicle_equip_chassissuspensionandbraking<a class="headerlink" href="#vehicle-equip-chassissuspensionandbraking" title="Link to this heading"></a></h3>
+<p><strong>Chassis, suspension, and braking systems</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>vehicle_id</p></td>
+<td><p>OneToOneField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Reference to vehicles_vehicle</p></td>
+</tr>
+<tr class="row-odd"><td><p>front_suspension</p></td>
+<td><p>CharField(4)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Front suspension type</p></td>
+</tr>
+<tr class="row-even"><td><p>rear_suspension</p></td>
+<td><p>CharField(4)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Rear suspension type</p></td>
+</tr>
+<tr class="row-odd"><td><p>front_brake_type</p></td>
+<td><p>CharField(4)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Front brake type</p></td>
+</tr>
+<tr class="row-even"><td><p>rear_brake_type</p></td>
+<td><p>CharField(4)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Rear brake type</p></td>
+</tr>
+<tr class="row-odd"><td><p>brake_systems</p></td>
+<td><p>CharField(5)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Primary brake system</p></td>
+</tr>
+<tr class="row-even"><td><p>parking_brake_type</p></td>
+<td><p>CharField(5)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Parking brake type</p></td>
+</tr>
+<tr class="row-odd"><td><p>steering_system</p></td>
+<td><p>CharField(6)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Steering system type</p></td>
+</tr>
+<tr class="row-even"><td><p>steering_wheel_features</p></td>
+<td><p>CharField(30)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Steering wheel features</p></td>
+</tr>
+<tr class="row-odd"><td><p>has_park_distance_control</p></td>
+<td><p>BooleanField</p></td>
+<td><p>DEFAULT FALSE</p></td>
+<td><p>Park distance control</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Suspension Types:</strong></p>
+<ul class="simple">
+<li><p>MACP (MacPherson), DUBL (Double Wishbone), MULT (Multi-Link), LEAF, AIR, ADAP (Adaptive)</p></li>
+</ul>
+<p><strong>Brake Types:</strong></p>
+<ul class="simple">
+<li><p>DISC, DRUM, CERM (Ceramic), CARB (Carbon Ceramic)</p></li>
+</ul>
+</section>
+<section id="vehicle-equip-electricalsystem">
+<h3>vehicle_equip_electricalsystem<a class="headerlink" href="#vehicle-equip-electricalsystem" title="Link to this heading"></a></h3>
+<p><strong>Electrical system specifications</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>vehicle_id</p></td>
+<td><p>OneToOneField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Reference to vehicles_vehicle</p></td>
+</tr>
+<tr class="row-odd"><td><p>primary_battery_type</p></td>
+<td><p>CharField(4)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Primary battery type</p></td>
+</tr>
+<tr class="row-even"><td><p>primary_battery_capacity</p></td>
+<td><p>PositiveIntegerField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Primary battery capacity (Ah)</p></td>
+</tr>
+<tr class="row-odd"><td><p>has_second_battery</p></td>
+<td><p>BooleanField</p></td>
+<td><p>DEFAULT FALSE</p></td>
+<td><p>Second battery present</p></td>
+</tr>
+<tr class="row-even"><td><p>second_battery_type</p></td>
+<td><p>CharField(4)</p></td>
+<td><p>NULL</p></td>
+<td><p>Second battery type</p></td>
+</tr>
+<tr class="row-odd"><td><p>second_battery_capacity</p></td>
+<td><p>PositiveIntegerField</p></td>
+<td><p>NULL</p></td>
+<td><p>Second battery capacity</p></td>
+</tr>
+<tr class="row-even"><td><p>alternator_output</p></td>
+<td><p>PositiveIntegerField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Alternator output (A)</p></td>
+</tr>
+<tr class="row-odd"><td><p>operating_voltage</p></td>
+<td><p>PositiveIntegerField</p></td>
+<td><p>DEFAULT 12</p></td>
+<td><p>Operating voltage</p></td>
+</tr>
+<tr class="row-even"><td><p>headlight_type</p></td>
+<td><p>CharField(6)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Headlight type</p></td>
+</tr>
+<tr class="row-odd"><td><p>headlight_control</p></td>
+<td><p>BooleanField</p></td>
+<td><p>DEFAULT FALSE</p></td>
+<td><p>Auto headlight control</p></td>
+</tr>
+<tr class="row-even"><td><p>headlight_range_control</p></td>
+<td><p>BooleanField</p></td>
+<td><p>DEFAULT FALSE</p></td>
+<td><p>Auto range control</p></td>
+</tr>
+<tr class="row-odd"><td><p>instrument_cluster_type</p></td>
+<td><p>CharField(20)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Instrument cluster type</p></td>
+</tr>
+<tr class="row-even"><td><p>socket_type</p></td>
+<td><p>CharField(20)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Primary socket type</p></td>
+</tr>
+<tr class="row-odd"><td><p>horn_type</p></td>
+<td><p>CharField(6)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Horn type</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Battery Types:</strong></p>
+<ul class="simple">
+<li><p>FLA (Flooded Lead Acid), AGM, GEL, LITH (Lithium-Ion), EFB (Enhanced Flooded)</p></li>
+</ul>
+<p><strong>Headlight Types:</strong></p>
+<ul class="simple">
+<li><p>HALO (Halogen), HID (Xenon), LED, LASER, MATRIX</p></li>
+</ul>
+</section>
+<section id="vehicle-equip-exteriorfeaturesandbody">
+<h3>vehicle_equip_exteriorfeaturesandbody<a class="headerlink" href="#vehicle-equip-exteriorfeaturesandbody" title="Link to this heading"></a></h3>
+<p><strong>Exterior features and body specifications</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>vehicle_id</p></td>
+<td><p>OneToOneField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Reference to vehicles_vehicle</p></td>
+</tr>
+<tr class="row-odd"><td><p>body_style</p></td>
+<td><p>CharField(5)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Body style</p></td>
+</tr>
+<tr class="row-even"><td><p>windshield_type</p></td>
+<td><p>CharField(4)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Windshield glass type</p></td>
+</tr>
+<tr class="row-odd"><td><p>side_windows_type</p></td>
+<td><p>CharField(4)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Side/rear windows type</p></td>
+</tr>
+<tr class="row-even"><td><p>has_chrome_package</p></td>
+<td><p>BooleanField</p></td>
+<td><p>DEFAULT FALSE</p></td>
+<td><p>Chrome package</p></td>
+</tr>
+<tr class="row-odd"><td><p>has_roof_rails</p></td>
+<td><p>BooleanField</p></td>
+<td><p>DEFAULT FALSE</p></td>
+<td><p>Roof rails</p></td>
+</tr>
+<tr class="row-even"><td><p>roof_type</p></td>
+<td><p>CharField(5)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Roof type</p></td>
+</tr>
+<tr class="row-odd"><td><p>has_front_fog_lamp</p></td>
+<td><p>BooleanField</p></td>
+<td><p>DEFAULT FALSE</p></td>
+<td><p>Front fog lamps</p></td>
+</tr>
+<tr class="row-even"><td><p>has_rear_fog_lamp</p></td>
+<td><p>BooleanField</p></td>
+<td><p>DEFAULT FALSE</p></td>
+<td><p>Rear fog lamp</p></td>
+</tr>
+<tr class="row-odd"><td><p>wheel_type</p></td>
+<td><p>CharField(6)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Wheel material</p></td>
+</tr>
+<tr class="row-even"><td><p>has_spare_wheel</p></td>
+<td><p>BooleanField</p></td>
+<td><p>DEFAULT FALSE</p></td>
+<td><p>Spare wheel</p></td>
+</tr>
+<tr class="row-odd"><td><p>has_trailer_hitch</p></td>
+<td><p>BooleanField</p></td>
+<td><p>DEFAULT FALSE</p></td>
+<td><p>Trailer hitch</p></td>
+</tr>
+<tr class="row-even"><td><p>tailgate_lock_type</p></td>
+<td><p>CharField(4)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Tailgate lock type</p></td>
+</tr>
+<tr class="row-odd"><td><p>left_mirror_type</p></td>
+<td><p>CharField(4)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Left mirror type</p></td>
+</tr>
+<tr class="row-even"><td><p>right_mirror_type</p></td>
+<td><p>CharField(4)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Right mirror type</p></td>
+</tr>
+<tr class="row-odd"><td><p>antenna_type</p></td>
+<td><p>CharField(5)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Antenna type</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body Styles:</strong></p>
+<ul class="simple">
+<li><p>SEDAN, COUPE, HATCH, SUV, TRUCK, VAN, CONV (Convertible), WAGON</p></li>
+</ul>
+</section>
+<section id="vehicle-equip-activesafetyandadas">
+<h3>vehicle_equip_activesafetyandadas<a class="headerlink" href="#vehicle-equip-activesafetyandadas" title="Link to this heading"></a></h3>
+<p><strong>Active safety and ADAS features</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>vehicle_id</p></td>
+<td><p>OneToOneField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Reference to vehicles_vehicle</p></td>
+</tr>
+<tr class="row-odd"><td><p>cruise_control_system</p></td>
+<td><p>CharField(4)</p></td>
+<td><p>DEFAULT ‘NONE’</p></td>
+<td><p>Cruise control type</p></td>
+</tr>
+<tr class="row-even"><td><p>has_speed_limiter</p></td>
+<td><p>BooleanField</p></td>
+<td><p>DEFAULT FALSE</p></td>
+<td><p>Speed limiter</p></td>
+</tr>
+<tr class="row-odd"><td><p>park_distance_control</p></td>
+<td><p>CharField(4)</p></td>
+<td><p>DEFAULT ‘NONE’</p></td>
+<td><p>Park assist type</p></td>
+</tr>
+<tr class="row-even"><td><p>driver_alert_system</p></td>
+<td><p>CharField(6)</p></td>
+<td><p>DEFAULT ‘NONE’</p></td>
+<td><p>Driver alert system</p></td>
+</tr>
+<tr class="row-odd"><td><p>tire_pressure_monitoring</p></td>
+<td><p>CharField(4)</p></td>
+<td><p>DEFAULT ‘NONE’</p></td>
+<td><p>TPMS type</p></td>
+</tr>
+<tr class="row-even"><td><p>lane_assist_system</p></td>
+<td><p>CharField(4)</p></td>
+<td><p>DEFAULT ‘NONE’</p></td>
+<td><p>Lane assist type</p></td>
+</tr>
+<tr class="row-odd"><td><p>blind_spot_monitoring</p></td>
+<td><p>CharField(4)</p></td>
+<td><p>DEFAULT ‘NONE’</p></td>
+<td><p>Blind spot monitor</p></td>
+</tr>
+<tr class="row-even"><td><p>collision_warning_system</p></td>
+<td><p>CharField(4)</p></td>
+<td><p>DEFAULT ‘NONE’</p></td>
+<td><p>Collision warning</p></td>
+</tr>
+<tr class="row-odd"><td><p>has_cross_traffic_alert</p></td>
+<td><p>BooleanField</p></td>
+<td><p>DEFAULT FALSE</p></td>
+<td><p>Cross traffic alert</p></td>
+</tr>
+<tr class="row-even"><td><p>has_traffic_sign_recognition</p></td>
+<td><p>BooleanField</p></td>
+<td><p>DEFAULT FALSE</p></td>
+<td><p>Traffic sign recognition</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="assessment-system">
+<h2>Assessment System<a class="headerlink" href="#assessment-system" title="Link to this heading"></a></h2>
+<section id="assessments-vehicleassessment">
+<h3>assessments_vehicleassessment<a class="headerlink" href="#assessments-vehicleassessment" title="Link to this heading"></a></h3>
+<p><strong>Main vehicle assessment record</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>AutoField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Auto-incrementing primary key</p></td>
+</tr>
+<tr class="row-odd"><td><p>assessment_id</p></td>
+<td><p>CharField(50)</p></td>
+<td><p>UNIQUE, NOT NULL</p></td>
+<td><p>Assessment identifier</p></td>
+</tr>
+<tr class="row-even"><td><p>assessment_type</p></td>
+<td><p>CharField(20)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Assessment type</p></td>
+</tr>
+<tr class="row-odd"><td><p>status</p></td>
+<td><p>CharField(20)</p></td>
+<td><p>DEFAULT ‘pending’</p></td>
+<td><p>Assessment status</p></td>
+</tr>
+<tr class="row-even"><td><p>user_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Reference to auth_user</p></td>
+</tr>
+<tr class="row-odd"><td><p>vehicle_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Reference to vehicles_vehicle</p></td>
+</tr>
+<tr class="row-even"><td><p>organization_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NULL</p></td>
+<td><p>Reference to organizations_organization</p></td>
+</tr>
+<tr class="row-odd"><td><p>assessment_date</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW_ADD</p></td>
+<td><p>Assessment date</p></td>
+</tr>
+<tr class="row-even"><td><p>completed_date</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>NULL</p></td>
+<td><p>Completion date</p></td>
+</tr>
+<tr class="row-odd"><td><p>assessor_name</p></td>
+<td><p>CharField(100)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Assessor name</p></td>
+</tr>
+<tr class="row-even"><td><p>assessor_certification</p></td>
+<td><p>CharField(100)</p></td>
+<td><p>NULL</p></td>
+<td><p>Assessor certification</p></td>
+</tr>
+<tr class="row-odd"><td><p>incident_location</p></td>
+<td><p>CharField(255)</p></td>
+<td><p>NULL</p></td>
+<td><p>Incident location</p></td>
+</tr>
+<tr class="row-even"><td><p>incident_date</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>NULL</p></td>
+<td><p>Incident date</p></td>
+</tr>
+<tr class="row-odd"><td><p>weather_conditions</p></td>
+<td><p>CharField(100)</p></td>
+<td><p>NULL</p></td>
+<td><p>Weather conditions</p></td>
+</tr>
+<tr class="row-even"><td><p>overall_severity</p></td>
+<td><p>CharField(20)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Overall severity</p></td>
+</tr>
+<tr class="row-odd"><td><p>uk_write_off_category</p></td>
+<td><p>CharField(20)</p></td>
+<td><p>NULL</p></td>
+<td><p>UK write-off category</p></td>
+</tr>
+<tr class="row-even"><td><p>south_africa_70_percent_rule</p></td>
+<td><p>BooleanField</p></td>
+<td><p>DEFAULT FALSE</p></td>
+<td><p>70% rule flag</p></td>
+</tr>
+<tr class="row-odd"><td><p>estimated_repair_cost</p></td>
+<td><p>DecimalField(10,2)</p></td>
+<td><p>NULL</p></td>
+<td><p>Estimated repair cost</p></td>
+</tr>
+<tr class="row-even"><td><p>vehicle_market_value</p></td>
+<td><p>DecimalField(10,2)</p></td>
+<td><p>NULL</p></td>
+<td><p>Vehicle market value</p></td>
+</tr>
+<tr class="row-odd"><td><p>salvage_value</p></td>
+<td><p>DecimalField(10,2)</p></td>
+<td><p>NULL</p></td>
+<td><p>Salvage value</p></td>
+</tr>
+<tr class="row-even"><td><p>overall_notes</p></td>
+<td><p>TextField</p></td>
+<td><p>NULL</p></td>
+<td><p>Overall notes</p></td>
+</tr>
+<tr class="row-odd"><td><p>recommendations</p></td>
+<td><p>TextField</p></td>
+<td><p>NULL</p></td>
+<td><p>Recommendations</p></td>
+</tr>
+<tr class="row-even"><td><p>assigned_agent_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NULL</p></td>
+<td><p>Assigned insurance agent</p></td>
+</tr>
+<tr class="row-odd"><td><p>agent_status</p></td>
+<td><p>CharField(20)</p></td>
+<td><p>DEFAULT ‘pending_review’</p></td>
+<td><p>Agent review status</p></td>
+</tr>
+<tr class="row-even"><td><p>agent_notes</p></td>
+<td><p>TextField</p></td>
+<td><p>NULL</p></td>
+<td><p>Agent notes</p></td>
+</tr>
+<tr class="row-odd"><td><p>review_deadline</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>NULL</p></td>
+<td><p>Review deadline</p></td>
+</tr>
+<tr class="row-even"><td><p>uses_parts_based_quotes</p></td>
+<td><p>BooleanField</p></td>
+<td><p>DEFAULT TRUE</p></td>
+<td><p>Parts-based quotes flag</p></td>
+</tr>
+<tr class="row-odd"><td><p>parts_identification_complete</p></td>
+<td><p>BooleanField</p></td>
+<td><p>DEFAULT FALSE</p></td>
+<td><p>Parts ID complete</p></td>
+</tr>
+<tr class="row-even"><td><p>quote_collection_status</p></td>
+<td><p>CharField(20)</p></td>
+<td><p>DEFAULT ‘not_started’</p></td>
+<td><p>Quote collection status</p></td>
+</tr>
+<tr class="row-odd"><td><p>created_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW_ADD</p></td>
+<td><p>Record creation timestamp</p></td>
+</tr>
+<tr class="row-even"><td><p>updated_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW</p></td>
+<td><p>Record update timestamp</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Assessment Types:</strong></p>
+<ul class="simple">
+<li><p>crash, pre_purchase, periodic, insurance_claim, total_loss</p></li>
+</ul>
+<p><strong>Status Options:</strong></p>
+<ul class="simple">
+<li><p>pending, in_progress, under_review, completed, disputed, cancelled</p></li>
+</ul>
+<p><strong>Severity Levels:</strong></p>
+<ul class="simple">
+<li><p>cosmetic, minor, moderate, major, total_loss</p></li>
+</ul>
+</section>
+<section id="assessments-exteriorbodydamage">
+<h3>assessments_exteriorbodydamage<a class="headerlink" href="#assessments-exteriorbodydamage" title="Link to this heading"></a></h3>
+<p><strong>Exterior body damage assessment (38 points)</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>assessment_id</p></td>
+<td><p>OneToOneField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Reference to assessments_vehicleassessment</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Front End (10 points):</strong></p>
+<ul class="simple">
+<li><p>front_bumper, hood, front_grille, headlight_housings, headlight_lenses</p></li>
+<li><p>front_fenders, front_quarter_panels, fog_light_housings, license_plate_bracket, front_spoiler_air_dam</p></li>
+<li><p>Each with corresponding _notes field</p></li>
+</ul>
+<p><strong>Side Panels (10 points):</strong></p>
+<ul class="simple">
+<li><p>driver_side_door, passenger_side_door, rear_doors, door_frames, side_mirrors</p></li>
+<li><p>side_moldings_trim, rocker_panels, wheel_well_liners, side_windows, door_handles</p></li>
+<li><p>Each with corresponding _notes field</p></li>
+</ul>
+<p><strong>Rear End (10 points):</strong></p>
+<ul class="simple">
+<li><p>rear_bumper, trunk_hatch, rear_quarter_panels, taillight_housings, taillight_lenses</p></li>
+<li><p>rear_window, rear_spoiler, exhaust_tips, rear_license_plate_area, backup_camera</p></li>
+<li><p>Each with corresponding _notes field</p></li>
+</ul>
+<p><strong>Roof and Pillars (8 points):</strong></p>
+<ul class="simple">
+<li><p>roof_panel, a_pillars, b_pillars, c_pillars, d_pillars, roof_rails, sunroof_moonroof, antenna</p></li>
+<li><p>Each with corresponding _notes field</p></li>
+</ul>
+<p><strong>Damage Severity Options:</strong></p>
+<ul class="simple">
+<li><p>none, light, moderate, severe, destroyed</p></li>
+</ul>
+</section>
+<section id="assessments-wheelsandtires">
+<h3>assessments_wheelsandtires<a class="headerlink" href="#assessments-wheelsandtires" title="Link to this heading"></a></h3>
+<p><strong>Wheels and tires assessment (12 points)</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>assessment_id</p></td>
+<td><p>OneToOneField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Reference to assessments_vehicleassessment</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Assessment Points:</strong></p>
+<ul class="simple">
+<li><p>front_left_tire, front_right_tire, rear_left_tire, rear_right_tire</p></li>
+<li><p>front_left_wheel, front_right_wheel, rear_left_wheel, rear_right_wheel</p></li>
+<li><p>spare_tire, wheel_lug_nuts, tire_pressure_sensors, center_caps</p></li>
+<li><p>Each with corresponding _notes field</p></li>
+</ul>
+</section>
+<section id="assessments-interiordamage">
+<h3>assessments_interiordamage<a class="headerlink" href="#assessments-interiordamage" title="Link to this heading"></a></h3>
+<p><strong>Interior damage assessment (19 points)</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>assessment_id</p></td>
+<td><p>OneToOneField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Reference to assessments_vehicleassessment</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Seating and Upholstery (7 points):</strong></p>
+<ul class="simple">
+<li><p>driver_seat, passenger_seat, rear_seats, seat_belts, headrests, armrests, floor_mats</p></li>
+</ul>
+<p><strong>Dashboard and Controls (8 points):</strong></p>
+<ul class="simple">
+<li><p>dashboard, steering_wheel, instrument_cluster, center_console</p></li>
+<li><p>climate_controls, radio_infotainment, glove_compartment, door_panels</p></li>
+</ul>
+<p><strong>Glass and Visibility (4 points):</strong></p>
+<ul class="simple">
+<li><p>windshield, side_windows_interior, interior_mirrors, visors</p></li>
+</ul>
+</section>
+<section id="assessments-mechanicalsystems">
+<h3>assessments_mechanicalsystems<a class="headerlink" href="#assessments-mechanicalsystems" title="Link to this heading"></a></h3>
+<p><strong>Mechanical systems assessment (20 points)</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>assessment_id</p></td>
+<td><p>OneToOneField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Reference to assessments_vehicleassessment</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Engine Bay (8 points):</strong></p>
+<ul class="simple">
+<li><p>engine_block, radiator, battery, air_filter_housing</p></li>
+<li><p>belts_and_hoses, fluid_reservoirs, wiring_harnesses, engine_mounts</p></li>
+</ul>
+<p><strong>Suspension and Steering (7 points):</strong></p>
+<ul class="simple">
+<li><p>shock_absorbers, struts, springs, control_arms, tie_rods, steering_rack, power_steering_pump</p></li>
+</ul>
+<p><strong>Drivetrain (5 points):</strong></p>
+<ul class="simple">
+<li><p>transmission, differential, cv_joints, drive_shafts, clutch_system</p></li>
+</ul>
+<p><strong>Condition Options:</strong></p>
+<ul class="simple">
+<li><p>excellent, good, fair, poor, failed</p></li>
+</ul>
+</section>
+<section id="assessments-electricalsystems">
+<h3>assessments_electricalsystems<a class="headerlink" href="#assessments-electricalsystems" title="Link to this heading"></a></h3>
+<p><strong>Electrical systems assessment</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>assessment_id</p></td>
+<td><p>OneToOneField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Reference to assessments_vehicleassessment</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Assessment Points:</strong></p>
+<ul class="simple">
+<li><p>battery_condition, alternator_function, starter_motor, fuse_box</p></li>
+<li><p>wiring_harness, lighting_systems, electronic_modules, charging_ports</p></li>
+</ul>
+</section>
+<section id="assessments-safetysystems">
+<h3>assessments_safetysystems<a class="headerlink" href="#assessments-safetysystems" title="Link to this heading"></a></h3>
+<p><strong>Safety systems assessment</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>assessment_id</p></td>
+<td><p>OneToOneField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Reference to assessments_vehicleassessment</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Assessment Points:</strong></p>
+<ul class="simple">
+<li><p>airbag_system, seat_belt_pretensioners, abs_system, stability_control</p></li>
+<li><p>parking_sensors, backup_camera, collision_avoidance, lane_departure</p></li>
+</ul>
+</section>
+<section id="assessments-framestructural">
+<h3>assessments_framestructural<a class="headerlink" href="#assessments-framestructural" title="Link to this heading"></a></h3>
+<p><strong>Frame and structural assessment</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>assessment_id</p></td>
+<td><p>OneToOneField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Reference to assessments_vehicleassessment</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Assessment Points:</strong></p>
+<ul class="simple">
+<li><p>frame_rails, unibody_structure, crumple_zones, door_frames</p></li>
+<li><p>roof_structure, floor_pan, firewall, structural_welds</p></li>
+</ul>
+</section>
+<section id="assessments-fluidsystems">
+<h3>assessments_fluidsystems<a class="headerlink" href="#assessments-fluidsystems" title="Link to this heading"></a></h3>
+<p><strong>Fluid systems assessment</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>assessment_id</p></td>
+<td><p>OneToOneField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Reference to assessments_vehicleassessment</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Assessment Points:</strong></p>
+<ul class="simple">
+<li><p>engine_oil, coolant_system, brake_fluid, transmission_fluid</p></li>
+<li><p>power_steering_fluid, windshield_washer, fuel_system</p></li>
+</ul>
+</section>
+</section>
+<section id="insurance-management">
+<h2>Insurance Management<a class="headerlink" href="#insurance-management" title="Link to this heading"></a></h2>
+<section id="insurance-app-insurancepolicy">
+<h3>insurance_app_insurancepolicy<a class="headerlink" href="#insurance-app-insurancepolicy" title="Link to this heading"></a></h3>
+<p><strong>Insurance policy information</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>AutoField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Auto-incrementing primary key</p></td>
+</tr>
+<tr class="row-odd"><td><p>policy_number</p></td>
+<td><p>CharField(20)</p></td>
+<td><p>UNIQUE, NOT NULL</p></td>
+<td><p>Policy number</p></td>
+</tr>
+<tr class="row-even"><td><p>policy_holder_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Reference to auth_user</p></td>
+</tr>
+<tr class="row-odd"><td><p>organization_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NULL</p></td>
+<td><p>Reference to organizations_organization</p></td>
+</tr>
+<tr class="row-even"><td><p>start_date</p></td>
+<td><p>DateField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Policy start date</p></td>
+</tr>
+<tr class="row-odd"><td><p>end_date</p></td>
+<td><p>DateField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Policy end date</p></td>
+</tr>
+<tr class="row-even"><td><p>premium_amount</p></td>
+<td><p>DecimalField(10,2)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Premium amount</p></td>
+</tr>
+<tr class="row-odd"><td><p>status</p></td>
+<td><p>CharField(20)</p></td>
+<td><p>DEFAULT ‘active’</p></td>
+<td><p>Policy status</p></td>
+</tr>
+<tr class="row-even"><td><p>created_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW_ADD</p></td>
+<td><p>Record creation timestamp</p></td>
+</tr>
+<tr class="row-odd"><td><p>updated_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW</p></td>
+<td><p>Record update timestamp</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Status Options:</strong></p>
+<ul class="simple">
+<li><p>active, suspended, cancelled</p></li>
+</ul>
+</section>
+<section id="insurance-app-vehicle">
+<h3>insurance_app_vehicle<a class="headerlink" href="#insurance-app-vehicle" title="Link to this heading"></a></h3>
+<p><strong>Insurance vehicle records</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>AutoField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Auto-incrementing primary key</p></td>
+</tr>
+<tr class="row-odd"><td><p>policy_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Reference to insurance_app_insurancepolicy</p></td>
+</tr>
+<tr class="row-even"><td><p>vehicle_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Reference to vehicles_vehicle</p></td>
+</tr>
+<tr class="row-odd"><td><p>purchase_date</p></td>
+<td><p>DateField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Purchase date</p></td>
+</tr>
+<tr class="row-even"><td><p>current_condition</p></td>
+<td><p>CharField(20)</p></td>
+<td><p>DEFAULT ‘good’</p></td>
+<td><p>Current condition</p></td>
+</tr>
+<tr class="row-odd"><td><p>vehicle_health_index</p></td>
+<td><p>FloatField</p></td>
+<td><p>DEFAULT 100.0</p></td>
+<td><p>Health index (0-100)</p></td>
+</tr>
+<tr class="row-even"><td><p>risk_score</p></td>
+<td><p>FloatField</p></td>
+<td><p>DEFAULT 1.0</p></td>
+<td><p>Risk score (0-10)</p></td>
+</tr>
+<tr class="row-odd"><td><p>last_inspection_date</p></td>
+<td><p>DateField</p></td>
+<td><p>NULL</p></td>
+<td><p>Last inspection date</p></td>
+</tr>
+<tr class="row-even"><td><p>created_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW_ADD</p></td>
+<td><p>Record creation timestamp</p></td>
+</tr>
+<tr class="row-odd"><td><p>updated_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW</p></td>
+<td><p>Record update timestamp</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="insurance-app-maintenanceschedule">
+<h3>insurance_app_maintenanceschedule<a class="headerlink" href="#insurance-app-maintenanceschedule" title="Link to this heading"></a></h3>
+<p><strong>Insurance maintenance scheduling</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>AutoField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Auto-incrementing primary key</p></td>
+</tr>
+<tr class="row-odd"><td><p>vehicle_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Reference to insurance_app_vehicle</p></td>
+</tr>
+<tr class="row-even"><td><p>maintenance_type</p></td>
+<td><p>CharField(30)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Maintenance type</p></td>
+</tr>
+<tr class="row-odd"><td><p>priority_level</p></td>
+<td><p>CharField(10)</p></td>
+<td><p>DEFAULT ‘medium’</p></td>
+<td><p>Priority level</p></td>
+</tr>
+<tr class="row-even"><td><p>scheduled_date</p></td>
+<td><p>DateField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Scheduled date</p></td>
+</tr>
+<tr class="row-odd"><td><p>due_mileage</p></td>
+<td><p>PositiveIntegerField</p></td>
+<td><p>NULL</p></td>
+<td><p>Due mileage</p></td>
+</tr>
+<tr class="row-even"><td><p>description</p></td>
+<td><p>TextField</p></td>
+<td><p>NULL</p></td>
+<td><p>Description</p></td>
+</tr>
+<tr class="row-odd"><td><p>is_completed</p></td>
+<td><p>BooleanField</p></td>
+<td><p>DEFAULT FALSE</p></td>
+<td><p>Completion status</p></td>
+</tr>
+<tr class="row-even"><td><p>completed_date</p></td>
+<td><p>DateField</p></td>
+<td><p>NULL</p></td>
+<td><p>Completion date</p></td>
+</tr>
+<tr class="row-odd"><td><p>cost</p></td>
+<td><p>DecimalField(10,2)</p></td>
+<td><p>NULL</p></td>
+<td><p>Cost</p></td>
+</tr>
+<tr class="row-even"><td><p>service_provider</p></td>
+<td><p>CharField(100)</p></td>
+<td><p>NULL</p></td>
+<td><p>Service provider</p></td>
+</tr>
+<tr class="row-odd"><td><p>scheduled_maintenance_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NULL</p></td>
+<td><p>Link to maintenance app</p></td>
+</tr>
+<tr class="row-even"><td><p>created_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW_ADD</p></td>
+<td><p>Record creation timestamp</p></td>
+</tr>
+<tr class="row-odd"><td><p>updated_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW</p></td>
+<td><p>Record update timestamp</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="insurance-app-maintenancecompliance">
+<h3>insurance_app_maintenancecompliance<a class="headerlink" href="#insurance-app-maintenancecompliance" title="Link to this heading"></a></h3>
+<p><strong>Maintenance compliance tracking</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>vehicle_id</p></td>
+<td><p>OneToOneField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Reference to insurance_app_vehicle</p></td>
+</tr>
+<tr class="row-odd"><td><p>overall_compliance_rate</p></td>
+<td><p>FloatField</p></td>
+<td><p>DEFAULT 100.0</p></td>
+<td><p>Overall compliance rate</p></td>
+</tr>
+<tr class="row-even"><td><p>critical_maintenance_compliance</p></td>
+<td><p>FloatField</p></td>
+<td><p>DEFAULT 100.0</p></td>
+<td><p>Critical maintenance compliance</p></td>
+</tr>
+<tr class="row-odd"><td><p>overdue_count</p></td>
+<td><p>IntegerField</p></td>
+<td><p>DEFAULT 0</p></td>
+<td><p>Overdue count</p></td>
+</tr>
+<tr class="row-even"><td><p>completed_on_time_count</p></td>
+<td><p>IntegerField</p></td>
+<td><p>DEFAULT 0</p></td>
+<td><p>On-time completion count</p></td>
+</tr>
+<tr class="row-odd"><td><p>total_scheduled_count</p></td>
+<td><p>IntegerField</p></td>
+<td><p>DEFAULT 0</p></td>
+<td><p>Total scheduled count</p></td>
+</tr>
+<tr class="row-even"><td><p>last_calculated</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW</p></td>
+<td><p>Last calculation timestamp</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="insurance-app-accident">
+<h3>insurance_app_accident<a class="headerlink" href="#insurance-app-accident" title="Link to this heading"></a></h3>
+<p><strong>Accident records</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>AutoField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Auto-incrementing primary key</p></td>
+</tr>
+<tr class="row-odd"><td><p>vehicle_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Reference to insurance_app_vehicle</p></td>
+</tr>
+<tr class="row-even"><td><p>accident_date</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Accident date/time</p></td>
+</tr>
+<tr class="row-odd"><td><p>severity</p></td>
+<td><p>CharField(20)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Accident severity</p></td>
+</tr>
+<tr class="row-even"><td><p>claim_amount</p></td>
+<td><p>DecimalField(12,2)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Claim amount</p></td>
+</tr>
+<tr class="row-odd"><td><p>description</p></td>
+<td><p>TextField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Accident description</p></td>
+</tr>
+<tr class="row-even"><td><p>maintenance_related</p></td>
+<td><p>BooleanField</p></td>
+<td><p>DEFAULT FALSE</p></td>
+<td><p>Maintenance related flag</p></td>
+</tr>
+<tr class="row-odd"><td><p>related_maintenance_type</p></td>
+<td><p>CharField(20)</p></td>
+<td><p>NULL</p></td>
+<td><p>Related maintenance type</p></td>
+</tr>
+<tr class="row-even"><td><p>days_since_last_maintenance</p></td>
+<td><p>IntegerField</p></td>
+<td><p>NULL</p></td>
+<td><p>Days since last maintenance</p></td>
+</tr>
+<tr class="row-odd"><td><p>fault_determination</p></td>
+<td><p>CharField(100)</p></td>
+<td><p>NULL</p></td>
+<td><p>Fault determination</p></td>
+</tr>
+<tr class="row-even"><td><p>location</p></td>
+<td><p>CharField(200)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Accident location</p></td>
+</tr>
+<tr class="row-odd"><td><p>weather_conditions</p></td>
+<td><p>CharField(50)</p></td>
+<td><p>NULL</p></td>
+<td><p>Weather conditions</p></td>
+</tr>
+<tr class="row-even"><td><p>vehicle_history_id</p></td>
+<td><p>OneToOneField</p></td>
+<td><p>NULL</p></td>
+<td><p>Link to vehicles_vehiclehistory</p></td>
+</tr>
+<tr class="row-odd"><td><p>created_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW_ADD</p></td>
+<td><p>Record creation timestamp</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="insurance-app-vehicleconditionscore">
+<h3>insurance_app_vehicleconditionscore<a class="headerlink" href="#insurance-app-vehicleconditionscore" title="Link to this heading"></a></h3>
+<p><strong>Vehicle condition scoring</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>AutoField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Auto-incrementing primary key</p></td>
+</tr>
+<tr class="row-odd"><td><p>vehicle_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Reference to insurance_app_vehicle</p></td>
+</tr>
+<tr class="row-even"><td><p>assessment_date</p></td>
+<td><p>DateField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Assessment date</p></td>
+</tr>
+<tr class="row-odd"><td><p>engine_score</p></td>
+<td><p>FloatField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Engine score (0-100)</p></td>
+</tr>
+<tr class="row-even"><td><p>transmission_score</p></td>
+<td><p>FloatField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Transmission score (0-100)</p></td>
+</tr>
+<tr class="row-odd"><td><p>brake_score</p></td>
+<td><p>FloatField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Brake score (0-100)</p></td>
+</tr>
+<tr class="row-even"><td><p>tire_score</p></td>
+<td><p>FloatField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Tire score (0-100)</p></td>
+</tr>
+<tr class="row-odd"><td><p>suspension_score</p></td>
+<td><p>FloatField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Suspension score (0-100)</p></td>
+</tr>
+<tr class="row-even"><td><p>electrical_score</p></td>
+<td><p>FloatField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Electrical score (0-100)</p></td>
+</tr>
+<tr class="row-odd"><td><p>overall_score</p></td>
+<td><p>FloatField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Overall score (0-100)</p></td>
+</tr>
+<tr class="row-even"><td><p>assessment_type</p></td>
+<td><p>CharField(20)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Assessment type</p></td>
+</tr>
+<tr class="row-odd"><td><p>notes</p></td>
+<td><p>TextField</p></td>
+<td><p>NULL</p></td>
+<td><p>Assessment notes</p></td>
+</tr>
+<tr class="row-even"><td><p>created_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW_ADD</p></td>
+<td><p>Record creation timestamp</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="insurance-app-riskalert">
+<h3>insurance_app_riskalert<a class="headerlink" href="#insurance-app-riskalert" title="Link to this heading"></a></h3>
+<p><strong>Risk alert system</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>UUIDField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>UUID primary key</p></td>
+</tr>
+<tr class="row-odd"><td><p>vehicle_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Reference to insurance_app_vehicle</p></td>
+</tr>
+<tr class="row-even"><td><p>alert_type</p></td>
+<td><p>CharField(30)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Alert type</p></td>
+</tr>
+<tr class="row-odd"><td><p>severity</p></td>
+<td><p>CharField(10)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Alert severity</p></td>
+</tr>
+<tr class="row-even"><td><p>title</p></td>
+<td><p>CharField(200)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Alert title</p></td>
+</tr>
+<tr class="row-odd"><td><p>description</p></td>
+<td><p>TextField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Alert description</p></td>
+</tr>
+<tr class="row-even"><td><p>risk_score_impact</p></td>
+<td><p>FloatField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Risk score impact</p></td>
+</tr>
+<tr class="row-odd"><td><p>is_resolved</p></td>
+<td><p>BooleanField</p></td>
+<td><p>DEFAULT FALSE</p></td>
+<td><p>Resolution status</p></td>
+</tr>
+<tr class="row-even"><td><p>resolved_date</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>NULL</p></td>
+<td><p>Resolution date</p></td>
+</tr>
+<tr class="row-odd"><td><p>resolution_notes</p></td>
+<td><p>TextField</p></td>
+<td><p>NULL</p></td>
+<td><p>Resolution notes</p></td>
+</tr>
+<tr class="row-even"><td><p>created_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW_ADD</p></td>
+<td><p>Record creation timestamp</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="insurance-app-riskassessmentmetrics">
+<h3>insurance_app_riskassessmentmetrics<a class="headerlink" href="#insurance-app-riskassessmentmetrics" title="Link to this heading"></a></h3>
+<p><strong>Risk assessment metrics</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>AutoField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Auto-incrementing primary key</p></td>
+</tr>
+<tr class="row-odd"><td><p>policy_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Reference to insurance_app_insurancepolicy</p></td>
+</tr>
+<tr class="row-even"><td><p>calculation_date</p></td>
+<td><p>DateField</p></td>
+<td><p>AUTO_NOW_ADD</p></td>
+<td><p>Calculation date</p></td>
+</tr>
+<tr class="row-odd"><td><p>portfolio_compliance_rate</p></td>
+<td><p>FloatField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Portfolio compliance rate</p></td>
+</tr>
+<tr class="row-even"><td><p>critical_maintenance_compliance</p></td>
+<td><p>FloatField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Critical maintenance compliance</p></td>
+</tr>
+<tr class="row-odd"><td><p>avg_vehicle_health_index</p></td>
+<td><p>FloatField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Average health index</p></td>
+</tr>
+<tr class="row-even"><td><p>vehicles_excellent_condition</p></td>
+<td><p>IntegerField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Excellent condition count</p></td>
+</tr>
+<tr class="row-odd"><td><p>vehicles_poor_condition</p></td>
+<td><p>IntegerField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Poor condition count</p></td>
+</tr>
+<tr class="row-even"><td><p>maintenance_related_accidents</p></td>
+<td><p>IntegerField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Maintenance-related accidents</p></td>
+</tr>
+<tr class="row-odd"><td><p>total_accidents</p></td>
+<td><p>IntegerField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Total accidents</p></td>
+</tr>
+<tr class="row-even"><td><p>accident_correlation_rate</p></td>
+<td><p>FloatField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Accident correlation rate</p></td>
+</tr>
+<tr class="row-odd"><td><p>high_risk_vehicles</p></td>
+<td><p>IntegerField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>High-risk vehicles count</p></td>
+</tr>
+<tr class="row-even"><td><p>active_alerts</p></td>
+<td><p>IntegerField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Active alerts count</p></td>
+</tr>
+<tr class="row-odd"><td><p>resolved_alerts_30d</p></td>
+<td><p>IntegerField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Resolved alerts (30 days)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="notifications-alerts">
+<h2>Notifications &amp; Alerts<a class="headerlink" href="#notifications-alerts" title="Link to this heading"></a></h2>
+<section id="notifications-vehiclealert">
+<h3>notifications_vehiclealert<a class="headerlink" href="#notifications-vehiclealert" title="Link to this heading"></a></h3>
+<p><strong>Vehicle alert system</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>AutoField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Auto-incrementing primary key</p></td>
+</tr>
+<tr class="row-odd"><td><p>vehicle_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Reference to vehicles_vehicle</p></td>
+</tr>
+<tr class="row-even"><td><p>alert_type</p></td>
+<td><p>CharField(50)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Alert type</p></td>
+</tr>
+<tr class="row-odd"><td><p>priority</p></td>
+<td><p>CharField(10)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Alert priority</p></td>
+</tr>
+<tr class="row-even"><td><p>title</p></td>
+<td><p>CharField(200)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Alert title</p></td>
+</tr>
+<tr class="row-odd"><td><p>description</p></td>
+<td><p>TextField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Alert description</p></td>
+</tr>
+<tr class="row-even"><td><p>is_active</p></td>
+<td><p>BooleanField</p></td>
+<td><p>DEFAULT TRUE</p></td>
+<td><p>Active status</p></td>
+</tr>
+<tr class="row-odd"><td><p>created_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW_ADD</p></td>
+<td><p>Creation timestamp</p></td>
+</tr>
+<tr class="row-even"><td><p>resolved_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>NULL</p></td>
+<td><p>Resolution timestamp</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Alert Types:</strong></p>
+<ul class="simple">
+<li><p>MAINTENANCE_OVERDUE, PART_REPLACEMENT, INSURANCE_EXPIRY, INSPECTION_DUE</p></li>
+</ul>
+<p><strong>Priority Levels:</strong></p>
+<ul class="simple">
+<li><p>HIGH, MEDIUM, LOW</p></li>
+</ul>
+</section>
+<section id="notifications-vehiclecostanalytics">
+<h3>notifications_vehiclecostanalytics<a class="headerlink" href="#notifications-vehiclecostanalytics" title="Link to this heading"></a></h3>
+<p><strong>Vehicle cost analytics</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>AutoField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Auto-incrementing primary key</p></td>
+</tr>
+<tr class="row-odd"><td><p>vehicle_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Reference to vehicles_vehicle</p></td>
+</tr>
+<tr class="row-even"><td><p>month</p></td>
+<td><p>DateField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Analytics month</p></td>
+</tr>
+<tr class="row-odd"><td><p>total_cost</p></td>
+<td><p>DecimalField(10,2)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Total cost</p></td>
+</tr>
+<tr class="row-even"><td><p>maintenance_cost</p></td>
+<td><p>DecimalField(10,2)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Maintenance cost</p></td>
+</tr>
+<tr class="row-odd"><td><p>parts_cost</p></td>
+<td><p>DecimalField(10,2)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Parts cost</p></td>
+</tr>
+<tr class="row-even"><td><p>labor_cost</p></td>
+<td><p>DecimalField(10,2)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Labor cost</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Constraints:</strong></p>
+<ul class="simple">
+<li><p>UNIQUE(vehicle_id, month)</p></li>
+</ul>
+</section>
+</section>
+<section id="onboarding-system">
+<h2>Onboarding System<a class="headerlink" href="#onboarding-system" title="Link to this heading"></a></h2>
+<section id="onboarding-pendingvehicleonboarding">
+<h3>onboarding_pendingvehicleonboarding<a class="headerlink" href="#onboarding-pendingvehicleonboarding" title="Link to this heading"></a></h3>
+<p><strong>Pending vehicle onboarding requests</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>AutoField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Auto-incrementing primary key</p></td>
+</tr>
+<tr class="row-odd"><td><p>submitted_by_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NULL</p></td>
+<td><p>User who submitted request</p></td>
+</tr>
+<tr class="row-even"><td><p>client_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Client user</p></td>
+</tr>
+<tr class="row-odd"><td><p>vehicle_data</p></td>
+<td><p>JSONField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Vehicle data</p></td>
+</tr>
+<tr class="row-even"><td><p>ownership_data</p></td>
+<td><p>JSONField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Ownership data</p></td>
+</tr>
+<tr class="row-odd"><td><p>status_data</p></td>
+<td><p>JSONField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Status data</p></td>
+</tr>
+<tr class="row-even"><td><p>history_data</p></td>
+<td><p>JSONField</p></td>
+<td><p>NULL</p></td>
+<td><p>History data</p></td>
+</tr>
+<tr class="row-odd"><td><p>equipment_data</p></td>
+<td><p>JSONField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Equipment data</p></td>
+</tr>
+<tr class="row-even"><td><p>image_data</p></td>
+<td><p>JSONField</p></td>
+<td><p>NULL</p></td>
+<td><p>Image data</p></td>
+</tr>
+<tr class="row-odd"><td><p>status</p></td>
+<td><p>CharField(10)</p></td>
+<td><p>DEFAULT ‘pending’</p></td>
+<td><p>Approval status</p></td>
+</tr>
+<tr class="row-even"><td><p>submitted_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW_ADD</p></td>
+<td><p>Submission timestamp</p></td>
+</tr>
+<tr class="row-odd"><td><p>reviewed_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>NULL</p></td>
+<td><p>Review timestamp</p></td>
+</tr>
+<tr class="row-even"><td><p>reviewed_by_id</p></td>
+<td><p>ForeignKey</p></td>
+<td><p>NULL</p></td>
+<td><p>Reviewer user</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Status Options:</strong></p>
+<ul class="simple">
+<li><p>pending, approved, rejected</p></li>
+</ul>
+</section>
+<section id="onboarding-customeronboarding">
+<h3>onboarding_customeronboarding<a class="headerlink" href="#onboarding-customeronboarding" title="Link to this heading"></a></h3>
+<p><strong>Customer onboarding questionnaire</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>AutoField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Auto-incrementing primary key</p></td>
+</tr>
+<tr class="row-odd"><td><p>user_id</p></td>
+<td><p>OneToOneField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Reference to auth_user</p></td>
+</tr>
+<tr class="row-even"><td><p>customer_type</p></td>
+<td><p>CharField(20)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Customer type</p></td>
+</tr>
+<tr class="row-odd"><td><p>preferred_communication</p></td>
+<td><p>CharField(20)</p></td>
+<td><p>DEFAULT ‘email’</p></td>
+<td><p>Communication preference</p></td>
+</tr>
+<tr class="row-even"><td><p>reminder_frequency</p></td>
+<td><p>CharField(15)</p></td>
+<td><p>DEFAULT ‘monthly’</p></td>
+<td><p>Reminder frequency</p></td>
+</tr>
+<tr class="row-odd"><td><p>service_radius</p></td>
+<td><p>CharField(5)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Service radius</p></td>
+</tr>
+<tr class="row-even"><td><p>monthly_maintenance_budget</p></td>
+<td><p>CharField(15)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Monthly budget</p></td>
+</tr>
+<tr class="row-odd"><td><p>mobile_service_interest</p></td>
+<td><p>BooleanField</p></td>
+<td><p>DEFAULT FALSE</p></td>
+<td><p>Mobile service interest</p></td>
+</tr>
+<tr class="row-even"><td><p>emergency_service_interest</p></td>
+<td><p>BooleanField</p></td>
+<td><p>DEFAULT FALSE</p></td>
+<td><p>Emergency service interest</p></td>
+</tr>
+<tr class="row-odd"><td><p>maintenance_knowledge</p></td>
+<td><p>CharField(15)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Maintenance knowledge level</p></td>
+</tr>
+<tr class="row-even"><td><p>current_mechanic</p></td>
+<td><p>CharField(200)</p></td>
+<td><p>NULL</p></td>
+<td><p>Current mechanic</p></td>
+</tr>
+<tr class="row-odd"><td><p>maintenance_tracking_method</p></td>
+<td><p>CharField(200)</p></td>
+<td><p>NULL</p></td>
+<td><p>Tracking method</p></td>
+</tr>
+<tr class="row-even"><td><p>biggest_maintenance_challenge</p></td>
+<td><p>TextField</p></td>
+<td><p>NULL</p></td>
+<td><p>Biggest challenge</p></td>
+</tr>
+<tr class="row-odd"><td><p>primary_goal</p></td>
+<td><p>CharField(25)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Primary goal</p></td>
+</tr>
+<tr class="row-even"><td><p>service_priority</p></td>
+<td><p>CharField(15)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Service priority</p></td>
+</tr>
+<tr class="row-odd"><td><p>preferred_payment_model</p></td>
+<td><p>CharField(20)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Payment model preference</p></td>
+</tr>
+<tr class="row-even"><td><p>parts_preference</p></td>
+<td><p>CharField(20)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Parts preference</p></td>
+</tr>
+<tr class="row-odd"><td><p>auto_insurance_provider</p></td>
+<td><p>CharField(100)</p></td>
+<td><p>NULL</p></td>
+<td><p>Insurance provider</p></td>
+</tr>
+<tr class="row-even"><td><p>vehicle_under_warranty</p></td>
+<td><p>BooleanField</p></td>
+<td><p>DEFAULT FALSE</p></td>
+<td><p>Warranty status</p></td>
+</tr>
+<tr class="row-odd"><td><p>extended_warranty_interest</p></td>
+<td><p>CharField(20)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Extended warranty interest</p></td>
+</tr>
+<tr class="row-even"><td><p>how_heard_about_service</p></td>
+<td><p>CharField(20)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Referral source</p></td>
+</tr>
+<tr class="row-odd"><td><p>potential_referrals</p></td>
+<td><p>BooleanField</p></td>
+<td><p>DEFAULT FALSE</p></td>
+<td><p>Potential referrals</p></td>
+</tr>
+<tr class="row-even"><td><p>interested_in_referral_rewards</p></td>
+<td><p>BooleanField</p></td>
+<td><p>DEFAULT FALSE</p></td>
+<td><p>Referral rewards interest</p></td>
+</tr>
+<tr class="row-odd"><td><p>status</p></td>
+<td><p>CharField(15)</p></td>
+<td><p>DEFAULT ‘in_progress’</p></td>
+<td><p>Onboarding status</p></td>
+</tr>
+<tr class="row-even"><td><p>completed_date</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>NULL</p></td>
+<td><p>Completion date</p></td>
+</tr>
+<tr class="row-odd"><td><p>created_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW_ADD</p></td>
+<td><p>Creation timestamp</p></td>
+</tr>
+<tr class="row-even"><td><p>updated_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW</p></td>
+<td><p>Update timestamp</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="onboarding-vehicleonboarding">
+<h3>onboarding_vehicleonboarding<a class="headerlink" href="#onboarding-vehicleonboarding" title="Link to this heading"></a></h3>
+<p><strong>Vehicle-specific onboarding</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Constraints</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>AutoField</p></td>
+<td><p>PRIMARY KEY</p></td>
+<td><p>Auto-incrementing primary key</p></td>
+</tr>
+<tr class="row-odd"><td><p>customer_onboarding_id</p></td>
+<td><p>OneToOneField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Reference to onboarding_customeronboarding</p></td>
+</tr>
+<tr class="row-even"><td><p>vin_number</p></td>
+<td><p>CharField(17)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Vehicle VIN</p></td>
+</tr>
+<tr class="row-odd"><td><p>make</p></td>
+<td><p>CharField(50)</p></td>
+<td><p>NULL</p></td>
+<td><p>Vehicle make</p></td>
+</tr>
+<tr class="row-even"><td><p>model</p></td>
+<td><p>CharField(50)</p></td>
+<td><p>NULL</p></td>
+<td><p>Vehicle model</p></td>
+</tr>
+<tr class="row-odd"><td><p>year</p></td>
+<td><p>IntegerField</p></td>
+<td><p>NULL</p></td>
+<td><p>Model year</p></td>
+</tr>
+<tr class="row-even"><td><p>primary_usage</p></td>
+<td><p>CharField(20)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Primary usage</p></td>
+</tr>
+<tr class="row-odd"><td><p>current_odometer</p></td>
+<td><p>PositiveIntegerField</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Current odometer</p></td>
+</tr>
+<tr class="row-even"><td><p>estimated_annual_mileage</p></td>
+<td><p>CharField(10)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Annual mileage estimate</p></td>
+</tr>
+<tr class="row-odd"><td><p>typical_driving_conditions</p></td>
+<td><p>CharField(15)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Driving conditions</p></td>
+</tr>
+<tr class="row-even"><td><p>current_condition</p></td>
+<td><p>CharField(10)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Current condition</p></td>
+</tr>
+<tr class="row-odd"><td><p>last_oil_change</p></td>
+<td><p>DateField</p></td>
+<td><p>NULL</p></td>
+<td><p>Last oil change</p></td>
+</tr>
+<tr class="row-even"><td><p>last_major_service</p></td>
+<td><p>DateField</p></td>
+<td><p>NULL</p></td>
+<td><p>Last major service</p></td>
+</tr>
+<tr class="row-odd"><td><p>current_problems</p></td>
+<td><p>TextField</p></td>
+<td><p>NULL</p></td>
+<td><p>Current problems</p></td>
+</tr>
+<tr class="row-even"><td><p>under_warranty</p></td>
+<td><p>BooleanField</p></td>
+<td><p>DEFAULT FALSE</p></td>
+<td><p>Warranty status</p></td>
+</tr>
+<tr class="row-odd"><td><p>warranty_expires</p></td>
+<td><p>DateField</p></td>
+<td><p>NULL</p></td>
+<td><p>Warranty expiration</p></td>
+</tr>
+<tr class="row-even"><td><p>maintenance_preference</p></td>
+<td><p>CharField(20)</p></td>
+<td><p>NOT NULL</p></td>
+<td><p>Maintenance preference</p></td>
+</tr>
+<tr class="row-odd"><td><p>vehicle_nickname</p></td>
+<td><p>CharField(50)</p></td>
+<td><p>NULL</p></td>
+<td><p>Vehicle nickname</p></td>
+</tr>
+<tr class="row-even"><td><p>added_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW_ADD</p></td>
+<td><p>Addition timestamp</p></td>
+</tr>
+<tr class="row-odd"><td><p>updated_at</p></td>
+<td><p>DateTimeField</p></td>
+<td><p>AUTO_NOW</p></td>
+<td><p>Update timestamp</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Constraints:</strong></p>
+<ul class="simple">
+<li><p>UNIQUE(customer_onboarding_id, vin_number)</p></li>
+</ul>
+</section>
+</section>
+<section id="relationships-overview">
+<h2>Relationships Overview<a class="headerlink" href="#relationships-overview" title="Link to this heading"></a></h2>
+<section id="primary-relationships">
+<h3>Primary Relationships<a class="headerlink" href="#primary-relationships" title="Link to this heading"></a></h3>
+<p><strong>Vehicle-Centric Relationships:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">vehicles_vehicle</span></code> → One-to-Many with <code class="docutils literal notranslate"><span class="pre">vehicles_vehicleownership</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vehicles_vehicle</span></code> → One-to-One with <code class="docutils literal notranslate"><span class="pre">vehicles_vehiclestatus</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vehicles_vehicle</span></code> → One-to-Many with <code class="docutils literal notranslate"><span class="pre">vehicles_vehiclehistory</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vehicles_vehicle</span></code> → One-to-Many with <code class="docutils literal notranslate"><span class="pre">vehicles_vehicleimage</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vehicles_vehicle</span></code> → One-to-One with <code class="docutils literal notranslate"><span class="pre">vehicles_vehiclevaluation</span></code></p></li>
+</ul>
+<p><strong>Equipment Relationships:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">vehicles_vehicle</span></code> → One-to-One with all <code class="docutils literal notranslate"><span class="pre">vehicle_equip_*</span></code> tables</p></li>
+</ul>
+<p><strong>Maintenance Relationships:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">vehicles_vehicle</span></code> → One-to-Many with <code class="docutils literal notranslate"><span class="pre">maintenance_assignedvehicleplan</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vehicles_vehicle</span></code> → One-to-Many with <code class="docutils literal notranslate"><span class="pre">maintenance_history_maintenancerecord</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vehicles_vehicle</span></code> → One-to-Many with <code class="docutils literal notranslate"><span class="pre">maintenance_history_inspection</span></code></p></li>
+</ul>
+<p><strong>Assessment Relationships:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">vehicles_vehicle</span></code> → One-to-Many with <code class="docutils literal notranslate"><span class="pre">assessments_vehicleassessment</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">assessments_vehicleassessment</span></code> → One-to-One with all assessment detail tables</p></li>
+</ul>
+<p><strong>Organization Relationships:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">organizations_organization</span></code> → One-to-Many with <code class="docutils literal notranslate"><span class="pre">organizations_organizationuser</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">organizations_organization</span></code> → One-to-Many with <code class="docutils literal notranslate"><span class="pre">organizations_organizationvehicle</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">organizations_organization</span></code> → One-to-One with <code class="docutils literal notranslate"><span class="pre">organizations_insuranceorganization</span></code></p></li>
+</ul>
+<p><strong>User Relationships:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">auth_user</span></code> → One-to-One with <code class="docutils literal notranslate"><span class="pre">users_profile</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">auth_user</span></code> → One-to-Many with <code class="docutils literal notranslate"><span class="pre">users_userrole</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">auth_user</span></code> → One-to-Many with <code class="docutils literal notranslate"><span class="pre">users_dataconsent</span></code></p></li>
+</ul>
+</section>
+<section id="foreign-key-constraints">
+<h3>Foreign Key Constraints<a class="headerlink" href="#foreign-key-constraints" title="Link to this heading"></a></h3>
+<p><strong>Cascade Deletions:</strong></p>
+<ul class="simple">
+<li><p>Vehicle deletion cascades to all related records</p></li>
+<li><p>User deletion cascades to profiles and roles</p></li>
+<li><p>Organization deletion cascades to memberships</p></li>
+</ul>
+<p><strong>Set NULL on Deletion:</strong></p>
+<ul class="simple">
+<li><p>Technician deletions set technician_id to NULL</p></li>
+<li><p>Reviewer deletions preserve records but remove reviewer reference</p></li>
+</ul>
+</section>
+<section id="indexes">
+<h3>Indexes<a class="headerlink" href="#indexes" title="Link to this heading"></a></h3>
+<p><strong>Performance Indexes:</strong></p>
+<ul class="simple">
+<li><p>VIN numbers (unique)</p></li>
+<li><p>Assessment IDs (unique)</p></li>
+<li><p>Date fields for time-based queries</p></li>
+<li><p>Status fields for filtering</p></li>
+<li><p>Foreign key relationships</p></li>
+</ul>
+<p><strong>Composite Indexes:</strong></p>
+<ul class="simple">
+<li><p>(vehicle_id, date) for maintenance records</p></li>
+<li><p>(organization_id, user_id) for memberships</p></li>
+<li><p>(assessment_id, status) for workflow queries</p></li>
+</ul>
+</section>
+</section>
+<section id="data-integrity-rules">
+<h2>Data Integrity Rules<a class="headerlink" href="#data-integrity-rules" title="Link to this heading"></a></h2>
+<section id="validation-rules">
+<h3>Validation Rules<a class="headerlink" href="#validation-rules" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>VIN Format</strong>: 17-character alphanumeric validation</p></li>
+<li><p><strong>Date Ranges</strong>: End dates must be after start dates</p></li>
+<li><p><strong>Numeric Ranges</strong>: Scores constrained to 0-100, risk scores 0-10</p></li>
+<li><p><strong>Status Transitions</strong>: Workflow status changes follow business rules</p></li>
+</ol>
+</section>
+<section id="business-rules">
+<h3>Business Rules<a class="headerlink" href="#business-rules" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Vehicle Ownership</strong>: Only one current owner per vehicle</p></li>
+<li><p><strong>Assessment Workflow</strong>: Status progression follows defined paths</p></li>
+<li><p><strong>Maintenance Scheduling</strong>: Due dates calculated from intervals</p></li>
+<li><p><strong>Insurance Compliance</strong>: Risk scores trigger automatic actions</p></li>
+</ol>
+</section>
+<section id="audit-trail">
+<h3>Audit Trail<a class="headerlink" href="#audit-trail" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>All major entities include created_at/updated_at timestamps</p></li>
+<li><p>Assessment history tracks all changes</p></li>
+<li><p>Version control for critical assessment data</p></li>
+<li><p>User activity logging for compliance</p></li>
+</ul>
+<hr class="docutils" />
+<p><em>This schema supports a comprehensive vehicle management system with maintenance tracking, insurance assessments, detailed inspections, and organizational workflows.</em></p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../technical-reference.html" class="btn btn-neutral float-left" title="Technical Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ERROR_HANDLING_DOCUMENTATION.html" class="btn btn-neutral float-right" title="Error Handling and User Feedback System Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Menzi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

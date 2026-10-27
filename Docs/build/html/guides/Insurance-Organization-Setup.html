@@ -1,0 +1,458 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Insurance Organization Setup Guide &mdash; Carfinity 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Vehicle Care and Maintenance" href="../vehicle-care.html" />
+    <link rel="prev" title="Django Admin Authentication Integration" href="Django-Admin-Authentication-Integration.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Carfinity
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Start Here</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../administration.html">Administration and Authentication</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Quick-Setup-Guide-Authentication-Groups.html">Quick Setup Guide: Group-Based Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Admin-Guide-Authentication-Groups.html">Administrator Guide: Setting Up Authentication Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Administrator-Guide-User-Permissions.html">Administrator Guide: Managing User Permissions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="authentication_setup.html">Configurable Group-Based Authentication Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Authentication-File-Structure-Documentation.html">Authentication System File Structure Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Django-Admin-Authentication-Integration.html">Django Admin Authentication Integration</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Insurance Organization Setup Guide</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#features-implemented">Features Implemented</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#enhanced-organization-model">1. Enhanced Organization Model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#extended-user-roles">2. Extended User Roles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#insuranceorganization-model">3. InsuranceOrganization Model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#admin-interface-enhancements">4. Admin Interface Enhancements</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#setup-instructions">Setup Instructions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#install-dependencies">1. Install Dependencies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#run-migrations">2. Run Migrations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-up-default-groups">3. Set Up Default Groups</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#add-urls-to-main-urlconf">4. Add URLs to Main URLconf</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#usage-guide">Usage Guide</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#creating-insurance-organizations">Creating Insurance Organizations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#linking-groups-to-organizations">Linking Groups to Organizations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#managing-organization-members">Managing Organization Members</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#group-permissions">Group Permissions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#api-endpoints">API Endpoints</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#template-views">Template Views</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ajax-endpoints">AJAX Endpoints</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#key-features">Key Features</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#automatic-group-management">Automatic Group Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#insurance-specific-features">Insurance-Specific Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#admin-interface">Admin Interface</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#models-overview">Models Overview</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#organization">Organization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#organizationuser">OrganizationUser</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#insuranceorganization">InsuranceOrganization</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#security-considerations">Security Considerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#common-issues">Common Issues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#migration-issues">Migration Issues</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#future-enhancements">Future Enhancements</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../vehicle-care.html">Vehicle Care and Maintenance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../inspections.html">Inspections and Assessments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../insurance-and-quotes.html">Insurance and Repair Quotes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../technical-reference.html">Technical Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project-history.html">Project History and Implementation Notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Carfinity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../administration.html">Administration and Authentication</a></li>
+      <li class="breadcrumb-item active">Insurance Organization Setup Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/Insurance-Organization-Setup.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="insurance-organization-setup-guide">
+<h1>Insurance Organization Setup Guide<a class="headerlink" href="#insurance-organization-setup-guide" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>This guide explains how to set up and use the insurance organization feature that links organizations to Django groups for permission management.</p>
+</section>
+<section id="features-implemented">
+<h2>Features Implemented<a class="headerlink" href="#features-implemented" title="Link to this heading"></a></h2>
+<section id="enhanced-organization-model">
+<h3>1. Enhanced Organization Model<a class="headerlink" href="#enhanced-organization-model" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">organization_type</span></code> field with choices including ‘insurance’</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">is_insurance_provider</span></code> boolean field</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">insurance_license_number</span></code> and <code class="docutils literal notranslate"><span class="pre">insurance_rating</span></code> fields</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">linked_groups</span></code> ManyToMany relationship with Django Groups</p></li>
+<li><p>Added methods for automatic group management</p></li>
+</ul>
+</section>
+<section id="extended-user-roles">
+<h3>2. Extended User Roles<a class="headerlink" href="#extended-user-roles" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Added insurance-specific roles: AGENT, UNDERWRITER, CLAIMS_ADJUSTER</p></li>
+<li><p>Automatic group assignment when users join organizations</p></li>
+<li><p>Automatic group removal when users leave organizations</p></li>
+</ul>
+</section>
+<section id="insuranceorganization-model">
+<h3>3. InsuranceOrganization Model<a class="headerlink" href="#insuranceorganization-model" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Extended insurance-specific data (NAIC number, A.M. Best rating, etc.)</p></li>
+<li><p>Business metrics tracking (total policies, premium volume)</p></li>
+<li><p>Risk management settings</p></li>
+<li><p>Notification preferences</p></li>
+</ul>
+</section>
+<section id="admin-interface-enhancements">
+<h3>4. Admin Interface Enhancements<a class="headerlink" href="#admin-interface-enhancements" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Group management interface in Organization admin</p></li>
+<li><p>Bulk actions for syncing members to groups</p></li>
+<li><p>Insurance details creation for insurance providers</p></li>
+<li><p>Visual indicators for linked groups and insurance status</p></li>
+</ul>
+</section>
+</section>
+<section id="setup-instructions">
+<h2>Setup Instructions<a class="headerlink" href="#setup-instructions" title="Link to this heading"></a></h2>
+<section id="install-dependencies">
+<h3>1. Install Dependencies<a class="headerlink" href="#install-dependencies" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>celery<span class="w"> </span>cloudinary
+</pre></div>
+</div>
+</section>
+<section id="run-migrations">
+<h3>2. Run Migrations<a class="headerlink" href="#run-migrations" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>manage.py<span class="w"> </span>makemigrations<span class="w"> </span>organizations
+python<span class="w"> </span>manage.py<span class="w"> </span>makemigrations<span class="w"> </span>insurance_app
+python<span class="w"> </span>manage.py<span class="w"> </span>migrate
+</pre></div>
+</div>
+</section>
+<section id="set-up-default-groups">
+<h3>3. Set Up Default Groups<a class="headerlink" href="#set-up-default-groups" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>manage.py<span class="w"> </span>setup_insurance_groups<span class="w"> </span>--create-sample-org
+</pre></div>
+</div>
+<p>This command will create:</p>
+<ul class="simple">
+<li><p>Insurance Admins group</p></li>
+<li><p>Insurance Agents group</p></li>
+<li><p>Underwriters group</p></li>
+<li><p>Claims Adjusters group</p></li>
+<li><p>Fleet Managers group</p></li>
+<li><p>Sample insurance organization with linked groups</p></li>
+</ul>
+</section>
+<section id="add-urls-to-main-urlconf">
+<h3>4. Add URLs to Main URLconf<a class="headerlink" href="#add-urls-to-main-urlconf" title="Link to this heading"></a></h3>
+<p>Add to your main <code class="docutils literal notranslate"><span class="pre">urls.py</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">path</span><span class="p">(</span><span class="s1">'organizations/'</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="s1">'organizations.urls'</span><span class="p">)),</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="usage-guide">
+<h2>Usage Guide<a class="headerlink" href="#usage-guide" title="Link to this heading"></a></h2>
+<section id="creating-insurance-organizations">
+<h3>Creating Insurance Organizations<a class="headerlink" href="#creating-insurance-organizations" title="Link to this heading"></a></h3>
+<ol class="arabic">
+<li><p><strong>Via Admin Interface:</strong></p>
+<ul class="simple">
+<li><p>Go to Django Admin → Organizations → Organizations</p></li>
+<li><p>Create new organization with <code class="docutils literal notranslate"><span class="pre">organization_type</span> <span class="pre">=</span> <span class="pre">'insurance'</span></code></p></li>
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">is_insurance_provider</span> <span class="pre">=</span> <span class="pre">True</span></code></p></li>
+<li><p>Select groups in the “Linked Groups” field</p></li>
+<li><p>Insurance details will be created automatically</p></li>
+</ul>
+</li>
+<li><p><strong>Via Management Command:</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>manage.py<span class="w"> </span>setup_insurance_groups<span class="w"> </span>--create-sample-org
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="linking-groups-to-organizations">
+<h3>Linking Groups to Organizations<a class="headerlink" href="#linking-groups-to-organizations" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>In Admin Interface:</strong></p>
+<ul class="simple">
+<li><p>Edit an organization</p></li>
+<li><p>In the “Group Management” section, select desired groups</p></li>
+<li><p>Save the organization</p></li>
+<li><p>All active members will automatically be added to selected groups</p></li>
+</ul>
+</li>
+<li><p><strong>Admin Actions:</strong></p>
+<ul class="simple">
+<li><p>Select organizations in the list view</p></li>
+<li><p>Use “Sync members to linked groups” action</p></li>
+<li><p>Use “Create insurance details for insurance providers” action</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="managing-organization-members">
+<h3>Managing Organization Members<a class="headerlink" href="#managing-organization-members" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Adding Users:</strong></p>
+<ul class="simple">
+<li><p>Go to Organization Users in admin</p></li>
+<li><p>Create new OrganizationUser record</p></li>
+<li><p>User will automatically be added to organization’s linked groups</p></li>
+</ul>
+</li>
+<li><p><strong>Removing Users:</strong></p>
+<ul class="simple">
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">is_active</span> <span class="pre">=</span> <span class="pre">False</span></code> or delete the OrganizationUser record</p></li>
+<li><p>User will automatically be removed from organization’s linked groups</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="group-permissions">
+<h3>Group Permissions<a class="headerlink" href="#group-permissions" title="Link to this heading"></a></h3>
+<p>The setup command creates groups with appropriate permissions:</p>
+<ul class="simple">
+<li><p><strong>Insurance Admins:</strong> Full access to insurance policies, organizations, and risk alerts</p></li>
+<li><p><strong>Insurance Agents:</strong> Can create/modify policies, view organizations</p></li>
+<li><p><strong>Underwriters:</strong> Can assess risk, modify policies, view condition scores</p></li>
+<li><p><strong>Claims Adjusters:</strong> Can view policies, manage accidents, view maintenance</p></li>
+<li><p><strong>Fleet Managers:</strong> Can manage organization vehicles and view policies</p></li>
+</ul>
+</section>
+</section>
+<section id="api-endpoints">
+<h2>API Endpoints<a class="headerlink" href="#api-endpoints" title="Link to this heading"></a></h2>
+<section id="template-views">
+<h3>Template Views<a class="headerlink" href="#template-views" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/organizations/</span></code> - List all organizations</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/organizations/&lt;id&gt;/</span></code> - Organization detail view</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/organizations/insurance/dashboard/</span></code> - Insurance dashboard</p></li>
+</ul>
+</section>
+<section id="ajax-endpoints">
+<h3>AJAX Endpoints<a class="headerlink" href="#ajax-endpoints" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/organizations/ajax/available-groups/</span></code> - Get available Django groups</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/organizations/ajax/&lt;org_id&gt;/link-group/</span></code> - Link group to organization</p></li>
+</ul>
+</section>
+</section>
+<section id="key-features">
+<h2>Key Features<a class="headerlink" href="#key-features" title="Link to this heading"></a></h2>
+<section id="automatic-group-management">
+<h3>Automatic Group Management<a class="headerlink" href="#automatic-group-management" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Users are automatically added to organization’s linked groups when they join</p></li>
+<li><p>Users are automatically removed from groups when they leave or become inactive</p></li>
+<li><p>Bulk sync functionality for existing members</p></li>
+</ul>
+</section>
+<section id="insurance-specific-features">
+<h3>Insurance-Specific Features<a class="headerlink" href="#insurance-specific-features" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Extended insurance organization data</p></li>
+<li><p>Business metrics tracking</p></li>
+<li><p>Risk management settings</p></li>
+<li><p>Integration with insurance policies</p></li>
+</ul>
+</section>
+<section id="admin-interface">
+<h3>Admin Interface<a class="headerlink" href="#admin-interface" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Visual indicators for insurance providers</p></li>
+<li><p>Group management interface</p></li>
+<li><p>Bulk actions for common tasks</p></li>
+<li><p>Comprehensive filtering and search</p></li>
+</ul>
+</section>
+</section>
+<section id="models-overview">
+<h2>Models Overview<a class="headerlink" href="#models-overview" title="Link to this heading"></a></h2>
+<section id="organization">
+<h3>Organization<a class="headerlink" href="#organization" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Basic organization information</p></li>
+<li><p>Type classification</p></li>
+<li><p>Insurance provider flag</p></li>
+<li><p>Group linking functionality</p></li>
+</ul>
+</section>
+<section id="organizationuser">
+<h3>OrganizationUser<a class="headerlink" href="#organizationuser" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>User-organization relationships</p></li>
+<li><p>Role-based access</p></li>
+<li><p>Automatic group management</p></li>
+</ul>
+</section>
+<section id="insuranceorganization">
+<h3>InsuranceOrganization<a class="headerlink" href="#insuranceorganization" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Extended insurance data</p></li>
+<li><p>Business metrics</p></li>
+<li><p>Risk settings</p></li>
+<li><p>Notification preferences</p></li>
+</ul>
+</section>
+</section>
+<section id="security-considerations">
+<h2>Security Considerations<a class="headerlink" href="#security-considerations" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><strong>Group Permissions:</strong> Ensure groups have appropriate permissions before linking</p></li>
+<li><p><strong>User Access:</strong> Review user roles and group memberships regularly</p></li>
+<li><p><strong>Insurance Data:</strong> Protect sensitive insurance information with proper permissions</p></li>
+<li><p><strong>Audit Trail:</strong> Monitor group membership changes through Django admin logs</p></li>
+</ol>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h2>
+<section id="common-issues">
+<h3>Common Issues<a class="headerlink" href="#common-issues" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Groups not syncing:</strong></p>
+<ul class="simple">
+<li><p>Use admin action “Sync members to linked groups”</p></li>
+<li><p>Check that users are active in the organization</p></li>
+</ul>
+</li>
+<li><p><strong>Insurance details missing:</strong></p>
+<ul class="simple">
+<li><p>Use admin action “Create insurance details for insurance providers”</p></li>
+<li><p>Ensure <code class="docutils literal notranslate"><span class="pre">is_insurance_provider</span> <span class="pre">=</span> <span class="pre">True</span></code></p></li>
+</ul>
+</li>
+<li><p><strong>Permissions not working:</strong></p>
+<ul class="simple">
+<li><p>Verify group permissions are set correctly</p></li>
+<li><p>Check user group memberships in Django admin</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="migration-issues">
+<h3>Migration Issues<a class="headerlink" href="#migration-issues" title="Link to this heading"></a></h3>
+<p>If you encounter migration issues due to missing dependencies:</p>
+<ol class="arabic simple">
+<li><p>Install required packages: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">celery</span> <span class="pre">cloudinary</span></code></p></li>
+<li><p>Comment out problematic imports in settings.py temporarily</p></li>
+<li><p>Run migrations</p></li>
+<li><p>Uncomment imports after installation</p></li>
+</ol>
+</section>
+</section>
+<section id="future-enhancements">
+<h2>Future Enhancements<a class="headerlink" href="#future-enhancements" title="Link to this heading"></a></h2>
+<p>Potential improvements:</p>
+<ul class="simple">
+<li><p>Role-based group mapping (different groups for different roles)</p></li>
+<li><p>Organization hierarchy support</p></li>
+<li><p>Advanced permission management</p></li>
+<li><p>Integration with external insurance systems</p></li>
+<li><p>Automated compliance reporting</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Django-Admin-Authentication-Integration.html" class="btn btn-neutral float-left" title="Django Admin Authentication Integration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../vehicle-care.html" class="btn btn-neutral float-right" title="Vehicle Care and Maintenance" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Menzi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

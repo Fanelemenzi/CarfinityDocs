@@ -1,0 +1,531 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Configurable Group-Based Authentication Setup &mdash; Carfinity 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Authentication System File Structure Documentation" href="Authentication-File-Structure-Documentation.html" />
+    <link rel="prev" title="Administrator Guide: Managing User Permissions" href="Administrator-Guide-User-Permissions.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Carfinity
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Start Here</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../administration.html">Administration and Authentication</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Quick-Setup-Guide-Authentication-Groups.html">Quick Setup Guide: Group-Based Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Admin-Guide-Authentication-Groups.html">Administrator Guide: Setting Up Authentication Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Administrator-Guide-User-Permissions.html">Administrator Guide: Managing User Permissions</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Configurable Group-Based Authentication Setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#system-overview">System Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#default-authentication-groups">Default Authentication Groups</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#customer-users-customers-group">1. Customer Users (customers group)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#insurance-company-users-insurance-company-group">2. Insurance Company Users (insurance_company group)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#initial-setup-instructions">Initial Setup Instructions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#option-1-automated-setup-recommended">Option 1: Automated Setup (Recommended)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#option-2-manual-django-admin-setup">Option 2: Manual Django Admin Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#option-3-legacy-group-setup">Option 3: Legacy Group Setup</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#authentication-group-configuration">Authentication Group Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#creating-new-authentication-groups">Creating New Authentication Groups</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-options">Configuration Options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example-configurations">Example Configurations</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#user-assignment-methods">User Assignment Methods</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#automatic-assignment-recommended">1. Automatic Assignment (Recommended)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#manual-assignment">2. Manual Assignment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#organization-based-assignment">3. Organization-Based Assignment</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#enhanced-authentication-flow">Enhanced Authentication Flow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#administrative-tools">Administrative Tools</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#authentication-group-management-admin-users-auth-group-management">Authentication Group Management (<code class="docutils literal notranslate"><span class="pre">/admin/users/auth-group-management/</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#user-permissions-overview-admin-users-user-permissions">User Permissions Overview (<code class="docutils literal notranslate"><span class="pre">/admin/users/user-permissions/</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#organization-group-management-admin-organizations-group-management">Organization Group Management (<code class="docutils literal notranslate"><span class="pre">/admin/organizations/group-management/</span></code>)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#url-configuration-dynamic">URL Configuration (Dynamic)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#default-urls">Default URLs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configurable-dashboard-urls">Configurable Dashboard URLs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#management-commands">Management Commands</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#setup-authentication-groups">Setup Authentication Groups</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#legacy-group-setup">Legacy Group Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#system-management">System Management</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#security-features">Security Features</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#enhanced-security">Enhanced Security</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#access-control">Access Control</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#session-management">Session Management</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#migration-from-legacy-system">Migration from Legacy System</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#for-existing-installations">For Existing Installations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#backward-compatibility">Backward Compatibility</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#common-issues">Common Issues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#diagnostic-tools">Diagnostic Tools</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Authentication-File-Structure-Documentation.html">Authentication System File Structure Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Django-Admin-Authentication-Integration.html">Django Admin Authentication Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Insurance-Organization-Setup.html">Insurance Organization Setup Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../vehicle-care.html">Vehicle Care and Maintenance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../inspections.html">Inspections and Assessments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../insurance-and-quotes.html">Insurance and Repair Quotes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../technical-reference.html">Technical Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project-history.html">Project History and Implementation Notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Carfinity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../administration.html">Administration and Authentication</a></li>
+      <li class="breadcrumb-item active">Configurable Group-Based Authentication Setup</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/authentication_setup.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="configurable-group-based-authentication-setup">
+<h1>Configurable Group-Based Authentication Setup<a class="headerlink" href="#configurable-group-based-authentication-setup" title="Link to this heading"></a></h1>
+<p>This document describes the setup and configuration of the flexible group-based authentication system that allows administrators to dynamically configure authentication groups without code changes.</p>
+<section id="system-overview">
+<h2>System Overview<a class="headerlink" href="#system-overview" title="Link to this heading"></a></h2>
+<p>The authentication system now uses <strong>configurable authentication groups</strong> instead of hardcoded groups. Administrators can:</p>
+<ul class="simple">
+<li><p>Create any number of authentication groups</p></li>
+<li><p>Configure dashboard access for each group</p></li>
+<li><p>Set priorities for multi-group users</p></li>
+<li><p>Define organization type compatibility</p></li>
+<li><p>Enable/disable groups without deletion</p></li>
+</ul>
+</section>
+<section id="default-authentication-groups">
+<h2>Default Authentication Groups<a class="headerlink" href="#default-authentication-groups" title="Link to this heading"></a></h2>
+<p>The system comes with two default authentication groups that can be customized:</p>
+<section id="customer-users-customers-group">
+<h3>1. Customer Users (customers group)<a class="headerlink" href="#customer-users-customers-group" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Purpose</strong>: Regular customers accessing vehicle and maintenance information</p></li>
+<li><p><strong>Dashboard</strong>: Customer Dashboard (<code class="docutils literal notranslate"><span class="pre">/dashboard/</span></code>)</p></li>
+<li><p><strong>Priority</strong>: 1 (lower priority)</p></li>
+<li><p><strong>Compatible Organizations</strong>: fleet, dealership, service, other</p></li>
+</ul>
+</section>
+<section id="insurance-company-users-insurance-company-group">
+<h3>2. Insurance Company Users (insurance_company group)<a class="headerlink" href="#insurance-company-users-insurance-company-group" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Purpose</strong>: Insurance company users accessing policies and risk assessments</p></li>
+<li><p><strong>Dashboard</strong>: Insurance Dashboard (<code class="docutils literal notranslate"><span class="pre">/insurance/</span></code>)</p></li>
+<li><p><strong>Priority</strong>: 2 (higher priority - becomes default for multi-group users)</p></li>
+<li><p><strong>Compatible Organizations</strong>: insurance</p></li>
+</ul>
+</section>
+</section>
+<section id="initial-setup-instructions">
+<h2>Initial Setup Instructions<a class="headerlink" href="#initial-setup-instructions" title="Link to this heading"></a></h2>
+<section id="option-1-automated-setup-recommended">
+<h3>Option 1: Automated Setup (Recommended)<a class="headerlink" href="#option-1-automated-setup-recommended" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run the setup command to create default authentication groups</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>setup_auth_groups
+
+<span class="c1"># To reset and recreate all configurations</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>setup_auth_groups<span class="w"> </span>--reset
+</pre></div>
+</div>
+</section>
+<section id="option-2-manual-django-admin-setup">
+<h3>Option 2: Manual Django Admin Setup<a class="headerlink" href="#option-2-manual-django-admin-setup" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Log into Django Admin as a superuser</p></li>
+<li><p>Navigate to <strong>“Authentication Group Management”</strong> in the main admin dashboard</p></li>
+<li><p>Click <strong>“Setup Default Groups”</strong> or manually add authentication groups</p></li>
+<li><p>Configure each group’s dashboard access and settings</p></li>
+</ol>
+</section>
+<section id="option-3-legacy-group-setup">
+<h3>Option 3: Legacy Group Setup<a class="headerlink" href="#option-3-legacy-group-setup" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create basic Django groups (legacy method)</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>setup_groups
+</pre></div>
+</div>
+</section>
+</section>
+<section id="authentication-group-configuration">
+<h2>Authentication Group Configuration<a class="headerlink" href="#authentication-group-configuration" title="Link to this heading"></a></h2>
+<section id="creating-new-authentication-groups">
+<h3>Creating New Authentication Groups<a class="headerlink" href="#creating-new-authentication-groups" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Access Authentication Group Management</strong>:</p>
+<ul class="simple">
+<li><p>Go to Django Admin → <strong>“Group-Based Authentication Management”</strong></p></li>
+<li><p>Click <strong>“Authentication Group Management”</strong></p></li>
+</ul>
+</li>
+<li><p><strong>Create Django Group</strong> (if needed):</p>
+<ul class="simple">
+<li><p>Go to <strong>Groups</strong> → <strong>Add Group</strong></p></li>
+<li><p>Create the base Django group (e.g., “technicians”, “managers”)</p></li>
+</ul>
+</li>
+<li><p><strong>Configure Authentication Group</strong>:</p>
+<ul class="simple">
+<li><p>Go to <strong>Authentication Group Configurations</strong> → <strong>Add Authentication Group Configuration</strong></p></li>
+<li><p>Link to the Django group</p></li>
+<li><p>Configure dashboard access and settings</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="configuration-options">
+<h3>Configuration Options<a class="headerlink" href="#configuration-options" title="Link to this heading"></a></h3>
+<section id="dashboard-types">
+<h4>Dashboard Types<a class="headerlink" href="#dashboard-types" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>customer</strong> - Customer dashboard for vehicle/maintenance access</p></li>
+<li><p><strong>insurance</strong> - Insurance dashboard for policies and risk assessment</p></li>
+<li><p><strong>admin</strong> - Administrative dashboard with full system access</p></li>
+<li><p><strong>technician</strong> - Service technician dashboard for maintenance tools</p></li>
+<li><p><strong>custom</strong> - Custom dashboard implementations</p></li>
+</ul>
+</section>
+<section id="priority-system">
+<h4>Priority System<a class="headerlink" href="#priority-system" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Higher priority groups become the default dashboard for multi-group users</p></li>
+<li><p>Priority 1 = lowest, higher numbers = higher priority</p></li>
+<li><p>Example: insurance_company (priority 2) overrides customers (priority 1)</p></li>
+</ul>
+</section>
+<section id="organization-compatibility">
+<h4>Organization Compatibility<a class="headerlink" href="#organization-compatibility" title="Link to this heading"></a></h4>
+<p>Configure which organization types automatically get assigned to each group:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s2">"insurance"</span><span class="p">,</span><span class="w"> </span><span class="s2">"fleet"</span><span class="p">,</span><span class="w"> </span><span class="s2">"dealership"</span><span class="p">,</span><span class="w"> </span><span class="s2">"service"</span><span class="p">,</span><span class="w"> </span><span class="s2">"other"</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="example-configurations">
+<h3>Example Configurations<a class="headerlink" href="#example-configurations" title="Link to this heading"></a></h3>
+<section id="service-technician-group">
+<h4>Service Technician Group<a class="headerlink" href="#service-technician-group" title="Link to this heading"></a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Group</span><span class="p">:</span> <span class="n">technicians</span>
+<span class="n">Display</span> <span class="n">Name</span><span class="p">:</span> <span class="n">Service</span> <span class="n">Technicians</span>
+<span class="n">Dashboard</span> <span class="n">Type</span><span class="p">:</span> <span class="n">technician</span>
+<span class="n">Dashboard</span> <span class="n">URL</span><span class="p">:</span> <span class="o">/</span><span class="n">technician</span><span class="o">/</span>
+<span class="n">Priority</span><span class="p">:</span> <span class="mi">1</span>
+<span class="n">Compatible</span> <span class="n">Org</span> <span class="n">Types</span><span class="p">:</span> <span class="p">[</span><span class="s2">"service"</span><span class="p">,</span> <span class="s2">"dealership"</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="fleet-manager-group">
+<h4>Fleet Manager Group<a class="headerlink" href="#fleet-manager-group" title="Link to this heading"></a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Group</span><span class="p">:</span> <span class="n">fleet_managers</span>
+<span class="n">Display</span> <span class="n">Name</span><span class="p">:</span> <span class="n">Fleet</span> <span class="n">Managers</span>
+<span class="n">Dashboard</span> <span class="n">Type</span><span class="p">:</span> <span class="n">customer</span>
+<span class="n">Dashboard</span> <span class="n">URL</span><span class="p">:</span> <span class="o">/</span><span class="n">fleet</span><span class="o">-</span><span class="n">dashboard</span><span class="o">/</span>
+<span class="n">Priority</span><span class="p">:</span> <span class="mi">3</span>
+<span class="n">Compatible</span> <span class="n">Org</span> <span class="n">Types</span><span class="p">:</span> <span class="p">[</span><span class="s2">"fleet"</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="user-assignment-methods">
+<h2>User Assignment Methods<a class="headerlink" href="#user-assignment-methods" title="Link to this heading"></a></h2>
+<section id="automatic-assignment-recommended">
+<h3>1. Automatic Assignment (Recommended)<a class="headerlink" href="#automatic-assignment-recommended" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Users are automatically assigned to groups based on their organization type</p></li>
+<li><p>Configured through <strong>Organization Group Management</strong></p></li>
+<li><p>Uses the compatibility settings from authentication group configurations</p></li>
+</ul>
+</section>
+<section id="manual-assignment">
+<h3>2. Manual Assignment<a class="headerlink" href="#manual-assignment" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Django Admin</strong>: Edit user → Groups section → Add to groups</p></li>
+<li><p><strong>Bulk Management</strong>: Use <strong>Bulk User Management</strong> for multiple users</p></li>
+<li><p><strong>Organization Admin</strong>: Manage through organization member management</p></li>
+</ul>
+</section>
+<section id="organization-based-assignment">
+<h3>3. Organization-Based Assignment<a class="headerlink" href="#organization-based-assignment" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Organization Linking</strong>: Organizations can be linked to specific groups</p></li>
+<li><p><strong>Auto-sync</strong>: Members automatically get organization’s linked groups</p></li>
+<li><p><strong>Compatibility Matching</strong>: System recommends groups based on organization type</p></li>
+</ul>
+</section>
+</section>
+<section id="enhanced-authentication-flow">
+<h2>Enhanced Authentication Flow<a class="headerlink" href="#enhanced-authentication-flow" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><strong>User Login</strong>: User submits credentials</p></li>
+<li><p><strong>Group Resolution</strong>: System checks user’s authentication groups (not just Django groups)</p></li>
+<li><p><strong>Dashboard Selection</strong>:</p>
+<ul class="simple">
+<li><p>Single active group → Direct redirect to group’s dashboard</p></li>
+<li><p>Multiple active groups → Dashboard selector or highest priority dashboard</p></li>
+<li><p>No active groups → Error page with guidance</p></li>
+</ul>
+</li>
+<li><p><strong>Permission Validation</strong>: Ongoing validation using configurable group permissions</p></li>
+<li><p><strong>Conflict Resolution</strong>: System handles conflicts between group and organization permissions</p></li>
+</ol>
+</section>
+<section id="administrative-tools">
+<h2>Administrative Tools<a class="headerlink" href="#administrative-tools" title="Link to this heading"></a></h2>
+<section id="authentication-group-management-admin-users-auth-group-management">
+<h3>Authentication Group Management (<code class="docutils literal notranslate"><span class="pre">/admin/users/auth-group-management/</span></code>)<a class="headerlink" href="#authentication-group-management-admin-users-auth-group-management" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Overview Dashboard</strong>: Statistics and group status</p></li>
+<li><p><strong>Configuration Testing</strong>: Test group configurations for conflicts</p></li>
+<li><p><strong>Bulk Operations</strong>: Activate/deactivate multiple groups</p></li>
+<li><p><strong>Unconfigured Groups</strong>: Identify Django groups needing authentication configuration</p></li>
+</ul>
+</section>
+<section id="user-permissions-overview-admin-users-user-permissions">
+<h3>User Permissions Overview (<code class="docutils literal notranslate"><span class="pre">/admin/users/user-permissions/</span></code>)<a class="headerlink" href="#user-permissions-overview-admin-users-user-permissions" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>User Dashboard Access</strong>: See which dashboards each user can access</p></li>
+<li><p><strong>Group Sync Status</strong>: Identify users with sync issues</p></li>
+<li><p><strong>Conflict Detection</strong>: Find and resolve permission conflicts</p></li>
+<li><p><strong>Bulk User Management</strong>: Perform bulk operations on user groups</p></li>
+</ul>
+</section>
+<section id="organization-group-management-admin-organizations-group-management">
+<h3>Organization Group Management (<code class="docutils literal notranslate"><span class="pre">/admin/organizations/group-management/</span></code>)<a class="headerlink" href="#organization-group-management-admin-organizations-group-management" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Organization-Group Links</strong>: Visual mapping of organization-group relationships</p></li>
+<li><p><strong>Member Sync Status</strong>: See which organization members need group sync</p></li>
+<li><p><strong>Automatic Recommendations</strong>: System suggests appropriate groups for organizations</p></li>
+<li><p><strong>One-click Sync</strong>: Fix sync issues with single button clicks</p></li>
+</ul>
+</section>
+</section>
+<section id="url-configuration-dynamic">
+<h2>URL Configuration (Dynamic)<a class="headerlink" href="#url-configuration-dynamic" title="Link to this heading"></a></h2>
+<p>The system now dynamically generates URL patterns based on authentication group configurations:</p>
+<section id="default-urls">
+<h3>Default URLs<a class="headerlink" href="#default-urls" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/login/</span></code> - Login page</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/logout/</span></code> - Logout functionality</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/register/</span></code> - User registration</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/dashboard-selector/</span></code> - Multi-dashboard selection (when user has multiple groups)</p></li>
+</ul>
+</section>
+<section id="configurable-dashboard-urls">
+<h3>Configurable Dashboard URLs<a class="headerlink" href="#configurable-dashboard-urls" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Configured per authentication group</p></li>
+<li><p>Examples: <code class="docutils literal notranslate"><span class="pre">/dashboard/</span></code>, <code class="docutils literal notranslate"><span class="pre">/insurance/</span></code>, <code class="docutils literal notranslate"><span class="pre">/technician/</span></code>, <code class="docutils literal notranslate"><span class="pre">/fleet-dashboard/</span></code></p></li>
+<li><p>System validates URL format and checks for conflicts</p></li>
+</ul>
+</section>
+</section>
+<section id="management-commands">
+<h2>Management Commands<a class="headerlink" href="#management-commands" title="Link to this heading"></a></h2>
+<section id="setup-authentication-groups">
+<h3>Setup Authentication Groups<a class="headerlink" href="#setup-authentication-groups" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create default authentication group configurations</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>setup_auth_groups
+
+<span class="c1"># Reset all configurations and recreate defaults</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>setup_auth_groups<span class="w"> </span>--reset
+</pre></div>
+</div>
+</section>
+<section id="legacy-group-setup">
+<h3>Legacy Group Setup<a class="headerlink" href="#legacy-group-setup" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create basic Django groups (for backward compatibility)</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>setup_groups
+</pre></div>
+</div>
+</section>
+<section id="system-management">
+<h3>System Management<a class="headerlink" href="#system-management" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check for permission conflicts</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>manage_auth_system<span class="w"> </span>check-conflicts
+
+<span class="c1"># Fix permission issues automatically  </span>
+python<span class="w"> </span>manage.py<span class="w"> </span>manage_auth_system<span class="w"> </span>fix-permissions<span class="w"> </span>--fix
+
+<span class="c1"># Generate comprehensive permission report</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>manage_auth_system<span class="w"> </span>generate-report<span class="w"> </span>--output<span class="w"> </span>report.csv
+
+<span class="c1"># Validate entire authentication system</span>
+python<span class="w"> </span>manage.py<span class="w"> </span>manage_auth_system<span class="w"> </span>validate-system
+</pre></div>
+</div>
+</section>
+</section>
+<section id="security-features">
+<h2>Security Features<a class="headerlink" href="#security-features" title="Link to this heading"></a></h2>
+<section id="enhanced-security">
+<h3>Enhanced Security<a class="headerlink" href="#enhanced-security" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Dynamic permission validation</strong> using configurable groups</p></li>
+<li><p><strong>Priority-based access control</strong> prevents unauthorized dashboard access</p></li>
+<li><p><strong>Organization-group compatibility validation</strong> ensures proper access levels</p></li>
+<li><p><strong>Conflict detection and resolution</strong> for complex permission scenarios</p></li>
+<li><p><strong>Audit trail</strong> for all authentication group configuration changes</p></li>
+</ul>
+</section>
+<section id="access-control">
+<h3>Access Control<a class="headerlink" href="#access-control" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Active/Inactive groups</strong>: Disable groups without deleting configurations</p></li>
+<li><p><strong>URL validation</strong>: Ensures dashboard URLs are properly formatted</p></li>
+<li><p><strong>Conflict prevention</strong>: System detects and warns about conflicting configurations</p></li>
+<li><p><strong>Fallback mechanisms</strong>: Falls back to default behavior if configurations are missing</p></li>
+</ul>
+</section>
+<section id="session-management">
+<h3>Session Management<a class="headerlink" href="#session-management" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Secure logout</strong> with session cleanup</p></li>
+<li><p><strong>Multi-dashboard session handling</strong> for users with multiple group access</p></li>
+<li><p><strong>Permission caching</strong> for improved performance</p></li>
+<li><p><strong>Real-time permission updates</strong> when group configurations change</p></li>
+</ul>
+</section>
+</section>
+<section id="migration-from-legacy-system">
+<h2>Migration from Legacy System<a class="headerlink" href="#migration-from-legacy-system" title="Link to this heading"></a></h2>
+<section id="for-existing-installations">
+<h3>For Existing Installations<a class="headerlink" href="#for-existing-installations" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Run setup command</strong>: <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">manage.py</span> <span class="pre">setup_auth_groups</span></code></p></li>
+<li><p><strong>Verify configurations</strong>: Check Authentication Group Management dashboard</p></li>
+<li><p><strong>Test user access</strong>: Ensure existing users can still access their dashboards</p></li>
+<li><p><strong>Customize as needed</strong>: Modify configurations through admin interface</p></li>
+</ol>
+</section>
+<section id="backward-compatibility">
+<h3>Backward Compatibility<a class="headerlink" href="#backward-compatibility" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>System falls back to hardcoded mappings if no configurations exist</p></li>
+<li><p>Existing Django groups continue to work</p></li>
+<li><p>Legacy management commands still function</p></li>
+<li><p>No breaking changes to existing user assignments</p></li>
+</ul>
+</section>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h2>
+<section id="common-issues">
+<h3>Common Issues<a class="headerlink" href="#common-issues" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Users can’t access dashboards</strong>: Check if authentication groups are active and properly configured</p></li>
+<li><p><strong>Wrong dashboard redirect</strong>: Verify group priorities and user group assignments</p></li>
+<li><p><strong>Organization sync issues</strong>: Use bulk sync actions in organization management</p></li>
+<li><p><strong>URL conflicts</strong>: Check for duplicate dashboard URLs in authentication group configurations</p></li>
+</ol>
+</section>
+<section id="diagnostic-tools">
+<h3>Diagnostic Tools<a class="headerlink" href="#diagnostic-tools" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Test Config button</strong>: Test individual authentication group configurations</p></li>
+<li><p><strong>Permission Conflicts Report</strong>: Identify and resolve permission conflicts</p></li>
+<li><p><strong>User Permissions Overview</strong>: See detailed permission status for all users</p></li>
+<li><p><strong>System validation command</strong>: Comprehensive system health check</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Administrator-Guide-User-Permissions.html" class="btn btn-neutral float-left" title="Administrator Guide: Managing User Permissions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Authentication-File-Structure-Documentation.html" class="btn btn-neutral float-right" title="Authentication System File Structure Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Menzi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

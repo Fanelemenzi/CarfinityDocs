@@ -1,0 +1,809 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Insurance Claims Assessment Dashboard &mdash; Carfinity 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Insurance Risk Assessment Platform - Implementation Guide" href="Insurance-risk-assessment-implementation.html" />
+    <link rel="prev" title="Insurance Claims Agent Dashboard Specification" href="insurance_claims_dashboard.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Carfinity
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Start Here</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../administration.html">Administration and Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vehicle-care.html">Vehicle Care and Maintenance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../inspections.html">Inspections and Assessments</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../insurance-and-quotes.html">Insurance and Repair Quotes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="insurance_claims_dashboard.html">Insurance Claims Agent Dashboard Specification</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Insurance Claims Assessment Dashboard</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dashboard-workflow-overview">Dashboard Workflow Overview</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#primary-user-journey">Primary User Journey</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#main-claims-table-dashboard">1. MAIN CLAIMS TABLE DASHBOARD</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#header-section">Header Section</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#claims-overview-table">Claims Overview Table</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#quick-stats-panel">Quick Stats Panel</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#claim-detail-view-after-clicking-view">2. CLAIM DETAIL VIEW (After Clicking [VIEW])</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#claim-header">Claim Header</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#executive-summary-panel">Executive Summary Panel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vehicle-assessment-sections-navigation">Vehicle Assessment Sections Navigation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#interactive-vehicle-damage-map">Interactive Vehicle Damage Map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#multi-source-estimate-comparison">Multi-Source Estimate Comparison</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#settlement-calculation-dashboard">Settlement Calculation Dashboard</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#photo-gallery-overview">Photo Gallery Overview</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#component-detail-view-after-clicking-section">3. COMPONENT DETAIL VIEW (After Clicking Section)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#section-header-example-exterior-damage-clicked">Section Header (Example: EXTERIOR DAMAGE clicked)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#detailed-component-assessment">Detailed Component Assessment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#side-panel-assessment-points-11-20">Side Panel Assessment (Points 11-20)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#interactive-photo-viewer">Interactive Photo Viewer</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#section-summary-view">4. SECTION SUMMARY VIEW</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#assessment-progress-tracker">Assessment Progress Tracker</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#quick-actions-panel">5. QUICK ACTIONS PANEL</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#decision-support-tools">Decision Support Tools</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#mobile-view-adaptations">6. MOBILE VIEW ADAPTATIONS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mobile-claims-table">Mobile Claims Table</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mobile-component-view">Mobile Component View</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#navigation-flow-summary">Navigation Flow Summary</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#user-journey-map">User Journey Map</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#key-features">Key Features</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Insurance-risk-assessment-implementation.html">Insurance Risk Assessment Platform - Implementation Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Parts-Based-Quote-System-Workflow-Guide.html">Parts-Based Quote System - Complete Workflow Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parts_based_quote_system.html">Parts-Based Repair Quotation System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Parts-Based-Quote-System-Build-Guide.html">Parts-Based Quote System - Build Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="repair-cost-calculation-system.html">Insurance Assessment Repair Cost Calculation System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="repair-quotes-comparison-system.html">Repair Quotes Comparison System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="settlement-calculator-system.html">Settlement Calculator System</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../technical-reference.html">Technical Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project-history.html">Project History and Implementation Notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Carfinity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../insurance-and-quotes.html">Insurance and Repair Quotes</a></li>
+      <li class="breadcrumb-item active">Insurance Claims Assessment Dashboard</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/new_assessment_dashboard.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="insurance-claims-assessment-dashboard">
+<h1>Insurance Claims Assessment Dashboard<a class="headerlink" href="#insurance-claims-assessment-dashboard" title="Link to this heading"></a></h1>
+<section id="dashboard-workflow-overview">
+<h2>Dashboard Workflow Overview<a class="headerlink" href="#dashboard-workflow-overview" title="Link to this heading"></a></h2>
+<section id="primary-user-journey">
+<h3>Primary User Journey<a class="headerlink" href="#primary-user-journey" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Claims Table View</strong> - Main dashboard with all claims in tabular format</p></li>
+<li><p><strong>Claim Detail View</strong> - Clicked claim expands to show full assessment information</p></li>
+<li><p><strong>Component Assessment</strong> - Detailed breakdown of each vehicle section with interactive elements</p></li>
+</ol>
+</section>
+</section>
+<section id="main-claims-table-dashboard">
+<h2>1. MAIN CLAIMS TABLE DASHBOARD<a class="headerlink" href="#main-claims-table-dashboard" title="Link to this heading"></a></h2>
+<section id="header-section">
+<h3>Header Section<a class="headerlink" href="#header-section" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Company Logo &amp; Branding</strong></p></li>
+<li><p><strong>Agent Profile</strong>: John Smith | Senior Adjuster | Last Login: 2024-09-24 08:30</p></li>
+<li><p><strong>Quick Actions</strong>: New Assessment | Advanced Search | Export Data | Settings</p></li>
+<li><p><strong>Notifications</strong>: 🔔 (5) Priority alerts</p></li>
+<li><p><strong>Dashboard Stats Bar</strong>: 42 Active | 15 Pending | 4.2h Avg Time | £1.2M Pipeline</p></li>
+</ul>
+</section>
+<section id="claims-overview-table">
+<h3>Claims Overview Table<a class="headerlink" href="#claims-overview-table" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>╭─────────────────── ALL CLAIMS DASHBOARD ───────────────────╮
+│                                                            │
+│ Filters: [All Status ▼] [This Month ▼] [High Value ▼]     │
+│ Search: [___________________________] 🔍                   │
+│                                                            │
+│┌────────────────────────────────────────────────────────┐ │
+││ Showing 25 of 147 claims | Page 1 of 6    [◀] [▶]     ││ │
+│└────────────────────────────────────────────────────────┘ │
+│                                                            │
+│┌─────┬───────────┬─────────────┬─────────┬──────┬────────┐ │
+││ 🚨  │ CLAIM ID  │   VEHICLE   │  VALUE  │STATUS│ ACTION ││ │
+│├─────┼───────────┼─────────────┼─────────┼──────┼────────┤ │
+││ 🔴  │INS-8847   │2019 BMW 320i│ £35,000 │URGENT│[VIEW]  ││ │
+││     │Sep 15     │VIN: WBA8E9G │Total Los│18h   │        ││ │
+││     │Smith, J.  │             │         │      │        ││ │
+│├─────┼───────────┼─────────────┼─────────┼──────┼────────┤ │
+││ 🟡  │INS-8848   │2021 Audi A4 │ £12,500 │REVEW │[VIEW]  ││ │
+││     │Sep 16     │VIN: WAUZZZF │Moderate │24h   │        ││ │
+││     │Brown, M.  │             │         │      │        ││ │
+│├─────┼───────────┼─────────────┼─────────┼──────┼────────┤ │
+││ 🟢  │INS-8849   │2018 Ford    │ £4,200  │READY │[VIEW]  ││ │
+││     │Sep 16     │Focus VIN:   │Minor    │2h    │        ││ │
+││     │Davis, L.  │WF0AXXGCDA   │         │      │        ││ │
+│├─────┼───────────┼─────────────┼─────────┼──────┼────────┤ │
+││ 🔵  │INS-8850   │2020 Mercedes│ £18,900 │PROG  │[VIEW]  ││ │
+││     │Sep 17     │C-Class VIN: │Major    │12h   │        ││ │
+││     │Wilson, R. │WDD2053022A  │         │      │        ││ │
+│├─────┼───────────┼─────────────┼─────────┼──────┼────────┤ │
+││ 🟠  │INS-8851   │2017 VW Golf │ £8,750  │INFO  │[VIEW]  ││ │
+││     │Sep 17     │VIN: WVWZZZ1K│Moderate │48h   │        ││ │
+││     │Taylor, S. │             │         │      │        ││ │
+└┴─────┴───────────┴─────────────┴─────────┴──────┴────────┘ │
+│                                                            │
+│ Status Legend:                                             │
+│ 🔴 URGENT - Immediate attention required                   │
+│ 🟡 REVIEW - Pending assessor review                       │  
+│ 🟢 READY - Approved, ready for settlement                 │
+│ 🔵 PROG - Assessment in progress                          │
+│ 🟠 INFO - Additional information required                 │
+│                                                            │
+╰────────────────────────────────────────────────────────────╯
+</pre></div>
+</div>
+</section>
+<section id="quick-stats-panel">
+<h3>Quick Stats Panel<a class="headerlink" href="#quick-stats-panel" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>┌─── TODAY'S METRICS ───┐  ┌─── PRIORITY QUEUE ───┐
+│ New Claims:      8    │  │ SLA Risk:        5    │
+│ Completed:      15    │  │ High Value:      3    │
+│ In Progress:    23    │  │ Structural:      2    │
+│ Avg Response:  4.2h   │  │ Fraud Flags:     1    │
+└───────────────────────┘  └───────────────────────┘
+</pre></div>
+</div>
+</section>
+</section>
+<section id="claim-detail-view-after-clicking-view">
+<h2>2. CLAIM DETAIL VIEW (After Clicking [VIEW])<a class="headerlink" href="#claim-detail-view-after-clicking-view" title="Link to this heading"></a></h2>
+<section id="claim-header">
+<h3>Claim Header<a class="headerlink" href="#claim-header" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>╭─────────────────── CLAIM DETAILS: INS-8847 ────────────────────╮
+│                                                                │
+│ ← Back to Claims List                    Status: [IN PROGRESS] │
+│                                                                │
+│ Assessment ID: INS-2024-8847                                   │
+│ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ │
+│ Vehicle: 2019 BMW 320i | VIN: WBA8E9G50KNU12345               │
+│ Customer: John Smith | Policy: POL-789456123                  │
+│ Incident: M25 Junction 15 | Date: 2024-09-15 14:30           │
+│ Assessor: Sarah Johnson (Level 3) | Assigned: 2024-09-16      │
+│                                                                │
+│ 🚨 TOTAL LOSS CANDIDATE  🚨 STRUCTURAL DAMAGE  ⏰ 18h 42m SLA │
+│                                                                │
+╰────────────────────────────────────────────────────────────────╯
+</pre></div>
+</div>
+</section>
+<section id="executive-summary-panel">
+<h3>Executive Summary Panel<a class="headerlink" href="#executive-summary-panel" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>╭─────────────────── ASSESSMENT SUMMARY ─────────────────────╮
+│                                                            │
+│ Overall Severity: ████████░░ 8/10 (Major Damage)          │
+│ Estimated Cost:   £28,500 ± £3,200                        │
+│ Market Value:     £18,750                                  │
+│ Cost Ratio:       152% (Exceeds total loss threshold)     │
+│                                                            │
+│ UK Classification: Category S (Structural Damage)         │
+│ SA 70% Rule:      ✓ EXCEEDED                              │
+│ Recommendation:   TOTAL LOSS                              │
+│                                                            │
+│ Settlement Range: £16,200 - £18,750                       │
+│                                                            │
+╰────────────────────────────────────────────────────────────╯
+</pre></div>
+</div>
+</section>
+<section id="vehicle-assessment-sections-navigation">
+<h3>Vehicle Assessment Sections Navigation<a class="headerlink" href="#vehicle-assessment-sections-navigation" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>╭─────────────────── DETAILED ASSESSMENT ───────────────────────╮
+│                                                               │
+│ Click any section below for detailed component breakdown:     │
+│                                                               │
+│ ┌─── ASSESSMENT SECTIONS ───────────────────────────────────┐ │
+│ │                                                           │ │
+│ │ 🚗 [EXTERIOR DAMAGE]     38/38 ✓  Severe      £15,200   │ │
+│ │ 🛞 [WHEELS &amp; TIRES]      12/12 ✓  Major        £3,800   │ │  
+│ │ 🪑 [INTERIOR DAMAGE]     19/19 ✓  Moderate     £2,400   │ │
+│ │ ⚙️  [MECHANICAL SYSTEMS] 18/20 ⚠️ Minor         £4,200   │ │
+│ │ 🔌 [ELECTRICAL SYSTEMS]   9/9  ✓  Moderate     £1,900   │ │
+│ │ 🛡️  [SAFETY SYSTEMS]      6/6  ✓  Major        £2,800   │ │
+│ │ 🏗️  [FRAME &amp; STRUCTURAL]  6/6  ✓  Severe       £8,400   │ │
+│ │ 💧 [FLUID SYSTEMS]        6/6  ✓  Minor          £450   │ │
+│ │ 📄 [DOCUMENTATION]        3/4  ⚠️ Complete        N/A    │ │
+│ │                                                           │ │
+│ │ Total Assessment Points: 117/120 Complete                │ │
+│ │ Missing: Emissions sticker verification                   │ │
+│ │                                                           │ │
+│ └───────────────────────────────────────────────────────────┘ │
+│                                                               │
+╰───────────────────────────────────────────────────────────────╯
+</pre></div>
+</div>
+</section>
+<section id="interactive-vehicle-damage-map">
+<h3>Interactive Vehicle Damage Map<a class="headerlink" href="#interactive-vehicle-damage-map" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>╭─────────────────── VEHICLE DAMAGE VISUALIZATION ──────────────────╮
+│                                                                   │
+│ Vehicle: 2019 BMW 320i | VIN: WBA8E9G50KNU12345                   │
+│ Click on any highlighted area for detailed component assessment    │
+│                                                                   │
+│                    ┌── FRONT SECTION ──┐                         │
+│                    │ ████████████████  │ 🔴 Severe Damage       │
+│                 ┌──┤ Bumper  Grille    ├──┐                     │
+│              ┌──┤  │ Hood    Lights    │  ├──┐                  │
+│           ┌──┤ L  │ ████████████████  │  R ├──┐               │
+│        ┌──┤ E  │  └───────────────────┘  I │ G├──┐            │
+│     ┌──┤ F  │ F  │ ████████████████████ H │ H ├─┐├──┐         │
+│  ┌──┤ T  │ R  │ R│ ████████████████████ T │ T │ E├─┐├──┐      │
+│  │W │    │ O  │ O│ ████████████████████   │   │ A │ A├─┐│      │
+│  │H │ S  │ N  │ N│ Side Panels &amp; Doors   │   │ R │ R │W│      │
+│  │E │ I  │ T  │ T│ ████████████████████   │   │   │   │H│      │
+│  │E │ D  │    │  │ Rocker Panels         │   │   │   │E│      │
+│  │L │ E  │ L  │ R│ ████████████████████   │   │ R │ L │E│      │
+│  └──┤   │ E  │ I│ ████████████████████   │   │ I │   ├─┘│      │
+│     └──┤ F  │ G│ ████████████████████   │ T │ G │ F ├──┘      │
+│        └──┤ T  │ H│ ████████████████████ H │ T │ H ├──┘        │
+│           └──┤   │ T│ ████████████████████T │   │ T├──┘         │
+│              └──┤  │ └───────────────────┘  ├──┘               │
+│                 └──┤ Rear Bumper  Lights ├──┘                 │
+│                    │ ████████████████████ │ 🟡 Moderate       │
+│                    └──── REAR SECTION ────┘                   │
+│                                                                   │
+│ Damage Legend:                                                    │
+│ 🔴 Severe (Replace Required)    🟡 Moderate (Repair Required)     │
+│ 🟠 Minor (Touch-up Required)    🟢 No Damage (Inspection Only)    │
+│                                                                   │
+│ ┌─── DAMAGE HOTSPOTS ───┐  ┌─── SECTION COSTS ───┐              │
+│ │ 1. Front Impact Zone  │  │ Front End:    £8,350│              │
+│ │    • Bumper System    │  │ Left Side:    £4,200│              │
+│ │    • Headlight Assy   │  │ Right Side:   £2,850│              │
+│ │    • Grille &amp; Mount   │  │ Rear End:     £1,400│              │
+│ │                       │  │ Structural:   £8,400│              │
+│ │ 2. Left Side Impact   │  │ Interior:     £2,400│              │
+│ │    • Door Damage      │  │ Mechanical:   £4,200│              │
+│ │    • Panel Alignment  │  │ Electrical:   £1,900│              │
+│ │                       │  │               ──────│              │
+│ │ 3. Structural Damage  │  │ TOTAL:       £33,700│              │
+│ │    • B-Pillar Shift   │  │                     │              │
+│ │    • Frame Distortion │  │                     │              │
+│ └───────────────────────┘  └─────────────────────┘              │
+│                                                                   │
+│ [View All Photos] [3D Inspection] [Print Diagram]                │
+│                                                                   │
+╰───────────────────────────────────────────────────────────────────╯
+</pre></div>
+</div>
+</section>
+<section id="multi-source-estimate-comparison">
+<h3>Multi-Source Estimate Comparison<a class="headerlink" href="#multi-source-estimate-comparison" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>╭─────────────────── REPAIR ESTIMATE ANALYSIS ────────────────────╮
+│                                                                 │
+│ Multiple Estimates Retrieved: 5 sources analyzed               │
+│ Recommended Estimate: Highlighted in GREEN                     │
+│                                                                 │
+│┌─────────────────────────────────────────────────────────────┐ │
+││                 ESTIMATE COMPARISON TABLE                   ││ │
+│├─────────────────┬────────────┬────────┬────────┬─────────────┤ │
+││ SOURCE          │ TOTAL COST │ PARTS  │ LABOR  │ TIMELINE    ││ │
+│├─────────────────┼────────────┼────────┼────────┼─────────────┤ │
+││ 🔧 System Est   │   £28,500  │ £12,825│ £9,975 │  14 days    ││ │
+││ 📋 Assessor     │   £31,200  │ £14,040│ £10,920│  18 days    ││ │
+││ 🏢 BMW Dealer   │   £34,750  │ £17,375│ £12,775│  21 days    ││ │
+││ ✅ Best Auto    │   £26,800  │ £11,740│ £9,380 │  16 days    ││ │
+││ 🔧 QuickFix Ltd │   £29,100  │ £13,195│ £10,465│  15 days    ││ │
+││ 🏆 Elite Repair │   £25,950  │ £11,200│ £8,850 │  12 days    ││ │
+│├─────────────────┼────────────┼────────┼────────┼─────────────┤ │
+││ 📊 AVERAGE      │   £29,383  │ £13,396│ £10,394│  16 days    ││ │
+││ 📈 VARIANCE     │    ±£3,400 │  ±£2,588│ ±£1,725│   ±4 days   ││ │
+│└─────────────────┴────────────┴────────┴────────┴─────────────┘ │
+│                                                                 │
+│ Detailed Cost Breakdown by Category:                           │
+│ ┌─────────────────┬──────────┬──────────┬──────────┬──────────┐ │
+│ │ REPAIR CATEGORY │  LOW EST │  HIGH EST│  AVERAGE │  RECOM   │ │
+│ ├─────────────────┼──────────┼──────────┼──────────┼──────────┤ │
+│ │ Body Panels     │   £8,200 │  £12,400 │  £10,100 │  £9,850  │ │
+│ │ Paint &amp; Finish  │   £3,100 │   £4,800 │   £3,950 │  £3,600  │ │
+│ │ Structural      │   £7,800 │  £10,200 │   £8,900 │  £8,400  │ │
+│ │ Mechanical      │   £3,900 │   £5,100 │   £4,450 │  £4,200  │ │
+│ │ Electrical      │   £1,600 │   £2,400 │   £1,950 │  £1,900  │ │
+│ │ Glass &amp; Trim    │   £1,200 │   £1,850 │   £1,483 │  £1,350  │ │
+│ └─────────────────┴──────────┴──────────┴──────────┴──────────┘ │
+│                                                                 │
+│ Quality Assessment:                                             │
+│ ├─ Elite Repair: ⭐⭐⭐⭐⭐ (98% rating) - Recommended            │
+│ ├─ Best Auto:    ⭐⭐⭐⭐⭐ (96% rating) - Good value            │
+│ ├─ BMW Dealer:   ⭐⭐⭐⭐⭐ (99% rating) - Premium option        │
+│ ├─ QuickFix Ltd: ⭐⭐⭐⭐░ (85% rating) - Budget option         │
+│ └─ System Est:   ⭐⭐⭐⭐░ (AI Generated) - Baseline             │
+│                                                                 │
+│ [View Detailed Quotes] [Request New Estimate] [Select Provider] │
+│                                                                 │
+╰─────────────────────────────────────────────────────────────────╯
+</pre></div>
+</div>
+</section>
+<section id="settlement-calculation-dashboard">
+<h3>Settlement Calculation Dashboard<a class="headerlink" href="#settlement-calculation-dashboard" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>╭─────────────────── SETTLEMENT CALCULATION CENTER ──────────────────╮
+│                                                                    │
+│ Claim: INS-8847 | Customer: John Smith | Policy: POL-789456123     │
+│ Assessment Complete: ✓ | Estimates Reviewed: ✓ | Ready for Decision│
+│                                                                    │
+│ ┌──────────────── VEHICLE VALUATION ────────────────┐              │
+│ │                                                   │              │
+│ │ Market Value Sources:                             │              │
+│ │ ├─ Glass Guide:        £18,750 (Primary)         │              │
+│ │ ├─ AutoTrader:         £17,900 (Market avg)      │              │
+│ │ ├─ CAP HPI:            £19,200 (Trade value)     │              │
+│ │ ├─ Parkers Guide:      £18,400 (Consumer)        │              │
+│ │ └─ Expert Valuation:   £18,650 (Professional)    │              │
+│ │                                                   │              │
+│ │ Agreed Market Value:   £18,750                    │              │
+│ │ Pre-loss Condition:    Excellent (95% of book)   │              │
+│ │                                                   │              │
+│ └───────────────────────────────────────────────────┘              │
+│                                                                    │
+│ ┌──────────────── SETTLEMENT CALCULATIONS ──────────────────┐      │
+│ │                                                           │      │
+│ │ TOTAL LOSS SETTLEMENT:                                    │      │
+│ │ ┌─────────────────────────────────────────────────────┐   │      │
+│ │ │ Vehicle Agreed Value:           £18,750             │   │      │
+│ │ │ Less: Policy Excess:              -£500             │   │      │
+│ │ │ Less: Outstanding Finance:      -£12,400            │   │      │
+│ │ │ Add: Salvage Recovery:           +£3,200            │   │      │
+│ │ │ ─────────────────────────────────────────           │   │      │
+│ │ │ Net Settlement to Customer:      £9,050             │   │      │
+│ │ │                                                     │   │      │
+│ │ │ Additional Considerations:                          │   │      │
+│ │ │ • Personal effects allowance:     £250              │   │      │
+│ │ │ • Key replacement:                £180              │   │      │
+│ │ │ • Recovery costs covered          £0                │   │      │
+│ │ │ ─────────────────────────────────────────           │   │      │
+│ │ │ TOTAL CUSTOMER PAYMENT:          £9,480             │   │      │
+│ │ └─────────────────────────────────────────────────────┘   │      │
+│ │                                                           │      │
+│ │ REPAIR SETTLEMENT (Alternative):                          │      │
+│ │ ┌─────────────────────────────────────────────────────┐   │      │
+│ │ │ Recommended Repair Cost:        £25,950             │   │      │
+│ │ │ Less: Policy Excess:              -£500             │   │      │
+│ │ │ Less: Betterment (10%):         -£2,595             │   │      │
+│ │ │ Add: Rental Car (14 days):       +£420             │   │      │
+│ │ │ ─────────────────────────────────────────           │   │      │
+│ │ │ Total Repair Settlement:        £23,275             │   │      │
+│ │ │                                                     │   │      │
+│ │ │ Note: Repair exceeds 138% of value                 │   │      │
+│ │ │ ❌ NOT ECONOMICALLY VIABLE                          │   │      │
+│ │ └─────────────────────────────────────────────────────┘   │      │
+│ │                                                           │      │
+│ └───────────────────────────────────────────────────────────┘      │
+│                                                                    │
+│ ┌──────────────── FINANCIAL BREAKDOWN ──────────────────┐          │
+│ │                                                       │          │
+│ │ CLAIM COSTS TO INSURER:                              │          │
+│ │ ├─ Customer Settlement:         £9,480               │          │
+│ │ ├─ Assessment Costs:            £250                 │          │
+│ │ ├─ Legal/Admin Fees:            £180                 │          │
+│ │ ├─ Recovery Expenses:           £120                 │          │
+│ │ └─ Less: Salvage Income:       -£3,200              │          │
+│ │ ─────────────────────────────────────────            │          │
+│ │ NET CLAIM COST:                £6,830                │          │
+│ │                                                       │          │
+│ │ RESERVE ADJUSTMENTS:                                 │          │
+│ │ ├─ Original Reserve:            £25,000              │          │
+│ │ ├─ Final Claim Cost:            £6,830               │          │
+│ │ └─ Reserve Release:            +£18,170              │          │
+│ │                                                       │          │
+│ └───────────────────────────────────────────────────────┘          │
+│                                                                    │
+│ ┌──────────────── REGULATORY COMPLIANCE ──────────────────┐        │
+│ │                                                         │        │
+│ │ UK Requirements:                                        │        │
+│ │ ☑ Category S Classification Applied                     │        │
+│ │ ☑ DVLA Form V23 Ready for Submission                   │        │
+│ │ ☑ HPI Database Update Scheduled                        │        │
+│ │ ☐ Customer Notification Letter Generated              │        │
+│ │                                                         │        │
+│ │ South African Requirements (if applicable):            │        │
+│ │ ☑ 70% Rule Assessment Complete (152% &gt; 70%)            │        │
+│ │ ☑ Total Loss Documentation Prepared                    │        │
+│ │                                                         │        │
+│ └─────────────────────────────────────────────────────────┘        │
+│                                                                    │
+│ ┌─────────────── SETTLEMENT AUTHORIZATION ───────────────┐         │
+│ │                                                        │         │
+│ │ Recommended Action: ✅ APPROVE TOTAL LOSS SETTLEMENT   │         │
+│ │ Settlement Amount:  💷 £9,480                          │         │
+│ │ Authority Level:    Senior Adjuster Required          │         │
+│ │                                                        │         │
+│ │ ┌────────────┐ ┌────────────┐ ┌─────────────┐        │         │
+│ │ │ ✅ APPROVE │ │ ❌ REJECT  │ │ 🔍 REVIEW   │        │         │
+│ │ │ Settlement │ │ &amp; Revise   │ │ Further     │        │         │
+│ │ └────────────┘ └────────────┘ └─────────────┘        │         │
+│ │                                                        │         │
+│ │ [Generate Settlement Letter] [Schedule Payment]       │         │
+│ │ [Update Claim Status] [Notify All Parties]           │         │
+│ │                                                        │         │
+│ └────────────────────────────────────────────────────────┘         │
+│                                                                    │
+╰────────────────────────────────────────────────────────────────────╯
+</pre></div>
+</div>
+</section>
+<section id="photo-gallery-overview">
+<h3>Photo Gallery Overview<a class="headerlink" href="#photo-gallery-overview" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>┌─── ASSESSMENT PHOTOS (47 total) ───┐
+│                                    │
+│ [IMG] [IMG] [IMG] [IMG] [IMG]      │
+│ Overall  Damage Front  Rear  Side  │
+│                                    │
+│ [View All Photos] [Upload More]    │
+└────────────────────────────────────┘
+</pre></div>
+</div>
+</section>
+</section>
+<section id="component-detail-view-after-clicking-section">
+<h2>3. COMPONENT DETAIL VIEW (After Clicking Section)<a class="headerlink" href="#component-detail-view-after-clicking-section" title="Link to this heading"></a></h2>
+<section id="section-header-example-exterior-damage-clicked">
+<h3>Section Header (Example: EXTERIOR DAMAGE clicked)<a class="headerlink" href="#section-header-example-exterior-damage-clicked" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>╭─────────────────── EXTERIOR DAMAGE ASSESSMENT ─────────────────────╮
+│                                                                    │
+│ ← Back to Claim Overview        Section: EXTERIOR BODY DAMAGE      │
+│                                                                    │
+│ Assessment Status: ✓ COMPLETE (38/38 points)                      │
+│ Overall Severity: SEVERE                                           │
+│ Section Cost: £15,200                                              │
+│ Completion Date: 2024-09-16 15:30                                  │
+│                                                                    │
+╰────────────────────────────────────────────────────────────────────╯
+</pre></div>
+</div>
+</section>
+<section id="detailed-component-assessment">
+<h3>Detailed Component Assessment<a class="headerlink" href="#detailed-component-assessment" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>╭───────────────── FRONT END ASSESSMENT (Points 1-10) ─────────────────╮
+│                                                                      │
+│ 1. Front Bumper                    [🔴 SEVERE]      £2,400          │
+│    Structural damage, complete misalignment, sensor housing cracked  │
+│    └─ Photos: [IMG_001] [IMG_002] [IMG_003] [View All]              │
+│    └─ Assessment: REPLACE - OEM part required                       │
+│    └─ Part #: BMW-51117379434 | Availability: 3-5 days             │
+│    └─ Labor: 4.2 hours | Paint: Full front end blend               │
+│                                                                      │
+│ 2. Hood                           [🟡 MODERATE]     £850            │
+│    Multiple impact dents, paint damage, minor alignment issues      │
+│    └─ Photos: [IMG_004] [IMG_005] [View All]                       │
+│    └─ Assessment: REPAIR - PDR and repaint                         │
+│    └─ Labor: 6.5 hours | Materials: Filler, primer, paint          │
+│                                                                      │
+│ 3. Front Grille                   [🔴 SEVERE]      £320             │
+│    Extensive cracks, missing pieces, mounting brackets damaged      │
+│    └─ Photos: [IMG_006] [IMG_007]                                   │
+│    └─ Assessment: REPLACE - Aftermarket acceptable                  │
+│    └─ Part #: BMW-51117379435 | Availability: 1-2 days             │
+│                                                                      │
+│ 4. Headlight Housings             [🟡 MODERATE]    £650             │
+│    Left housing cracked, moisture intrusion, mounting loose         │
+│    └─ Photos: [IMG_008] [IMG_009]                                   │
+│    └─ Assessment: REPLACE LEFT ONLY                                 │
+│    └─ Part #: BMW-63117339901 | LED type, expensive                │
+│                                                                      │
+│ [Continue with remaining 6 components...]                           │
+│                                                                      │
+│ Section Totals:                                                     │
+│ ├─ Parts Cost: £8,840                                               │
+│ ├─ Labor Cost: £4,680 (26 hours @ £180/hr)                        │
+│ ├─ Paint Cost: £1,680                                               │
+│ └─ Total Section: £15,200                                           │
+│                                                                      │
+╰──────────────────────────────────────────────────────────────────────╯
+</pre></div>
+</div>
+</section>
+<section id="side-panel-assessment-points-11-20">
+<h3>Side Panel Assessment (Points 11-20)<a class="headerlink" href="#side-panel-assessment-points-11-20" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>╭───────────────── SIDE PANEL ASSESSMENT (Points 11-20) ──────────────╮
+│                                                                     │
+│ 11. Driver Side Door              [🟡 MODERATE]    £1,200          │
+│     Deep scratches, dent in center panel, handle scuffed           │
+│     └─ Photos: [IMG_010] [IMG_011] [IMG_012]                       │
+│     └─ Assessment: REPAIR - Fill, sand, repaint                    │
+│     └─ Labor: 8 hours | Door blend required                        │
+│                                                                     │
+│ 12. Passenger Side Door           [🟢 MINOR]       £450            │
+│     Light scratches, minor door handle damage                      │
+│     └─ Photos: [IMG_013]                                           │
+│     └─ Assessment: TOUCH-UP - Handle replacement                   │
+│                                                                     │
+│ [Continue with components 13-20...]                                │
+│                                                                     │
+╰─────────────────────────────────────────────────────────────────────╯
+</pre></div>
+</div>
+</section>
+<section id="interactive-photo-viewer">
+<h3>Interactive Photo Viewer<a class="headerlink" href="#interactive-photo-viewer" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>┌─── COMPONENT PHOTO GALLERY ───┐
+│                                │
+│ Component: Front Bumper        │
+│ ┌────────────────────────────┐ │
+│ │                            │ │
+│ │     [MAIN PHOTO VIEW]      │ │
+│ │      IMG_001.jpg           │ │
+│ │   Front bumper damage      │ │
+│ │   Taken: 2024-09-16 10:30  │ │
+│ │                            │ │
+│ └────────────────────────────┘ │
+│                                │
+│ [◀ Prev] [1/3] [Next ▶]        │
+│                                │
+│ Thumbnails:                    │
+│ [IMG1] [IMG2] [IMG3]           │
+│                                │
+│ [Download] [Annotate] [Share]  │
+└────────────────────────────────┘
+</pre></div>
+</div>
+</section>
+</section>
+<section id="section-summary-view">
+<h2>4. SECTION SUMMARY VIEW<a class="headerlink" href="#section-summary-view" title="Link to this heading"></a></h2>
+<section id="assessment-progress-tracker">
+<h3>Assessment Progress Tracker<a class="headerlink" href="#assessment-progress-tracker" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>╭─────────────────── ASSESSMENT PROGRESS ───────────────────────╮
+│                                                               │
+│ Overall Completion: ████████████████████░ 97% (117/120)      │
+│                                                               │
+│ Section Breakdown:                                            │
+│ ┌─────────────────┬──────┬────────────┬─────────┬──────────┐ │
+│ │    SECTION      │ COMP │  SEVERITY  │  COST   │ STATUS   │ │
+│ ├─────────────────┼──────┼────────────┼─────────┼──────────┤ │
+│ │ Exterior Damage │38/38 │ Severe     │£15,200  │ ✓ Done   │ │
+│ │ Wheels &amp; Tires  │12/12 │ Major      │ £3,800  │ ✓ Done   │ │
+│ │ Interior Damage │19/19 │ Moderate   │ £2,400  │ ✓ Done   │ │
+│ │ Mechanical Sys  │18/20 │ Minor      │ £4,200  │ ⚠️ 90%   │ │
+│ │ Electrical Sys  │ 9/9  │ Moderate   │ £1,900  │ ✓ Done   │ │
+│ │ Safety Systems  │ 6/6  │ Major      │ £2,800  │ ✓ Done   │ │
+│ │ Frame Struct    │ 6/6  │ Severe     │ £8,400  │ ✓ Done   │ │
+│ │ Fluid Systems   │ 6/6  │ Minor      │  £450   │ ✓ Done   │ │
+│ │ Documentation   │ 3/4  │ Complete   │   N/A   │ ⚠️ 75%   │ │
+│ └─────────────────┴──────┴────────────┴─────────┴──────────┘ │
+│                                                               │
+│ Missing Items:                                                │
+│ • Mechanical: Engine mount inspection pending                 │
+│ • Mechanical: Brake line pressure test required              │
+│ • Documentation: Emissions sticker verification              │
+│                                                               │
+╰───────────────────────────────────────────────────────────────╯
+</pre></div>
+</div>
+</section>
+</section>
+<section id="quick-actions-panel">
+<h2>5. QUICK ACTIONS PANEL<a class="headerlink" href="#quick-actions-panel" title="Link to this heading"></a></h2>
+<section id="decision-support-tools">
+<h3>Decision Support Tools<a class="headerlink" href="#decision-support-tools" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>╭─────────────────── CLAIM ACTIONS ───────────────────────╮
+│                                                         │
+│ Assessment Decision:                                    │
+│ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐      │
+│ │ ✅ APPROVE   │ │ ❌ REJECT   │ │ 🔍 REQUEST  │      │
+│ │ Total Loss  │ │ Assessment  │ │ More Info   │      │
+│ └─────────────┘ └─────────────┘ └─────────────┘      │
+│                                                         │
+│ Settlement Actions:                                     │
+│ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐      │
+│ │ £18,750     │ │ £16,200     │ │ CUSTOM      │      │
+│ │ Market Val  │ │ Trade Val   │ │ Amount      │      │
+│ └─────────────┘ └─────────────┘ └─────────────┘      │
+│                                                         │
+│ Communication:                                          │
+│ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐      │
+│ │ 📞 CALL     │ │ 📧 EMAIL    │ │ 📄 GENERATE │      │
+│ │ Customer    │ │ Summary     │ │ Report      │      │
+│ └─────────────┘ └─────────────┘ └─────────────┘      │
+│                                                         │
+╰─────────────────────────────────────────────────────────╯
+</pre></div>
+</div>
+</section>
+</section>
+<section id="mobile-view-adaptations">
+<h2>6. MOBILE VIEW ADAPTATIONS<a class="headerlink" href="#mobile-view-adaptations" title="Link to this heading"></a></h2>
+<section id="mobile-claims-table">
+<h3>Mobile Claims Table<a class="headerlink" href="#mobile-claims-table" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>┌─── MOBILE CLAIMS VIEW ───┐
+│ ☰ Menu      🔔(5)    👤  │
+├───────────────────────────┤
+│                           │
+│ 🔍 Search claims...       │
+│ [All Status ▼] [Filter]   │
+│                           │
+│ ┌───── INS-8847 ─────┐   │
+│ │🔴 URGENT | £35,000  │   │
+│ │2019 BMW 320i       │   │
+│ │Smith, J. | 18h SLA  │   │
+│ │[VIEW DETAILS]       │   │
+│ └─────────────────────┘   │
+│                           │
+│ ┌───── INS-8848 ─────┐   │
+│ │🟡 REVIEW | £12,500  │   │
+│ │2021 Audi A4        │   │
+│ │Brown, M. | 24h SLA  │   │
+│ │[VIEW DETAILS]       │   │
+│ └─────────────────────┘   │
+│                           │
+│ [Load More Claims]        │
+│                           │
+└───────────────────────────┘
+</pre></div>
+</div>
+</section>
+<section id="mobile-component-view">
+<h3>Mobile Component View<a class="headerlink" href="#mobile-component-view" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>┌─── COMPONENT DETAILS ────┐
+│ ← Back    Front Bumper    │
+├───────────────────────────┤
+│                           │
+│ Status: 🔴 SEVERE         │
+│ Cost: £2,400              │
+│                           │
+│ ┌─── Photo Gallery ───┐  │
+│ │ [Swipe for more]     │  │
+│ │ ┌─────────────────┐  │  │
+│ │ │                 │  │  │
+│ │ │   Photo 1/3     │  │  │
+│ │ │                 │  │  │
+│ │ └─────────────────┘  │  │
+│ │ ● ○ ○               │  │
+│ └─────────────────────┘  │
+│                           │
+│ Assessment Notes:         │
+│ "Structural damage,       │
+│ complete misalignment,    │
+│ sensor housing cracked"   │
+│                           │
+│ Recommendation: REPLACE   │
+│ Part #: BMW-51117379434   │
+│ Availability: 3-5 days    │
+│                           │
+│ [Approve] [Request Info]  │
+│                           │
+└───────────────────────────┘
+</pre></div>
+</div>
+</section>
+</section>
+<section id="navigation-flow-summary">
+<h2>Navigation Flow Summary<a class="headerlink" href="#navigation-flow-summary" title="Link to this heading"></a></h2>
+<section id="user-journey-map">
+<h3>User Journey Map<a class="headerlink" href="#user-journey-map" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Main Claims Table
+       │
+       ▼ (Click [VIEW])
+Claim Detail View
+       │
+       ▼ (Click Section)
+Component Assessment
+       │
+       ▼ (Click Component)
+Detailed Component View
+       │
+       ▼ (Actions)
+Decision/Settlement
+</pre></div>
+</div>
+</section>
+<section id="key-features">
+<h3>Key Features<a class="headerlink" href="#key-features" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Responsive Design</strong>: Seamless desktop to mobile experience</p></li>
+<li><p><strong>Progressive Disclosure</strong>: Information revealed as needed</p></li>
+<li><p><strong>Quick Actions</strong>: One-click approvals and decisions</p></li>
+<li><p><strong>Visual Indicators</strong>: Color coding and status symbols throughout</p></li>
+<li><p><strong>Photo Integration</strong>: Contextual image viewing at every level</p></li>
+<li><p><strong>Real-time Updates</strong>: Live status changes and notifications</p></li>
+</ul>
+<p>This workflow-based design ensures insurance claims agents can efficiently process claims from high-level overview to detailed component analysis, with all necessary decision-making tools accessible at the appropriate level of detail.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="insurance_claims_dashboard.html" class="btn btn-neutral float-left" title="Insurance Claims Agent Dashboard Specification" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Insurance-risk-assessment-implementation.html" class="btn btn-neutral float-right" title="Insurance Risk Assessment Platform - Implementation Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Menzi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

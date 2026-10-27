@@ -1,0 +1,655 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Insurance Claims Agent Dashboard Specification &mdash; Carfinity 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Insurance Claims Assessment Dashboard" href="new_assessment_dashboard.html" />
+    <link rel="prev" title="Insurance and Repair Quotes" href="../insurance-and-quotes.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Carfinity
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Start Here</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../administration.html">Administration and Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vehicle-care.html">Vehicle Care and Maintenance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../inspections.html">Inspections and Assessments</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../insurance-and-quotes.html">Insurance and Repair Quotes</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Insurance Claims Agent Dashboard Specification</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dashboard-layout-overview">Dashboard Layout Overview</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#header-section">Header Section</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#primary-dashboard-sections">Primary Dashboard Sections</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#key-performance-indicators-kpi-bar">1. KEY PERFORMANCE INDICATORS (KPI) BAR</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#priority-alerts-notifications">2. PRIORITY ALERTS &amp; NOTIFICATIONS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#claims-overview-dashboard">3. CLAIMS OVERVIEW DASHBOARD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#main-assessment-summary-section">4. MAIN ASSESSMENT SUMMARY SECTION</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#detailed-assessment-viewer">5. DETAILED ASSESSMENT VIEWER</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#quality-assurance-validation">6. QUALITY ASSURANCE &amp; VALIDATION</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#workflow-tracking">7. WORKFLOW TRACKING</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#decision-support-tools">8. DECISION SUPPORT TOOLS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mobile-responsive-design">10. MOBILE-RESPONSIVE DESIGN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#financial-dashboard">9. FINANCIAL DASHBOARD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reporting-and-analytics">11. REPORTING AND ANALYTICS</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#dashboard-features-summary">Dashboard Features Summary</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#core-functionality">Core Functionality</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#integration-capabilities">Integration Capabilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#user-experience">User Experience</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="new_assessment_dashboard.html">Insurance Claims Assessment Dashboard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Insurance-risk-assessment-implementation.html">Insurance Risk Assessment Platform - Implementation Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Parts-Based-Quote-System-Workflow-Guide.html">Parts-Based Quote System - Complete Workflow Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parts_based_quote_system.html">Parts-Based Repair Quotation System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Parts-Based-Quote-System-Build-Guide.html">Parts-Based Quote System - Build Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="repair-cost-calculation-system.html">Insurance Assessment Repair Cost Calculation System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="repair-quotes-comparison-system.html">Repair Quotes Comparison System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="settlement-calculator-system.html">Settlement Calculator System</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../technical-reference.html">Technical Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project-history.html">Project History and Implementation Notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Carfinity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../insurance-and-quotes.html">Insurance and Repair Quotes</a></li>
+      <li class="breadcrumb-item active">Insurance Claims Agent Dashboard Specification</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/insurance_claims_dashboard.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="insurance-claims-agent-dashboard-specification">
+<h1>Insurance Claims Agent Dashboard Specification<a class="headerlink" href="#insurance-claims-agent-dashboard-specification" title="Link to this heading"></a></h1>
+<section id="dashboard-layout-overview">
+<h2>Dashboard Layout Overview<a class="headerlink" href="#dashboard-layout-overview" title="Link to this heading"></a></h2>
+<section id="header-section">
+<h3>Header Section<a class="headerlink" href="#header-section" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Company Logo &amp; Branding</strong></p></li>
+<li><p><strong>Agent Profile</strong>: Name, ID, Department, Last Login</p></li>
+<li><p><strong>Quick Actions Bar</strong>: New Assessment | Search Claims | Emergency Contact | Settings</p></li>
+<li><p><strong>Notifications Bell</strong>: Real-time alerts with count badge</p></li>
+<li><p><strong>System Status Indicator</strong>: Platform health and connectivity</p></li>
+</ul>
+</section>
+</section>
+<section id="primary-dashboard-sections">
+<h2>Primary Dashboard Sections<a class="headerlink" href="#primary-dashboard-sections" title="Link to this heading"></a></h2>
+<section id="key-performance-indicators-kpi-bar">
+<h3>1. KEY PERFORMANCE INDICATORS (KPI) BAR<a class="headerlink" href="#key-performance-indicators-kpi-bar" title="Link to this heading"></a></h3>
+<section id="metrics-cards-top-row">
+<h4>Metrics Cards (Top Row)<a class="headerlink" href="#metrics-cards-top-row" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Active Claims</strong>: <code class="docutils literal notranslate"><span class="pre">42</span> <span class="pre">Open</span></code> | Target: &lt;50</p></li>
+<li><p><strong>Pending Reviews</strong>: <code class="docutils literal notranslate"><span class="pre">15</span> <span class="pre">Awaiting</span> <span class="pre">Decision</span></code> | SLA: 24hrs</p></li>
+<li><p><strong>Processing Time</strong>: <code class="docutils literal notranslate"><span class="pre">4.2</span> <span class="pre">hrs</span> <span class="pre">avg</span></code> | Target: &lt;6hrs</p></li>
+<li><p><strong>Cost Savings</strong>: <code class="docutils literal notranslate"><span class="pre">£84,500</span> <span class="pre">This</span> <span class="pre">Month</span></code> | +12% vs last month</p></li>
+<li><p><strong>Accuracy Rate</strong>: <code class="docutils literal notranslate"><span class="pre">97.3%</span></code> | Industry benchmark: 95%</p></li>
+<li><p><strong>Customer Satisfaction</strong>: <code class="docutils literal notranslate"><span class="pre">4.6/5</span> <span class="pre">Stars</span></code> | 89% response rate</p></li>
+</ul>
+</section>
+<section id="visual-indicators">
+<h4>Visual Indicators<a class="headerlink" href="#visual-indicators" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Green/Amber/Red status lights</p></li>
+<li><p>Trend arrows (up/down/stable)</p></li>
+<li><p>Progress bars for targets</p></li>
+<li><p>Sparkline graphs for trends</p></li>
+</ul>
+</section>
+</section>
+<section id="priority-alerts-notifications">
+<h3>2. PRIORITY ALERTS &amp; NOTIFICATIONS<a class="headerlink" href="#priority-alerts-notifications" title="Link to this heading"></a></h3>
+<section id="high-priority-section">
+<h4>High Priority Section<a class="headerlink" href="#high-priority-section" title="Link to this heading"></a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>🚨 URGENT CLAIMS (3)
+├── Claim #INS-2024-8847: £45K structural damage - 2hrs remaining
+├── Claim #INS-2024-8851: Airbag deployment - fraud flag
+└── Claim #INS-2024-8849: Total loss candidate - customer dispute
+
+⚠️  SLA WARNINGS (5)
+├── Claim #INS-2024-8834: 18hrs remaining
+├── Claim #INS-2024-8839: 4hrs remaining
+└── [View All Warnings]
+
+🔍 FRAUD ALERTS (2)
+├── AI Confidence: 89% - Multiple inconsistencies detected
+└── Pattern match with known fraud cases
+</pre></div>
+</div>
+</section>
+<section id="system-notifications">
+<h4>System Notifications<a class="headerlink" href="#system-notifications" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Platform updates and maintenance windows</p></li>
+<li><p>Integration status (DVLA, HPI, VIN decoder)</p></li>
+<li><p>New regulatory compliance requirements</p></li>
+</ul>
+</section>
+</section>
+<section id="claims-overview-dashboard">
+<h3>3. CLAIMS OVERVIEW DASHBOARD<a class="headerlink" href="#claims-overview-dashboard" title="Link to this heading"></a></h3>
+<section id="interactive-status-board">
+<h4>Interactive Status Board<a class="headerlink" href="#interactive-status-board" title="Link to this heading"></a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>┌─────────────────┬──────────┬──────────┬─────────┬──────────┐
+│     STATUS      │  COUNT   │ AVG TIME │ VALUE   │  ACTION  │
+├─────────────────┼──────────┼──────────┼─────────┼──────────┤
+│ New Submissions │    12    │   0.5h   │  £180K  │ [Review] │
+│ In Progress     │    18    │   8.2h   │  £290K  │ [Track]  │
+│ Under Review    │    15    │  16.4h   │  £385K  │ [Decide] │
+│ Info Required   │     7    │  48.6h   │   £95K  │ [Follow] │
+│ Completed       │   156    │  24.8h   │ £2.1M   │ [Report] │
+│ Disputed        │     3    │  72.1h   │  £125K  │ [Resolve]│
+└─────────────────┴──────────┴──────────┴─────────┴──────────┘
+</pre></div>
+</div>
+</section>
+<section id="geographic-claims-map">
+<h4>Geographic Claims Map<a class="headerlink" href="#geographic-claims-map" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Pin locations of active claims</p></li>
+<li><p>Color-coded by priority/status</p></li>
+<li><p>Assessor locations and availability</p></li>
+<li><p>Regional repair network capacity</p></li>
+<li><p>Weather overlay for risk assessment</p></li>
+</ul>
+</section>
+</section>
+<section id="main-assessment-summary-section">
+<h3>4. MAIN ASSESSMENT SUMMARY SECTION<a class="headerlink" href="#main-assessment-summary-section" title="Link to this heading"></a></h3>
+<section id="assessment-header-panel">
+<h4>Assessment Header Panel<a class="headerlink" href="#assessment-header-panel" title="Link to this heading"></a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Assessment ID: INS-2024-8847                    Status: [IN PROGRESS]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Vehicle: 2019 BMW 320i | VIN: WBA8E9G50KNU12345
+Customer: John Smith | Policy: POL-789456123
+Location: M25 Junction 15 | Incident: 2024-09-15 14:30
+Assessor: Sarah Johnson (Cert. Level 3) | Assigned: 2024-09-16 09:00
+SLA Timer: 18h 42m remaining ⏰
+</pre></div>
+</div>
+</section>
+<section id="critical-information-alert-bar">
+<h4>Critical Information Alert Bar<a class="headerlink" href="#critical-information-alert-bar" title="Link to this heading"></a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>🚨 TOTAL LOSS RECOMMENDATION  🚨 STRUCTURAL DAMAGE  🚨 AIRBAG DEPLOYED
+⚠️  High Value: £35,000 claim  ⚠️  Fraud Risk: Low (15%)
+📋 Missing: Customer photos   📋 Pending: Engineer report
+</pre></div>
+</div>
+</section>
+<section id="executive-summary-card">
+<h4>Executive Summary Card<a class="headerlink" href="#executive-summary-card" title="Link to this heading"></a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>╭─────────────────── ASSESSMENT SUMMARY ───────────────────╮
+│                                                          │
+│  Overall Severity: ████████░░ 8/10 (Major Damage)       │
+│  Estimated Cost:   £28,500 ± £3,200                     │
+│  Market Value:     £18,750 (Glass Guide)                │
+│  Ratio:            152% (Exceeds total loss threshold)   │
+│                                                          │
+│  UK Classification: Category S (Structural)             │
+│  SA 70% Rule:      ✓ Exceeds threshold                  │
+│                                                          │
+│  Recommendation:   TOTAL LOSS                           │
+│  Settlement Est:   £16,200 - £18,750                    │
+│                                                          │
+│  Cost Breakdown:   Parts 45% | Labor 35% | Paint 20%    │
+│                   [████████████████████████████████]     │
+│                                                          │
+╰──────────────────────────────────────────────────────────╯
+</pre></div>
+</div>
+</section>
+<section id="visual-damage-overview">
+<h4>Visual Damage Overview<a class="headerlink" href="#visual-damage-overview" title="Link to this heading"></a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>┌─── VEHICLE DAMAGE MAP ───┐    ┌─── SEVERITY MATRIX ───┐
+│                          │    │ Exterior  ████████░░  │
+│        ┌─────────┐       │    │ Interior  ██████░░░░  │
+│     ┌──┤ FRONT   ├──┐    │    │ Wheels    ██████████  │
+│  ┌──┤  └─────────┘  ├──┐ │    │ Mech Sys  ████░░░░░░  │
+│  │  │ ████████████  │  │ │    │ Electric  ██████░░░░  │
+│  │L │ ████████████  │ R│ │    │ Safety    ████████░░  │
+│  │E │ ████████████  │ I│ │    │ Frame     ██████████  │
+│  │F │ ████████████  │ G│ │    │ Fluids    ████░░░░░░  │
+│  │T │ ████████████  │ H│ │    │ Docs      ██████████  │
+│  └──┤ ████████████  ├──┘ │    └─────────────────────┘
+│     └──┤  REAR   ├──┘    │    Click sections for details
+│        └─────────┘       │    
+└──────────────────────────┘    
+  🔴 Severe  🟡 Moderate  🟢 Minor
+</pre></div>
+</div>
+</section>
+</section>
+<section id="detailed-assessment-viewer">
+<h3>5. DETAILED ASSESSMENT VIEWER<a class="headerlink" href="#detailed-assessment-viewer" title="Link to this heading"></a></h3>
+<section id="navigation-menu">
+<h4>Navigation Menu<a class="headerlink" href="#navigation-menu" title="Link to this heading"></a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>┌── ASSESSMENT SECTIONS ──┐
+├─ 📋 Executive Summary    │ ✓ Complete
+├─ 🚗 Exterior Damage     │ ✓ 38/38 points
+├─ 🛞 Wheels &amp; Tires      │ ✓ 12/12 points  
+├─ 🪑 Interior Damage     │ ✓ 19/19 points
+├─ ⚙️  Mechanical Systems │ ⚠️ 18/20 points
+├─ 🔌 Electrical Systems  │ ✓ 9/9 points
+├─ 🛡️  Safety Systems     │ ✓ 6/6 points
+├─ 🏗️  Frame &amp; Structural │ ✓ 6/6 points
+├─ 💧 Fluid Systems       │ ✓ 6/6 points
+├─ 📄 Documentation       │ ⚠️ 3/4 points
+├─ 📸 Photo Evidence      │ ✓ 47 photos
+└─ 📊 Reports &amp; Estimates │ ✓ 3 estimates
+</pre></div>
+</div>
+</section>
+<section id="component-detail-view-example-front-end">
+<h4>Component Detail View (Example: Front End)<a class="headerlink" href="#component-detail-view-example-front-end" title="Link to this heading"></a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>╭─────────────────── FRONT END ASSESSMENT ───────────────────╮
+│                                                            │
+│ 1. Front Bumper           [🔴 SEVERE]    £2,400           │
+│    └─ Structural damage, misalignment, sensor damage       │
+│    └─ Photos: [IMG_001] [IMG_002] [IMG_003]               │
+│    └─ Recommendation: REPLACE                             │
+│                                                            │
+│ 2. Hood                   [🟡 MODERATE]  £850             │
+│    └─ Multiple dents, paint damage, alignment issues       │
+│    └─ Photos: [IMG_004] [IMG_005]                         │
+│    └─ Recommendation: REPAIR                              │
+│                                                            │
+│ 3. Front Grille          [🔴 SEVERE]    £320              │
+│    └─ Cracks, missing pieces, mounting damage             │
+│    └─ Photos: [IMG_006]                                   │
+│    └─ Recommendation: REPLACE                             │
+│                                                            │
+│ [Expand All] [Collapse All] [Print View] [Export PDF]     │
+╰────────────────────────────────────────────────────────────╯
+</pre></div>
+</div>
+</section>
+</section>
+<section id="quality-assurance-validation">
+<h3>6. QUALITY ASSURANCE &amp; VALIDATION<a class="headerlink" href="#quality-assurance-validation" title="Link to this heading"></a></h3>
+<section id="assessment-quality-indicators">
+<h4>Assessment Quality Indicators<a class="headerlink" href="#assessment-quality-indicators" title="Link to this heading"></a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>┌─── QUALITY METRICS ───┐
+│ Completeness:  95%    │ ████████████████████░
+│ Photo Quality: 92%    │ ████████████████████░
+│ Assessment Score: 87% │ █████████████████░░░░
+│ Human Review:  ✓ Done │ ████████████████████░
+│ Verification:  Pending │ ████████░░░░░░░░░░░░░
+└───────────────────────┘
+
+Evidence Summary:
+├─ Photos: 47 total (12 overall, 24 damage, 8 interior, 3 docs)
+├─ Videos: 2 walk-around recordings
+├─ Diagnostics: OBD scan completed
+├─ Measurements: Digital caliper readings
+└─ Documentation: VIN verified, service history obtained
+</pre></div>
+</div>
+</section>
+<section id="multi-source-comparison">
+<h4>Multi-Source Comparison<a class="headerlink" href="#multi-source-comparison" title="Link to this heading"></a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>┌─────────────────── ESTIMATE COMPARISON ───────────────────┐
+│                                                           │
+│ Source          │ Total Cost │ Parts  │ Labor  │ Timeline │
+│─────────────────┼────────────┼────────┼────────┼──────────│
+│ System Analysis │   £28,500  │ £12,825│ £9,975 │  14 days │
+│ Assessor (Human)│   £31,200  │ £14,040│ £10,920│  18 days │
+│ BMW Dealer      │   £34,750  │ £17,375│ £12,775│  21 days │
+│ Approved Shop A │   £26,800  │ £11,740│ £9,380 │  16 days │
+│ Approved Shop B │   £29,100  │ £13,195│ £10,465│  15 days │
+│─────────────────┼────────────┼────────┼────────┼──────────│
+│ Recommended     │   £28,500  │ £12,825│ £9,975 │  14 days │
+│ (System + Review)                                        │
+└───────────────────────────────────────────────────────────┘
+</pre></div>
+</div>
+</section>
+</section>
+<section id="workflow-tracking">
+<h3>7. WORKFLOW TRACKING<a class="headerlink" href="#workflow-tracking" title="Link to this heading"></a></h3>
+<section id="assessment-timeline">
+<h4>Assessment Timeline<a class="headerlink" href="#assessment-timeline" title="Link to this heading"></a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Assessment Progress: ████████████░░░░ 75% Complete
+
+Timeline:
+├─ 2024-09-16 09:00 ✓ Assessment Assigned (Sarah J.)
+├─ 2024-09-16 10:30 ✓ Photos Uploaded (Customer)
+├─ 2024-09-16 14:15 ✓ System Analysis Complete (87% confidence)
+├─ 2024-09-16 16:45 ✓ Human Review Started
+├─ 2024-09-17 08:30 ✓ Field Inspection Complete
+├─ 2024-09-17 11:20 🔄 Quality Check In Progress
+├─ 2024-09-17 14:00 ⏳ Customer Notification Pending
+├─ 2024-09-17 16:00 ⏳ Insurance Submission Pending
+└─ 2024-09-18 09:00 ⏳ Final Approval Pending
+
+Bottlenecks Identified:
+⚠️  Parts pricing lookup delayed (3rd party system down)
+⚠️  Engineer report pending (1 day overdue)
+</pre></div>
+</div>
+</section>
+<section id="stakeholder-communication">
+<h4>Stakeholder Communication<a class="headerlink" href="#stakeholder-communication" title="Link to this heading"></a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>╭─────────────────── COMMUNICATION LOG ───────────────────╮
+│                                                         │
+│ 📞 2024-09-17 09:15 - Customer (John Smith)           │
+│    "Additional photos of interior damage uploaded"      │
+│    [View Photos] [Reply]                               │
+│                                                         │
+│ 💬 2024-09-17 10:30 - Assessor (Sarah Johnson)        │
+│    "Recommend structural engineer inspection"           │
+│    [Schedule Engineer] [Internal Note]                 │
+│                                                         │
+│ 📧 2024-09-17 12:45 - Repair Shop (AutoFix Ltd)       │
+│    "Parts availability confirmed, can start Monday"     │
+│    [Approve] [Request Details]                         │
+│                                                         │
+│ 🔔 2024-09-17 14:20 - System Alert                    │
+│    "DVLA notification submitted successfully"           │
+│    [View Details]                                      │
+│                                                         │
+╰─────────────────────────────────────────────────────────╯
+</pre></div>
+</div>
+</section>
+</section>
+<section id="decision-support-tools">
+<h3>8. DECISION SUPPORT TOOLS<a class="headerlink" href="#decision-support-tools" title="Link to this heading"></a></h3>
+<section id="action-panel">
+<h4>Action Panel<a class="headerlink" href="#action-panel" title="Link to this heading"></a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>╭─────────────────── QUICK ACTIONS ───────────────────────╮
+│                                                         │
+│ Assessment Decision:                                    │
+│ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐      │
+│ │ ✅ APPROVE   │ │ ❌ REJECT   │ │ 🔍 REVIEW   │      │
+│ │ Total Loss  │ │ Assessment  │ │ Required    │      │
+│ └─────────────┘ └─────────────┘ └─────────────┘      │
+│                                                         │
+│ Settlement Options:                                     │
+│ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐      │
+│ │ £18,750     │ │ £16,200     │ │ NEGOTIATE   │      │
+│ │ Market Value│ │ Trade Value │ │ Settlement  │      │
+│ └─────────────┘ └─────────────┘ └─────────────┘      │
+│                                                         │
+│ Next Steps:                                            │
+│ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐      │
+│ │ 📞 CALL     │ │ 📧 EMAIL    │ │ 📄 GENERATE │      │
+│ │ Customer    │ │ Summary     │ │ Settlement  │      │
+│ └─────────────┘ └─────────────┘ └─────────────┘      │
+│                                                         │
+╰─────────────────────────────────────────────────────────╯
+</pre></div>
+</div>
+</section>
+<section id="write-off-classification-panel">
+<h4>Write-Off Classification Panel<a class="headerlink" href="#write-off-classification-panel" title="Link to this heading"></a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>┌─────────── UK CLASSIFICATION ───────────┐
+│                                         │
+│ ○ Category A - Total Loss/Scrap        │
+│ ○ Category B - Break for Parts         │
+│ ● Category S - Structural Damage ✓     │
+│ ○ Category N - Non-Structural          │
+│                                         │
+│ Justification:                          │
+│ "Significant structural damage to       │
+│ B-pillar and floor pan. Vehicle can     │
+│ be repaired but exceeds economic        │
+│ threshold and requires specialist       │
+│ structural work."                       │
+│                                         │
+│ DVLA Notification: Required Form V23    │
+│ [Submit V23] [Preview Form]             │
+└─────────────────────────────────────────┘
+
+┌────────── SA CLASSIFICATION ─────────────┐
+│                                          │
+│ Repair Cost:    £28,500                  │
+│ Vehicle Value:  £18,750                  │
+│ Percentage:     152%                     │
+│                                          │
+│ 70% Rule: ✓ EXCEEDED                     │
+│                                          │
+│ Recommendation: TOTAL LOSS               │
+│                                          │
+└──────────────────────────────────────────┘
+</pre></div>
+</div>
+</section>
+</section>
+<section id="mobile-responsive-design">
+<h3>10. MOBILE-RESPONSIVE DESIGN<a class="headerlink" href="#mobile-responsive-design" title="Link to this heading"></a></h3>
+<section id="settlement-calculator">
+<h4>Settlement Calculator<a class="headerlink" href="#settlement-calculator" title="Link to this heading"></a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>╭─────────────────── SETTLEMENT BREAKDOWN ───────────────────╮
+│                                                            │
+│ Policy Coverage:     £25,000 (Comprehensive)              │
+│ Vehicle Value:       £18,750 (Agreed Value)               │
+│ Salvage Value:       £3,200 (Estimated)                   │
+│ Customer Deductible: £500                                  │
+│                                                            │
+│ Settlement Calculation:                                    │
+│ ├─ Vehicle Value:           £18,750                        │
+│ ├─ Less: Deductible:        -£500                         │
+│ ├─ Less: Policy Excess:     -£0                           │
+│ ├─ Add: Recovery Expected:   +£3,200                      │
+│ └─ Net Settlement:          £21,450                       │
+│                                                            │
+│ ┌─────────────────────────────────────────────────────────┐ │
+│ │          AUTHORIZE SETTLEMENT: £21,450                  │ │
+│ └─────────────────────────────────────────────────────────┘ │
+│                                                            │
+╰────────────────────────────────────────────────────────────╯
+</pre></div>
+</div>
+</section>
+<section id="cost-analytics">
+<h4>Cost Analytics<a class="headerlink" href="#cost-analytics" title="Link to this heading"></a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>┌─── MONTHLY CLAIMS ANALYSIS ───┐
+│                               │
+│ Total Claims:      147        │
+│ Average Cost:      £8,450     │
+│ Total Paid:        £1.24M     │
+│ Budget Remaining:  £340K      │
+│                               │
+│ Trend: ▲ 12% vs last month    │
+│                               │
+│ Top Damage Types:             │
+│ 1. Collision      45%         │
+│ 2. Weather        23%         │
+│ 3. Vandalism      18%         │
+│ 4. Theft          14%         │
+│                               │
+└───────────────────────────────┘
+</pre></div>
+</div>
+</section>
+</section>
+<section id="financial-dashboard">
+<h3>9. FINANCIAL DASHBOARD<a class="headerlink" href="#financial-dashboard" title="Link to this heading"></a></h3>
+<section id="condensed-mobile-view">
+<h4>Condensed Mobile View<a class="headerlink" href="#condensed-mobile-view" title="Link to this heading"></a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>┌─────────── MOBILE DASHBOARD ───────────┐
+│ ☰ Menu    📊 Dashboard    🔔 (3) 👤    │
+├─────────────────────────────────────────┤
+│                                         │
+│ 🚨 Urgent: 3 claims     [View All]     │
+│ ⏰ SLA Risk: 5 claims   [Prioritize]   │
+│ ✅ Ready: 12 approvals  [Quick Act]    │
+│                                         │
+│ ┌─ Today's Summary ─┐                  │
+│ │ New: 8           │                  │
+│ │ Completed: 15    │                  │
+│ │ Avg Time: 4.2h   │                  │
+│ │ Satisfaction: 4.6 │                  │
+│ └──────────────────┘                  │
+│                                         │
+│ Recent Activity:                        │
+│ • INS-8847 Total loss approved          │
+│ • INS-8851 Photos received              │
+│ • INS-8849 Customer contacted          │
+│                                         │
+│ [Quick Actions] [Full Assessment]       │
+│                                         │
+└─────────────────────────────────────────┘
+</pre></div>
+</div>
+</section>
+</section>
+<section id="reporting-and-analytics">
+<h3>11. REPORTING AND ANALYTICS<a class="headerlink" href="#reporting-and-analytics" title="Link to this heading"></a></h3>
+<section id="performance-analytics-dashboard">
+<h4>Performance Analytics Dashboard<a class="headerlink" href="#performance-analytics-dashboard" title="Link to this heading"></a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>╭─────────────────── PERFORMANCE ANALYTICS ───────────────────╮
+│                                                             │
+│ Claims Processing Velocity (Last 30 Days)                   │
+│ ┌─────────────────────────────────────────────────────────┐ │
+│ │ 25 │                                          ████     │ │
+│ │ 20 │                                    ████  ████     │ │
+│ │ 15 │                              ████  ████  ████     │ │
+│ │ 10 │                        ████  ████  ████  ████     │ │
+│ │  5 │  ████  ████  ████  ████  ████  ████  ████  ████  │ │
+│ │  0 │──────────────────────────────────────────────────│ │
+│ └─────────────────────────────────────────────────────────┘ │
+│   Week 1  Week 2  Week 3  Week 4  Week 5                   │
+│                                                             │
+│ Customer Satisfaction Trend                                 │
+│ ████████████████████████████████████░░░ 4.6/5.0 Stars      │
+│                                                             │
+│ Cost Efficiency Metrics                                     │
+│ ├─ Cost per Assessment: £145 (↓8% vs target)               │
+│ ├─ Settlement Accuracy: 94.2% (↑2.1% vs last month)        │
+│ └─ Processing Speed: 4.2hrs avg (Target: 6hrs) ✓           │
+│                                                             │
+╰─────────────────────────────────────────────────────────────╯
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="dashboard-features-summary">
+<h2>Dashboard Features Summary<a class="headerlink" href="#dashboard-features-summary" title="Link to this heading"></a></h2>
+<section id="core-functionality">
+<h3>Core Functionality<a class="headerlink" href="#core-functionality" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Real-time Updates</strong>: WebSocket connections for live data</p></li>
+<li><p><strong>Responsive Design</strong>: Desktop, tablet, and mobile optimized</p></li>
+<li><p><strong>Role-based Access</strong>: Permissions based on user level</p></li>
+<li><p><strong>Customizable Layouts</strong>: Drag-and-drop widget arrangement</p></li>
+<li><p><strong>Offline Capability</strong>: Critical functions work without internet</p></li>
+<li><p><strong>Multi-language Support</strong>: Localization for different regions</p></li>
+</ul>
+</section>
+<section id="integration-capabilities">
+<h3>Integration Capabilities<a class="headerlink" href="#integration-capabilities" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Database Connections</strong>: External systems and databases</p></li>
+<li><p><strong>Data Export</strong>: PDF, Excel, CSV formats</p></li>
+<li><p><strong>Workflow Automation</strong>: Triggered actions and notifications</p></li>
+<li><p><strong>Audit Trail</strong>: Complete action history and compliance</p></li>
+<li><p><strong>Security</strong>: End-to-end encryption and secure authentication</p></li>
+<li><p><strong>Performance</strong>: Sub-second response times for critical operations</p></li>
+</ul>
+</section>
+<section id="user-experience">
+<h3>User Experience<a class="headerlink" href="#user-experience" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Intuitive Navigation</strong>: Clear information hierarchy</p></li>
+<li><p><strong>Visual Indicators</strong>: Color coding and status symbols</p></li>
+<li><p><strong>Quick Actions</strong>: One-click common operations</p></li>
+<li><p><strong>Smart Filters</strong>: AI-powered search and categorization</p></li>
+<li><p><strong>Contextual Help</strong>: In-app guidance and tutorials</p></li>
+<li><p><strong>Accessibility</strong>: WCAG 2.1 AA compliance for all users</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../insurance-and-quotes.html" class="btn btn-neutral float-left" title="Insurance and Repair Quotes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="new_assessment_dashboard.html" class="btn btn-neutral float-right" title="Insurance Claims Assessment Dashboard" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Menzi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,521 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vehicle Database Admin Interface Guide &mdash; Carfinity 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Common Vehicles Database" href="common_vehicles.html" />
+    <link rel="prev" title="Maintenance History Enhancement Documentation" href="MAINTENANCE_HISTORY_ENHANCEMENT.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Carfinity
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Start Here</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../administration.html">Administration and Authentication</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../vehicle-care.html">Vehicle Care and Maintenance</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="autocare_guide.html">Django Auto Care Platform - Calendar Scheduling Integration Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Autocare_Dashboard_Features.html">Digital AutoCare Dashboard — Primary Screen Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dashboard-features.html">Vehicle Dashboard Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MAINTENANCE_FORM_REDESIGN.html">Maintenance Record Form - Redesign Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="FORM_FLOW_GUIDE.html">Maintenance Form User Flow Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="FORM_ACCESS_SECURITY_REPORT.html">Maintenance Form - Access Security Report</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MAINTENANCE_HISTORY_ENHANCEMENT.html">Maintenance History Enhancement Documentation</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Vehicle Database Admin Interface Guide</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#features">Features</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#vehicle-database-management">1. Vehicle Database Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bulk-import-system">2. Bulk Import System</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#maintenance-plan-association">3. Maintenance Plan Association</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#data-integrity-features">4. Data Integrity Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#admin-actions">5. Admin Actions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#usage-instructions">Usage Instructions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#accessing-the-admin-interface">Accessing the Admin Interface</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-individual-vehicles">Adding Individual Vehicles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bulk-importing-vehicles">Bulk Importing Vehicles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#managing-maintenance-plan-associations">Managing Maintenance Plan Associations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#monitoring-data-quality">Monitoring Data Quality</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#best-practices">Best Practices</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#data-management">Data Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#maintenance-plan-assignment">Maintenance Plan Assignment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#import-operations">Import Operations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#security-considerations">Security Considerations</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#common-issues">Common Issues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#error-messages">Error Messages</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#integration-points">Integration Points</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#user-onboarding-workflow">User Onboarding Workflow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#maintenance-system">Maintenance System</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#data-relationships">Data Relationships</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#api-and-extensibility">API and Extensibility</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#custom-admin-actions">Custom Admin Actions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#template-customization">Template Customization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#validation-extensions">Validation Extensions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="common_vehicles.html">Common Vehicles Database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="popup.html">Popup Dialog Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../inspections.html">Inspections and Assessments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../insurance-and-quotes.html">Insurance and Repair Quotes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../technical-reference.html">Technical Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project-history.html">Project History and Implementation Notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Carfinity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../vehicle-care.html">Vehicle Care and Maintenance</a></li>
+      <li class="breadcrumb-item active">Vehicle Database Admin Interface Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/vehicle_database_admin_guide.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="vehicle-database-admin-interface-guide">
+<h1>Vehicle Database Admin Interface Guide<a class="headerlink" href="#vehicle-database-admin-interface-guide" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The Vehicle Database admin interface provides comprehensive tools for managing the vehicle database that supports the user onboarding workflow. This interface allows administrators to efficiently manage vehicle make/model/year combinations, associate them with maintenance plans, and perform bulk operations.</p>
+</section>
+<section id="features">
+<h2>Features<a class="headerlink" href="#features" title="Link to this heading"></a></h2>
+<section id="vehicle-database-management">
+<h3>1. Vehicle Database Management<a class="headerlink" href="#vehicle-database-management" title="Link to this heading"></a></h3>
+<section id="core-functionality">
+<h4>Core Functionality<a class="headerlink" href="#core-functionality" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>CRUD Operations</strong>: Create, read, update, and delete vehicle database entries</p></li>
+<li><p><strong>Bulk Import</strong>: Import multiple vehicles via CSV upload</p></li>
+<li><p><strong>Maintenance Plan Association</strong>: Link vehicles to appropriate maintenance plans</p></li>
+<li><p><strong>Data Validation</strong>: Comprehensive validation and integrity checks</p></li>
+<li><p><strong>Activity Status</strong>: Enable/disable vehicle entries for selection</p></li>
+</ul>
+</section>
+<section id="list-view-features">
+<h4>List View Features<a class="headerlink" href="#list-view-features" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Filtering</strong>: Filter by make, active status, creation date, and maintenance plan</p></li>
+<li><p><strong>Search</strong>: Search across make, model, and year fields</p></li>
+<li><p><strong>Inline Editing</strong>: Edit active status and maintenance plan directly in the list</p></li>
+<li><p><strong>Data Statistics</strong>: View database completeness and integrity statistics</p></li>
+<li><p><strong>Bulk Actions</strong>: Perform operations on multiple vehicles simultaneously</p></li>
+</ul>
+</section>
+</section>
+<section id="bulk-import-system">
+<h3>2. Bulk Import System<a class="headerlink" href="#bulk-import-system" title="Link to this heading"></a></h3>
+<section id="csv-format-requirements">
+<h4>CSV Format Requirements<a class="headerlink" href="#csv-format-requirements" title="Link to this heading"></a></h4>
+<div class="highlight-csv notranslate"><div class="highlight"><pre><span></span>make,model,year,maintenance_plan_name
+Toyota,Camry,2023,Toyota Standard Plan
+Honda,Civic,2022,
+BMW,3 Series,2021,BMW Premium Plan
+</pre></div>
+</div>
+</section>
+<section id="required-columns">
+<h4>Required Columns<a class="headerlink" href="#required-columns" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">make</span></code>: Vehicle manufacturer (max 50 characters)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">model</span></code>: Vehicle model (max 50 characters)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">year</span></code>: Manufacturing year (1900-2030)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">maintenance_plan_name</span></code>: Optional maintenance plan name (must match existing plan)</p></li>
+</ul>
+</section>
+<section id="import-process">
+<h4>Import Process<a class="headerlink" href="#import-process" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p><strong>Upload</strong>: Select and upload CSV file (max 5MB)</p></li>
+<li><p><strong>Validation</strong>: System validates data format and integrity</p></li>
+<li><p><strong>Preview</strong>: Review vehicles to be imported and any errors</p></li>
+<li><p><strong>Confirmation</strong>: Confirm import to create database entries</p></li>
+<li><p><strong>Results</strong>: View import summary with success/error counts</p></li>
+</ol>
+</section>
+<section id="data-validation-rules">
+<h4>Data Validation Rules<a class="headerlink" href="#data-validation-rules" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Make and model are automatically title-cased</p></li>
+<li><p>Year must be between 1900 and 2030</p></li>
+<li><p>Duplicate vehicle combinations are rejected</p></li>
+<li><p>Maintenance plan names must match existing active plans</p></li>
+<li><p>File size limited to 5MB</p></li>
+<li><p>UTF-8 encoding required</p></li>
+</ul>
+</section>
+</section>
+<section id="maintenance-plan-association">
+<h3>3. Maintenance Plan Association<a class="headerlink" href="#maintenance-plan-association" title="Link to this heading"></a></h3>
+<section id="bulk-assignment">
+<h4>Bulk Assignment<a class="headerlink" href="#bulk-assignment" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p>Select vehicles in the changelist view</p></li>
+<li><p>Choose “Assign maintenance plan to selected vehicles” action</p></li>
+<li><p>Select the desired maintenance plan from the dropdown</p></li>
+<li><p>Confirm assignment to update all selected vehicles</p></li>
+</ol>
+</section>
+<section id="individual-assignment">
+<h4>Individual Assignment<a class="headerlink" href="#individual-assignment" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Edit individual vehicle entries to assign/change maintenance plans</p></li>
+<li><p>Use the maintenance_plan field in the vehicle edit form</p></li>
+<li><p>Only active maintenance plans are available for selection</p></li>
+</ul>
+</section>
+</section>
+<section id="data-integrity-features">
+<h3>4. Data Integrity Features<a class="headerlink" href="#data-integrity-features" title="Link to this heading"></a></h3>
+<section id="validation-checks">
+<h4>Validation Checks<a class="headerlink" href="#validation-checks" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Uniqueness</strong>: Prevents duplicate make/model/year combinations</p></li>
+<li><p><strong>Referential Integrity</strong>: Validates maintenance plan references</p></li>
+<li><p><strong>Data Completeness</strong>: Tracks vehicles without maintenance plans</p></li>
+<li><p><strong>Active Status</strong>: Ensures only active plans are assigned</p></li>
+</ul>
+</section>
+<section id="statistics-dashboard">
+<h4>Statistics Dashboard<a class="headerlink" href="#statistics-dashboard" title="Link to this heading"></a></h4>
+<p>The changelist displays real-time statistics:</p>
+<ul class="simple">
+<li><p>Total vehicle count</p></li>
+<li><p>Active vehicle count</p></li>
+<li><p>Vehicles with maintenance plans</p></li>
+<li><p>Vehicles without maintenance plans</p></li>
+<li><p>Completion percentage</p></li>
+</ul>
+</section>
+<section id="integrity-warnings">
+<h4>Integrity Warnings<a class="headerlink" href="#integrity-warnings" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Alerts when vehicles lack maintenance plans</p></li>
+<li><p>Warnings when assigning inactive maintenance plans</p></li>
+<li><p>Notifications about related user vehicles before deletion</p></li>
+</ul>
+</section>
+</section>
+<section id="admin-actions">
+<h3>5. Admin Actions<a class="headerlink" href="#admin-actions" title="Link to this heading"></a></h3>
+<section id="available-actions">
+<h4>Available Actions<a class="headerlink" href="#available-actions" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Activate vehicles</strong>: Enable selected vehicles for user selection</p></li>
+<li><p><strong>Deactivate vehicles</strong>: Disable selected vehicles (safer than deletion)</p></li>
+<li><p><strong>Assign maintenance plan</strong>: Bulk assign maintenance plans</p></li>
+<li><p><strong>Bulk import vehicles</strong>: Access the CSV import interface</p></li>
+</ul>
+</section>
+<section id="safety-features">
+<h4>Safety Features<a class="headerlink" href="#safety-features" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Confirmation dialogs for destructive operations</p></li>
+<li><p>Warnings about related user vehicles</p></li>
+<li><p>Read-only fields for vehicles with existing user associations</p></li>
+<li><p>Audit logging for all administrative actions</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="usage-instructions">
+<h2>Usage Instructions<a class="headerlink" href="#usage-instructions" title="Link to this heading"></a></h2>
+<section id="accessing-the-admin-interface">
+<h3>Accessing the Admin Interface<a class="headerlink" href="#accessing-the-admin-interface" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Navigate to <code class="docutils literal notranslate"><span class="pre">/admin/</span></code> in your browser</p></li>
+<li><p>Log in with administrator credentials</p></li>
+<li><p>Go to <strong>Onboarding</strong> → <strong>Vehicle Database Entries</strong></p></li>
+</ol>
+</section>
+<section id="adding-individual-vehicles">
+<h3>Adding Individual Vehicles<a class="headerlink" href="#adding-individual-vehicles" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Click “Add Vehicle Database Entry”</p></li>
+<li><p>Fill in make, model, and year</p></li>
+<li><p>Optionally select a maintenance plan</p></li>
+<li><p>Set active status (default: active)</p></li>
+<li><p>Save the entry</p></li>
+</ol>
+</section>
+<section id="bulk-importing-vehicles">
+<h3>Bulk Importing Vehicles<a class="headerlink" href="#bulk-importing-vehicles" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Click “Bulk Import Vehicles” button</p></li>
+<li><p>Download the sample CSV template if needed</p></li>
+<li><p>Prepare your CSV file following the format requirements</p></li>
+<li><p>Upload the file and review the preview</p></li>
+<li><p>Confirm import if validation passes</p></li>
+<li><p>Review import results and address any errors</p></li>
+</ol>
+</section>
+<section id="managing-maintenance-plan-associations">
+<h3>Managing Maintenance Plan Associations<a class="headerlink" href="#managing-maintenance-plan-associations" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Individual Assignment</strong>:</p>
+<ul class="simple">
+<li><p>Edit a vehicle entry</p></li>
+<li><p>Select maintenance plan from dropdown</p></li>
+<li><p>Save changes</p></li>
+</ul>
+</li>
+<li><p><strong>Bulk Assignment</strong>:</p>
+<ul class="simple">
+<li><p>Select multiple vehicles in the list</p></li>
+<li><p>Choose “Assign maintenance plan” action</p></li>
+<li><p>Select the desired plan</p></li>
+<li><p>Confirm assignment</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="monitoring-data-quality">
+<h3>Monitoring Data Quality<a class="headerlink" href="#monitoring-data-quality" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Statistics Panel</strong>: View completion metrics in the changelist</p></li>
+<li><p><strong>Integrity Warnings</strong>: Address vehicles without maintenance plans</p></li>
+<li><p><strong>Validation Messages</strong>: Review and fix data validation issues</p></li>
+<li><p><strong>Audit Trail</strong>: Monitor administrative actions through Django logs</p></li>
+</ol>
+</section>
+</section>
+<section id="best-practices">
+<h2>Best Practices<a class="headerlink" href="#best-practices" title="Link to this heading"></a></h2>
+<section id="data-management">
+<h3>Data Management<a class="headerlink" href="#data-management" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Regularly review vehicles without maintenance plans</p></li>
+<li><p>Use deactivation instead of deletion for vehicles with user associations</p></li>
+<li><p>Maintain consistent naming conventions for makes and models</p></li>
+<li><p>Validate CSV data before bulk imports</p></li>
+</ul>
+</section>
+<section id="maintenance-plan-assignment">
+<h3>Maintenance Plan Assignment<a class="headerlink" href="#maintenance-plan-assignment" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Assign appropriate plans based on vehicle specifications</p></li>
+<li><p>Ensure maintenance plans are active before assignment</p></li>
+<li><p>Review plan assignments periodically for accuracy</p></li>
+<li><p>Document any custom plan assignments</p></li>
+</ul>
+</section>
+<section id="import-operations">
+<h3>Import Operations<a class="headerlink" href="#import-operations" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Test imports with small batches first</p></li>
+<li><p>Validate CSV format and encoding before upload</p></li>
+<li><p>Review preview data carefully before confirming</p></li>
+<li><p>Keep backup of original data before large imports</p></li>
+</ul>
+</section>
+<section id="security-considerations">
+<h3>Security Considerations<a class="headerlink" href="#security-considerations" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Limit admin access to authorized personnel only</p></li>
+<li><p>Monitor administrative actions through logs</p></li>
+<li><p>Validate data sources for bulk imports</p></li>
+<li><p>Regular backup of vehicle database</p></li>
+</ul>
+</section>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h2>
+<section id="common-issues">
+<h3>Common Issues<a class="headerlink" href="#common-issues" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>CSV Import Errors</strong>:</p>
+<ul class="simple">
+<li><p>Check file encoding (must be UTF-8)</p></li>
+<li><p>Verify column headers match requirements</p></li>
+<li><p>Ensure year values are numeric and in valid range</p></li>
+<li><p>Check for duplicate entries in the file</p></li>
+</ul>
+</li>
+<li><p><strong>Maintenance Plan Issues</strong>:</p>
+<ul class="simple">
+<li><p>Verify plan names match exactly (case-sensitive)</p></li>
+<li><p>Ensure maintenance plans are marked as active</p></li>
+<li><p>Check for typos in plan names</p></li>
+</ul>
+</li>
+<li><p><strong>Validation Errors</strong>:</p>
+<ul class="simple">
+<li><p>Review make/model length limits (50 characters)</p></li>
+<li><p>Check for special characters in data</p></li>
+<li><p>Verify year range (1900-2030)</p></li>
+</ul>
+</li>
+<li><p><strong>Performance Issues</strong>:</p>
+<ul class="simple">
+<li><p>Limit bulk operations to reasonable batch sizes</p></li>
+<li><p>Use filters to narrow down large datasets</p></li>
+<li><p>Consider database indexing for frequently searched fields</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="error-messages">
+<h3>Error Messages<a class="headerlink" href="#error-messages" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>“Vehicle already exists”</strong>: Duplicate make/model/year combination</p></li>
+<li><p><strong>“Maintenance plan not found”</strong>: Invalid or inactive maintenance plan name</p></li>
+<li><p><strong>“CSV must contain columns”</strong>: Missing required CSV headers</p></li>
+<li><p><strong>“File size too large”</strong>: CSV file exceeds 5MB limit</p></li>
+<li><p><strong>“Year must be between 1900 and 2030”</strong>: Invalid year value</p></li>
+</ul>
+</section>
+</section>
+<section id="integration-points">
+<h2>Integration Points<a class="headerlink" href="#integration-points" title="Link to this heading"></a></h2>
+<section id="user-onboarding-workflow">
+<h3>User Onboarding Workflow<a class="headerlink" href="#user-onboarding-workflow" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Vehicle database entries populate the vehicle selection interface</p></li>
+<li><p>Associated maintenance plans are automatically assigned during onboarding</p></li>
+<li><p>Active status controls which vehicles appear in user selection</p></li>
+</ul>
+</section>
+<section id="maintenance-system">
+<h3>Maintenance System<a class="headerlink" href="#maintenance-system" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Maintenance plans linked to vehicles determine service schedules</p></li>
+<li><p>Plan assignments affect automatic maintenance task generation</p></li>
+<li><p>Changes to plans impact existing user vehicle assignments</p></li>
+</ul>
+</section>
+<section id="data-relationships">
+<h3>Data Relationships<a class="headerlink" href="#data-relationships" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Vehicle database entries may reference user vehicles</p></li>
+<li><p>Maintenance plan associations affect onboarding automation</p></li>
+<li><p>Admin actions may impact existing user data</p></li>
+</ul>
+</section>
+</section>
+<section id="api-and-extensibility">
+<h2>API and Extensibility<a class="headerlink" href="#api-and-extensibility" title="Link to this heading"></a></h2>
+<section id="custom-admin-actions">
+<h3>Custom Admin Actions<a class="headerlink" href="#custom-admin-actions" title="Link to this heading"></a></h3>
+<p>The admin interface supports custom actions for specialized operations:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">custom_vehicle_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">queryset</span><span class="p">):</span>
+    <span class="c1"># Custom logic here</span>
+    <span class="k">pass</span>
+<span class="n">custom_vehicle_action</span><span class="o">.</span><span class="n">short_description</span> <span class="o">=</span> <span class="s2">"Custom action description"</span>
+</pre></div>
+</div>
+</section>
+<section id="template-customization">
+<h3>Template Customization<a class="headerlink" href="#template-customization" title="Link to this heading"></a></h3>
+<p>Admin templates can be customized by creating:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">templates/admin/onboarding/vehicledatabase/change_list.html</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">templates/admin/onboarding/vehicledatabase/change_form.html</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">templates/admin/onboarding/vehicledatabase/bulk_import.html</span></code></p></li>
+</ul>
+</section>
+<section id="validation-extensions">
+<h3>Validation Extensions<a class="headerlink" href="#validation-extensions" title="Link to this heading"></a></h3>
+<p>Additional validation can be added by extending the admin class methods:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">save_model()</span></code>: Custom save validation</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">delete_model()</span></code>: Custom deletion checks</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">clean()</span></code>: Form-level validation</p></li>
+</ul>
+<p>This comprehensive admin interface ensures efficient management of the vehicle database while maintaining data integrity and supporting the user onboarding workflow requirements.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="MAINTENANCE_HISTORY_ENHANCEMENT.html" class="btn btn-neutral float-left" title="Maintenance History Enhancement Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="common_vehicles.html" class="btn btn-neutral float-right" title="Common Vehicles Database" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Menzi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,695 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Repair Quotes Comparison System &mdash; Carfinity 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Settlement Calculator System" href="settlement-calculator-system.html" />
+    <link rel="prev" title="Insurance Assessment Repair Cost Calculation System" href="repair-cost-calculation-system.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Carfinity
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Start Here</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../administration.html">Administration and Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vehicle-care.html">Vehicle Care and Maintenance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../inspections.html">Inspections and Assessments</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../insurance-and-quotes.html">Insurance and Repair Quotes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="insurance_claims_dashboard.html">Insurance Claims Agent Dashboard Specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="new_assessment_dashboard.html">Insurance Claims Assessment Dashboard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Insurance-risk-assessment-implementation.html">Insurance Risk Assessment Platform - Implementation Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Parts-Based-Quote-System-Workflow-Guide.html">Parts-Based Quote System - Complete Workflow Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parts_based_quote_system.html">Parts-Based Repair Quotation System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Parts-Based-Quote-System-Build-Guide.html">Parts-Based Quote System - Build Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="repair-cost-calculation-system.html">Insurance Assessment Repair Cost Calculation System</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Repair Quotes Comparison System</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#table-of-contents">Table of Contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#system-architecture">System Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#quote-generation-logic">Quote Generation Logic</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#base-quote-calculation">Base Quote Calculation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#quote-variation-factors">Quote Variation Factors</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#quote-sources-and-types">Quote Sources and Types</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#assessor-estimate-primary">1. Assessor Estimate (Primary)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#authorized-dealer">2. Authorized Dealer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#independent-garage">3. Independent Garage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#insurance-network">4. Insurance Network</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#market-average">5. Market Average</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pricing-algorithms">Pricing Algorithms</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dealer-premium-calculation">Dealer Premium Calculation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#independent-garage-discount">Independent Garage Discount</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#insurance-network-rates">Insurance Network Rates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#market-average-calculation">Market Average Calculation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#frontend-display">Frontend Display</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#quote-comparison-table">Quote Comparison Table</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#quote-statistics-summary">Quote Statistics Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#integration-with-cost-calculation">Integration with Cost Calculation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#data-flow">Data Flow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#context-data-structure">Context Data Structure</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration-and-customization">Configuration and Customization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#adjusting-quote-multipliers">Adjusting Quote Multipliers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-custom-quote-sources">Adding Custom Quote Sources</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#confidence-level-calculation">Confidence Level Calculation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#api-reference">API Reference</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#main-methods">Main Methods</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#template-filters-and-tags">Template Filters and Tags</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#best-practices">Best Practices</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#regular-market-analysis">1. Regular Market Analysis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#quality-assurance">2. Quality Assurance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#user-experience">3. User Experience</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#data-accuracy">4. Data Accuracy</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#common-issues">Common Issues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#debugging-examples">Debugging Examples</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#performance-considerations">Performance Considerations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="settlement-calculator-system.html">Settlement Calculator System</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../technical-reference.html">Technical Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project-history.html">Project History and Implementation Notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Carfinity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../insurance-and-quotes.html">Insurance and Repair Quotes</a></li>
+      <li class="breadcrumb-item active">Repair Quotes Comparison System</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/repair-quotes-comparison-system.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="repair-quotes-comparison-system">
+<h1>Repair Quotes Comparison System<a class="headerlink" href="#repair-quotes-comparison-system" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The repair quotes comparison system provides multiple repair estimates from different sources to help insurance assessors and customers make informed decisions about vehicle repairs. The system generates realistic quote variations based on the primary assessment estimate and displays them in an easy-to-compare format.</p>
+</section>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#system-architecture">System Architecture</a></p></li>
+<li><p><a class="reference internal" href="#quote-generation-logic">Quote Generation Logic</a></p></li>
+<li><p><a class="reference internal" href="#quote-sources-and-types">Quote Sources and Types</a></p></li>
+<li><p><a class="reference internal" href="#pricing-algorithms">Pricing Algorithms</a></p></li>
+<li><p><a class="reference internal" href="#frontend-display">Frontend Display</a></p></li>
+<li><p><a class="reference internal" href="#integration-with-cost-calculation">Integration with Cost Calculation</a></p></li>
+<li><p><a class="reference internal" href="#configuration-and-customization">Configuration and Customization</a></p></li>
+<li><p><a class="reference internal" href="#api-reference">API Reference</a></p></li>
+</ol>
+</section>
+<section id="system-architecture">
+<h2>System Architecture<a class="headerlink" href="#system-architecture" title="Link to this heading"></a></h2>
+<p>The repair quotes comparison system is implemented in the <code class="docutils literal notranslate"><span class="pre">generate_repair_quote_comparisons()</span></code> method within <code class="docutils literal notranslate"><span class="pre">insurance_app/views.py</span></code>. The system:</p>
+<ul class="simple">
+<li><p>Takes the primary assessment estimate as a baseline</p></li>
+<li><p>Generates realistic variations based on different repair source types</p></li>
+<li><p>Applies market-based pricing adjustments</p></li>
+<li><p>Returns structured quote data for frontend display</p></li>
+</ul>
+</section>
+<section id="quote-generation-logic">
+<h2>Quote Generation Logic<a class="headerlink" href="#quote-generation-logic" title="Link to this heading"></a></h2>
+<section id="base-quote-calculation">
+<h3>Base Quote Calculation<a class="headerlink" href="#base-quote-calculation" title="Link to this heading"></a></h3>
+<p>The system starts with the primary assessment estimate and generates variations:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">generate_repair_quote_comparisons</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">assessment</span><span class="p">):</span>
+    <span class="n">base_cost</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">estimated_repair_cost</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">base_cost</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[]</span>
+    
+    <span class="c1"># Generate realistic quote variations</span>
+    <span class="n">quotes</span> <span class="o">=</span> <span class="p">[</span><span class="o">...</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">quotes</span>
+</pre></div>
+</div>
+</section>
+<section id="quote-variation-factors">
+<h3>Quote Variation Factors<a class="headerlink" href="#quote-variation-factors" title="Link to this heading"></a></h3>
+<p>Different repair sources have characteristic pricing patterns:</p>
+<ul class="simple">
+<li><p><strong>Authorized Dealers</strong>: Typically 25% higher (OEM parts, certified technicians)</p></li>
+<li><p><strong>Independent Garages</strong>: Typically 15% lower (aftermarket parts, competitive pricing)</p></li>
+<li><p><strong>Insurance Networks</strong>: Typically 8% lower (pre-negotiated rates)</p></li>
+<li><p><strong>Market Average</strong>: Typically 8% higher (regional market data)</p></li>
+</ul>
+</section>
+</section>
+<section id="quote-sources-and-types">
+<h2>Quote Sources and Types<a class="headerlink" href="#quote-sources-and-types" title="Link to this heading"></a></h2>
+<section id="assessor-estimate-primary">
+<h3>1. Assessor Estimate (Primary)<a class="headerlink" href="#assessor-estimate-primary" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">'source'</span><span class="p">:</span> <span class="s1">'Assessor Estimate'</span><span class="p">,</span>
+    <span class="s1">'provider'</span><span class="p">:</span> <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">assessment</span><span class="o">.</span><span class="n">assessor_name</span><span class="si">}</span><span class="s1">'</span><span class="p">,</span>
+    <span class="s1">'amount'</span><span class="p">:</span> <span class="n">base_cost</span><span class="p">,</span>
+    <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'primary'</span><span class="p">,</span>
+    <span class="s1">'confidence'</span><span class="p">:</span> <span class="s1">'High'</span><span class="p">,</span>
+    <span class="s1">'notes'</span><span class="p">:</span> <span class="s1">'Professional assessment based on inspection'</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="authorized-dealer">
+<h3>2. Authorized Dealer<a class="headerlink" href="#authorized-dealer" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">'source'</span><span class="p">:</span> <span class="s1">'Authorized Dealer'</span><span class="p">,</span>
+    <span class="s1">'provider'</span><span class="p">:</span> <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">assessment</span><span class="o">.</span><span class="n">vehicle</span><span class="o">.</span><span class="n">make</span><span class="si">}</span><span class="s1"> Main Dealer'</span><span class="p">,</span>
+    <span class="s1">'amount'</span><span class="p">:</span> <span class="n">base_cost</span> <span class="o">*</span> <span class="mf">1.25</span><span class="p">,</span>  <span class="c1"># 25% higher</span>
+    <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'dealer'</span><span class="p">,</span>
+    <span class="s1">'confidence'</span><span class="p">:</span> <span class="s1">'High'</span><span class="p">,</span>
+    <span class="s1">'notes'</span><span class="p">:</span> <span class="s1">'OEM parts and certified technicians'</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="independent-garage">
+<h3>3. Independent Garage<a class="headerlink" href="#independent-garage" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">'source'</span><span class="p">:</span> <span class="s1">'Independent Garage'</span><span class="p">,</span>
+    <span class="s1">'provider'</span><span class="p">:</span> <span class="s1">'Local Certified Garage'</span><span class="p">,</span>
+    <span class="s1">'amount'</span><span class="p">:</span> <span class="n">base_cost</span> <span class="o">*</span> <span class="mf">0.85</span><span class="p">,</span>  <span class="c1"># 15% lower</span>
+    <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'independent'</span><span class="p">,</span>
+    <span class="s1">'confidence'</span><span class="p">:</span> <span class="s1">'Medium'</span><span class="p">,</span>
+    <span class="s1">'notes'</span><span class="p">:</span> <span class="s1">'Aftermarket parts, competitive pricing'</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="insurance-network">
+<h3>4. Insurance Network<a class="headerlink" href="#insurance-network" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">'source'</span><span class="p">:</span> <span class="s1">'Insurance Network'</span><span class="p">,</span>
+    <span class="s1">'provider'</span><span class="p">:</span> <span class="s1">'Preferred Repair Network'</span><span class="p">,</span>
+    <span class="s1">'amount'</span><span class="p">:</span> <span class="n">base_cost</span> <span class="o">*</span> <span class="mf">0.92</span><span class="p">,</span>  <span class="c1"># 8% lower</span>
+    <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'network'</span><span class="p">,</span>
+    <span class="s1">'confidence'</span><span class="p">:</span> <span class="s1">'High'</span><span class="p">,</span>
+    <span class="s1">'notes'</span><span class="p">:</span> <span class="s1">'Pre-negotiated rates, guaranteed work'</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="market-average">
+<h3>5. Market Average<a class="headerlink" href="#market-average" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">'source'</span><span class="p">:</span> <span class="s1">'Market Average'</span><span class="p">,</span>
+    <span class="s1">'provider'</span><span class="p">:</span> <span class="s1">'Regional Market Data'</span><span class="p">,</span>
+    <span class="s1">'amount'</span><span class="p">:</span> <span class="n">base_cost</span> <span class="o">*</span> <span class="mf">1.08</span><span class="p">,</span>  <span class="c1"># 8% higher</span>
+    <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'market'</span><span class="p">,</span>
+    <span class="s1">'confidence'</span><span class="p">:</span> <span class="s1">'Medium'</span><span class="p">,</span>
+    <span class="s1">'notes'</span><span class="p">:</span> <span class="s1">'Based on regional repair cost data'</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="pricing-algorithms">
+<h2>Pricing Algorithms<a class="headerlink" href="#pricing-algorithms" title="Link to this heading"></a></h2>
+<section id="dealer-premium-calculation">
+<h3>Dealer Premium Calculation<a class="headerlink" href="#dealer-premium-calculation" title="Link to this heading"></a></h3>
+<p>Authorized dealers typically charge premium rates due to:</p>
+<ul class="simple">
+<li><p>OEM (Original Equipment Manufacturer) parts</p></li>
+<li><p>Factory-certified technicians</p></li>
+<li><p>Warranty coverage</p></li>
+<li><p>Brand reputation</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dealer_multiplier</span> <span class="o">=</span> <span class="mf">1.25</span>  <span class="c1"># 25% premium</span>
+<span class="n">dealer_quote</span> <span class="o">=</span> <span class="n">base_cost</span> <span class="o">*</span> <span class="n">dealer_multiplier</span>
+</pre></div>
+</div>
+</section>
+<section id="independent-garage-discount">
+<h3>Independent Garage Discount<a class="headerlink" href="#independent-garage-discount" title="Link to this heading"></a></h3>
+<p>Independent garages offer competitive pricing through:</p>
+<ul class="simple">
+<li><p>Aftermarket parts usage</p></li>
+<li><p>Lower overhead costs</p></li>
+<li><p>Competitive market positioning</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">independent_multiplier</span> <span class="o">=</span> <span class="mf">0.85</span>  <span class="c1"># 15% discount</span>
+<span class="n">independent_quote</span> <span class="o">=</span> <span class="n">base_cost</span> <span class="o">*</span> <span class="n">independent_multiplier</span>
+</pre></div>
+</div>
+</section>
+<section id="insurance-network-rates">
+<h3>Insurance Network Rates<a class="headerlink" href="#insurance-network-rates" title="Link to this heading"></a></h3>
+<p>Insurance networks provide balanced pricing with:</p>
+<ul class="simple">
+<li><p>Pre-negotiated repair rates</p></li>
+<li><p>Quality guarantees</p></li>
+<li><p>Streamlined claim processing</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">network_multiplier</span> <span class="o">=</span> <span class="mf">0.92</span>  <span class="c1"># 8% discount</span>
+<span class="n">network_quote</span> <span class="o">=</span> <span class="n">base_cost</span> <span class="o">*</span> <span class="n">network_multiplier</span>
+</pre></div>
+</div>
+</section>
+<section id="market-average-calculation">
+<h3>Market Average Calculation<a class="headerlink" href="#market-average-calculation" title="Link to this heading"></a></h3>
+<p>Market averages reflect regional pricing trends:</p>
+<ul class="simple">
+<li><p>Local labor rates</p></li>
+<li><p>Parts availability</p></li>
+<li><p>Market competition</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">market_multiplier</span> <span class="o">=</span> <span class="mf">1.08</span>  <span class="c1"># 8% above base</span>
+<span class="n">market_quote</span> <span class="o">=</span> <span class="n">base_cost</span> <span class="o">*</span> <span class="n">market_multiplier</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="frontend-display">
+<h2>Frontend Display<a class="headerlink" href="#frontend-display" title="Link to this heading"></a></h2>
+<section id="quote-comparison-table">
+<h3>Quote Comparison Table<a class="headerlink" href="#quote-comparison-table" title="Link to this heading"></a></h3>
+<p>The frontend displays quotes in a structured comparison format:</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"space-y-3"</span><span class="p">&gt;</span>
+  {% for quote in repair_quotes %}
+  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"border border-gray-200 rounded-lg p-3 </span>
+<span class="s">    {% if quote.type == 'primary' %}bg-blue-50 border-blue-200{% endif %}"</span><span class="p">&gt;</span>
+    
+    <span class="cm">&lt;!-- Quote Header --&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"flex items-center justify-between mb-2"</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">p</span> <span class="na">class</span><span class="o">=</span><span class="s">"font-medium text-sm"</span><span class="p">&gt;</span>{{ quote.source }}<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">p</span> <span class="na">class</span><span class="o">=</span><span class="s">"text-xs text-gray-500"</span><span class="p">&gt;</span>{{ quote.provider }}<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+      <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+      
+      <span class="cm">&lt;!-- Quote Amount with Styling --&gt;</span>
+      <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"text-right"</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">p</span> <span class="na">class</span><span class="o">=</span><span class="s">"font-bold text-lg </span>
+<span class="s">          {% if quote.type == 'primary' %}text-blue-600</span>
+<span class="s">          {% elif quote.amount &lt; assessment.estimated_repair_cost %}text-green-600</span>
+<span class="s">          {% else %}text-gray-900{% endif %}"</span><span class="p">&gt;</span>
+          £{{ quote.amount|floatformat:0 }}
+        <span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+        
+        <span class="cm">&lt;!-- Confidence and Variance Indicators --&gt;</span>
+        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"flex items-center space-x-2"</span><span class="p">&gt;</span>
+          <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">"text-xs px-2 py-1 rounded-full </span>
+<span class="s">            {% if quote.confidence == 'High' %}bg-green-100 text-green-700</span>
+<span class="s">            {% elif quote.confidence == 'Medium' %}bg-yellow-100 text-yellow-700</span>
+<span class="s">            {% else %}bg-gray-100 text-gray-700{% endif %}"</span><span class="p">&gt;</span>
+            {{ quote.confidence }}
+          <span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+          
+          <span class="cm">&lt;!-- Price Variance Display --&gt;</span>
+          {% if quote.amount <span class="p">&lt;</span> <span class="nt">assessment.estimated_repair_cost</span> <span class="err">%}</span>
+          <span class="err">&lt;</span><span class="na">span</span> <span class="na">class</span><span class="o">=</span><span class="s">"text-xs text-green-600 font-medium"</span><span class="p">&gt;</span>
+            -£{{ assessment.estimated_repair_cost|sub:quote.amount|floatformat:0 }}
+          <span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+          {% elif quote.amount &gt; assessment.estimated_repair_cost %}
+          <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">"text-xs text-red-600 font-medium"</span><span class="p">&gt;</span>
+            +£{{ quote.amount|sub:assessment.estimated_repair_cost|floatformat:0 }}
+          <span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+          {% endif %}
+        <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+      <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    
+    <span class="cm">&lt;!-- Quote Notes --&gt;</span>
+    <span class="p">&lt;</span><span class="nt">p</span> <span class="na">class</span><span class="o">=</span><span class="s">"text-xs text-gray-600"</span><span class="p">&gt;</span>{{ quote.notes }}<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+  {% endfor %}
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="quote-statistics-summary">
+<h3>Quote Statistics Summary<a class="headerlink" href="#quote-statistics-summary" title="Link to this heading"></a></h3>
+<p>The system displays statistical analysis of quotes:</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"mt-4 pt-3 border-t border-gray-200"</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"grid grid-cols-3 gap-4 text-center text-xs"</span><span class="p">&gt;</span>
+    {% with min_quote=repair_quotes|min_by:'amount' avg_amount=repair_quotes|avg:'amount' max_quote=repair_quotes|max_by:'amount' %}
+    
+    <span class="cm">&lt;!-- Lowest Quote --&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">p</span> <span class="na">class</span><span class="o">=</span><span class="s">"text-gray-500"</span><span class="p">&gt;</span>Lowest Quote<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">p</span> <span class="na">class</span><span class="o">=</span><span class="s">"font-medium text-green-600"</span><span class="p">&gt;</span>
+        £{{ min_quote.amount|floatformat:0 }}
+      <span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    
+    <span class="cm">&lt;!-- Average Quote --&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">p</span> <span class="na">class</span><span class="o">=</span><span class="s">"text-gray-500"</span><span class="p">&gt;</span>Average Quote<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">p</span> <span class="na">class</span><span class="o">=</span><span class="s">"font-medium"</span><span class="p">&gt;</span>
+        £{{ avg_amount|floatformat:0 }}
+      <span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    
+    <span class="cm">&lt;!-- Highest Quote --&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">p</span> <span class="na">class</span><span class="o">=</span><span class="s">"text-gray-500"</span><span class="p">&gt;</span>Highest Quote<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">p</span> <span class="na">class</span><span class="o">=</span><span class="s">"font-medium text-red-600"</span><span class="p">&gt;</span>
+        £{{ max_quote.amount|floatformat:0 }}
+      <span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    
+    {% endwith %}
+  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="integration-with-cost-calculation">
+<h2>Integration with Cost Calculation<a class="headerlink" href="#integration-with-cost-calculation" title="Link to this heading"></a></h2>
+<section id="data-flow">
+<h3>Data Flow<a class="headerlink" href="#data-flow" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Assessment Completion</strong>: Primary repair cost calculated using section-based system</p></li>
+<li><p><strong>Quote Generation</strong>: Multiple quotes generated based on primary estimate</p></li>
+<li><p><strong>Statistical Analysis</strong>: Min, max, and average calculations performed</p></li>
+<li><p><strong>Frontend Display</strong>: Structured quote comparison presented to user</p></li>
+</ol>
+</section>
+<section id="context-data-structure">
+<h3>Context Data Structure<a class="headerlink" href="#context-data-structure" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">context</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+    <span class="s1">'repair_quotes'</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s1">'source'</span><span class="p">:</span> <span class="s1">'Assessor Estimate'</span><span class="p">,</span>
+            <span class="s1">'provider'</span><span class="p">:</span> <span class="s1">'John Smith'</span><span class="p">,</span>
+            <span class="s1">'amount'</span><span class="p">:</span> <span class="mf">5000.00</span><span class="p">,</span>
+            <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'primary'</span><span class="p">,</span>
+            <span class="s1">'confidence'</span><span class="p">:</span> <span class="s1">'High'</span><span class="p">,</span>
+            <span class="s1">'notes'</span><span class="p">:</span> <span class="s1">'Professional assessment based on inspection'</span>
+        <span class="p">},</span>
+        <span class="c1"># ... additional quotes</span>
+    <span class="p">],</span>
+    <span class="s1">'quote_statistics'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">'min_quote'</span><span class="p">:</span> <span class="mf">4250.00</span><span class="p">,</span>
+        <span class="s1">'max_quote'</span><span class="p">:</span> <span class="mf">6250.00</span><span class="p">,</span>
+        <span class="s1">'avg_quote'</span><span class="p">:</span> <span class="mf">5100.00</span><span class="p">,</span>
+        <span class="s1">'variance_range'</span><span class="p">:</span> <span class="mf">2000.00</span>
+    <span class="p">}</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="configuration-and-customization">
+<h2>Configuration and Customization<a class="headerlink" href="#configuration-and-customization" title="Link to this heading"></a></h2>
+<section id="adjusting-quote-multipliers">
+<h3>Adjusting Quote Multipliers<a class="headerlink" href="#adjusting-quote-multipliers" title="Link to this heading"></a></h3>
+<p>Quote multipliers can be customized based on regional market conditions:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Regional multiplier adjustments</span>
+<span class="n">QUOTE_MULTIPLIERS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'dealer'</span><span class="p">:</span> <span class="mf">1.25</span><span class="p">,</span>      <span class="c1"># Can adjust based on local dealer pricing</span>
+    <span class="s1">'independent'</span><span class="p">:</span> <span class="mf">0.85</span><span class="p">,</span>  <span class="c1"># Can adjust based on local competition</span>
+    <span class="s1">'network'</span><span class="p">:</span> <span class="mf">0.92</span><span class="p">,</span>     <span class="c1"># Can adjust based on network agreements</span>
+    <span class="s1">'market'</span><span class="p">:</span> <span class="mf">1.08</span>       <span class="c1"># Can adjust based on regional data</span>
+<span class="p">}</span>
+
+<span class="c1"># Apply regional adjustments</span>
+<span class="n">dealer_quote</span> <span class="o">=</span> <span class="n">base_cost</span> <span class="o">*</span> <span class="n">QUOTE_MULTIPLIERS</span><span class="p">[</span><span class="s1">'dealer'</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="adding-custom-quote-sources">
+<h3>Adding Custom Quote Sources<a class="headerlink" href="#adding-custom-quote-sources" title="Link to this heading"></a></h3>
+<p>New quote sources can be added to the system:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">generate_repair_quote_comparisons</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">assessment</span><span class="p">):</span>
+    <span class="n">base_cost</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">estimated_repair_cost</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span>
+    
+    <span class="n">quotes</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="c1"># ... existing quotes</span>
+        
+        <span class="c1"># Custom quote source</span>
+        <span class="p">{</span>
+            <span class="s1">'source'</span><span class="p">:</span> <span class="s1">'Mobile Repair Service'</span><span class="p">,</span>
+            <span class="s1">'provider'</span><span class="p">:</span> <span class="s1">'On-Site Repair Specialists'</span><span class="p">,</span>
+            <span class="s1">'amount'</span><span class="p">:</span> <span class="n">base_cost</span> <span class="o">*</span> <span class="mf">0.90</span><span class="p">,</span>  <span class="c1"># 10% discount</span>
+            <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'mobile'</span><span class="p">,</span>
+            <span class="s1">'confidence'</span><span class="p">:</span> <span class="s1">'Medium'</span><span class="p">,</span>
+            <span class="s1">'notes'</span><span class="p">:</span> <span class="s1">'Convenient on-site repairs, limited to minor damage'</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+    
+    <span class="k">return</span> <span class="n">quotes</span>
+</pre></div>
+</div>
+</section>
+<section id="confidence-level-calculation">
+<h3>Confidence Level Calculation<a class="headerlink" href="#confidence-level-calculation" title="Link to this heading"></a></h3>
+<p>Confidence levels can be calculated based on various factors:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">calculate_quote_confidence</span><span class="p">(</span><span class="n">quote_type</span><span class="p">,</span> <span class="n">damage_severity</span><span class="p">,</span> <span class="n">repair_complexity</span><span class="p">):</span>
+    <span class="n">base_confidence</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">'primary'</span><span class="p">:</span> <span class="s1">'High'</span><span class="p">,</span>
+        <span class="s1">'dealer'</span><span class="p">:</span> <span class="s1">'High'</span><span class="p">,</span>
+        <span class="s1">'independent'</span><span class="p">:</span> <span class="s1">'Medium'</span><span class="p">,</span>
+        <span class="s1">'network'</span><span class="p">:</span> <span class="s1">'High'</span><span class="p">,</span>
+        <span class="s1">'market'</span><span class="p">:</span> <span class="s1">'Medium'</span>
+    <span class="p">}</span>
+    
+    <span class="c1"># Adjust confidence based on damage complexity</span>
+    <span class="k">if</span> <span class="n">damage_severity</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'severe'</span><span class="p">,</span> <span class="s1">'total_loss'</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">quote_type</span> <span class="o">==</span> <span class="s1">'independent'</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">'Low'</span>  <span class="c1"># Independent shops may struggle with complex repairs</span>
+    
+    <span class="k">return</span> <span class="n">base_confidence</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">quote_type</span><span class="p">,</span> <span class="s1">'Medium'</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="api-reference">
+<h2>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading"></a></h2>
+<section id="main-methods">
+<h3>Main Methods<a class="headerlink" href="#main-methods" title="Link to this heading"></a></h3>
+<section id="generate-repair-quote-comparisons-assessment">
+<h4><code class="docutils literal notranslate"><span class="pre">generate_repair_quote_comparisons(assessment)</span></code><a class="headerlink" href="#generate-repair-quote-comparisons-assessment" title="Link to this heading"></a></h4>
+<p>Generates multiple repair quotes for comparison.</p>
+<p><strong>Parameters:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">assessment</span></code>: VehicleAssessment object with estimated repair cost</p></li>
+</ul>
+<p><strong>Returns:</strong> List of quote dictionaries</p>
+<p><strong>Example Usage:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">quotes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_repair_quote_comparisons</span><span class="p">(</span><span class="n">assessment</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="quote-object-structure">
+<h4>Quote Object Structure<a class="headerlink" href="#quote-object-structure" title="Link to this heading"></a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">'source'</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>        <span class="c1"># Quote source name</span>
+    <span class="s1">'provider'</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>      <span class="c1"># Provider/company name</span>
+    <span class="s1">'amount'</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>      <span class="c1"># Quote amount in currency</span>
+    <span class="s1">'type'</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>          <span class="c1"># Quote type identifier</span>
+    <span class="s1">'confidence'</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>    <span class="c1"># Confidence level (High/Medium/Low)</span>
+    <span class="s1">'notes'</span><span class="p">:</span> <span class="nb">str</span>          <span class="c1"># Additional information</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="template-filters-and-tags">
+<h3>Template Filters and Tags<a class="headerlink" href="#template-filters-and-tags" title="Link to this heading"></a></h3>
+<section id="custom-template-filters">
+<h4>Custom Template Filters<a class="headerlink" href="#custom-template-filters" title="Link to this heading"></a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># In templatetags/insurance_filters.py</span>
+
+<span class="nd">@register</span><span class="o">.</span><span class="n">filter</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">min_by</span><span class="p">(</span><span class="n">queryset</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Get object with minimum value for specified field"""</span>
+    <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">queryset</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+<span class="nd">@register</span><span class="o">.</span><span class="n">filter</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">max_by</span><span class="p">(</span><span class="n">queryset</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Get object with maximum value for specified field"""</span>
+    <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">queryset</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+<span class="nd">@register</span><span class="o">.</span><span class="n">filter</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">avg</span><span class="p">(</span><span class="n">queryset</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Calculate average value for specified field"""</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="nb">getattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">queryset</span><span class="p">]</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="k">if</span> <span class="n">values</span> <span class="k">else</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="best-practices">
+<h2>Best Practices<a class="headerlink" href="#best-practices" title="Link to this heading"></a></h2>
+<section id="regular-market-analysis">
+<h3>1. Regular Market Analysis<a class="headerlink" href="#regular-market-analysis" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Monitor regional repair costs quarterly</p></li>
+<li><p>Update multipliers based on market trends</p></li>
+<li><p>Validate quotes against actual repair invoices</p></li>
+</ul>
+</section>
+<section id="quality-assurance">
+<h3>2. Quality Assurance<a class="headerlink" href="#quality-assurance" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Implement quote validation rules</p></li>
+<li><p>Set reasonable variance limits</p></li>
+<li><p>Flag unusual quote variations for review</p></li>
+</ul>
+</section>
+<section id="user-experience">
+<h3>3. User Experience<a class="headerlink" href="#user-experience" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Clearly explain quote differences</p></li>
+<li><p>Provide context for price variations</p></li>
+<li><p>Highlight recommended options</p></li>
+</ul>
+</section>
+<section id="data-accuracy">
+<h3>4. Data Accuracy<a class="headerlink" href="#data-accuracy" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Validate base cost calculations</p></li>
+<li><p>Ensure quote multipliers reflect reality</p></li>
+<li><p>Maintain audit trail of quote generations</p></li>
+</ul>
+</section>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h2>
+<section id="common-issues">
+<h3>Common Issues<a class="headerlink" href="#common-issues" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Missing Quotes</strong>: Ensure base cost is greater than zero</p></li>
+<li><p><strong>Incorrect Multipliers</strong>: Verify multiplier values are reasonable</p></li>
+<li><p><strong>Display Issues</strong>: Check template filter implementations</p></li>
+<li><p><strong>Statistical Errors</strong>: Validate quote list is not empty</p></li>
+</ol>
+</section>
+<section id="debugging-examples">
+<h3>Debugging Examples<a class="headerlink" href="#debugging-examples" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Debug quote generation</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_repair_quote_comparisons</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">assessment</span><span class="p">):</span>
+    <span class="n">base_cost</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">assessment</span><span class="o">.</span><span class="n">estimated_repair_cost</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span>
+    
+    <span class="c1"># Add logging</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Generating quotes for base cost: £</span><span class="si">{</span><span class="n">base_cost</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">base_cost</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"Base cost is zero, no quotes generated"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[]</span>
+    
+    <span class="n">quotes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># ... quote generation logic</span>
+    
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Generated </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">quotes</span><span class="p">)</span><span class="si">}</span><span class="s2"> quotes"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">quotes</span>
+</pre></div>
+</div>
+</section>
+<section id="performance-considerations">
+<h3>Performance Considerations<a class="headerlink" href="#performance-considerations" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Cache quote calculations for repeated requests</p></li>
+<li><p>Limit number of quote sources to prevent UI clutter</p></li>
+<li><p>Optimize template rendering for large quote lists</p></li>
+</ul>
+<hr class="docutils" />
+<p><em>Last updated: December 2024</em>
+<em>Version: 1.0</em></p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="repair-cost-calculation-system.html" class="btn btn-neutral float-left" title="Insurance Assessment Repair Cost Calculation System" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="settlement-calculator-system.html" class="btn btn-neutral float-right" title="Settlement Calculator System" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Menzi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

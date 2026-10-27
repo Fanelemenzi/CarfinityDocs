@@ -1,0 +1,763 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Insurance App Separation Analysis &mdash; Carfinity 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Logout and Session Management Enhancement - Summary" href="LOGOUT_SESSION_MANAGEMENT_SUMMARY.html" />
+    <link rel="prev" title="Insurance App URL Configuration Summary" href="Insurance-URL-Configuration-Summary.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Carfinity
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Start Here</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../administration.html">Administration and Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vehicle-care.html">Vehicle Care and Maintenance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../inspections.html">Inspections and Assessments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../insurance-and-quotes.html">Insurance and Repair Quotes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../technical-reference.html">Technical Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../project-history.html">Project History and Implementation Notes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="README_REDESIGN.html">Carfinity 2.0 - Recent Updates &amp; Redesigns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Accident-History-Integration-Summary.html">Insurance App - Vehicle History Integration Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DYNAMIC_DASHBOARD_ROUTING_IMPLEMENTATION.html">Dynamic Dashboard Routing Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="IMPLEMENTATION_SUMMARY.html">Authentication Service Implementation Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="INSPECTIONS_IMPLEMENTATION_SUMMARY.html">Inspections Card Implementation Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="INSPECTION_WORKFLOW_CONNECTED.html">🔧 Connected Inspection Workflow - Implementation Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="INSPECTION_WORKFLOW_SUMMARY.html">Inspection Workflow Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Insurance-Admin-Configuration-Summary.html">Insurance App Django Admin Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Insurance-URL-Configuration-Summary.html">Insurance App URL Configuration Summary</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Insurance App Separation Analysis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#carfinity-2-0-making-insurance-app-standalone">Carfinity 2.0 - Making Insurance App Standalone</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#executive-summary">Executive Summary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#critical-integration-points">Critical Integration Points</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#assessments-app-bidirectional-dependency-critical">1. ⚠️ ASSESSMENTS APP - BIDIRECTIONAL DEPENDENCY (CRITICAL)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#organizations-app-hard-dependency">2. ⚠️ ORGANIZATIONS APP - HARD DEPENDENCY</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#users-permissions-auth-dependency">3. ⚠️ USERS/PERMISSIONS - AUTH DEPENDENCY</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#notifications-hard-coded-dependency">4. ⚠️ NOTIFICATIONS - HARD CODED DEPENDENCY</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#maintenance-vehicles-data-sync-dependency">5. ⚠️ MAINTENANCE/VEHICLES - DATA SYNC DEPENDENCY</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#settings-configuration-hard-coded">6. ⚠️ SETTINGS CONFIGURATION - HARD-CODED</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#url-routing-centralized">7. ⚠️ URL ROUTING - CENTRALIZED</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#dependency-graph">Dependency Graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#specific-conflicts-pain-points">Specific Conflicts &amp; Pain Points</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#conflict-1-duplicate-vehicle-models">Conflict #1: Duplicate Vehicle Models</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#conflict-2-assessment-workflow-intertwined">Conflict #2: Assessment Workflow Intertwined</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#conflict-3-celery-task-dependencies">Conflict #3: Celery Task Dependencies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#conflict-4-admin-interface-integration">Conflict #4: Admin Interface Integration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#conflict-5-settings-configuration-spread">Conflict #5: Settings &amp; Configuration Spread</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#separation-approach-options">Separation Approach Options</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#option-a-hard-separation-standalone-service">Option A: HARD SEPARATION (Standalone Service)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#option-b-soft-separation-pluggable-app">Option B: SOFT SEPARATION (Pluggable App)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#option-c-hybrid-separation-abstracted-interface">Option C: HYBRID SEPARATION (Abstracted Interface)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#data-migration-issues">Data Migration Issues</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#tables-that-must-migrate-if-separating">Tables that MUST migrate if separating:</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#foreign-key-constraints-that-must-be-resolved">Foreign Key Constraints that must be resolved:</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#recommendation">Recommendation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#do-not-attempt-full-separation-immediately"><strong>DO NOT attempt full separation immediately</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#immediate-actions-low-hanging-fruit">Immediate Actions (Low-hanging fruit)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#testing-impact">Testing Impact</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#summary-table">Summary Table</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="LOGOUT_SESSION_MANAGEMENT_SUMMARY.html">Logout and Session Management Enhancement - Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="HEALTH_MONITORING_IMPLEMENTATION_SUMMARY.html">System Health Monitoring Implementation Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NAVIGATION_OPTIMIZATION_SUMMARY.html">Bottom Navigation Bar Lag Fix - Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="VEHICLE_SELECTION_SEPARATION_SUMMARY.html">Vehicle Selection Flow Separation - Implementation Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backend-implementation-plan.html">Backend Implementation Plan for Insurance Assessment System</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Carfinity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../project-history.html">Project History and Implementation Notes</a></li>
+      <li class="breadcrumb-item active">Insurance App Separation Analysis</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/INSURANCE_APP_SEPARATION_ANALYSIS.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="insurance-app-separation-analysis">
+<h1>Insurance App Separation Analysis<a class="headerlink" href="#insurance-app-separation-analysis" title="Link to this heading"></a></h1>
+<section id="carfinity-2-0-making-insurance-app-standalone">
+<h2>Carfinity 2.0 - Making Insurance App Standalone<a class="headerlink" href="#carfinity-2-0-making-insurance-app-standalone" title="Link to this heading"></a></h2>
+<p><strong>Analysis Date:</strong> July 2, 2026<br />
+<strong>Status:</strong> DETAILED CONFLICT MAPPING</p>
+</section>
+<section id="executive-summary">
+<h2>Executive Summary<a class="headerlink" href="#executive-summary" title="Link to this heading"></a></h2>
+<p>The insurance app <strong>cannot be cleanly separated</strong> as a standalone service without significant refactoring. The app is <strong>deeply integrated</strong> into the core Carfinity platform through bidirectional dependencies. There are <strong>critical data and functional dependencies</strong> that would require substantial architectural changes to decouple.</p>
+<p><strong>Complexity Level:</strong> HIGH (3-4 weeks refactoring for clean separation)</p>
+</section>
+<section id="critical-integration-points">
+<h2>Critical Integration Points<a class="headerlink" href="#critical-integration-points" title="Link to this heading"></a></h2>
+<section id="assessments-app-bidirectional-dependency-critical">
+<h3>1. ⚠️ ASSESSMENTS APP - BIDIRECTIONAL DEPENDENCY (CRITICAL)<a class="headerlink" href="#assessments-app-bidirectional-dependency-critical" title="Link to this heading"></a></h3>
+<p><strong>Severity:</strong> CRITICAL - This is the most tightly coupled dependency</p>
+<section id="assessments-insurance-many-imports">
+<h4>Assessments → Insurance (many imports)<a class="headerlink" href="#assessments-insurance-many-imports" title="Link to this heading"></a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># In assessments/views.py (10+ locations)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">insurance_app.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">DamagedPart</span><span class="p">,</span> <span class="n">PartQuoteRequest</span><span class="p">,</span> <span class="n">AssessmentQuoteSummary</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">insurance_app.parts_identification</span><span class="w"> </span><span class="kn">import</span> <span class="n">PartsIdentificationEngine</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">insurance_app.quote_managers</span><span class="w"> </span><span class="kn">import</span> <span class="n">PartQuoteRequestManager</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">insurance_app.recommendation_engine</span><span class="w"> </span><span class="kn">import</span> <span class="n">QuoteRecommendationEngine</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">insurance_app.market_analysis</span><span class="w"> </span><span class="kn">import</span> <span class="n">MarketAverageCalculator</span>
+
+<span class="c1"># In assessments/models.py</span>
+<span class="o">-</span> <span class="n">VehicleAssessment</span><span class="o">.</span><span class="n">get_repair_cost</span><span class="p">()</span> <span class="err">→</span> <span class="n">calls</span> <span class="n">AssessmentQuoteSummary</span>
+<span class="o">-</span> <span class="n">VehicleAssessment</span><span class="o">.</span><span class="n">get_market_average</span><span class="p">()</span> <span class="err">→</span> <span class="n">calls</span> <span class="n">AssessmentQuoteSummary</span>
+<span class="o">-</span> <span class="n">VehicleAssessment</span><span class="o">.</span><span class="n">get_quote_summary</span><span class="p">()</span> <span class="err">→</span> <span class="n">calls</span> <span class="n">AssessmentQuoteSummary</span>
+</pre></div>
+</div>
+</section>
+<section id="insurance-assessments-models-link-back">
+<h4>Insurance → Assessments (models link back)<a class="headerlink" href="#insurance-assessments-models-link-back" title="Link to this heading"></a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># In insurance_app/models.py</span>
+<span class="o">-</span> <span class="n">DamagedPart</span> <span class="err">→</span> <span class="n">FK</span> <span class="n">to</span> <span class="s1">'assessments.VehicleAssessment'</span>
+<span class="o">-</span> <span class="n">PartQuoteRequest</span> <span class="err">→</span> <span class="n">FK</span> <span class="n">to</span> <span class="s1">'assessments.VehicleAssessment'</span>
+<span class="o">-</span> <span class="n">AssessmentQuoteSummary</span> <span class="err">→</span> <span class="n">OneToOne</span> <span class="n">to</span> <span class="s1">'assessments.VehicleAssessment'</span>
+<span class="o">-</span> <span class="n">AssessmentHistory</span> <span class="err">→</span> <span class="n">FK</span> <span class="n">to</span> <span class="s1">'assessments.VehicleAssessment'</span>
+<span class="o">-</span> <span class="n">AssessmentVersion</span> <span class="err">→</span> <span class="n">FK</span> <span class="n">to</span> <span class="s1">'assessments.VehicleAssessment'</span>
+<span class="o">-</span> <span class="n">AssessmentNotification</span> <span class="err">→</span> <span class="n">FK</span> <span class="n">to</span> <span class="s1">'assessments.VehicleAssessment'</span>
+</pre></div>
+</div>
+<p><strong>Impact if separated:</strong></p>
+<ul class="simple">
+<li><p>Assessments app would need to have its own quote system or be divorced from insurance-based quoting</p></li>
+<li><p>Breaking the FK relationships would require database migration to abstract the relationship</p></li>
+<li><p>All assessment views that reference insurance models would need refactoring</p></li>
+</ul>
+</section>
+</section>
+<section id="organizations-app-hard-dependency">
+<h3>2. ⚠️ ORGANIZATIONS APP - HARD DEPENDENCY<a class="headerlink" href="#organizations-app-hard-dependency" title="Link to this heading"></a></h3>
+<p><strong>Severity:</strong> HIGH - Data model dependency</p>
+<section id="models-directly-reference-insurance">
+<h4>Models directly reference insurance:<a class="headerlink" href="#models-directly-reference-insurance" title="Link to this heading"></a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># In organizations/models.py</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Organization</span><span class="p">:</span>
+    <span class="o">-</span> <span class="n">is_insurance_provider</span> <span class="o">=</span> <span class="n">BooleanField</span>  <span class="c1"># Insurance-specific field</span>
+    <span class="o">-</span> <span class="n">insurance_license_number</span> <span class="o">=</span> <span class="n">CharField</span>
+    <span class="o">-</span> <span class="n">insurance_rating</span> <span class="o">=</span> <span class="n">CharField</span>
+    <span class="o">-</span> <span class="n">InsuranceOrganization</span> <span class="n">extended</span> <span class="n">model</span> <span class="p">(</span><span class="n">one</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">one</span><span class="p">)</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">InsuranceOrganization</span><span class="p">:</span>
+    <span class="o">-</span> <span class="n">Extends</span> <span class="n">Organization</span> <span class="k">with</span> <span class="n">insurance</span><span class="o">-</span><span class="n">specific</span> <span class="n">data</span>
+    <span class="o">-</span> <span class="n">Updates</span> <span class="n">insurance</span> <span class="n">policy</span> <span class="n">metrics</span> <span class="kn">from</span><span class="w"> </span><span class="nn">InsurancePolicy</span> <span class="n">table</span>
+</pre></div>
+</div>
+</section>
+<section id="insurance-models-reference-organization">
+<h4>Insurance models reference organization:<a class="headerlink" href="#insurance-models-reference-organization" title="Link to this heading"></a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># In insurance_app/models.py</span>
+<span class="n">InsurancePolicy</span><span class="p">:</span>
+    <span class="o">-</span> <span class="n">organization</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="s1">'organizations.Organization'</span><span class="p">)</span>
+    <span class="o">-</span> <span class="n">limit_choices_to</span><span class="o">=</span><span class="p">{</span><span class="s1">'is_insurance_provider'</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Impact if separated:</strong></p>
+<ul class="simple">
+<li><p>Organization model cannot be easily split since insurance is mixed with other org types (fleet, dealership, service)</p></li>
+<li><p>InsuranceOrganization would be orphaned if Organization app is retained</p></li>
+<li><p>Admin interface would show missing extended model</p></li>
+</ul>
+</section>
+</section>
+<section id="users-permissions-auth-dependency">
+<h3>3. ⚠️ USERS/PERMISSIONS - AUTH DEPENDENCY<a class="headerlink" href="#users-permissions-auth-dependency" title="Link to this heading"></a></h3>
+<p><strong>Severity:</strong> MEDIUM - Access control integration</p>
+<section id="permission-system-integration">
+<h4>Permission system integration:<a class="headerlink" href="#permission-system-integration" title="Link to this heading"></a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># In insurance_app/views.py</span>
+<span class="nd">@method_decorator</span><span class="p">([</span><span class="n">require_group</span><span class="p">(</span><span class="s1">'AutoAssess'</span><span class="p">),</span> <span class="n">check_permission_conflicts</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">'dispatch'</span><span class="p">)</span>
+
+<span class="c1"># uses users.permissions module:</span>
+<span class="o">-</span> <span class="n">require_group</span><span class="p">()</span> <span class="n">decorator</span>
+<span class="o">-</span> <span class="n">check_permission_conflicts</span><span class="p">()</span> <span class="n">decorator</span>
+<span class="o">-</span> <span class="n">AuthenticationService</span><span class="o">.</span><span class="n">check_group_access</span><span class="p">()</span>
+
+<span class="c1"># Django management commands register insurance permissions:</span>
+<span class="c1"># users/management/commands/setup_groups.py</span>
+<span class="o">-</span> <span class="n">References</span> <span class="n">InsurancePolicy</span> <span class="n">model</span>
+<span class="o">-</span> <span class="n">Sets</span> <span class="n">up</span> <span class="n">insurance_company</span> <span class="n">group</span> <span class="k">with</span> <span class="n">specific</span> <span class="n">permissions</span>
+</pre></div>
+</div>
+<p><strong>Impact if separated:</strong></p>
+<ul class="simple">
+<li><p>Insurance-specific permission groups are defined in users app (not insurance app)</p></li>
+<li><p>Removing insurance app would leave orphaned group permissions</p></li>
+<li><p>Role references AGENT, UNDERWRITER, CLAIMS_ADJUSTER only used for insurance</p></li>
+</ul>
+</section>
+</section>
+<section id="notifications-hard-coded-dependency">
+<h3>4. ⚠️ NOTIFICATIONS - HARD CODED DEPENDENCY<a class="headerlink" href="#notifications-hard-coded-dependency" title="Link to this heading"></a></h3>
+<p><strong>Severity:</strong> HIGH - Functional integration</p>
+<section id="notifications-references-insurance">
+<h4>Notifications references insurance:<a class="headerlink" href="#notifications-references-insurance" title="Link to this heading"></a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># In notifications/models.py</span>
+<span class="o">-</span> <span class="n">VehicleAlert</span><span class="o">.</span><span class="n">alert_type</span> <span class="n">includes</span> <span class="s1">'INSURANCE_EXPIRY'</span> <span class="n">choice</span>
+
+<span class="c1"># In notifications/tasks.py</span>
+<span class="n">check_insurance_expiry_alerts</span><span class="p">()</span>  <span class="c1"># Celery task specific to insurance</span>
+
+<span class="c1"># In notifications/services_backup.py</span>
+<span class="n">AlertService</span><span class="o">.</span><span class="n">check_insurance_expiry</span><span class="p">(</span><span class="n">vehicle</span><span class="p">):</span>
+    <span class="o">-</span> <span class="n">Directly</span> <span class="n">imports</span> <span class="n">InsurancePolicy</span>
+    <span class="o">-</span> <span class="n">Queries</span> <span class="n">policies</span> <span class="n">by</span> <span class="n">policy_holder</span>
+    <span class="o">-</span> <span class="n">Creates</span> <span class="n">INSURANCE_EXPIRY</span> <span class="n">alerts</span>
+
+<span class="c1"># In carfinity/settings.py</span>
+<span class="n">CELERY_BEAT_SCHEDULE</span> <span class="n">includes</span><span class="p">:</span>
+<span class="s1">'check-insurance-expiry-alerts'</span><span class="p">:</span> <span class="n">task</span><span class="p">:</span> <span class="s1">'notifications.tasks.check_insurance_expiry_alerts'</span>
+</pre></div>
+</div>
+<p><strong>Impact if separated:</strong></p>
+<ul class="simple">
+<li><p>Insurance expiry alert logic lives in notifications but depends on insurance_app models</p></li>
+<li><p>Celery beat schedule would fail if insurance_app is missing</p></li>
+<li><p>Hard-coded logic assumes InsurancePolicy exists</p></li>
+</ul>
+</section>
+</section>
+<section id="maintenance-vehicles-data-sync-dependency">
+<h3>5. ⚠️ MAINTENANCE/VEHICLES - DATA SYNC DEPENDENCY<a class="headerlink" href="#maintenance-vehicles-data-sync-dependency" title="Link to this heading"></a></h3>
+<p><strong>Severity:</strong> MEDIUM - Data synchronization</p>
+<section id="insurance-syncs-with-maintenance-data">
+<h4>Insurance syncs with maintenance data:<a class="headerlink" href="#insurance-syncs-with-maintenance-data" title="Link to this heading"></a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># In insurance_app/models.py</span>
+<span class="n">MaintenanceSchedule</span><span class="p">:</span>
+    <span class="o">-</span> <span class="n">scheduled_maintenance</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="s1">'maintenance.ScheduledMaintenance'</span><span class="p">)</span>
+    <span class="o">-</span> <span class="n">Bidirectional</span> <span class="n">sync</span> <span class="n">required</span>
+
+<span class="c1"># Management commands sync data:</span>
+<span class="c1"># insurance_app/management/commands/sync_maintenance_schedules.py</span>
+<span class="c1"># insurance_app/management/commands/sync_accident_history.py</span>
+
+<span class="c1"># Sync managers:</span>
+<span class="n">AccidentHistorySyncManager</span><span class="p">:</span>
+    <span class="o">-</span> <span class="n">Imports</span> <span class="n">vehicles</span><span class="o">.</span><span class="n">VehicleHistory</span>
+    <span class="o">-</span> <span class="n">Creates</span> <span class="n">Accident</span> <span class="n">records</span> <span class="kn">from</span><span class="w"> </span><span class="nn">history</span>
+</pre></div>
+</div>
+<p><strong>Impact if separated:</strong></p>
+<ul class="simple">
+<li><p>Maintenance schedules would orphan insurance-specific tracking</p></li>
+<li><p>Accident sync logic is embedded in insurance_app but depends on vehicles app data</p></li>
+<li><p>Dashboard would need separate maintenance data access</p></li>
+</ul>
+</section>
+</section>
+<section id="settings-configuration-hard-coded">
+<h3>6. ⚠️ SETTINGS CONFIGURATION - HARD-CODED<a class="headerlink" href="#settings-configuration-hard-coded" title="Link to this heading"></a></h3>
+<p><strong>Severity:</strong> MEDIUM - Application configuration</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># In carfinity/settings.py</span>
+<span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="o">...</span>
+    <span class="s1">'insurance_app'</span><span class="p">,</span>  <span class="c1"># Hard-coded</span>
+    <span class="s1">'assessments'</span><span class="p">,</span>    <span class="c1"># After insurance_app</span>
+    <span class="o">...</span>
+<span class="p">]</span>
+
+<span class="n">CELERY_BEAT_SCHEDULE</span> <span class="n">includes</span> <span class="mi">5</span> <span class="n">insurance</span><span class="o">-</span><span class="n">specific</span> <span class="n">tasks</span><span class="p">:</span>
+    <span class="o">-</span> <span class="n">calculate_daily_risk_scores</span>
+    <span class="o">-</span> <span class="n">update_compliance_scores</span>
+    <span class="o">-</span> <span class="n">generate_maintenance_alerts</span>
+    <span class="o">-</span> <span class="n">check_condition_deterioration</span>
+    <span class="o">-</span> <span class="n">check_insurance_expiry_alerts</span>
+
+<span class="n">STATIC_URL</span> <span class="n">configuration</span> <span class="n">assumes</span> <span class="n">insurance</span> <span class="n">assets</span> <span class="n">exist</span>
+</pre></div>
+</div>
+<p><strong>Impact if separated:</strong></p>
+<ul class="simple">
+<li><p>Settings must be maintained with app dependency ordering</p></li>
+<li><p>Celery tasks would fail if disabled</p></li>
+<li><p>Static files pipeline depends on app presence</p></li>
+</ul>
+</section>
+<section id="url-routing-centralized">
+<h3>7. ⚠️ URL ROUTING - CENTRALIZED<a class="headerlink" href="#url-routing-centralized" title="Link to this heading"></a></h3>
+<p><strong>Severity:</strong> LOW-MEDIUM - Easy to maintain but coupled</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># In carfinity/urls.py</span>
+<span class="n">path</span><span class="p">(</span><span class="s1">'insurance/'</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="s1">'insurance_app.urls'</span><span class="p">)),</span>
+<span class="n">path</span><span class="p">(</span><span class="s1">'notifications/'</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="s1">'notifications.urls'</span><span class="p">)),</span>
+<span class="o">...</span>
+
+<span class="c1"># Would need to be conditional or removed entirely</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="dependency-graph">
+<h2>Dependency Graph<a class="headerlink" href="#dependency-graph" title="Link to this heading"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>┌─────────────────────────────────────────────────────┐
+│               INSURANCE APP (Core)                  │
+├─────────────────────────────────────────────────────┤
+│ Models:                                             │
+│  - InsurancePolicy                                  │
+│  - Vehicle (insurance-specific)                     │
+│  - MaintenanceSchedule                              │
+│  - MaintenanceCompliance                            │
+│  - Accident                                          │
+│  - VehicleConditionScore                            │
+│  - RiskAlert                                         │
+│  - Quote System (DamagedPart, PartQuote, etc.)      │
+│  - Assessment Tracking (AssessmentHistory, etc.)    │
+└────────────────────────┬────────────────────────────┘
+                         │
+         ┌───────────────┼───────────────┐
+         ▼               ▼               ▼
+    ┌─────────┐  ┌──────────────┐  ┌──────────────┐
+    │ASSESSMENTS│ │ORGANIZATIONS │  │ NOTIFICATIONS│
+    │  (HARD)  │ │   (HARD)     │  │   (HARD)     │
+    └─────────┘ └──────────────┘  └──────────────┘
+         │               │               │
+         ├───────────┬───┴───────────┬──┴────────────┐
+         ▼           ▼               ▼               ▼
+    ┌────────┐ ┌──────┐      ┌──────────────┐  ┌────────┐
+    │ USERS  │ │GROUPS│      │MAINTENANCE  │  │VEHICLES│
+    │(MEDIUM)│ │(MED) │      │  (MEDIUM)   │  │(MEDIUM)│
+    └────────┘ └──────┘      └──────────────┘  └────────┘
+</pre></div>
+</div>
+</section>
+<section id="specific-conflicts-pain-points">
+<h2>Specific Conflicts &amp; Pain Points<a class="headerlink" href="#specific-conflicts-pain-points" title="Link to this heading"></a></h2>
+<section id="conflict-1-duplicate-vehicle-models">
+<h3>Conflict #1: Duplicate Vehicle Models<a class="headerlink" href="#conflict-1-duplicate-vehicle-models" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># vehicles/models.py</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Vehicle</span><span class="p">:</span>
+    <span class="n">vin</span> <span class="o">=</span> <span class="n">CharField</span>
+    <span class="n">make</span> <span class="o">=</span> <span class="n">CharField</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">CharField</span>
+    <span class="o">...</span>
+
+<span class="c1"># insurance_app/models.py  </span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Vehicle</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>  <span class="c1"># SAME NAME - name collision!</span>
+    <span class="n">policy</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="n">InsurancePolicy</span><span class="p">)</span>
+    <span class="n">vehicle</span> <span class="o">=</span> <span class="n">FK</span><span class="p">(</span><span class="s1">'vehicles.Vehicle'</span><span class="p">)</span>  <span class="c1"># Confusing reference</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p><strong>Issue:</strong> Insurance app has a model also called <code class="docutils literal notranslate"><span class="pre">Vehicle</span></code> but it’s insurance-specific. This is confusing and prone to import errors.</p>
+</section>
+<section id="conflict-2-assessment-workflow-intertwined">
+<h3>Conflict #2: Assessment Workflow Intertwined<a class="headerlink" href="#conflict-2-assessment-workflow-intertwined" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Assessments depend on insurance quote system for:</span>
+<span class="o">-</span> <span class="n">get_repair_cost</span><span class="p">()</span> <span class="o">-</span> <span class="n">depends</span> <span class="n">on</span> <span class="n">AssessmentQuoteSummary</span>
+<span class="o">-</span> <span class="n">Identifying</span> <span class="n">damaged</span> <span class="n">parts</span> <span class="o">-</span> <span class="n">calls</span> <span class="n">PartsIdentificationEngine</span>
+<span class="o">-</span> <span class="n">Getting</span> <span class="n">provider</span> <span class="n">recommendations</span> <span class="o">-</span> <span class="n">calls</span> <span class="n">QuoteRecommendationEngine</span>
+
+<span class="c1"># But assessments also exist independently for:</span>
+<span class="o">-</span> <span class="n">General</span> <span class="n">vehicle</span> <span class="n">assessments</span> <span class="p">(</span><span class="ow">not</span> <span class="n">insurance</span><span class="p">)</span>
+<span class="o">-</span> <span class="n">Could</span> <span class="n">have</span> <span class="n">non</span><span class="o">-</span><span class="n">insurance</span> <span class="n">assessments</span>
+</pre></div>
+</div>
+<p><strong>Issue:</strong> Quote system is deeply embedded in assessment flow. Non-insurance assessments would also need this system or it needs to be extracted.</p>
+</section>
+<section id="conflict-3-celery-task-dependencies">
+<h3>Conflict #3: Celery Task Dependencies<a class="headerlink" href="#conflict-3-celery-task-dependencies" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># insurance_app/tasks.py</span>
+<span class="n">calculate_daily_risk_scores</span><span class="p">()</span>
+<span class="n">update_compliance_scores</span><span class="p">()</span>
+<span class="n">generate_maintenance_alerts</span><span class="p">()</span>
+
+<span class="c1"># notifications/tasks.py</span>
+<span class="n">check_insurance_expiry_alerts</span><span class="p">()</span>  <span class="c1"># Imports insurance_app</span>
+
+<span class="c1"># All must be scheduled together or separately managed</span>
+</pre></div>
+</div>
+<p><strong>Issue:</strong> Task scheduling is split between apps. Some tasks reference insurance models directly.</p>
+</section>
+<section id="conflict-4-admin-interface-integration">
+<h3>Conflict #4: Admin Interface Integration<a class="headerlink" href="#conflict-4-admin-interface-integration" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># organizations/admin.py imports:</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Organization</span><span class="p">,</span> <span class="n">OrganizationUser</span><span class="p">,</span> <span class="n">OrganizationVehicle</span><span class="p">,</span> <span class="n">InsuranceOrganization</span>
+
+<span class="c1"># insurance_app/admin.py registers:</span>
+<span class="n">InsurancePolicyAdmin</span>
+<span class="n">VehicleAdmin</span>  <span class="c1"># Conflicts with vehicle admin</span>
+<span class="n">MaintenanceScheduleAdmin</span>
+<span class="n">AccidentAdmin</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<p><strong>Issue:</strong> Both organizations and insurance apps claim responsibility for certain admin views. Management would be split and confusing.</p>
+</section>
+<section id="conflict-5-settings-configuration-spread">
+<h3>Conflict #5: Settings &amp; Configuration Spread<a class="headerlink" href="#conflict-5-settings-configuration-spread" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># carfinity/settings.py has:</span>
+<span class="o">-</span> <span class="n">insurance_app</span> <span class="ow">in</span> <span class="n">INSTALLED_APPS</span>
+<span class="o">-</span> <span class="mi">5</span> <span class="n">Celery</span> <span class="n">beat</span> <span class="n">tasks</span> <span class="k">for</span> <span class="n">insurance</span>
+<span class="o">-</span> <span class="n">Reference</span> <span class="n">to</span> <span class="n">insurance</span> <span class="n">PWA</span> <span class="n">app</span> <span class="n">description</span>
+
+<span class="c1"># insurance_app has:</span>
+<span class="o">-</span> <span class="mi">22</span><span class="o">+</span> <span class="n">models</span> <span class="k">with</span> <span class="n">their</span> <span class="n">own</span> <span class="n">admin</span>
+<span class="o">-</span> <span class="n">Complex</span> <span class="n">permission</span> <span class="n">system</span>
+<span class="o">-</span> <span class="n">Multiple</span> <span class="n">management</span> <span class="n">commands</span>
+
+<span class="c1"># But documentation and configuration is scattered</span>
+</pre></div>
+</div>
+<p><strong>Issue:</strong> Hard to understand what configuration is actually needed to make insurance optional.</p>
+</section>
+</section>
+<section id="separation-approach-options">
+<h2>Separation Approach Options<a class="headerlink" href="#separation-approach-options" title="Link to this heading"></a></h2>
+<section id="option-a-hard-separation-standalone-service">
+<h3>Option A: HARD SEPARATION (Standalone Service)<a class="headerlink" href="#option-a-hard-separation-standalone-service" title="Link to this heading"></a></h3>
+<p><strong>Effort:</strong> 4-5 weeks</p>
+<p><strong>Steps:</strong></p>
+<ol class="arabic simple">
+<li><p>Create new Django project: <code class="docutils literal notranslate"><span class="pre">carfinity-insurance-service</span></code></p></li>
+<li><p>Move all insurance models to new project</p></li>
+<li><p>Create REST API in new service to replace direct imports</p></li>
+<li><p>Add API client library to main app</p></li>
+<li><p>Convert ForeignKeys to service calls</p></li>
+<li><p>Duplicate User/Organization models or use shared database</p></li>
+<li><p>Separate Celery workers</p></li>
+</ol>
+<p><strong>Challenges:</strong></p>
+<ul class="simple">
+<li><p>Database would need to be split or shared</p></li>
+<li><p>User authentication must be federated or shared</p></li>
+<li><p>Organization data must sync between systems</p></li>
+<li><p>Real-time notifications become async</p></li>
+</ul>
+</section>
+<section id="option-b-soft-separation-pluggable-app">
+<h3>Option B: SOFT SEPARATION (Pluggable App)<a class="headerlink" href="#option-b-soft-separation-pluggable-app" title="Link to this heading"></a></h3>
+<p><strong>Effort:</strong> 2-3 weeks</p>
+<p><strong>Steps:</strong></p>
+<ol class="arabic simple">
+<li><p>Keep insurance_app as Django app but make it optional in settings</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">django.apps.AppConfig.default_auto_field</span></code> to make models optional</p></li>
+<li><p>Replace direct imports with try/except blocks in assessments</p></li>
+<li><p>Make insurance-related permissions optional</p></li>
+<li><p>Conditional URL routing based on app presence</p></li>
+<li><p>Feature flags for insurance-specific functionality</p></li>
+</ol>
+<p><strong>Challenges:</strong></p>
+<ul class="simple">
+<li><p>Still requires modifications to other apps</p></li>
+<li><p>Database migrations must handle optional tables</p></li>
+<li><p>Less true separation</p></li>
+</ul>
+</section>
+<section id="option-c-hybrid-separation-abstracted-interface">
+<h3>Option C: HYBRID SEPARATION (Abstracted Interface)<a class="headerlink" href="#option-c-hybrid-separation-abstracted-interface" title="Link to this heading"></a></h3>
+<p><strong>Effort:</strong> 3-4 weeks</p>
+<p><strong>Steps:</strong></p>
+<ol class="arabic simple">
+<li><p>Create abstract <code class="docutils literal notranslate"><span class="pre">QuoteSystem</span></code> interface</p></li>
+<li><p>Move quote system to separate package</p></li>
+<li><p>Insurance app provides implementation of interface</p></li>
+<li><p>Assessments app references interface, not insurance directly</p></li>
+<li><p>Create abstract <code class="docutils literal notranslate"><span class="pre">RiskAssessment</span></code> interface</p></li>
+<li><p>Keep InsuranceOrganization as separate module</p></li>
+<li><p>Celery tasks become conditional</p></li>
+</ol>
+<p><strong>Challenges:</strong></p>
+<ul class="simple">
+<li><p>Still requires code in insurance app</p></li>
+<li><p>Interface might be overly complex</p></li>
+<li><p>Testing becomes harder</p></li>
+</ul>
+</section>
+</section>
+<section id="data-migration-issues">
+<h2>Data Migration Issues<a class="headerlink" href="#data-migration-issues" title="Link to this heading"></a></h2>
+<section id="tables-that-must-migrate-if-separating">
+<h3>Tables that MUST migrate if separating:<a class="headerlink" href="#tables-that-must-migrate-if-separating" title="Link to this heading"></a></h3>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="c1">-- Core insurance tables</span>
+<span class="n">insurance_app_insurancepolicy</span><span class="w">        </span><span class="p">(</span><span class="o">~</span><span class="mi">1000</span><span class="n">s</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="k">rows</span><span class="p">)</span>
+<span class="n">insurance_app_vehicle</span><span class="w">               </span><span class="p">(</span><span class="o">~</span><span class="mi">1000</span><span class="n">s</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="k">rows</span><span class="p">)</span>
+<span class="n">insurance_app_maintenanceschedule</span><span class="w">   </span><span class="p">(</span><span class="o">~</span><span class="mi">1000</span><span class="n">s</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="k">rows</span><span class="p">)</span>
+<span class="n">insurance_app_maintenancecompliance</span><span class="w"> </span><span class="p">(</span><span class="o">~</span><span class="mi">1000</span><span class="n">s</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="k">rows</span><span class="p">)</span>
+<span class="n">insurance_app_accident</span><span class="w">              </span><span class="p">(</span><span class="o">~</span><span class="mi">1000</span><span class="n">s</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="k">rows</span><span class="p">)</span>
+<span class="n">insurance_app_vehicleconditionscore</span><span class="w"> </span><span class="p">(</span><span class="o">~</span><span class="mi">1000</span><span class="n">s</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="k">rows</span><span class="p">)</span>
+<span class="n">insurance_app_riskalert</span><span class="w">             </span><span class="p">(</span><span class="o">~</span><span class="mi">1000</span><span class="n">s</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="k">rows</span><span class="p">)</span>
+<span class="n">insurance_app_riskassessmentmetrics</span><span class="w"> </span><span class="p">(</span><span class="o">~</span><span class="mi">1000</span><span class="n">s</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="k">rows</span><span class="p">)</span>
+
+<span class="c1">-- Assessment integration tables</span>
+<span class="n">insurance_app_assessmenthistory</span><span class="w">     </span><span class="p">(</span><span class="n">audit</span><span class="w"> </span><span class="n">trail</span><span class="p">)</span>
+<span class="n">insurance_app_assessmentversion</span><span class="w">     </span><span class="p">(</span><span class="n">audit</span><span class="w"> </span><span class="n">trail</span><span class="p">)</span>
+<span class="n">insurance_app_assessmentnotification</span><span class="w"> </span><span class="p">(</span><span class="o">~</span><span class="mi">100</span><span class="n">s</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="k">rows</span><span class="p">)</span>
+
+<span class="c1">-- Quote system tables</span>
+<span class="n">insurance_app_damagedpart</span><span class="w">           </span><span class="p">(</span><span class="o">~</span><span class="mi">1000</span><span class="n">s</span><span class="w"> </span><span class="n">linked</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">assessments</span><span class="p">)</span>
+<span class="n">insurance_app_partquoterequest</span><span class="w">      </span><span class="p">(</span><span class="o">~</span><span class="mi">1000</span><span class="n">s</span><span class="w"> </span><span class="n">linked</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">assessments</span><span class="p">)</span>
+<span class="n">insurance_app_partquote</span><span class="w">             </span><span class="p">(</span><span class="o">~</span><span class="mi">10000</span><span class="n">s</span><span class="w"> </span><span class="n">linked</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">requests</span><span class="p">)</span>
+<span class="n">insurance_app_partmarketaverage</span><span class="w">     </span><span class="p">(</span><span class="o">~</span><span class="mi">1000</span><span class="n">s</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">parts</span><span class="p">)</span>
+<span class="n">insurance_app_assessmentquotesummary</span><span class="w"> </span><span class="p">(</span><span class="o">~</span><span class="mi">1000</span><span class="n">s</span><span class="w"> </span><span class="n">linked</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">assessments</span><span class="p">)</span>
+<span class="n">insurance_app_quotesystemconfiguration</span><span class="w"> </span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
+<span class="n">insurance_app_providerconfiguration</span><span class="w"> </span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
+<span class="n">insurance_app_quotesystemhealthmetrics</span><span class="w"> </span><span class="p">(</span><span class="n">audit</span><span class="p">)</span>
+<span class="n">insurance_app_quotesystemauditlog</span><span class="w">   </span><span class="p">(</span><span class="n">audit</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Total:</strong> ~20 tables, likely 10,000+ rows total</p>
+</section>
+<section id="foreign-key-constraints-that-must-be-resolved">
+<h3>Foreign Key Constraints that must be resolved:<a class="headerlink" href="#foreign-key-constraints-that-must-be-resolved" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Would need to be re-implemented or abstracted:</span>
+<span class="o">-</span> <span class="n">InsurancePolicy</span><span class="o">.</span><span class="n">policy_holder</span> <span class="err">→</span> <span class="n">User</span>
+<span class="o">-</span> <span class="n">InsurancePolicy</span><span class="o">.</span><span class="n">organization</span> <span class="err">→</span> <span class="n">Organization</span>
+<span class="o">-</span> <span class="n">Vehicle</span><span class="o">.</span><span class="n">policy</span> <span class="err">→</span> <span class="n">InsurancePolicy</span>
+<span class="o">-</span> <span class="n">Vehicle</span><span class="o">.</span><span class="n">vehicle</span> <span class="err">→</span> <span class="n">vehicles</span><span class="o">.</span><span class="n">Vehicle</span> <span class="p">(</span><span class="n">name</span> <span class="n">collision</span><span class="err">!</span><span class="p">)</span>
+<span class="o">-</span> <span class="n">Accident</span><span class="o">.</span><span class="n">vehicle_history</span> <span class="err">→</span> <span class="n">vehicles</span><span class="o">.</span><span class="n">VehicleHistory</span>
+<span class="o">-</span> <span class="n">DamagedPart</span><span class="o">.</span><span class="n">assessment</span> <span class="err">→</span> <span class="n">VehicleAssessment</span>
+<span class="o">-</span> <span class="n">PartQuoteRequest</span><span class="o">.</span><span class="n">assessment</span> <span class="err">→</span> <span class="n">VehicleAssessment</span>
+<span class="o">-</span> <span class="n">AssessmentQuoteSummary</span><span class="o">.</span><span class="n">assessment</span> <span class="err">→</span> <span class="n">VehicleAssessment</span>
+<span class="o">-</span> <span class="n">AssessmentHistory</span><span class="o">.</span><span class="n">assessment</span> <span class="err">→</span> <span class="n">VehicleAssessment</span>
+<span class="o">-</span> <span class="n">And</span> <span class="mi">20</span><span class="o">+</span> <span class="n">more</span><span class="o">...</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="recommendation">
+<h2>Recommendation<a class="headerlink" href="#recommendation" title="Link to this heading"></a></h2>
+<section id="do-not-attempt-full-separation-immediately">
+<h3><strong>DO NOT attempt full separation immediately</strong><a class="headerlink" href="#do-not-attempt-full-separation-immediately" title="Link to this heading"></a></h3>
+<p><strong>Instead, recommend:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Phase 1: API Layer (1 week)</strong></p>
+<ul class="simple">
+<li><p>Create abstraction layer for assessments to call insurance via interface</p></li>
+<li><p>Replace direct imports with abstract methods</p></li>
+<li><p>Allows insurance to be swapped out later</p></li>
+</ul>
+</li>
+<li><p><strong>Phase 2: Cleanup (1-2 weeks)</strong></p>
+<ul class="simple">
+<li><p>Rename insurance_app.Vehicle to something like InsuranceVehicleRecord</p></li>
+<li><p>Resolve naming conflicts</p></li>
+<li><p>Move shared utilities to separate <code class="docutils literal notranslate"><span class="pre">shared</span></code> or <code class="docutils literal notranslate"><span class="pre">core</span></code> app</p></li>
+<li><p>Extract quote system to <code class="docutils literal notranslate"><span class="pre">quote_engine</span></code> app</p></li>
+</ul>
+</li>
+<li><p><strong>Phase 3: Standalone (2-3 weeks)</strong></p>
+<ul class="simple">
+<li><p>Create REST API endpoints for insurance operations</p></li>
+<li><p>Move to separate service</p></li>
+<li><p>Implement federation with main app</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+<section id="immediate-actions-low-hanging-fruit">
+<h2>Immediate Actions (Low-hanging fruit)<a class="headerlink" href="#immediate-actions-low-hanging-fruit" title="Link to this heading"></a></h2>
+<p>If you want to start the separation process:</p>
+<ol class="arabic">
+<li><p><strong>Rename the insurance Vehicle model</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># insurance_app/models.py</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">InsuranceVehicleRecord</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>  <span class="c1"># Instead of Vehicle</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Extract abstract interfaces</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># insurance_app/interfaces.py</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">IQuoteSystem</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">identify_damaged_parts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">assessment</span><span class="p">):</span> <span class="o">...</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_quote_requests</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">assessment</span><span class="p">):</span> <span class="o">...</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Create conditional imports in assessments</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># assessments/views.py</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">insurance_app.interfaces</span><span class="w"> </span><span class="kn">import</span> <span class="n">IQuoteSystem</span>
+    <span class="n">QUOTE_SYSTEM_AVAILABLE</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">QUOTE_SYSTEM_AVAILABLE</span> <span class="o">=</span> <span class="kc">False</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Add feature flags</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># settings.py</span>
+<span class="n">INSURANCE_APP_ENABLED</span> <span class="o">=</span> <span class="s1">'insurance_app'</span> <span class="ow">in</span> <span class="n">INSTALLED_APPS</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="testing-impact">
+<h2>Testing Impact<a class="headerlink" href="#testing-impact" title="Link to this heading"></a></h2>
+<p>Separating would require:</p>
+<ul class="simple">
+<li><p>50+ tests in assessments app to be refactored (references insurance)</p></li>
+<li><p>30+ tests in organizations app</p></li>
+<li><p>15+ integration tests</p></li>
+<li><p>20+ notification tests</p></li>
+<li><p>All mocking would need to be updated</p></li>
+</ul>
+<p><strong>Estimated test refactoring:</strong> 3-4 days</p>
+</section>
+<section id="summary-table">
+<h2>Summary Table<a class="headerlink" href="#summary-table" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Component</p></th>
+<th class="head"><p>Dependency Type</p></th>
+<th class="head"><p>Severity</p></th>
+<th class="head"><p>Effort to Decouple</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Assessments</p></td>
+<td><p>Bidirectional</p></td>
+<td><p>CRITICAL</p></td>
+<td><p>2 weeks</p></td>
+<td><p>Quote system heavily coupled</p></td>
+</tr>
+<tr class="row-odd"><td><p>Organizations</p></td>
+<td><p>Hard</p></td>
+<td><p>HIGH</p></td>
+<td><p>1 week</p></td>
+<td><p>Model split needed</p></td>
+</tr>
+<tr class="row-even"><td><p>Notifications</p></td>
+<td><p>Hard</p></td>
+<td><p>HIGH</p></td>
+<td><p>3-4 days</p></td>
+<td><p>Alert logic intertwined</p></td>
+</tr>
+<tr class="row-odd"><td><p>Users/Permissions</p></td>
+<td><p>Import</p></td>
+<td><p>MEDIUM</p></td>
+<td><p>2-3 days</p></td>
+<td><p>Group setup required</p></td>
+</tr>
+<tr class="row-even"><td><p>Maintenance/Vehicles</p></td>
+<td><p>Sync</p></td>
+<td><p>MEDIUM</p></td>
+<td><p>3-4 days</p></td>
+<td><p>Bidirectional sync</p></td>
+</tr>
+<tr class="row-odd"><td><p>Settings</p></td>
+<td><p>Config</p></td>
+<td><p>MEDIUM</p></td>
+<td><p>2-3 days</p></td>
+<td><p>Multiple tasks/apps</p></td>
+</tr>
+<tr class="row-even"><td><p>URL Routing</p></td>
+<td><p>Config</p></td>
+<td><p>LOW</p></td>
+<td><p>1 day</p></td>
+<td><p>Easily conditional</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading"></a></h2>
+<p><strong>The insurance app is NOT currently designed to be standalone.</strong> It was built as an integrated feature of Carfinity, not as a separate service.</p>
+<p><strong>Making it standalone would require:</strong></p>
+<ul class="simple">
+<li><p>✅ 3-4 weeks of refactoring</p></li>
+<li><p>✅ Database migrations</p></li>
+<li><p>✅ API layer creation</p></li>
+<li><p>✅ Significant testing</p></li>
+<li><p>✅ Architectural changes to assessments and organizations apps</p></li>
+</ul>
+<p><strong>Recommendation:</strong> Start with Phase 1 (API abstraction layer) to allow future separation without committing to it now. This gives flexibility while maintaining current functionality.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Insurance-URL-Configuration-Summary.html" class="btn btn-neutral float-left" title="Insurance App URL Configuration Summary" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="LOGOUT_SESSION_MANAGEMENT_SUMMARY.html" class="btn btn-neutral float-right" title="Logout and Session Management Enhancement - Summary" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Menzi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

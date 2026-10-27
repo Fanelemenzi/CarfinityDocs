@@ -1,0 +1,246 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Digital AutoCare Dashboard — Primary Screen Features &mdash; Carfinity 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Vehicle Dashboard Features" href="dashboard-features.html" />
+    <link rel="prev" title="Django Auto Care Platform - Calendar Scheduling Integration Guide" href="autocare_guide.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Carfinity
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Start Here</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../administration.html">Administration and Authentication</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../vehicle-care.html">Vehicle Care and Maintenance</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="autocare_guide.html">Django Auto Care Platform - Calendar Scheduling Integration Guide</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Digital AutoCare Dashboard — Primary Screen Features</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#vehicle-overview-card">1. Vehicle Overview Card</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#upcoming-maintenance">2. Upcoming Maintenance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#maintenance-history">3. Maintenance History</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#vin-decoder">4. VIN Decoder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mechanic-services">5. Mechanic Services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#alerts-and-notifications">6. Alerts and Notifications</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cost-analysis-chart">7. Cost Analysis Chart</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bookings-and-appointments">8. Bookings and Appointments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#alerts-feed-deals-section">9. Alerts Feed / Deals Section</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#user-profile-settings">10. User Profile &amp; Settings</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#visual-design-notes">Visual Design Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dashboard-features.html">Vehicle Dashboard Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MAINTENANCE_FORM_REDESIGN.html">Maintenance Record Form - Redesign Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="FORM_FLOW_GUIDE.html">Maintenance Form User Flow Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="FORM_ACCESS_SECURITY_REPORT.html">Maintenance Form - Access Security Report</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MAINTENANCE_HISTORY_ENHANCEMENT.html">Maintenance History Enhancement Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vehicle_database_admin_guide.html">Vehicle Database Admin Interface Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="common_vehicles.html">Common Vehicles Database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="popup.html">Popup Dialog Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../inspections.html">Inspections and Assessments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../insurance-and-quotes.html">Insurance and Repair Quotes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../technical-reference.html">Technical Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project-history.html">Project History and Implementation Notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Carfinity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../vehicle-care.html">Vehicle Care and Maintenance</a></li>
+      <li class="breadcrumb-item active">Digital AutoCare Dashboard — Primary Screen Features</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/Autocare_Dashboard_Features.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="digital-autocare-dashboard-primary-screen-features">
+<h1>Digital AutoCare Dashboard — Primary Screen Features<a class="headerlink" href="#digital-autocare-dashboard-primary-screen-features" title="Link to this heading"></a></h1>
+<section id="vehicle-overview-card">
+<h2>1. Vehicle Overview Card<a class="headerlink" href="#vehicle-overview-card" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Display Elements:</strong> Vehicle image, make, model, year, and VIN.</p></li>
+<li><p><strong>Live Status Indicators:</strong> Engine health, oil life, tire pressure, battery level.</p></li>
+<li><p><strong>Quick Actions:</strong> Remote lock/unlock, start engine, locate vehicle.</p></li>
+</ul>
+</section>
+<section id="upcoming-maintenance">
+<h2>2. Upcoming Maintenance<a class="headerlink" href="#upcoming-maintenance" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Functionality:</strong> Displays upcoming scheduled services such as oil change, tire rotation, or inspection.</p></li>
+<li><p><strong>Reminders:</strong> Push notifications and email alerts before service dates.</p></li>
+<li><p><strong>Action Buttons:</strong> “Book Service” or “Contact Mechanic.”</p></li>
+</ul>
+</section>
+<section id="maintenance-history">
+<h2>3. Maintenance History<a class="headerlink" href="#maintenance-history" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Display Elements:</strong> Timeline or list of completed services, dates, mileage, service center, and cost.</p></li>
+<li><p><strong>Document Upload:</strong> Option to attach invoices, receipts, or reports.</p></li>
+<li><p><strong>Analytics:</strong> Summary of total maintenance cost per year.</p></li>
+</ul>
+</section>
+<section id="vin-decoder">
+<h2>4. VIN Decoder<a class="headerlink" href="#vin-decoder" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Functionality:</strong> Auto-decodes VIN to display vehicle specifications.</p></li>
+<li><p><strong>Details Displayed:</strong> Engine type, transmission, model year, trim, manufacturing plant, and safety features.</p></li>
+<li><p><strong>Integration:</strong> Pulls data from VIN databases or APIs like NHTSA or Carfax.</p></li>
+</ul>
+</section>
+<section id="mechanic-services">
+<h2>5. Mechanic Services<a class="headerlink" href="#mechanic-services" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Features:</strong></p>
+<ul>
+<li><p>Search nearby mechanics or workshops.</p></li>
+<li><p>View profiles with ratings, service types, and availability.</p></li>
+<li><p>Book appointments directly.</p></li>
+</ul>
+</li>
+<li><p><strong>Integration:</strong> Google Maps API for location services.</p></li>
+</ul>
+</section>
+<section id="alerts-and-notifications">
+<h2>6. Alerts and Notifications<a class="headerlink" href="#alerts-and-notifications" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Types of Alerts:</strong></p>
+<ul>
+<li><p>Low fuel or oil levels.</p></li>
+<li><p>Maintenance due soon.</p></li>
+<li><p>Safety recalls or fault codes detected.</p></li>
+</ul>
+</li>
+<li><p><strong>Design:</strong> Card layout with color-coded severity (red for urgent, yellow for upcoming, green for normal).</p></li>
+</ul>
+</section>
+<section id="cost-analysis-chart">
+<h2>7. Cost Analysis Chart<a class="headerlink" href="#cost-analysis-chart" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Display Elements:</strong></p>
+<ul>
+<li><p>Interactive graph showing monthly or 6-month spending trends.</p></li>
+<li><p>Filters for service categories (engine, tires, general, bodywork).</p></li>
+<li><p>Comparison with average vehicle maintenance costs.</p></li>
+</ul>
+</li>
+<li><p><strong>Technology:</strong> Chart.js or Recharts integration.</p></li>
+</ul>
+</section>
+<section id="bookings-and-appointments">
+<h2>8. Bookings and Appointments<a class="headerlink" href="#bookings-and-appointments" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Display:</strong> List of upcoming bookings and their status (pending, confirmed, completed).</p></li>
+<li><p><strong>Actions:</strong> Reschedule or cancel appointments.</p></li>
+<li><p><strong>Integration:</strong> Sync with Google Calendar or internal notification system.</p></li>
+</ul>
+</section>
+<section id="alerts-feed-deals-section">
+<h2>9. Alerts Feed / Deals Section<a class="headerlink" href="#alerts-feed-deals-section" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Purpose:</strong> Display promotional offers from partner garages or service plans.</p></li>
+<li><p><strong>Design:</strong> Card-based scrolling list with icons and short descriptions.</p></li>
+</ul>
+</section>
+<section id="user-profile-settings">
+<h2>10. User Profile &amp; Settings<a class="headerlink" href="#user-profile-settings" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Display:</strong> User name, registered vehicles, and linked payment options.</p></li>
+<li><p><strong>Preferences:</strong> Notification settings, app theme, and data sync options.</p></li>
+<li><p><strong>Account Management:</strong> Manage connected vehicles and logout functionality.</p></li>
+</ul>
+<section id="visual-design-notes">
+<h3>Visual Design Notes<a class="headerlink" href="#visual-design-notes" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Color Scheme:</strong> Soft grey and white contrast for a clean, modern interface.</p></li>
+<li><p><strong>Typography:</strong> Rounded sans-serif font for readability.</p></li>
+<li><p><strong>UI Elements:</strong> Large rounded buttons, subtle shadows, and minimalistic icons.</p></li>
+<li><p><strong>Mobile First:</strong> Fully responsive layout with key metrics prioritized for small screens.</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="autocare_guide.html" class="btn btn-neutral float-left" title="Django Auto Care Platform - Calendar Scheduling Integration Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dashboard-features.html" class="btn btn-neutral float-right" title="Vehicle Dashboard Features" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Menzi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

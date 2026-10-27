@@ -1,0 +1,369 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vehicle Dashboard Features &mdash; Carfinity 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Maintenance Record Form - Redesign Documentation" href="MAINTENANCE_FORM_REDESIGN.html" />
+    <link rel="prev" title="Digital AutoCare Dashboard — Primary Screen Features" href="Autocare_Dashboard_Features.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Carfinity
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Start Here</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../administration.html">Administration and Authentication</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../vehicle-care.html">Vehicle Care and Maintenance</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="autocare_guide.html">Django Auto Care Platform - Calendar Scheduling Integration Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Autocare_Dashboard_Features.html">Digital AutoCare Dashboard — Primary Screen Features</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Vehicle Dashboard Features</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#key-features">Key Features</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#navigation-vehicle-selection">🎯 Navigation &amp; Vehicle Selection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#key-metrics-cards">📊 Key Metrics Cards</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#alerts-notifications">🚨 Alerts &amp; Notifications</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#upcoming-maintenance">📅 Upcoming Maintenance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vehicle-health-overview">💚 Vehicle Health Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#recent-inspection-reports">📋 Recent Inspection Reports</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#recent-maintenance-history">🔧 Recent Maintenance History</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#quick-actions-panel">⚡ Quick Actions Panel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cost-analysis">💰 Cost Analysis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parts-inventory-status">📦 Parts Inventory Status</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#technical-implementation">Technical Implementation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#design-system">Design System</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#responsive-design">Responsive Design</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#data-integration-points">Data Integration Points</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#future-enhancements">Future Enhancements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#planned-features">Planned Features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#chart-integration">Chart Integration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#user-experience">User Experience</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="MAINTENANCE_FORM_REDESIGN.html">Maintenance Record Form - Redesign Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="FORM_FLOW_GUIDE.html">Maintenance Form User Flow Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="FORM_ACCESS_SECURITY_REPORT.html">Maintenance Form - Access Security Report</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MAINTENANCE_HISTORY_ENHANCEMENT.html">Maintenance History Enhancement Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vehicle_database_admin_guide.html">Vehicle Database Admin Interface Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="common_vehicles.html">Common Vehicles Database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="popup.html">Popup Dialog Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../inspections.html">Inspections and Assessments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../insurance-and-quotes.html">Insurance and Repair Quotes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../technical-reference.html">Technical Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project-history.html">Project History and Implementation Notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Carfinity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../vehicle-care.html">Vehicle Care and Maintenance</a></li>
+      <li class="breadcrumb-item active">Vehicle Dashboard Features</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/dashboard-features.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="vehicle-dashboard-features">
+<h1>Vehicle Dashboard Features<a class="headerlink" href="#vehicle-dashboard-features" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The Vehicle Dashboard provides a comprehensive overview of vehicle maintenance status, health monitoring, cost tracking, and quick access to common maintenance actions for vehicle owners.</p>
+</section>
+<section id="key-features">
+<h2>Key Features<a class="headerlink" href="#key-features" title="Link to this heading"></a></h2>
+<section id="navigation-vehicle-selection">
+<h3>🎯 Navigation &amp; Vehicle Selection<a class="headerlink" href="#navigation-vehicle-selection" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Clean Header</strong>: Professional navigation bar with Carfinity branding</p></li>
+<li><p><strong>Vehicle Selector</strong>: Dropdown to switch between owned vehicles</p></li>
+<li><p><strong>User Welcome</strong>: Personalized greeting with user information</p></li>
+<li><p><strong>Search Functionality</strong>: Quick vehicle lookup and selection</p></li>
+</ul>
+</section>
+<section id="key-metrics-cards">
+<h3>📊 Key Metrics Cards<a class="headerlink" href="#key-metrics-cards" title="Link to this heading"></a></h3>
+<p>The dashboard displays 5 primary metrics at the top:</p>
+<ol class="arabic simple">
+<li><p><strong>Total Vehicles</strong>: Shows the number of vehicles in the user’s fleet</p></li>
+<li><p><strong>Due Soon</strong>: Count of maintenance items due within 30 days</p></li>
+<li><p><strong>Overdue</strong>: Critical maintenance items that are past due</p></li>
+<li><p><strong>Average Health</strong>: Overall fleet health percentage from inspections</p></li>
+<li><p><strong>Monthly Cost</strong>: Current month’s maintenance spending</p></li>
+</ol>
+</section>
+<section id="alerts-notifications">
+<h3>🚨 Alerts &amp; Notifications<a class="headerlink" href="#alerts-notifications" title="Link to this heading"></a></h3>
+<p>Priority-based alert system with color coding:</p>
+<ul class="simple">
+<li><p><strong>Critical Alerts (Red)</strong>: Overdue maintenance requiring immediate attention</p></li>
+<li><p><strong>Warning Alerts (Yellow)</strong>: Services due soon (within 5-7 days)</p></li>
+<li><p><strong>Info Alerts (Blue)</strong>: Available services and recommendations</p></li>
+</ul>
+<p>Each alert includes:</p>
+<ul class="simple">
+<li><p>Vehicle identification (Make, Model, VIN)</p></li>
+<li><p>Service details and due dates</p></li>
+<li><p>Mileage information</p></li>
+<li><p>Quick action buttons</p></li>
+</ul>
+</section>
+<section id="upcoming-maintenance">
+<h3>📅 Upcoming Maintenance<a class="headerlink" href="#upcoming-maintenance" title="Link to this heading"></a></h3>
+<p>Comprehensive maintenance scheduling table featuring:</p>
+<ul class="simple">
+<li><p><strong>Vehicle Information</strong>: Make, model, and VIN</p></li>
+<li><p><strong>Service Type</strong>: Oil change, brake inspection, tire rotation, etc.</p></li>
+<li><p><strong>Due Dates</strong>: Calendar dates for scheduled services</p></li>
+<li><p><strong>Mileage Tracking</strong>: Due mileage for each service</p></li>
+<li><p><strong>Priority Status</strong>: Color-coded priority levels (Overdue, Due Soon, Scheduled)</p></li>
+<li><p><strong>Action Buttons</strong>: Direct links to schedule or view services</p></li>
+</ul>
+</section>
+<section id="vehicle-health-overview">
+<h3>💚 Vehicle Health Overview<a class="headerlink" href="#vehicle-health-overview" title="Link to this heading"></a></h3>
+<p>Individual vehicle health monitoring:</p>
+<ul class="simple">
+<li><p><strong>Health Scores</strong>: Percentage-based health ratings (0-100%)</p></li>
+<li><p><strong>Visual Progress Bars</strong>: Color-coded health indicators</p></li>
+<li><p><strong>Health Categories</strong>:</p>
+<ul>
+<li><p>Excellent (90-100%) - Green</p></li>
+<li><p>Good (70-89%) - Yellow</p></li>
+<li><p>Needs Attention (Below 70%) - Red</p></li>
+</ul>
+</li>
+<li><p><strong>Last Inspection Dates</strong>: When each vehicle was last inspected</p></li>
+</ul>
+</section>
+<section id="recent-inspection-reports">
+<h3>📋 Recent Inspection Reports<a class="headerlink" href="#recent-inspection-reports" title="Link to this heading"></a></h3>
+<p>Inspection history with visual status indicators:</p>
+<ul class="simple">
+<li><p><strong>Inspection Types</strong>:</p>
+<ul>
+<li><p>50-point quarterly inspections</p></li>
+<li><p>160-point initial/pre-purchase inspections</p></li>
+</ul>
+</li>
+<li><p><strong>Status Icons</strong>: Pass/fail visual indicators</p></li>
+<li><p><strong>Results Summary</strong>: Passed, passed with defects, or failed</p></li>
+<li><p><strong>PDF Downloads</strong>: Direct access to detailed inspection reports</p></li>
+<li><p><strong>Date Tracking</strong>: When each inspection was performed</p></li>
+</ul>
+</section>
+<section id="recent-maintenance-history">
+<h3>🔧 Recent Maintenance History<a class="headerlink" href="#recent-maintenance-history" title="Link to this heading"></a></h3>
+<p>Service record tracking:</p>
+<ul class="simple">
+<li><p><strong>Service Details</strong>: Type of work performed</p></li>
+<li><p><strong>Vehicle Information</strong>: Which vehicle was serviced</p></li>
+<li><p><strong>Cost Tracking</strong>: Individual service costs</p></li>
+<li><p><strong>Mileage Records</strong>: Vehicle mileage at time of service</p></li>
+<li><p><strong>Technician Information</strong>: Who performed the work</p></li>
+<li><p><strong>Service Icons</strong>: Visual indicators for different service types</p></li>
+</ul>
+</section>
+<section id="quick-actions-panel">
+<h3>⚡ Quick Actions Panel<a class="headerlink" href="#quick-actions-panel" title="Link to this heading"></a></h3>
+<p>One-click access to common tasks:</p>
+<ul class="simple">
+<li><p><strong>Schedule Maintenance</strong>: Book new service appointments</p></li>
+<li><p><strong>Book Inspection</strong>: Schedule quarterly or annual inspections</p></li>
+<li><p><strong>Upload Documents</strong>: Add service records or receipts</p></li>
+<li><p><strong>View Reports</strong>: Access detailed maintenance reports</p></li>
+</ul>
+</section>
+<section id="cost-analysis">
+<h3>💰 Cost Analysis<a class="headerlink" href="#cost-analysis" title="Link to this heading"></a></h3>
+<p>Financial tracking and analysis:</p>
+<ul class="simple">
+<li><p><strong>Monthly Trends</strong>: Spending patterns over time</p></li>
+<li><p><strong>Cost Breakdown</strong>:</p>
+<ul>
+<li><p>Current month spending</p></li>
+<li><p>6-month totals</p></li>
+<li><p>Per-vehicle averages</p></li>
+</ul>
+</li>
+<li><p><strong>Trend Indicators</strong>: Up/down arrows showing spending changes</p></li>
+<li><p><strong>Chart Integration</strong>: Placeholder for Chart.js visualizations</p></li>
+</ul>
+</section>
+<section id="parts-inventory-status">
+<h3>📦 Parts Inventory Status<a class="headerlink" href="#parts-inventory-status" title="Link to this heading"></a></h3>
+<p>Inventory management alerts:</p>
+<ul class="simple">
+<li><p><strong>Stock Levels</strong>: Current quantities vs. minimum thresholds</p></li>
+<li><p><strong>Status Categories</strong>:</p>
+<ul>
+<li><p>Low Stock (Red) - Below minimum threshold</p></li>
+<li><p>In Stock (Green) - Adequate quantities</p></li>
+<li><p>Reorder Soon (Yellow) - Approaching minimum</p></li>
+</ul>
+</li>
+<li><p><strong>Part Information</strong>: Part numbers and descriptions</p></li>
+<li><p><strong>Inventory Management</strong>: Links to manage stock levels</p></li>
+</ul>
+</section>
+</section>
+<section id="technical-implementation">
+<h2>Technical Implementation<a class="headerlink" href="#technical-implementation" title="Link to this heading"></a></h2>
+<section id="design-system">
+<h3>Design System<a class="headerlink" href="#design-system" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Framework</strong>: Tailwind CSS for responsive design</p></li>
+<li><p><strong>Icons</strong>: Font Awesome for consistent iconography</p></li>
+<li><p><strong>Color Scheme</strong>:</p>
+<ul>
+<li><p>Primary: Blue (#1e40af)</p></li>
+<li><p>Success: Green (#10b981)</p></li>
+<li><p>Warning: Yellow (#f59e0b)</p></li>
+<li><p>Danger: Red (#ef4444)</p></li>
+<li><p>Secondary: Gray (#374151)</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="responsive-design">
+<h3>Responsive Design<a class="headerlink" href="#responsive-design" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Mobile-First</strong>: Optimized for mobile devices</p></li>
+<li><p><strong>Grid Layout</strong>: Responsive grid system that adapts to screen size</p></li>
+<li><p><strong>Card-Based</strong>: Information organized in digestible card components</p></li>
+<li><p><strong>Interactive Elements</strong>: Hover effects and smooth transitions</p></li>
+</ul>
+</section>
+<section id="data-integration-points">
+<h3>Data Integration Points<a class="headerlink" href="#data-integration-points" title="Link to this heading"></a></h3>
+<p>The dashboard is designed to integrate with:</p>
+<ul class="simple">
+<li><p><strong>Vehicle Models</strong>: Vehicle information and ownership</p></li>
+<li><p><strong>Maintenance Models</strong>: Scheduled and completed maintenance</p></li>
+<li><p><strong>Inspection Models</strong>: Health scores and inspection results</p></li>
+<li><p><strong>Parts Models</strong>: Inventory levels and usage tracking</p></li>
+<li><p><strong>Cost Models</strong>: Financial tracking and analysis</p></li>
+</ul>
+</section>
+</section>
+<section id="future-enhancements">
+<h2>Future Enhancements<a class="headerlink" href="#future-enhancements" title="Link to this heading"></a></h2>
+<section id="planned-features">
+<h3>Planned Features<a class="headerlink" href="#planned-features" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Real-time Notifications</strong>: Push notifications for critical alerts</p></li>
+<li><p><strong>Calendar Integration</strong>: Sync with external calendar systems</p></li>
+<li><p><strong>Mobile App</strong>: Companion mobile application</p></li>
+<li><p><strong>Advanced Analytics</strong>: Predictive maintenance recommendations</p></li>
+<li><p><strong>Fleet Management</strong>: Enhanced multi-vehicle management tools</p></li>
+</ul>
+</section>
+<section id="chart-integration">
+<h3>Chart Integration<a class="headerlink" href="#chart-integration" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Chart.js Implementation</strong>: Interactive cost and trend charts</p></li>
+<li><p><strong>Data Visualization</strong>: Maintenance patterns and cost analysis</p></li>
+<li><p><strong>Export Functionality</strong>: PDF and Excel report generation</p></li>
+</ul>
+</section>
+</section>
+<section id="user-experience">
+<h2>User Experience<a class="headerlink" href="#user-experience" title="Link to this heading"></a></h2>
+<p>The dashboard prioritizes:</p>
+<ul class="simple">
+<li><p><strong>Clarity</strong>: Clear, easy-to-understand information presentation</p></li>
+<li><p><strong>Efficiency</strong>: Quick access to most common tasks</p></li>
+<li><p><strong>Proactive Management</strong>: Early warnings and recommendations</p></li>
+<li><p><strong>Cost Awareness</strong>: Transparent cost tracking and budgeting</p></li>
+<li><p><strong>Mobile Accessibility</strong>: Full functionality on all devices</p></li>
+</ul>
+<p>This dashboard serves as the central hub for vehicle maintenance management, helping users stay proactive about vehicle care while maintaining cost control and compliance with inspection requirements.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Autocare_Dashboard_Features.html" class="btn btn-neutral float-left" title="Digital AutoCare Dashboard — Primary Screen Features" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="MAINTENANCE_FORM_REDESIGN.html" class="btn btn-neutral float-right" title="Maintenance Record Form - Redesign Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Menzi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

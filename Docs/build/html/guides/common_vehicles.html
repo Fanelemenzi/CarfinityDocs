@@ -1,0 +1,349 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Common Vehicles Database &mdash; Carfinity 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Popup Dialog Example" href="popup.html" />
+    <link rel="prev" title="Vehicle Database Admin Interface Guide" href="vehicle_database_admin_guide.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Carfinity
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Start Here</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../administration.html">Administration and Authentication</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../vehicle-care.html">Vehicle Care and Maintenance</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="autocare_guide.html">Django Auto Care Platform - Calendar Scheduling Integration Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Autocare_Dashboard_Features.html">Digital AutoCare Dashboard — Primary Screen Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dashboard-features.html">Vehicle Dashboard Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MAINTENANCE_FORM_REDESIGN.html">Maintenance Record Form - Redesign Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="FORM_FLOW_GUIDE.html">Maintenance Form User Flow Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="FORM_ACCESS_SECURITY_REPORT.html">Maintenance Form - Access Security Report</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MAINTENANCE_HISTORY_ENHANCEMENT.html">Maintenance History Enhancement Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vehicle_database_admin_guide.html">Vehicle Database Admin Interface Guide</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Common Vehicles Database</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#format">Format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#vehicle-list">Vehicle List</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#toyota">Toyota</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#honda">Honda</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bmw">BMW</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mercedes-benz">Mercedes-Benz</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#audi">Audi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ford">Ford</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#chevrolet">Chevrolet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#nissan">Nissan</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hyundai">Hyundai</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#volkswagen">Volkswagen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#subaru">Subaru</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mazda">Mazda</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#kia">Kia</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#jeep">Jeep</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ram">Ram</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="popup.html">Popup Dialog Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../inspections.html">Inspections and Assessments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../insurance-and-quotes.html">Insurance and Repair Quotes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../technical-reference.html">Technical Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project-history.html">Project History and Implementation Notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Carfinity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../vehicle-care.html">Vehicle Care and Maintenance</a></li>
+      <li class="breadcrumb-item active">Common Vehicles Database</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/common_vehicles.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="common-vehicles-database">
+<h1>Common Vehicles Database<a class="headerlink" href="#common-vehicles-database" title="Link to this heading"></a></h1>
+<p>This file contains common vehicle make/model/year combinations for import into the VehicleDatabase.</p>
+<section id="format">
+<h2>Format<a class="headerlink" href="#format" title="Link to this heading"></a></h2>
+<p>Each vehicle entry should be in the format: <code class="docutils literal notranslate"><span class="pre">Make</span> <span class="pre">Model</span> <span class="pre">Year</span> <span class="pre">[Maintenance</span> <span class="pre">Plan]</span></code></p>
+</section>
+<section id="vehicle-list">
+<h2>Vehicle List<a class="headerlink" href="#vehicle-list" title="Link to this heading"></a></h2>
+<section id="toyota">
+<h3>Toyota<a class="headerlink" href="#toyota" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Toyota Camry 2023</p></li>
+<li><p>Toyota Camry 2022</p></li>
+<li><p>Toyota Camry 2021</p></li>
+<li><p>Toyota Corolla 2023</p></li>
+<li><p>Toyota Corolla 2022</p></li>
+<li><p>Toyota Corolla 2021</p></li>
+<li><p>Toyota RAV4 2023</p></li>
+<li><p>Toyota RAV4 2022</p></li>
+<li><p>Toyota RAV4 2021</p></li>
+<li><p>Toyota Prius 2023</p></li>
+<li><p>Toyota Prius 2022</p></li>
+<li><p>Toyota Highlander 2023</p></li>
+<li><p>Toyota Highlander 2022</p></li>
+</ul>
+</section>
+<section id="honda">
+<h3>Honda<a class="headerlink" href="#honda" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Honda Civic 2023</p></li>
+<li><p>Honda Civic 2022</p></li>
+<li><p>Honda Civic 2021</p></li>
+<li><p>Honda Accord 2023</p></li>
+<li><p>Honda Accord 2022</p></li>
+<li><p>Honda Accord 2021</p></li>
+<li><p>Honda CR-V 2023</p></li>
+<li><p>Honda CR-V 2022</p></li>
+<li><p>Honda CR-V 2021</p></li>
+<li><p>Honda Pilot 2023</p></li>
+<li><p>Honda Pilot 2022</p></li>
+</ul>
+</section>
+<section id="bmw">
+<h3>BMW<a class="headerlink" href="#bmw" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>BMW 3 Series 2023</p></li>
+<li><p>BMW 3 Series 2022</p></li>
+<li><p>BMW 3 Series 2021</p></li>
+<li><p>BMW 5 Series 2023</p></li>
+<li><p>BMW 5 Series 2022</p></li>
+<li><p>BMW X3 2023</p></li>
+<li><p>BMW X3 2022</p></li>
+<li><p>BMW X5 2023</p></li>
+<li><p>BMW X5 2022</p></li>
+</ul>
+</section>
+<section id="mercedes-benz">
+<h3>Mercedes-Benz<a class="headerlink" href="#mercedes-benz" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Mercedes-Benz C-Class 2023</p></li>
+<li><p>Mercedes-Benz C-Class 2022</p></li>
+<li><p>Mercedes-Benz C-Class 2021</p></li>
+<li><p>Mercedes-Benz E-Class 2023</p></li>
+<li><p>Mercedes-Benz E-Class 2022</p></li>
+<li><p>Mercedes-Benz GLC 2023</p></li>
+<li><p>Mercedes-Benz GLC 2022</p></li>
+</ul>
+</section>
+<section id="audi">
+<h3>Audi<a class="headerlink" href="#audi" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Audi A4 2023</p></li>
+<li><p>Audi A4 2022</p></li>
+<li><p>Audi A4 2021</p></li>
+<li><p>Audi A6 2023</p></li>
+<li><p>Audi A6 2022</p></li>
+<li><p>Audi Q5 2023</p></li>
+<li><p>Audi Q5 2022</p></li>
+</ul>
+</section>
+<section id="ford">
+<h3>Ford<a class="headerlink" href="#ford" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Ford F-150 2023</p></li>
+<li><p>Ford F-150 2022</p></li>
+<li><p>Ford F-150 2021</p></li>
+<li><p>Ford Mustang 2023</p></li>
+<li><p>Ford Mustang 2022</p></li>
+<li><p>Ford Explorer 2023</p></li>
+<li><p>Ford Explorer 2022</p></li>
+<li><p>Ford Escape 2023</p></li>
+<li><p>Ford Escape 2022</p></li>
+</ul>
+</section>
+<section id="chevrolet">
+<h3>Chevrolet<a class="headerlink" href="#chevrolet" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Chevrolet Silverado 2023</p></li>
+<li><p>Chevrolet Silverado 2022</p></li>
+<li><p>Chevrolet Silverado 2021</p></li>
+<li><p>Chevrolet Malibu 2023</p></li>
+<li><p>Chevrolet Malibu 2022</p></li>
+<li><p>Chevrolet Equinox 2023</p></li>
+<li><p>Chevrolet Equinox 2022</p></li>
+</ul>
+</section>
+<section id="nissan">
+<h3>Nissan<a class="headerlink" href="#nissan" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Nissan Altima 2023</p></li>
+<li><p>Nissan Altima 2022</p></li>
+<li><p>Nissan Altima 2021</p></li>
+<li><p>Nissan Sentra 2023</p></li>
+<li><p>Nissan Sentra 2022</p></li>
+<li><p>Nissan Rogue 2023</p></li>
+<li><p>Nissan Rogue 2022</p></li>
+</ul>
+</section>
+<section id="hyundai">
+<h3>Hyundai<a class="headerlink" href="#hyundai" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Hyundai Elantra 2023</p></li>
+<li><p>Hyundai Elantra 2022</p></li>
+<li><p>Hyundai Elantra 2021</p></li>
+<li><p>Hyundai Sonata 2023</p></li>
+<li><p>Hyundai Sonata 2022</p></li>
+<li><p>Hyundai Tucson 2023</p></li>
+<li><p>Hyundai Tucson 2022</p></li>
+</ul>
+</section>
+<section id="volkswagen">
+<h3>Volkswagen<a class="headerlink" href="#volkswagen" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Volkswagen Jetta 2023</p></li>
+<li><p>Volkswagen Jetta 2022</p></li>
+<li><p>Volkswagen Jetta 2021</p></li>
+<li><p>Volkswagen Passat 2023</p></li>
+<li><p>Volkswagen Passat 2022</p></li>
+<li><p>Volkswagen Tiguan 2023</p></li>
+<li><p>Volkswagen Tiguan 2022</p></li>
+</ul>
+</section>
+<section id="subaru">
+<h3>Subaru<a class="headerlink" href="#subaru" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Subaru Outback 2023</p></li>
+<li><p>Subaru Outback 2022</p></li>
+<li><p>Subaru Outback 2021</p></li>
+<li><p>Subaru Forester 2023</p></li>
+<li><p>Subaru Forester 2022</p></li>
+<li><p>Subaru Impreza 2023</p></li>
+<li><p>Subaru Impreza 2022</p></li>
+</ul>
+</section>
+<section id="mazda">
+<h3>Mazda<a class="headerlink" href="#mazda" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Mazda CX-5 2023</p></li>
+<li><p>Mazda CX-5 2022</p></li>
+<li><p>Mazda CX-5 2021</p></li>
+<li><p>Mazda Mazda3 2023</p></li>
+<li><p>Mazda Mazda3 2022</p></li>
+<li><p>Mazda CX-9 2023</p></li>
+<li><p>Mazda CX-9 2022</p></li>
+</ul>
+</section>
+<section id="kia">
+<h3>Kia<a class="headerlink" href="#kia" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Kia Sorento 2023</p></li>
+<li><p>Kia Sorento 2022</p></li>
+<li><p>Kia Sorento 2021</p></li>
+<li><p>Kia Optima 2023</p></li>
+<li><p>Kia Optima 2022</p></li>
+<li><p>Kia Sportage 2023</p></li>
+<li><p>Kia Sportage 2022</p></li>
+</ul>
+</section>
+<section id="jeep">
+<h3>Jeep<a class="headerlink" href="#jeep" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Jeep Wrangler 2023</p></li>
+<li><p>Jeep Wrangler 2022</p></li>
+<li><p>Jeep Wrangler 2021</p></li>
+<li><p>Jeep Grand Cherokee 2023</p></li>
+<li><p>Jeep Grand Cherokee 2022</p></li>
+<li><p>Jeep Compass 2023</p></li>
+<li><p>Jeep Compass 2022</p></li>
+</ul>
+</section>
+<section id="ram">
+<h3>Ram<a class="headerlink" href="#ram" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Ram 1500 2023</p></li>
+<li><p>Ram 1500 2022</p></li>
+<li><p>Ram 1500 2021</p></li>
+<li><p>Ram 2500 2023</p></li>
+<li><p>Ram 2500 2022</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="vehicle_database_admin_guide.html" class="btn btn-neutral float-left" title="Vehicle Database Admin Interface Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="popup.html" class="btn btn-neutral float-right" title="Popup Dialog Example" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Menzi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

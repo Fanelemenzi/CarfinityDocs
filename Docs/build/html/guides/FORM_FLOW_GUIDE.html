@@ -1,0 +1,791 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Maintenance Form User Flow Guide &mdash; Carfinity 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Maintenance Form - Access Security Report" href="FORM_ACCESS_SECURITY_REPORT.html" />
+    <link rel="prev" title="Maintenance Record Form - Redesign Documentation" href="MAINTENANCE_FORM_REDESIGN.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Carfinity
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Start Here</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../administration.html">Administration and Authentication</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../vehicle-care.html">Vehicle Care and Maintenance</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="autocare_guide.html">Django Auto Care Platform - Calendar Scheduling Integration Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Autocare_Dashboard_Features.html">Digital AutoCare Dashboard — Primary Screen Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dashboard-features.html">Vehicle Dashboard Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MAINTENANCE_FORM_REDESIGN.html">Maintenance Record Form - Redesign Documentation</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Maintenance Form User Flow Guide</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#visual-flow-diagram">Visual Flow Diagram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#screen-by-screen-breakdown">Screen-by-Screen Breakdown</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#header-all-steps">HEADER (All Steps)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#progress-indicator-all-steps">PROGRESS INDICATOR (All Steps)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-1-vehicle-selection">STEP 1: VEHICLE SELECTION</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-2-work-details">STEP 2: WORK DETAILS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-3-documentation">STEP 3: DOCUMENTATION</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-4-review-save">STEP 4: REVIEW &amp; SAVE</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#mobile-responsive-views">Mobile Responsive Views</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mobile-375px-iphone-se">Mobile (375px - iPhone SE)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tablet-768px-ipad">Tablet (768px - iPad)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#error-state-examples">Error State Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#missing-required-field-work-performed">Missing Required Field (Work Performed)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#invalid-file-upload">Invalid File Upload</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#keyboard-navigation">Keyboard Navigation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#accessibility-features">Accessibility Features</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#screen-reader-announcements">Screen Reader Announcements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#focus-indicators">Focus Indicators</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#animations-transitions">Animations &amp; Transitions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#section-change-animation">Section Change Animation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#error-message-animation">Error Message Animation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#image-preview-animation">Image Preview Animation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#loading-submission-states">Loading &amp; Submission States</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#before-click">Before Click</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#during-submission">During Submission</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#after-success">After Success</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#error-during-submission">Error During Submission</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#summary">Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="FORM_ACCESS_SECURITY_REPORT.html">Maintenance Form - Access Security Report</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MAINTENANCE_HISTORY_ENHANCEMENT.html">Maintenance History Enhancement Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vehicle_database_admin_guide.html">Vehicle Database Admin Interface Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="common_vehicles.html">Common Vehicles Database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="popup.html">Popup Dialog Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../inspections.html">Inspections and Assessments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../insurance-and-quotes.html">Insurance and Repair Quotes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../technical-reference.html">Technical Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../project-history.html">Project History and Implementation Notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Carfinity</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../vehicle-care.html">Vehicle Care and Maintenance</a></li>
+      <li class="breadcrumb-item active">Maintenance Form User Flow Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/guides/FORM_FLOW_GUIDE.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="maintenance-form-user-flow-guide">
+<h1>Maintenance Form User Flow Guide<a class="headerlink" href="#maintenance-form-user-flow-guide" title="Link to this heading"></a></h1>
+<section id="visual-flow-diagram">
+<h2>Visual Flow Diagram<a class="headerlink" href="#visual-flow-diagram" title="Link to this heading"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>┌─────────────────────────────────────────────────────────────┐
+│                    START: MAINTENANCE FORM                  │
+│                                                              │
+│          ┌──────────────────────────────────────┐           │
+│          │   Header: "Log Maintenance Work"    │           │
+│          │   Gradient Blue Background           │           │
+│          └──────────────────────────────────────┘           │
+│                            ↓                                 │
+│          ┌──────────────────────────────────────┐           │
+│          │      Progress Indicator: 1→2→3→4    │           │
+│          │   (Step 1 highlighted, rest gray)    │           │
+│          └──────────────────────────────────────┘           │
+│                            ↓                                 │
+│          ┌──────────────────────────────────────┐           │
+│          │      STEP 1: VEHICLE SELECTION      │           │
+│          │           🚗 Section                 │           │
+│          ├──────────────────────────────────────┤           │
+│          │  Vehicle Dropdown                   │           │
+│          │  [Select vehicle...]                │           │
+│          │                                      │           │
+│          │  ℹ️  Tip: Pick correct vehicle      │           │
+│          ├──────────────────────────────────────┤           │
+│          │  [← Previous] [Next →]              │           │
+│          │        (Previous hidden)             │           │
+│          └──────────────────────────────────────┘           │
+│                            ↓                                 │
+│          ┌──────────────────────────────────────┐           │
+│          │    STEP 2: WORK DETAILS              │           │
+│          │        🔧 Section                    │           │
+│          ├──────────────────────────────────────┤           │
+│          │  Scheduled Maintenance               │           │
+│          │  [-- Select maintenance task --]    │           │
+│          │                                      │           │
+│          │  Work Performed *                    │           │
+│          │  ┌──────────────────────────────┐   │           │
+│          │  │ [Detailed description...]   │   │           │
+│          │  │ [Example provided]          │   │           │
+│          │  └──────────────────────────────┘   │           │
+│          │                                      │           │
+│          │  Odometer Reading *                  │           │
+│          │  [123456]                           │           │
+│          │                                      │           │
+│          │  Additional Notes                    │           │
+│          │  [Optional observations...]         │           │
+│          ├──────────────────────────────────────┤           │
+│          │  [← Previous] [Next →]              │           │
+│          └──────────────────────────────────────┘           │
+│                            ↓                                 │
+│          ┌──────────────────────────────────────┐           │
+│          │  STEP 3: DOCUMENTATION               │           │
+│          │       📸 Section (Optional)          │           │
+│          ├──────────────────────────────────────┤           │
+│          │  ℹ️  Why document your work box    │           │
+│          │                                      │           │
+│          │  Service Photo:                      │           │
+│          │  ╔════════════════════════════════╗  │           │
+│          │  ║ 📷 Drop here or click browse  ║  │           │
+│          │  ║ JPEG, PNG, GIF, WebP • Max 10MB  ║           │
+│          │  ╚════════════════════════════════╝  │           │
+│          │  [Image preview appears here]       │           │
+│          │                                      │           │
+│          │  Photo Category:                     │           │
+│          │  [-- Select category --]            │           │
+│          │                                      │           │
+│          │  Photo Description:                  │           │
+│          │  [Brief description...]             │           │
+│          ├──────────────────────────────────────┤           │
+│          │  [← Previous] [Next →]              │           │
+│          └──────────────────────────────────────┘           │
+│                            ↓                                 │
+│          ┌──────────────────────────────────────┐           │
+│          │    STEP 4: REVIEW &amp; SAVE             │           │
+│          │        ✅ Section                    │           │
+│          ├──────────────────────────────────────┤           │
+│          │  ✅ "Ready to Save" success alert   │           │
+│          │                                      │           │
+│          │  ℹ️  What happens next...           │           │
+│          │  • Record added to vehicle history   │           │
+│          │  • Used for scheduling               │           │
+│          │  • Supports warranty claims          │           │
+│          ├──────────────────────────────────────┤           │
+│          │  [← Previous] [SAVE RECORD]         │           │
+│          │        (Both buttons visible)        │           │
+│          └──────────────────────────────────────┘           │
+│                            ↓                                 │
+│          ┌──────────────────────────────────────┐           │
+│          │   END: Form Submitted Successfully   │           │
+│          │   (Redirect to maintenance history)  │           │
+│          └──────────────────────────────────────┘           │
+└─────────────────────────────────────────────────────────────┘
+</pre></div>
+</div>
+</section>
+<section id="screen-by-screen-breakdown">
+<h2>Screen-by-Screen Breakdown<a class="headerlink" href="#screen-by-screen-breakdown" title="Link to this heading"></a></h2>
+<section id="header-all-steps">
+<h3>HEADER (All Steps)<a class="headerlink" href="#header-all-steps" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>┌─────────────────────────────────────────┐
+│  [BLUE GRADIENT BACKGROUND]             │
+│                                          │
+│    Log Maintenance Work                  │
+│    Keep your vehicle service history     │
+│    organized and accurate                │
+│                                          │
+└─────────────────────────────────────────┘
+</pre></div>
+</div>
+<p><strong>Design Elements:</strong></p>
+<ul class="simple">
+<li><p>Gradient blue background (visual anchor)</p></li>
+<li><p>Large, clear title (2rem, bold)</p></li>
+<li><p>Descriptive subtitle (smaller, lighter)</p></li>
+<li><p>Sets professional tone</p></li>
+</ul>
+</section>
+<section id="progress-indicator-all-steps">
+<h3>PROGRESS INDICATOR (All Steps)<a class="headerlink" href="#progress-indicator-all-steps" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Step 1          Step 2          Step 3          Step 4
+  1               2               3               4
+[BLUE]          [GRAY]          [GRAY]          [GRAY]
+Vehicle ―― Work Details ―― Documentation ―― Review &amp; Save
+ Active          Future          Future          Future
+
+Legend:
+● Active   = Blue circle with glow
+● Future   = Gray circle
+● Completed = Green circle with checkmark
+═══ Line   = Shows progression
+</pre></div>
+</div>
+<p><strong>Responsive Behavior:</strong></p>
+<ul class="simple">
+<li><p>Desktop: All 4 steps visible in one line</p></li>
+<li><p>Tablet: Wraps to 2 rows if needed</p></li>
+<li><p>Mobile: Stacks vertically, lines hidden</p></li>
+</ul>
+</section>
+<section id="step-1-vehicle-selection">
+<h3>STEP 1: VEHICLE SELECTION<a class="headerlink" href="#step-1-vehicle-selection" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>┌────────────────────────────────────────────────┐
+│ 🚗 Select Your Vehicle                         │
+├────────────────────────────────────────────────┤
+│                                                 │
+│ Vehicle *                                       │
+│ (Choose the vehicle you're logging for)        │
+│                                                 │
+│ ┌──────────────────────────────────────────┐  │
+│ │ ▼ Select vehicle...                     │  │
+│ └──────────────────────────────────────────┘  │
+│                                                 │
+│ ┌─────────────────────────────────────────┐   │
+│ │ ℹ️  Tip: Pick the correct vehicle      │   │
+│ │    Ensures accurate maintenance records  │   │
+│ └─────────────────────────────────────────┘   │
+│                                                 │
+├────────────────────────────────────────────────┤
+│              [← Prev]    [Next →]              │
+│                                                 │
+│              (Previous button hidden)           │
+└────────────────────────────────────────────────┘
+</pre></div>
+</div>
+<p><strong>UX Notes:</strong></p>
+<ul class="simple">
+<li><p>Single field (not overwhelming)</p></li>
+<li><p>Icon helps identify section quickly</p></li>
+<li><p>Helpful tip explains importance</p></li>
+<li><p>Only “Next” button visible (no going back)</p></li>
+</ul>
+</section>
+<section id="step-2-work-details">
+<h3>STEP 2: WORK DETAILS<a class="headerlink" href="#step-2-work-details" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>┌────────────────────────────────────────────────┐
+│ 🔧 Work Details                                │
+├────────────────────────────────────────────────┤
+│                                                 │
+│ Scheduled Maintenance Task                     │
+│ (Select which task - optional)                 │
+│                                                 │
+│ ┌──────────────────────────────────────────┐  │
+│ │ ▼ -- Choose maintenance task --         │  │
+│ │   • Oil Change - Due: 2026-07-15         │  │
+│ │   • Tire Rotation - Due: 2026-08-20      │  │
+│ └──────────────────────────────────────────┘  │
+│                                                 │
+│ Work Performed * ← REQUIRED                    │
+│ (Be specific and detailed)                     │
+│                                                 │
+│ ┌──────────────────────────────────────────┐  │
+│ │ Replaced front brake pads (OEM spec),   │  │
+│ │ inspected rotors (good condition),       │  │
+│ │ bled brake system, test drive OK         │  │
+│ └──────────────────────────────────────────┘  │
+│ 📝 Example: "Replaced brake pads..."      │
+│                                                 │
+│ Odometer Reading * ← REQUIRED                  │
+│ (Current mileage at time of service)           │
+│                                                 │
+│ ┌──────────────────────────────────────────┐  │
+│ │ 123456                                   │  │
+│ └──────────────────────────────────────────┘  │
+│ 📝 Record exact odometer - for warranty       │
+│                                                 │
+│ Additional Notes                               │
+│ (Optional observations)                        │
+│                                                 │
+│ ┌──────────────────────────────────────────┐  │
+│ │                                          │  │
+│ └──────────────────────────────────────────┘  │
+│                                                 │
+│ ┌─────────────────────────────────────────┐   │
+│ │ 💡 Pro Tip: Be Specific                 │   │
+│ │    Details now = valuable record later   │   │
+│ └─────────────────────────────────────────┘   │
+│                                                 │
+├────────────────────────────────────────────────┤
+│              [← Prev]    [Next →]              │
+│           (Both buttons visible)                │
+└────────────────────────────────────────────────┘
+</pre></div>
+</div>
+<p><strong>Validation Triggers:</strong></p>
+<ul class="simple">
+<li><p>If user clicks “Next” without Work Performed:</p>
+<ul>
+<li><p>Field borders turn red</p></li>
+<li><p>Error message appears: “Work performed is required”</p></li>
+<li><p>Error message animated in smoothly</p></li>
+<li><p>User scrolls to field automatically</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>Smart Features:</strong></p>
+<ul class="simple">
+<li><p>Scheduled maintenance auto-filtered by vehicle from Step 1</p></li>
+<li><p>If no vehicle selected in Step 1, shows placeholder: “Select a vehicle first”</p></li>
+</ul>
+</section>
+<section id="step-3-documentation">
+<h3>STEP 3: DOCUMENTATION<a class="headerlink" href="#step-3-documentation" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>┌────────────────────────────────────────────────┐
+│ 📸 Add Photos (Optional)                       │
+├────────────────────────────────────────────────┤
+│                                                 │
+│ ┌─────────────────────────────────────────┐   │
+│ │ ℹ️  📋 Why Document Your Work?          │   │
+│ │                                          │   │
+│ │ Photos create proof of work, help future│   │
+│ │ technicians, and provide before/after   │   │
+│ │ evidence for warranty claims             │   │
+│ └─────────────────────────────────────────┘   │
+│                                                 │
+│ Service Photo                                   │
+│                                                 │
+│ ╔════════════════════════════════════════╗    │
+│ ║         📷 Drop your photo here        ║    │
+│ ║           or click to browse           ║    │
+│ ║                                        ║    │
+│ ║ JPEG, PNG, GIF, WebP • Max 10MB        ║    │
+│ ╚════════════════════════════════════════╝    │
+│                                                 │
+│ [After file selected:]                         │
+│                                                 │
+│ ┌─────────────────────────────────────────┐   │
+│ │                                          │   │
+│ │  ┌──────────────────┐                  │   │
+│ │  │                  │   ×  ← Remove btn│   │
+│ │  │  [Image Preview] │                  │   │
+│ │  │                  │                  │   │
+│ │  └──────────────────┘                  │   │
+│ │                                          │   │
+│ │  File: IMG_1234.jpg                     │   │
+│ │  Size: 2.3 MB                           │   │
+│ │                                          │   │
+│ └─────────────────────────────────────────┘   │
+│                                                 │
+│ Photo Category                                  │
+│ (What does this photo show?)                   │
+│                                                 │
+│ ┌──────────────────────────────────────────┐  │
+│ │ ▼ -- Select category --                 │  │
+│ │   • Before Service                       │  │
+│ │   • During Service                       │  │
+│ │   • After Service                        │  │
+│ │   • Parts/Components                     │  │
+│ │   • Damage/Issue Found                   │  │
+│ └──────────────────────────────────────────┘  │
+│                                                 │
+│ Photo Description                              │
+│ (Briefly describe what's shown)                │
+│                                                 │
+│ ┌──────────────────────────────────────────┐  │
+│ │ New brake pads installed - front left    │  │
+│ └──────────────────────────────────────────┘  │
+│ 📝 Example: "Replaced brake pads..."         │
+│                                                 │
+│ ┌─────────────────────────────────────────┐   │
+│ │ ℹ️  Photo Tips                          │   │
+│ │ • Clear, well-lit photos               │   │
+│ │ • Show before/after conditions         │   │
+│ │ • Include part numbers when visible    │   │
+│ │ • Document any damage found            │   │
+│ └─────────────────────────────────────────┘   │
+│                                                 │
+├────────────────────────────────────────────────┤
+│              [← Prev]    [Next →]              │
+│           (Both buttons visible)                │
+└────────────────────────────────────────────────┘
+</pre></div>
+</div>
+<p><strong>Drag-and-Drop Behavior:</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Before drag:         During hover:         After drop:
+┌──────────────┐    ┌──────────────┐     ┌──────────────┐
+│ 📷 Drop here │    │ 📷 Drop here │     │ ✅ File ready│
+│ border: gray │    │ border: blue │     │ border: green│
+│              │    │ glow: blue   │     │              │
+└──────────────┘    └──────────────┘     └──────────────┘
+</pre></div>
+</div>
+<p><strong>File Upload Validation:</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Valid file selected:
+✅ "IMG_1234.jpg" (2.3 MB) → Preview shows thumbnail
+
+Invalid file selected:
+❌ File too large (15 MB) → Error: "Image too large. Max 10MB"
+❌ Wrong format (.pdf)   → Error: "Invalid image format"
+❌ Corrupted image       → Error: "Could not read file"
+</pre></div>
+</div>
+</section>
+<section id="step-4-review-save">
+<h3>STEP 4: REVIEW &amp; SAVE<a class="headerlink" href="#step-4-review-save" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>┌────────────────────────────────────────────────┐
+│ ✅ Review &amp; Save                               │
+├────────────────────────────────────────────────┤
+│                                                 │
+│ ┌─────────────────────────────────────────┐   │
+│ │ ✅ Ready to Save                        │   │
+│ │                                          │   │
+│ │ All required fields are complete.       │   │
+│ │ Click save to finalize the maintenance  │   │
+│ │ record.                                  │   │
+│ └─────────────────────────────────────────┘   │
+│                                                 │
+│ ┌─────────────────────────────────────────┐   │
+│ │ ℹ️  Once You Save...                    │   │
+│ │                                          │   │
+│ │ Your maintenance record will be:        │   │
+│ │ • Added to the vehicle's service       │   │
+│ │   history                               │   │
+│ │ • Used to calculate future maintenance │   │
+│ │   schedules                             │   │
+│ │ • Available for warranty claims         │   │
+│ └─────────────────────────────────────────┘   │
+│                                                 │
+├────────────────────────────────────────────────┤
+│              [← Prev]    [SAVE RECORD]         │
+│           (Both buttons visible)                │
+└────────────────────────────────────────────────┘
+
+[During submission:]
+
+┌────────────────────────────────────────────────┐
+│                                                 │
+│              🔄 Saving...                       │
+│          Please wait...                        │
+│                                                 │
+│       [Loading animation]                      │
+│                                                 │
+└────────────────────────────────────────────────┘
+
+[After submission:]
+
+Redirect to: /maintenance/success/ or /vehicle/{id}/
+</pre></div>
+</div>
+<p><strong>Save Button States:</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Normal</span><span class="p">:</span>        <span class="n">Hover</span><span class="p">:</span>         <span class="n">Disabled</span><span class="p">:</span>
+<span class="p">[</span><span class="n">SAVE</span> <span class="n">RECORD</span><span class="p">]</span>  <span class="p">[</span><span class="n">SAVE</span> <span class="n">RECORD</span><span class="p">]</span>  <span class="p">[</span><span class="n">SAVING</span><span class="o">...</span><span class="p">]</span>
+<span class="n">blue</span> <span class="n">gradient</span>  <span class="n">lighter</span> <span class="n">shade</span>  <span class="n">grayed</span> <span class="n">out</span>
+<span class="n">subtle</span> <span class="n">shadow</span>  <span class="n">elevated</span>       <span class="n">no</span> <span class="n">pointer</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="mobile-responsive-views">
+<h2>Mobile Responsive Views<a class="headerlink" href="#mobile-responsive-views" title="Link to this heading"></a></h2>
+<section id="mobile-375px-iphone-se">
+<h3>Mobile (375px - iPhone SE)<a class="headerlink" href="#mobile-375px-iphone-se" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>┌────────────────────────┐
+│ Log Maintenance Work   │
+│ Keep organized         │
+└────────────────────────┘
+
+Progress: [1] 2 3 4
+(Stacked vertically)
+
+┌────────────────────────┐
+│ 🚗 Select Vehicle      │
+├────────────────────────┤
+│ Vehicle *              │
+│ ┌──────────────────┐   │
+│ │ Select vehicle..│   │
+│ └──────────────────┘   │
+│                        │
+│ Helpful tip            │
+├────────────────────────┤
+│  [Next →]              │
+│  (Full width)          │
+└────────────────────────┘
+</pre></div>
+</div>
+<p><strong>Mobile Optimizations:</strong></p>
+<ul class="simple">
+<li><p>Single column layout</p></li>
+<li><p>Full-width buttons</p></li>
+<li><p>Larger touch targets (44px+)</p></li>
+<li><p>Simplified progress indicator</p></li>
+<li><p>Readable font sizes</p></li>
+<li><p>Compact spacing</p></li>
+</ul>
+</section>
+<section id="tablet-768px-ipad">
+<h3>Tablet (768px - iPad)<a class="headerlink" href="#tablet-768px-ipad" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>┌─────────────────────────────────────┐
+│ Log Maintenance Work                │
+└─────────────────────────────────────┘
+
+1─Vehicle  2─Work Details  3─Docs  4─Save
+(Still shows all 4 steps)
+
+┌─────────────────────────────────────┐
+│ 🚗 Select Your Vehicle              │
+├─────────────────────────────────────┤
+│ Vehicle *                           │
+│ ┌─────────────────────────────────┐ │
+│ │ Select vehicle...              │ │
+│ └─────────────────────────────────┘ │
+│                                     │
+│ ℹ️  Helpful tip text               │
+├─────────────────────────────────────┤
+│ [← Prev]         [Next →]           │
+│    (Side by side, more space)       │
+└─────────────────────────────────────┘
+</pre></div>
+</div>
+</section>
+</section>
+<section id="error-state-examples">
+<h2>Error State Examples<a class="headerlink" href="#error-state-examples" title="Link to this heading"></a></h2>
+<section id="missing-required-field-work-performed">
+<h3>Missing Required Field (Work Performed)<a class="headerlink" href="#missing-required-field-work-performed" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>┌────────────────────────────────────────┐
+│ 🔧 Work Details                        │
+├────────────────────────────────────────┤
+│                                        │
+│ [User clicks Next without filling in] │
+│                                        │
+│ ┌────────────────────────────────────┐ │
+│ │ ❌ Please fix these errors:        │ │
+│ │    • Work performed is required     │ │
+│ │    • Odometer reading is required  │ │
+│ └────────────────────────────────────┘ │
+│                                        │
+│ Work Performed * ← REQUIRED            │
+│ ┌────────────────────────────────────┐ │
+│ │  ← Red border, error background    │ │
+│ └────────────────────────────────────┘ │
+│ ❌ Work performed is required         │
+│                                        │
+│ Odometer Reading * ← REQUIRED          │
+│ ┌────────────────────────────────────┐ │
+│ │  ← Red border, error background    │ │
+│ └────────────────────────────────────┘ │
+│ ❌ Odometer reading is required       │
+│                                        │
+├────────────────────────────────────────┤
+│ [← Prev]    [Next →]                  │
+└────────────────────────────────────────┘
+</pre></div>
+</div>
+</section>
+<section id="invalid-file-upload">
+<h3>Invalid File Upload<a class="headerlink" href="#invalid-file-upload" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Service Photo
+
+[User selects 15MB .pdf file]
+
+╔════════════════════════════════╗
+║ ❌ Image file size cannot      ║
+║    exceed 10MB. Current:       ║
+║    14.8 MB                     ║
+╚════════════════════════════════╝
+</pre></div>
+</div>
+</section>
+</section>
+<section id="keyboard-navigation">
+<h2>Keyboard Navigation<a class="headerlink" href="#keyboard-navigation" title="Link to this heading"></a></h2>
+<p><strong>Tab Order:</strong></p>
+<ol class="arabic simple">
+<li><p>Vehicle dropdown</p></li>
+<li><p>Next button</p></li>
+<li><p>[On Step 2] Scheduled Maintenance dropdown</p></li>
+<li><p>Work Performed textarea</p></li>
+<li><p>Odometer Reading input</p></li>
+<li><p>Notes textarea</p></li>
+<li><p>Previous button</p></li>
+<li><p>Next button</p></li>
+<li><p>[On Step 3] File input</p></li>
+<li><p>Image Type dropdown</p></li>
+<li><p>Image Description textarea</p></li>
+<li><p>Previous button</p></li>
+<li><p>Next button</p></li>
+<li><p>[On Step 4] Previous button</p></li>
+<li><p>Save Record button</p></li>
+</ol>
+<p><strong>Keyboard Shortcuts:</strong></p>
+<ul class="simple">
+<li><p>Tab: Move to next field</p></li>
+<li><p>Shift+Tab: Move to previous field</p></li>
+<li><p>Enter: Submit form (on final step)</p></li>
+<li><p>Space: Toggle dropdown on focused select</p></li>
+<li><p>Escape: Close dropdown (if supported)</p></li>
+</ul>
+</section>
+<section id="accessibility-features">
+<h2>Accessibility Features<a class="headerlink" href="#accessibility-features" title="Link to this heading"></a></h2>
+<section id="screen-reader-announcements">
+<h3>Screen Reader Announcements<a class="headerlink" href="#screen-reader-announcements" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">"Log Maintenance Work dialog, region"</span>
+<span class="s2">"Step 1 of 4, Vehicle Selection"</span>
+<span class="s2">"Vehicle dropdown, required field, choose the vehicle you're logging for"</span>
+<span class="s2">"Next button"</span>
+<span class="s2">"Error, work performed is required"</span>
+<span class="s2">"[Forms will announce validation errors automatically]"</span>
+</pre></div>
+</div>
+</section>
+<section id="focus-indicators">
+<h3>Focus Indicators<a class="headerlink" href="#focus-indicators" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Focused field:
+┌──────────────────────┐
+│ [Input field]     ← Blue outline (3px)
+└──────────────────────┘
+  Blue glow/shadow
+  Light blue background
+
+Focused button:
+[NEXT →] ← Focus ring visible
+ High contrast border
+</pre></div>
+</div>
+</section>
+</section>
+<section id="animations-transitions">
+<h2>Animations &amp; Transitions<a class="headerlink" href="#animations-transitions" title="Link to this heading"></a></h2>
+<section id="section-change-animation">
+<h3>Section Change Animation<a class="headerlink" href="#section-change-animation" title="Link to this heading"></a></h3>
+<div class="highlight-css notranslate"><div class="highlight"><pre><span></span><span class="nt">Duration</span><span class="o">:</span><span class="w"> </span><span class="nt">400ms</span>
+<span class="nt">Direction</span><span class="o">:</span><span class="w"> </span><span class="nt">Fade</span><span class="w"> </span><span class="nt">in</span><span class="w"> </span><span class="nt">from</span><span class="w"> </span><span class="nt">bottom</span>
+<span class="nt">Effect</span><span class="o">:</span><span class="w"> </span><span class="nt">Smooth</span><span class="o">,</span><span class="w"> </span><span class="nt">professional</span>
+</pre></div>
+</div>
+</section>
+<section id="error-message-animation">
+<h3>Error Message Animation<a class="headerlink" href="#error-message-animation" title="Link to this heading"></a></h3>
+<div class="highlight-css notranslate"><div class="highlight"><pre><span></span><span class="nt">Duration</span><span class="o">:</span><span class="w"> </span><span class="nt">300ms</span>
+<span class="nt">Direction</span><span class="o">:</span><span class="w"> </span><span class="nt">Slide</span><span class="w"> </span><span class="nt">down</span><span class="w"> </span><span class="nt">from</span><span class="w"> </span><span class="nt">top</span>
+<span class="nt">Effect</span><span class="o">:</span><span class="w"> </span><span class="nt">Grabs</span><span class="w"> </span><span class="nt">attention</span><span class="w"> </span><span class="nt">without</span><span class="w"> </span><span class="nt">jarring</span>
+</pre></div>
+</div>
+</section>
+<section id="image-preview-animation">
+<h3>Image Preview Animation<a class="headerlink" href="#image-preview-animation" title="Link to this heading"></a></h3>
+<div class="highlight-css notranslate"><div class="highlight"><pre><span></span><span class="nt">Duration</span><span class="o">:</span><span class="w"> </span><span class="nt">300ms</span>
+<span class="nt">Effect</span><span class="o">:</span><span class="w"> </span><span class="nt">Scale</span><span class="w"> </span><span class="nt">up</span><span class="w"> </span><span class="o">(</span><span class="nt">0</span><span class="p">.</span><span class="nc">95</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="nt">1</span><span class="o">)</span><span class="w"> </span><span class="nt">while</span><span class="w"> </span><span class="nt">fading</span><span class="w"> </span><span class="nt">in</span>
+<span class="nt">Result</span><span class="o">:</span><span class="w"> </span><span class="nt">Smooth</span><span class="w"> </span><span class="nt">appearance</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="loading-submission-states">
+<h2>Loading &amp; Submission States<a class="headerlink" href="#loading-submission-states" title="Link to this heading"></a></h2>
+<section id="before-click">
+<h3>Before Click<a class="headerlink" href="#before-click" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[SAVE RECORD] ← Blue gradient, ready
+</pre></div>
+</div>
+</section>
+<section id="during-submission">
+<h3>During Submission<a class="headerlink" href="#during-submission" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[⏳ SAVING...] ← Spinner animating, disabled
+Form grayed out, no interaction
+</pre></div>
+</div>
+</section>
+<section id="after-success">
+<h3>After Success<a class="headerlink" href="#after-success" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Redirect</span> <span class="n">to</span><span class="p">:</span> <span class="n">Vehicle</span> <span class="n">maintenance</span> <span class="n">history</span>
+<span class="n">Page</span> <span class="n">shows</span><span class="p">:</span> <span class="s2">"Maintenance record saved successfully"</span>
+<span class="n">Toast</span> <span class="n">notification</span> <span class="p">(</span><span class="n">optional</span><span class="p">):</span> <span class="s2">"✅ Saved!"</span>
+</pre></div>
+</div>
+</section>
+<section id="error-during-submission">
+<h3>Error During Submission<a class="headerlink" href="#error-during-submission" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Alert</span> <span class="n">appears</span><span class="p">:</span> <span class="s2">"Error saving record. Please try again."</span>
+<span class="n">Form</span> <span class="n">re</span><span class="o">-</span><span class="n">enables</span> <span class="k">for</span> <span class="n">editing</span>
+<span class="n">User</span> <span class="n">can</span> <span class="n">correct</span> <span class="ow">and</span> <span class="n">resubmit</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h2>
+<p>This redesign transforms the maintenance logging experience from a daunting, overwhelming single-page form into an intuitive, guided 4-step wizard that feels modern and professional while maintaining all required functionality.</p>
+<p>The progressive disclosure approach dramatically improves user success rate while the modern design encourages users to provide detailed, accurate maintenance records.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="MAINTENANCE_FORM_REDESIGN.html" class="btn btn-neutral float-left" title="Maintenance Record Form - Redesign Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="FORM_ACCESS_SECURITY_REPORT.html" class="btn btn-neutral float-right" title="Maintenance Form - Access Security Report" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Menzi.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
