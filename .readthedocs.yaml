@@ -6,10 +6,10 @@ build:
     python: "3.12"
   jobs:
     pre_build:
-      - python scripts/create_guide_pages.py
+      - python Docs/scripts/create_guide_pages.py
 
 sphinx:
-  configuration: source/conf.py
+  configuration: Docs/source/conf.py
 
 python:
   install:
